@@ -1,0 +1,11 @@
+{
+  "name": "@mmkal/js",
+  "version": "0.0.1",
+  "description": "js monorepo",
+  "main": "index.js",
+  "repository": "https://github.com/mmkal/js",
+  "author": "mmkal <misha.kaletsky@gmail.com>",
+  "license": "Apache-2.0",
+  "private": true,
+  "workspaces": ["packages/*"]
+}
