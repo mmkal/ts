@@ -1,0 +1,13 @@
+{
+  "name": "@mmkal/name-gen",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "../../node_modules/.bin/tsc -p ."
+  },
+  "dependencies": {
+    "seedrandom": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/seedrandom": "^2.4.28"
+  }
+}

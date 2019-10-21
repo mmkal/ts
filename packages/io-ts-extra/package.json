@@ -1,0 +1,17 @@
+{
+  "name": "@mmkal/io-ts-extra",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "../../node_modules/.bin/tsc -p ."
+  },
+  "dependencies": {
+    "fp-ts": "^2.1.0",
+    "io-ts": "^2.0.1",
+    "seedrandom": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/seedrandom": "^2.4.28"
+  }
+}

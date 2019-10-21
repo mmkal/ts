@@ -1,0 +1,12 @@
+{
+  "packages": ["packages/*"],
+  "version": "independent",
+  "toposort": true,
+  "stream": true,
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "allowBranch": ["master"]
+    }
+  }
+}
