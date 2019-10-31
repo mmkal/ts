@@ -8,10 +8,6 @@
   },
   "dependencies": {
     "fp-ts": "^2.1.0",
-    "io-ts": "^2.0.1",
-    "seedrandom": "^3.0.5"
-  },
-  "devDependencies": {
-    "@types/seedrandom": "^2.4.28"
+    "io-ts": "^2.0.1"
   }
 }

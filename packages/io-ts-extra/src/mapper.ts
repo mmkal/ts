@@ -4,9 +4,10 @@ import * as Either from 'fp-ts/lib/Either'
 import {pipe} from 'fp-ts/lib/pipeable'
 
 export type Decoder<A, O = A, I = unknown> = Omit<t.Type<A, O, I>, 'encode'>
+// prettier-ignore
 interface Mapper {
-  <From, To>(from: t.Type<From>, to: t.Type<To>, map: (f: From) => To): Decoder<To, From>
-  <From, To>(from: t.Type<From>, to: t.Type<To>, map: (f: From) => To, unmap: (t: To) => From): t.Type<To, From, From>
+  <From, To>(from: t.Type<From>, to: t.Type<To>, map: (f: From) => To): Decoder<To, From> & {from: From; to: To}
+  <From, To>(from: t.Type<From>, to: t.Type<To>, map: (f: From) => To, unmap: (t: To) => From): t.Type<To, From, From> & {from: From; to: To}
 }
 export const mapper: Mapper = <From, To>(
   from: t.Type<From>,
@@ -16,7 +17,7 @@ export const mapper: Mapper = <From, To>(
 ) => {
   const fail = (s: From, c: t.Context, info: string) =>
     t.failure<To>(s, c.concat([{key: `decoder [${funcLabel(map)}]: ${info}`, type: to}]))
-  return from.pipe(
+  const piped = from.pipe(
     new t.Type<To, From, From>(
       to.name,
       to.is,
@@ -29,6 +30,7 @@ export const mapper: Mapper = <From, To>(
     ),
     `${from.name} |> ${funcLabel(map)} |> ${to.name}`
   ) as any
+  return Object.assign(piped, {from, to})
 }
 
 export const parser = <T>(type: t.Type<T>, decode: (value: string) => T, encode: (value: T) => string = String) =>
