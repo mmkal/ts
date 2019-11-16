@@ -26,6 +26,15 @@ describe('mapper', () => {
             - key: ''
               type:
                 name: 'boolean |> function (b) { ... } |> Array<string>'
+                from:
+                  name: boolean
+                  _tag: BooleanType
+                to:
+                  name: Array<string>
+                  type:
+                    name: string
+                    _tag: StringType
+                  _tag: ArrayType
               actual: *ref_0
     `)
   })
@@ -56,6 +65,15 @@ describe('parser', () => {
             - key: ''
               type:
                 name: string |> parseFloat |> Integer
+                from:
+                  name: string
+                  _tag: StringType
+                to:
+                  name: Integer
+                  type:
+                    name: number
+                    _tag: NumberType
+                  _tag: RefinementType
               actual: '123.1'
     `)
     expect(IntFromString.decode('xyz')).toMatchInlineSnapshot(`
@@ -66,6 +84,15 @@ describe('parser', () => {
             - key: ''
               type:
                 name: string |> parseFloat |> Integer
+                from:
+                  name: string
+                  _tag: StringType
+                to:
+                  name: Integer
+                  type:
+                    name: number
+                    _tag: NumberType
+                  _tag: RefinementType
               actual: xyz
     `)
   })
@@ -95,14 +122,18 @@ describe('parser', () => {
             - key: ''
               type:
                 name: 'boolean |> function (b) { ... } |> string'
+                from:
+                  name: boolean
+                  _tag: BooleanType
+                to: &ref_0
+                  name: string
+                  _tag: StringType
               actual: true
             - key: |-
                 decoder [function (b) { ... }]: error thrown decoding: [Error: {
                   "b": true
                 }]
-              type:
-                name: string
-                _tag: StringType
+              type: *ref_0
     `)
   })
 })
