@@ -1,3 +1,5 @@
+// from https://web.archive.org/web/20190611082829/https://www.alphalists.com/list/alphabetical-list-animals
+
 export const animal = `
 Aardvark
 Aardwolf

@@ -1,3 +1,5 @@
+// from https://web.archive.org/web/20191223202350/https://www.scribd.com/document/357627199/Feeling-Adjectives-1
+
 export const positiveAdjective = `
 admirable
 energetic
