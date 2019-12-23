@@ -56,26 +56,27 @@ module.exports = {
               .readdirSync(barrelDir)
               .filter(file => path.resolve(barrelDir, file) !== path.resolve(barrelFile))
               .filter(file => ['.js', '.ts', '.tsx'].includes(path.extname(file)))
-              .map(file => './' + file.replace(/\.\w+$/, ''))
+              .map(file => file.replace(/\.\w+$/, ''))
             const tokensBetween = sourceCode.getTokensBetween(startComment, endComment)
             const allLines = sourceCode.getLines()
             const actualBarrelLines = allLines.slice(startComment.loc.start.line, endComment.loc.start.line - 1)
-            const expectedBarrelLines = filesToBarrel.map(f => `export * from '${f}'`)
+            const expectedBarrelLines = filesToBarrel.map(f => `export * from './${f}'`)
             const normalisedActualLines = actualBarrelLines.map(s => s.replace(/['"`]/g, `'`).replace(/;$/, ''))
             if (JSON.stringify(normalisedActualLines) === JSON.stringify(expectedBarrelLines)) {
               return
             }
             const expectedBarrelCode = expectedBarrelLines.join('\n')
+            const message = `expected barrel:\n${expectedBarrelCode}`
             if (tokensBetween.length === 0 && filesToBarrel.length > 0) {
               context.report({
-                message: `${filesToBarrel.join(',')} should be barreled`,
+                message,
                 loc: {start: startComment.loc.start, end: endComment.loc.end},
                 fix: fixer => fixer.insertTextAfter(startComment, '\n' + expectedBarrelCode),
               })
               return
             }
             context.report({
-              message: `expected barrel:\n${expectedBarrelCode}`,
+              message,
               loc: {start: startComment.loc.start, end: endComment.loc.end},
               fix: fixer =>
                 fixer.replaceTextRange(
