@@ -1,9 +1,10 @@
-// stolen from mixed definition in https://www.npmjs.com/package/unknown-ts
-type EverythingRealistic = {[key: string]: any} | object | number | string | boolean | symbol | undefined | null | void // tslint:disable-line max-line-length
+const secret = Symbol('secret')
+type Secret = typeof secret
 type IsNever<T> = [T] extends [never] ? 1 : 0
-type IsAnyOrUnknown<T> = IsNever<Exclude<T, EverythingRealistic>> extends 1 ? 0 : 1
+type Not<T extends 0 | 1> = T extends 1 ? 0 : 1
+type IsAny<T> = [T] extends [Secret] ? Not<IsNever<T>> : 0
 type OneOf<T extends 1 | 0, U extends 1 | 0> = T extends 1 ? 1 : U
-export type IsNeverOrAny<T> = OneOf<IsNever<T>, IsAnyOrUnknown<T>>
+export type IsNeverOrAny<T> = OneOf<IsNever<T>, IsAny<T>>
 
 export class RichError extends Error {
   public static thrower(context: string) {
