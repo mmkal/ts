@@ -21,9 +21,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
     ...MISMATCH: And<[Extends<Actual, Expected>, Extends<Expected, Actual>]> extends B ? [] : [never]
   ) => true
   toBeCallableWith: B extends true ? ((...args: Params<Actual>) => true) : never
-  parameter<K extends Actual extends (...args: infer P) => any ? keyof P : never>(
-    number: K
-  ): Actual extends (...args: infer P) => any ? ExpectTypeOf<P[K], B> : never
+  parameter<K extends keyof Params<Actual>>(number: K): ExpectTypeOf<Params<Actual>[K], B>
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   not: ExpectTypeOf<Actual, Not<B>>
