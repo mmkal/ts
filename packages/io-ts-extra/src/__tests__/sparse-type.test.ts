@@ -1,13 +1,6 @@
 import {sparseType, optional} from '../index'
 import * as t from 'io-ts'
-
-const expectLeft = (val: any) => {
-  expect(val).toMatchObject({_tag: 'Left', left: expect.anything()})
-}
-const expectRight = (val: any) => {
-  expect(val).not.toMatchObject({_tag: 'Left', left: expect.anything()})
-  expect(val).toMatchObject({_tag: 'Right', right: expect.anything()})
-}
+import {expectRight, expectLeft} from './either-serializer'
 
 describe('partialPartial', () => {
   it('handles some optional props', () => {
