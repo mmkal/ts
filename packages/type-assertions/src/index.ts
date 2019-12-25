@@ -21,6 +21,9 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
     ...MISMATCH: And<[Extends<Actual, Expected>, Extends<Expected, Actual>]> extends B ? [] : [never]
   ) => true
   toBeCallableWith: B extends true ? ((...args: Params<Actual>) => true) : never
+  parameter<K extends Actual extends (...args: infer P) => any ? keyof P : never>(
+    number: K
+  ): Actual extends (...args: infer P) => any ? ExpectTypeOf<P[K], B> : never
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   not: ExpectTypeOf<Actual, Not<B>>
@@ -34,8 +37,9 @@ export const expectTypeOf = <Actual>(actual: Actual): ExpectTypeOf<Actual, true>
     toMatchTypeOf: fn,
     toEqualTypeOf: fn,
     toBeCallableWith: fn,
+    parameter: expectTypeOf,
   }
-  const properties = ['returns', 'resolves', 'not']
+  const properties: Array<keyof ExpectTypeOf<any, true>> = ['returns', 'resolves', 'not']
   properties.forEach(prop => Object.defineProperty(obj, prop, {get: () => expectTypeOf({})}))
   return obj as any
 }

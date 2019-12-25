@@ -12,6 +12,13 @@ it('tests types', () => {
   expectTypeOf(f).not.toBeAny()
   expectTypeOf(f).returns.not.toBeAny()
   expectTypeOf(f).returns.toEqualTypeOf([123, 456])
+  expectTypeOf(f)
+    .parameter(0)
+    .not.toEqualTypeOf('123')
+  expectTypeOf(f)
+    .parameter(0)
+    .toEqualTypeOf(123)
+  expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
 
   const thrower = () => {
     throw Error()
