@@ -1,5 +1,5 @@
 import {TypeOf, RefinementC, RefinementType, success, failure, getFunctionName, Context, Any} from 'io-ts'
-import {Either, either, isLeft, left, right} from 'fp-ts/lib/Either'
+import {either} from 'fp-ts/lib/Either'
 
 const chain = either.chain
 
