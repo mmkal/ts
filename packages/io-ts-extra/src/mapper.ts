@@ -13,7 +13,7 @@ export const mapper: Mapper = <From, To>(
   from: t.Type<From>,
   to: t.Type<To>,
   map: (f: From) => To,
-  unmap: (t: To) => From = RichError.throw
+  unmap: (t: To) => From = RichError.thrower('unmapper/encoder not implemented')
 ) => {
   const fail = (s: From, c: t.Context, info: string) =>
     t.failure<To>(s, c.concat([{key: `decoder [${funcLabel(map)}]: ${info}`, type: to}]))
