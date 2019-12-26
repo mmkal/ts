@@ -2,7 +2,6 @@ import * as Either from 'fp-ts/lib/Either'
 import * as t from 'io-ts'
 import {IsNeverOrAny, RichError} from './util'
 
-// tslint:disable max-line-length
 type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
   | {
       /** compile time only. basically a fake property to signal at compile time that you didn't exhaustively match before calling `.get`. Don't try to use this value, it won't exist! */
@@ -15,7 +14,6 @@ type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
       _unhandled: Exclude<In, InSoFar>
     }
   | never
-// tslint:enable max-line-length
 
 interface PartialFunctionBuilder<In, InSoFar, Out> {
   case: {

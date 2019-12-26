@@ -7,8 +7,7 @@ export function refinement<C extends Any>(
   codec: C,
   predicate: (value: TypeOf<C>, context: Context) => boolean,
   name: string = `(${codec.name} | ${getFunctionName(predicate)})`
-): // tslint:disable-next-line: deprecation
-RefinementC<C> {
+): RefinementC<C> {
   return new RefinementType(
     name,
     (u): u is TypeOf<C> => codec.is(u) && predicate(u, []),
