@@ -1,5 +1,6 @@
 import * as t from 'io-ts'
 import {collect, match, partialFunction} from '../match'
+import {expectTypeOf} from '@mmkal/type-assertions'
 
 import './either-serializer'
 
@@ -41,6 +42,11 @@ describe('case matching', () => {
       .case(t.refinement(Cat, c => c.miaow.startsWith('m')), c => c.miaow)
       .case(Cat, c => 'not meow, but ' + c.miaow)
       .case(Dog, d => d.bark + ', ' + d.bark).get
+
+    expectTypeOf(getSound)
+      .parameter(0)
+      .toEqualTypeOf({} as PetType)
+    expectTypeOf(getSound).returns.toEqualTypeOf('')
 
     expect(getSound({miaow: 'meow'})).toEqual('meow')
     expect(getSound({miaow: 'woof'})).toEqual('not meow, but woof')

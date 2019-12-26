@@ -2,13 +2,15 @@ import {right} from 'fp-ts/lib/Either'
 import {RichError} from '../util'
 import * as t from 'io-ts'
 import {mapper, parser} from '../mapper'
-
+import {expectTypeOf} from '@mmkal/type-assertions'
 import './either-serializer'
 import {instanceOf} from '../combinators'
 
 describe('mapper', () => {
   it('maps', () => {
     const BoolToStringArray = mapper(t.boolean, t.array(t.string), b => b.toString().split(''))
+    expectTypeOf(BoolToStringArray._O).toEqualTypeOf(true)
+    expectTypeOf(BoolToStringArray._A).toEqualTypeOf(['t', 'r', 'u', 'e'])
     expect(BoolToStringArray.decode(true)).toMatchInlineSnapshot(`
       _tag: Right
       right:
@@ -69,6 +71,9 @@ describe('mapper', () => {
 describe('parser', () => {
   it('parses', () => {
     const IntFromString = parser(t.Integer, parseFloat)
+    expectTypeOf(IntFromString._O).toEqualTypeOf('1')
+    expectTypeOf(IntFromString._I).toEqualTypeOf('1')
+    expectTypeOf(IntFromString._A).toEqualTypeOf(1)
     expect(IntFromString.decode('123')).toMatchInlineSnapshot(`
       _tag: Right
       right: 123
@@ -128,9 +133,9 @@ describe('parser', () => {
   })
 
   it('catches failures', () => {
-    const BadBoolToString = mapper(t.boolean, t.string, b => (b ? RichError.throw({b}) : 'nope'))
-    expect(BadBoolToString.decode(false)).toEqual(right('nope'))
-    expect(BadBoolToString.decode(true)).toMatchInlineSnapshot(`
+    const StringFromBool_Broken = mapper(t.boolean, t.string, b => (b ? RichError.throw({b}) : 'nope'))
+    expect(StringFromBool_Broken.decode(false)).toEqual(right('nope'))
+    expect(StringFromBool_Broken.decode(true)).toMatchInlineSnapshot(`
       _tag: Left
       left:
         - value: true

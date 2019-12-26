@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
 import {refinement} from '../refinement'
 import {expectRight, expectLeft} from './either-serializer'
+import {expectTypeOf} from '@mmkal/type-assertions'
 
 it('refines', () => {
   const Person = t.type({name: t.string})
@@ -10,6 +11,7 @@ it('refines', () => {
       refinement(Person, (val, ctx) => ctx.length === 0 || val.name === ctx[ctx.length - 1].key)
     ),
   })
+  expectTypeOf(Family._A).toEqualTypeOf({} as {members: Record<string, {name: string}>})
 
   expectRight(Family.decode({members: {bob: {name: 'bob'}}}))
   expectLeft(Family.decode({members: {bob: {name: 'bib'}}}))

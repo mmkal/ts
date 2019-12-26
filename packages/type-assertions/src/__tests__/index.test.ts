@@ -30,6 +30,10 @@ it('tests types', () => {
   }
 
   expectTypeOf(thrower).returns.toBeNever()
+
+  expectTypeOf({} as {a: number; b?: number}).not.toEqualTypeOf({} as {a: number})
+  expectTypeOf({} as {a: number; b?: number | null}).not.toEqualTypeOf({} as {a: number; b?: number})
+  expectTypeOf({} as {a: number; b?: number | null}).toEqualTypeOf({} as {a: number; b?: number | null})
 })
 
 it('can do boolean type logic', () => {
