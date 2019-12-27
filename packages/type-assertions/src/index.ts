@@ -16,15 +16,15 @@ export type Extends<L, R> = L extends R ? true : false
 
 export type Params<Actual> = Actual extends (...args: infer P) => any ? P : [never]
 
-type MaybeMatch<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never]
+type MismatchArgs<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never]
 export interface ExpectTypeOf<Actual, B extends boolean> {
-  toBeAny: (...MISMATCH: MaybeMatch<IsAny<Actual>, B>) => true
-  toBeUnknown: (...MISMATCH: MaybeMatch<IsUnknown<Actual>, B>) => true
-  toBeNever: (...MISMATCH: MaybeMatch<IsNever<Actual>, B>) => true
-  toMatchTypeOf: <Expected>(expected: Expected, ...MISMATCH: MaybeMatch<Extends<Actual, Expected>, B>) => true
+  toBeAny: (...MISMATCH: MismatchArgs<IsAny<Actual>, B>) => true
+  toBeUnknown: (...MISMATCH: MismatchArgs<IsUnknown<Actual>, B>) => true
+  toBeNever: (...MISMATCH: MismatchArgs<IsNever<Actual>, B>) => true
+  toMatchTypeOf: <Expected>(expected: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
   toEqualTypeOf: <Expected>(
     expected: Expected,
-    ...MISMATCH: MaybeMatch<
+    ...MISMATCH: MismatchArgs<
       And<
         [
           Extends<Actual, Expected>,
