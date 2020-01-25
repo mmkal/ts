@@ -1,6 +1,7 @@
 {
   "name": "@mmkal/barrelme",
   "version": "0.0.1",
+  "repository": "https://github.com/mmkal/js",
   "main": "index.js",
   "peerDependencies": {
     "eslint": "*"
