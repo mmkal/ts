@@ -12,7 +12,7 @@
     "test": "jest",
     "lint": "eslint **/*.ts",
     "commit-date": "git log -n 1 --date=format:'%Y-%m-%d-%H-%M-%S' --pretty=format:'%ad'",
-    "current-branch": "git rev-parse --abbrev-ref HEAD | sed -E 's/\\W|_/-/g'",
+    "current-branch": "echo \"${CURRENT_BRANCH-$(git rev-parse --abbrev-ref HEAD)}\" | sed -E 's/refs\\/heads\\///' | sed -E 's/\\W|_/-/g'",
     "canary-preid": "echo \"$(yarn --silent current-branch)-$(yarn --silent commit-date)\"",
     "publish-canary": "lerna publish --canary --preid $(yarn --silent canary-preid) --dist-tag $(yarn --silent canary-preid)",
     "publish-packages": "lerna publish from-package --registry https://npm.pkg.github.com"

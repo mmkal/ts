@@ -12,6 +12,30 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: github
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "ref: ${{ github.ref }}"
+        echo "head ref: ${{ github.head_ref }}"
+        echo "base ref: ${{ github.head_ref }}"
+        echo "node version: ${{ matrix.node-version }}"
+        echo "is twelve: ${{ matrix.node-version == '12.x' }}"
+        yarn current-branch
+        
+        CURRENT_BRANCH=${{ github.ref }} yarn current-branch
+        
+        yarn canary-preid
+        echo $GITHUB_CONTEXT
+    - name: find js
+      run: find ./packages -name '*.js'
+      if: startsWith(github.ref, 'refs/heads/actions/publish-test') && matrix.node-version == '12.x'
+    - name: find ts
+      run: find ./packages -name '*.ts'
+      if: github.ref == 'refs/heads/master' && matrix.node-version == '12.x'
+    - name: find json
+      run: find ./packages -name '*.json'
+      if: github.ref == 'master' && matrix.node-version == '12.x'
     - name: run ci
       run: |
         yarn
