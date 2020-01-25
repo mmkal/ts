@@ -16,6 +16,7 @@ jobs:
       run: |
         echo "ref: ${{ github.ref }}"
         echo "head ref: ${{ github.head_ref }}"
+        echo "base ref: ${{ github.head_ref }}"
     - name: run ci
       run: |
         yarn
