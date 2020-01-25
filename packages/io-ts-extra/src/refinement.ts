@@ -3,6 +3,11 @@ import {either} from 'fp-ts/lib/Either'
 
 const chain = either.chain
 
+/**
+ * Like io-ts's refinement type but:
+ * 1. Not deprecated (see https://github.com/gcanti/io-ts/issues/373)
+ * 2. Passes in `Context` to the predicate argument, so you can check parent key names etc.
+ */
 export function refinement<C extends Any>(
   codec: C,
   predicate: (value: TypeOf<C>, context: Context) => boolean,
