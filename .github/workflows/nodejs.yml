@@ -23,10 +23,10 @@ jobs:
         yarn test
       env:
         CI: true
-    - name: Authenticate with GitHub package registry
+    - name: setup github packages as npm registry
       run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
     - name: publish
-      if: startsWith(github.ref, 'refs/heads/actions/publish-test') && matrix.node-version == '12.x'
+      if: github.ref == 'refs/heads/master' && matrix.node-version == '12.x'
       env:
         CURRENT_BRANCH: ${{ github.ref }}
       run: yarn publish-canary --yes
