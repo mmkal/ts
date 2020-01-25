@@ -12,9 +12,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: find ts
-      run: find ./packages -name '*.ts'
-      if: github.ref == 'refs/heads/master' && matrix.node-version == '12.x'
     - name: find json
       run: find ./packages -name '*.json'
       if: github.ref == 'master' && matrix.node-version == '12.x'
@@ -22,8 +19,8 @@ jobs:
       run: |
         yarn
         yarn build
-        # yarn lint
-        # yarn test
+        yarn lint
+        yarn test
       env:
         CI: true
     - name: Authenticate with GitHub package registry
