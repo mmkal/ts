@@ -6,7 +6,9 @@
   "command": {
     "version": {
       "conventionalCommits": true,
-      "allowBranch": ["master"]
+      "allowBranch": ["master"],
+      "exact": true
     }
-  }
+  },
+  "ignoreChanges": ["**/__tests__/**"]
 }
