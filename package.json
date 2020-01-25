@@ -11,8 +11,9 @@
     "build": "lerna run build",
     "test": "jest",
     "lint": "eslint **/*.ts",
-    "echo-commit-tag": "echo \"$(git log -n 1 --date=format:'v%Y.%m.%d.%H.%M.%S' --pretty=format:'%ad__%H')\" | cut -c1-29",
-    "prepatch-version": "lerna version prepatch --preid $(yarn --silent echo-commit-tag) --no-git-tag-version --no-push --no-changelog",
+    "commit-date": "echo \"$(git log -n 1 --date=format:'%Y.%m.%d.%H.%M.%S' --pretty=format:'%ad')\"",
+    "canary-preid": "echo \"$(git rev-parse --abbrev-ref HEAD)_$(yarn --silent commit-date)\"",
+    "publish-canary": "lerna publish --canary --preid $(yarn canary-preid)",
     "publish-packages": "lerna publish from-package --registry https://npm.pkg.github.com"
   },
   "workspaces": [
