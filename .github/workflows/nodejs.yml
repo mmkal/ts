@@ -21,10 +21,13 @@ jobs:
         echo "is twelve: ${{ matrix.node-version == '12.x' }}"
     - name: find js
       run: find ./packages -name '*.js'
-      if: github.ref == 'refs/heads/actions/publish-test'
+      if: github.ref == 'refs/heads/actions/publish-test' && matrix.node-version == '12.x'
     - name: find ts
       run: find ./packages -name '*.ts'
-      if: github.head_ref == 'master'
+      if: github.ref == 'refs/heads/master' && matrix.node-version == '12.x'
+    - name: find json
+      run: find ./packages -name '*.json'
+      if: github.ref == 'master' && matrix.node-version == '12.x'
     - name: run ci
       run: |
         yarn
