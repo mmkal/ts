@@ -13,6 +13,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: github
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
         echo "ref: ${{ github.ref }}"
         echo "head ref: ${{ github.head_ref }}"
@@ -22,7 +24,7 @@ jobs:
         yarn current-branch
         CURRENT_BRANCH=${{ github.ref }} yarn current-branch
         yarn canary-preid
-        echo "${{ toJson(github) }}"
+        echo "${{ $GITHUB_CONTEXT }}"
     - name: find js
       run: find ./packages -name '*.js'
       if: github.ref == 'refs/heads/actions/publish-test' && matrix.node-version == '12.x'
