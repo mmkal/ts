@@ -12,11 +12,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: canary preid on publish-test branch
-      if: startsWith(github.ref, 'refs/heads/actions/publish-test') && matrix.node-version == '12.x'
-      env:
-        CURRENT_BRANCH: ${{ github.ref }}
-      run: yarn current-branch && yarn canary-preid
     - name: find ts
       run: find ./packages -name '*.ts'
       if: github.ref == 'refs/heads/master' && matrix.node-version == '12.x'
@@ -31,3 +26,8 @@ jobs:
         yarn test
       env:
         CI: true
+    - name: publish
+      if: startsWith(github.ref, 'refs/heads/actions/publish-test') && matrix.node-version == '12.x'
+      env:
+        CURRENT_BRANCH: ${{ github.ref }}
+      run: yarn publish-canary --yes
