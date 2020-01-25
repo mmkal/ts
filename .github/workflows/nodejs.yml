@@ -20,6 +20,7 @@ jobs:
         echo "node version: ${{ matrix.node-version }}"
         echo "is twelve: ${{ matrix.node-version == '12.x' }}"
         yarn current-branch
+        yarn canary-preid
     - name: find js
       run: find ./packages -name '*.js'
       if: github.ref == 'refs/heads/actions/publish-test' && matrix.node-version == '12.x'
