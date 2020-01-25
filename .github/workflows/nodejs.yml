@@ -17,9 +17,11 @@ jobs:
         echo "ref: ${{ github.ref }}"
         echo "head ref: ${{ github.head_ref }}"
         echo "base ref: ${{ github.head_ref }}"
+        echo "node version: ${{ matrix.node-version }}"
+        echo "is twelve: ${{ matrix.node-version == '12.x' }}"
     - name: find js
       run: find ./packages -name '*.js'
-      if: github.head_ref == 'actions/publish-test'
+      if: github.ref == 'refs/heads/actions/publish-test'
     - name: find ts
       run: find ./packages -name '*.ts'
       if: github.head_ref == 'master'
