@@ -20,6 +20,8 @@ jobs:
         yarn test
       env:
         CI: true
+    - name: find js
+      run: find ./packages -name '*.js'
   publish:
     runs-on: ubuntu-latest
     needs: build
