@@ -19,6 +19,7 @@ jobs:
         echo "base ref: ${{ github.head_ref }}"
         echo "node version: ${{ matrix.node-version }}"
         echo "is twelve: ${{ matrix.node-version == '12.x' }}"
+        yarn current-branch
     - name: find js
       run: find ./packages -name '*.js'
       if: github.ref == 'refs/heads/actions/publish-test' && matrix.node-version == '12.x'
@@ -36,13 +37,3 @@ jobs:
         yarn test
       env:
         CI: true
-  publish:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - name: find js
-      run: find ./packages -name '*.js'
