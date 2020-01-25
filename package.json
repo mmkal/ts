@@ -10,7 +10,8 @@
   "scripts": {
     "build": "lerna run build",
     "test": "jest",
-    "lint": "eslint **/*.ts"
+    "lint": "eslint **/*.ts",
+    "publish-packages": "lerna publish from-package --registry https://npm.pkg.github.com"
   },
   "workspaces": [
     "packages/*"
