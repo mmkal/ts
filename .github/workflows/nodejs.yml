@@ -30,4 +30,5 @@ jobs:
       if: startsWith(github.ref, 'refs/heads/actions/publish-test') && matrix.node-version == '12.x'
       env:
         CURRENT_BRANCH: ${{ github.ref }}
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: yarn publish-canary --yes
