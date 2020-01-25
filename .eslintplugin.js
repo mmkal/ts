@@ -1,3 +1,3 @@
 module.exports = {
-  ...require('./packages/barrel/index')
+  ...require('./packages/barrelme')
 }
