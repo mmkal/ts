@@ -21,9 +21,9 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeAny: (...MISMATCH: MismatchArgs<IsAny<Actual>, B>) => true
   toBeUnknown: (...MISMATCH: MismatchArgs<IsUnknown<Actual>, B>) => true
   toBeNever: (...MISMATCH: MismatchArgs<IsNever<Actual>, B>) => true
-  toMatchTypeOf: <Expected>(expected: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
+  toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
   toEqualTypeOf: <Expected>(
-    expected: Expected,
+    expected?: Expected,
     ...MISMATCH: MismatchArgs<
       And<
         [
@@ -43,7 +43,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
-export const expectTypeOf = <Actual>(actual: Actual): ExpectTypeOf<Actual, true> => {
+export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
   const obj = {
     toBeAny: fn,
     toBeUnknown: fn,
