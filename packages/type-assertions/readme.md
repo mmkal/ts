@@ -8,6 +8,7 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 npm install @mmkal/type-assertions
 ```
 
+<!-- example:start -->
 ```typescript
 import {expectTypeOf} from '@mmkal/type-assertions'
 
@@ -22,11 +23,25 @@ it('tests types', () => {
   expectTypeOf<any>().toBeAny()
   expectTypeOf<never>().toBeNever()
 
+  expectTypeOf(() => 1).toBeFunction()
+  expectTypeOf({}).toBeObject()
+  expectTypeOf([]).toBeArray()
+  expectTypeOf('').toBeString()
+  expectTypeOf(1).toBeNumber()
+  expectTypeOf(true).toBeBoolean()
+  expectTypeOf(Symbol(1)).toBeSymbol()
+  expectTypeOf(undefined).toBeUndefined()
+  expectTypeOf(null).toBeNull()
+  expectTypeOf(null).not.toBeNumber()
+
   expectTypeOf(1).not.toBeUnknown()
   expectTypeOf(1).not.toBeAny()
   expectTypeOf(1).not.toBeNever()
 
   const f = (a: number) => [a, a]
+
+  expectTypeOf(f).toBeFunction()
+  expectTypeOf('hi').not.toBeFunction()
 
   expectTypeOf(f).toBeCallableWith(1)
   expectTypeOf(f).not.toBeAny()
@@ -49,9 +64,12 @@ it('tests types', () => {
 
   expectTypeOf(thrower).returns.toBeNever()
 
+  expectTypeOf([1, 2, 3]).items.toBeNumber()
+  expectTypeOf([1, 2, 3]).items.not.toBeString()
+
   expectTypeOf<{a: number; b?: number}>().not.toEqualTypeOf<{a: number}>()
-  // In vscode, the following line gets a red squiggly but it compiles fine. Not sure why.
   expectTypeOf<{a: number; b?: number | null}>().not.toEqualTypeOf<{a: number; b?: number}>()
   expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
 })
 ```
+<!-- example:end -->
