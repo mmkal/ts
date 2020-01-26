@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "postbuild": "node scripts/write-test-to-readme"
   },
   "dependencies": {
     "fp-ts": "^2.1.0",
