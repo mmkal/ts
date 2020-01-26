@@ -1,29 +1,37 @@
-import {expectTypeOf} from '..'
 import * as a from '..'
+import {expectTypeOf} from '..'
 
 it('tests types', () => {
+  expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
+  expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+  expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
+
+  expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
+
+  expectTypeOf<unknown>().toBeUnknown()
+  expectTypeOf<any>().toBeAny()
+  expectTypeOf<never>().toBeNever()
+
   expectTypeOf(1).not.toBeUnknown()
   expectTypeOf(1).not.toBeAny()
   expectTypeOf(1).not.toBeNever()
 
-  expectTypeOf({a: 123}).toEqualTypeOf({a: 23})
   const f = (a: number) => [a, a]
 
-  expectTypeOf(f).toBeCallableWith(123)
+  expectTypeOf(f).toBeCallableWith(1)
   expectTypeOf(f).not.toBeAny()
   expectTypeOf(f).returns.not.toBeAny()
-  expectTypeOf(f).returns.toEqualTypeOf([123, 456])
+  expectTypeOf(f).returns.toEqualTypeOf([1, 2])
+  expectTypeOf(f).returns.toEqualTypeOf([1, 2, 3])
   expectTypeOf(f)
     .parameter(0)
-    .not.toEqualTypeOf('123')
+    .not.toEqualTypeOf('1')
   expectTypeOf(f)
     .parameter(0)
-    .toEqualTypeOf(123)
+    .toEqualTypeOf(1)
   expectTypeOf(1)
     .parameter(0)
     .toBeNever()
-
-  expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
 
   const thrower = () => {
     throw Error()
@@ -31,45 +39,43 @@ it('tests types', () => {
 
   expectTypeOf(thrower).returns.toBeNever()
 
-  expectTypeOf({} as {a: number; b?: number}).not.toEqualTypeOf({} as {a: number})
-  expectTypeOf({} as {a: number; b?: number | null}).not.toEqualTypeOf({} as {a: number; b?: number})
-  expectTypeOf({} as {a: number; b?: number | null}).toEqualTypeOf({} as {a: number; b?: number | null})
+  expectTypeOf<{a: number; b?: number}>().not.toEqualTypeOf<{a: number}>()
+  // In vscode, the following line gets a red squiggly but it compiles fine. Not sure why.
+  expectTypeOf<{a: number; b?: number | null}>().not.toEqualTypeOf<{a: number; b?: number}>()
+  expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
 })
 
 it('can do boolean type logic', () => {
-  const true_ = true as const
-  const false_ = false as const
+  expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
+  expectTypeOf<a.And<[true, false]>>().toEqualTypeOf<false>()
+  expectTypeOf<a.And<[false, true]>>().toEqualTypeOf<false>()
+  expectTypeOf<a.And<[false, false]>>().toEqualTypeOf<false>()
 
-  expectTypeOf({} as a.And<[true, true]>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.And<[true, false]>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.And<[false, true]>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.And<[false, false]>).toEqualTypeOf(false_)
+  expectTypeOf<a.Or<[true, true]>>().toEqualTypeOf<true>()
+  expectTypeOf<a.Or<[true, false]>>().toEqualTypeOf<true>()
+  expectTypeOf<a.Or<[false, true]>>().toEqualTypeOf<true>()
+  expectTypeOf<a.Or<[false, false]>>().toEqualTypeOf<false>()
 
-  expectTypeOf({} as a.Or<[true, true]>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.Or<[true, false]>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.Or<[false, true]>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.Or<[false, false]>).toEqualTypeOf(false_)
+  expectTypeOf<a.Xor<[true, true]>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Xor<[true, false]>>().toEqualTypeOf<true>()
+  expectTypeOf<a.Xor<[false, true]>>().toEqualTypeOf<true>()
+  expectTypeOf<a.Xor<[false, false]>>().toEqualTypeOf<false>()
 
-  expectTypeOf({} as a.Xor<[true, true]>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.Xor<[true, false]>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.Xor<[false, true]>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.Xor<[false, false]>).toEqualTypeOf(false_)
+  expectTypeOf<a.Not<true>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Not<false>>().toEqualTypeOf<true>()
 
-  expectTypeOf({} as a.Not<true>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.Not<false>).toEqualTypeOf(true_)
+  expectTypeOf<a.IsAny<any>>().toEqualTypeOf<true>()
+  expectTypeOf<a.IsUnknown<any>>().toEqualTypeOf<false>()
+  expectTypeOf<a.IsNever<any>>().toEqualTypeOf<false>()
 
-  expectTypeOf({} as a.IsAny<any>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.IsUnknown<any>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.IsNever<any>).toEqualTypeOf(false_)
+  expectTypeOf<a.IsAny<unknown>>().toEqualTypeOf<false>()
+  expectTypeOf<a.IsUnknown<unknown>>().toEqualTypeOf<true>()
+  expectTypeOf<a.IsNever<unknown>>().toEqualTypeOf<false>()
 
-  expectTypeOf({} as a.IsAny<unknown>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.IsUnknown<unknown>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.IsNever<unknown>).toEqualTypeOf(false_)
+  expectTypeOf<a.IsAny<never>>().toEqualTypeOf<false>()
+  expectTypeOf<a.IsUnknown<never>>().toEqualTypeOf<false>()
+  expectTypeOf<a.IsNever<never>>().toEqualTypeOf<true>()
 
-  expectTypeOf({} as a.IsAny<never>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.IsUnknown<never>).toEqualTypeOf(false_)
-  expectTypeOf({} as a.IsNever<never>).toEqualTypeOf(true_)
-
-  expectTypeOf({} as a.Extends<1, number>).toEqualTypeOf(true_)
-  expectTypeOf({} as a.Extends<number, 1>).toEqualTypeOf(false_)
+  expectTypeOf<a.Extends<1, number>>().toEqualTypeOf<true>()
+  expectTypeOf<a.Extends<number, 1>>().toEqualTypeOf<false>()
 })
