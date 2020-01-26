@@ -1,6 +1,6 @@
 {
   "name": "@mmkal/io-ts-extra",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": "https://github.com/mmkal/js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,6 +12,6 @@
     "io-ts": "^2.0.1"
   },
   "devDependencies": {
-    "@mmkal/type-assertions": "0.1.1"
+    "@mmkal/type-assertions": "0.2.0"
   }
 }
