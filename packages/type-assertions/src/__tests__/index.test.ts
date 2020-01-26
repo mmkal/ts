@@ -38,9 +38,6 @@ it('tests types', () => {
 })
 
 it('can do boolean type logic', () => {
-  const true_ = true as const
-  const false_ = false as const
-
   expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
   expectTypeOf<a.And<[true, false]>>().toEqualTypeOf<false>()
   expectTypeOf<a.And<[false, true]>>().toEqualTypeOf<false>()
