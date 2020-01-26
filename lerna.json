@@ -8,7 +8,7 @@
       "conventionalCommits": true,
       "allowBranch": ["master"],
       "exact": true,
-      "createRelease": true,
+      "createRelease": "github",
       "registry": "https://npm.pkg.github.com"
     }
   },
