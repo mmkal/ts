@@ -32,6 +32,7 @@ it('tests types', () => {
   expectTypeOf(thrower).returns.toBeNever()
 
   expectTypeOf<{a: number; b?: number}>().not.toEqualTypeOf<{a: number}>()
+  // In vscode, the following line gets a red squiggly but it compiles fine. Not sure why.
   expectTypeOf<{a: number; b?: number | null}>().not.toEqualTypeOf<{a: number; b?: number}>()
   expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
 })
