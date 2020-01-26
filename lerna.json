@@ -4,10 +4,11 @@
   "toposort": true,
   "stream": true,
   "command": {
-    "version": {
+    "publish": {
       "conventionalCommits": true,
       "allowBranch": ["master"],
-      "exact": true
+      "exact": true,
+      "createRelease": true
     }
   },
   "ignoreChanges": ["**/__tests__/**"]
