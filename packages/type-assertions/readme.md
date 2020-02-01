@@ -29,14 +29,25 @@ it('tests types', () => {
   expectTypeOf('').toBeString()
   expectTypeOf(1).toBeNumber()
   expectTypeOf(true).toBeBoolean()
+  expectTypeOf(Promise.resolve(123)).resolves.toBeNumber()
   expectTypeOf(Symbol(1)).toBeSymbol()
+
   expectTypeOf(undefined).toBeUndefined()
+  expectTypeOf(undefined).toBeNullable()
+  expectTypeOf(undefined).not.toBeNull()
+
   expectTypeOf(null).toBeNull()
-  expectTypeOf(null).not.toBeNumber()
+  expectTypeOf(null).toBeNullable()
+  expectTypeOf(null).not.toBeUndefined()
+
+  expectTypeOf<1 | undefined>().toBeNullable()
+  expectTypeOf<1 | null>().toBeNullable()
+  expectTypeOf<1 | undefined | null>().toBeNullable()
 
   expectTypeOf(1).not.toBeUnknown()
   expectTypeOf(1).not.toBeAny()
   expectTypeOf(1).not.toBeNever()
+  expectTypeOf(1).not.toBeNullable()
 
   const f = (a: number) => [a, a]
 
@@ -57,6 +68,10 @@ it('tests types', () => {
   expectTypeOf(1)
     .parameter(0)
     .toBeNever()
+
+  const asyncFunc = async () => 123
+
+  expectTypeOf(asyncFunc).returns.resolves.toBeNumber()
 
   const thrower = () => {
     throw Error()
