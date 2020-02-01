@@ -13,6 +13,14 @@ export type IsUnknown<T> = [unknown] extends [T] ? Not<IsAny<T>> : false
 export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
 
 export type Extends<L, R> = L extends R ? true : false
+export type Equal<Left, Right> = And<
+  [
+    Extends<Left, Right>, // prettier-break
+    Extends<Right, Left>,
+    Extends<keyof Left, keyof Right>,
+    Extends<keyof Right, keyof Left>
+  ]
+>
 
 export type Params<Actual> = Actual extends (...args: infer P) => any ? P : [never]
 
@@ -30,21 +38,9 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeSymbol: (...MISMATCH: MismatchArgs<Extends<Actual, Symbol>, B>) => true
   toBeNull: (...MISMATCH: MismatchArgs<Extends<Actual, null>, B>) => true
   toBeUndefined: (...MISMATCH: MismatchArgs<Extends<Actual, undefined>, B>) => true
+  toBeNullable: (...MISMATCH: MismatchArgs<Not<Equal<Actual, NonNullable<Actual>>>, B>) => true
   toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
-  toEqualTypeOf: <Expected>(
-    expected?: Expected,
-    ...MISMATCH: MismatchArgs<
-      And<
-        [
-          Extends<Actual, Expected>,
-          Extends<Expected, Actual>,
-          Extends<keyof Actual, keyof Expected>,
-          Extends<keyof Expected, keyof Actual>
-        ]
-      >,
-      B
-    >
-  ) => true
+  toEqualTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>) => true
   toBeCallableWith: B extends true ? ((...args: Params<Actual>) => true) : never
   parameter<K extends keyof Params<Actual>>(number: K): ExpectTypeOf<Params<Actual>[K], B>
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
@@ -71,6 +67,7 @@ export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true
     toBeSymbol: fn,
     toBeNull: fn,
     toBeUndefined: fn,
+    toBeNullable: fn,
     toMatchTypeOf: fn,
     toEqualTypeOf: fn,
     toBeCallableWith: fn,
