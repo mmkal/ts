@@ -1,5 +1,6 @@
 import {animals, people, women, men} from '..'
 import {range} from 'lodash'
+import {expectTypeOf} from '@mmkal/type-assertions'
 
 test('animals', () => {
   const generator = animals.modify(params => ({
@@ -137,10 +138,12 @@ test('families', () => {
           rng: params.rng.seed(primaryLastName + secondaryLastName),
           dictionaries: [['femaleName', 'maleName']],
         }))
+        expectTypeOf(firstNameGenerator.next).returns.not.toBeUnknown()
+        expectTypeOf(firstNameGenerator.next).returns.toBeString()
         const primary = `${firstNameGenerator.next()} ${primaryLastName}`
         const secondary = `${firstNameGenerator.next()} ${rng() < 0.5 ? primaryLastName : secondaryLastName}`
-        const kidNames = range(0, size).map(firstNameGenerator.next)
-        return [primary, secondary, ...kidNames.map(firstName => `${firstName} ${primaryLastName}`)].slice(0, size)
+        const kidNames = range(0, size).map(() => `${firstNameGenerator.next()} ${primaryLastName}`)
+        return [primary, secondary, ...kidNames].slice(0, size)
       },
     }
   })

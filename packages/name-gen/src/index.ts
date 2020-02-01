@@ -20,7 +20,7 @@ export type InputParams<T> =
   }>
 export interface NameGenerator<T> {
   params: Params<T>
-  modify: <U>(changes: InputParams<U> | ((original: Params<T>) => InputParams<U>)) => NameGenerator<U>
+  modify: <U = T>(changes: InputParams<U> | ((original: Params<T>) => InputParams<U>)) => NameGenerator<U>
   next: () => T
 }
 
