@@ -40,6 +40,15 @@ it('tests types', () => {
   expectTypeOf(1).not.toBeUndefined()
   expectTypeOf(1).not.toBeNullable()
 
+  const obj = {a: 1, b: ''}
+
+  expectTypeOf(obj)
+    .property('a')
+    .toEqualTypeOf(1)
+  expectTypeOf(obj)
+    .property('b')
+    .toEqualTypeOf<string>()
+
   const f = (a: number) => [a, a]
 
   expectTypeOf(f).toBeFunction()
@@ -59,6 +68,10 @@ it('tests types', () => {
   expectTypeOf(1)
     .parameter(0)
     .toBeNever()
+
+  const twoArgFunc = (a: number, b: string) => ({a, b})
+
+  expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
 
   const asyncFunc = async () => 123
 
