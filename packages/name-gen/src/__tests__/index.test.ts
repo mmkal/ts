@@ -10,21 +10,21 @@ test('animals', () => {
     .map(generator.next)
     .join('\n')
   expect(samples).toMatchInlineSnapshot(`
-    "superb-blacktip-reef-shark
-    worthy-potto
-    thankful-northern-right-whale
-    truthful-marbled-salamander
-    appreciative-black-footed-rhino
+    "superb-capybara
+    worthy-owl
+    thankful-mink
+    truthful-lark
+    appreciative-butterfly
     good-anteater
-    confident-river-dolphin
-    prominent-bandicoot
-    marvelous-white-rhino
-    vivacious-manatee
-    victorious-harp-seal
-    meritorious-pygmy-sperm-whale
-    amused-giraffe
-    grateful-miniature-donkey
-    heartfelt-nautilus"
+    confident-quetzal
+    prominent-bat
+    marvelous-water-buffalo
+    vivacious-kookaburra
+    victorious-grasshopper
+    meritorious-peafowl
+    amused-fly
+    grateful-llama
+    heartfelt-marmot"
   `)
 })
 
@@ -117,10 +117,10 @@ test('animals with custom formatter', () => {
   expect(result.parts.length).toBeGreaterThan(0)
   expect(result).toMatchInlineSnapshot(`
     Object {
-      "joined": "superb.blacktip_reef_shark",
+      "joined": "superb.capybara",
       "parts": Array [
         "superb",
-        "blacktip_reef_shark",
+        "capybara",
       ],
     }
   `)
