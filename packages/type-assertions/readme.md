@@ -8,7 +8,7 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 npm install @mmkal/type-assertions
 ```
 
-<!-- example:start -->
+<!-- codegen:start {source: src/__tests__/index.test.ts, between: [it(', it('], header: "import {expectTypeOf} from '@mmkal/type-assertions'"} -->
 ```typescript
 import {expectTypeOf} from '@mmkal/type-assertions'
 
@@ -102,4 +102,4 @@ it('tests types', () => {
   expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
 })
 ```
-<!-- example:end -->
+<!-- codegen:end -->
