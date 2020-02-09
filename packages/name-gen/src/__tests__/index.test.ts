@@ -1,30 +1,30 @@
-import {animals, people, women, men} from '..'
+import {nicknames, people, women, men} from '..'
 import {range} from 'lodash'
 import {expectTypeOf} from '@mmkal/type-assertions'
 
-test('animals', () => {
-  const generator = animals.modify(params => ({
-    rng: params.rng.seed('animals'),
+test('nicknames', () => {
+  const generator = nicknames.modify(params => ({
+    rng: params.rng.seed('nicknames'),
   }))
-  const samples = range(0, 15)
-    .map(generator.next)
-    .join('\n')
+  const samples = [...Array(15)].map(() => generator.next())
   expect(samples).toMatchInlineSnapshot(`
-    "superb-capybara
-    worthy-owl
-    thankful-mink
-    truthful-lark
-    appreciative-butterfly
-    good-anteater
-    confident-quetzal
-    prominent-bat
-    marvelous-water-buffalo
-    vivacious-kookaburra
-    victorious-grasshopper
-    meritorious-peafowl
-    amused-fly
-    grateful-llama
-    heartfelt-marmot"
+    Array [
+      "excited-goosander",
+      "emphatic-sardine",
+      "energetic-mosquito",
+      "delightful-dog",
+      "merry-hare",
+      "praiseworthy-falcon",
+      "amiable-curlew",
+      "vigorous-pony",
+      "fabulous-elephant-seal",
+      "cheery-cobra",
+      "respectable-heron",
+      "comfortable-tamarin",
+      "sincere-rabbit",
+      "kind-mandrill",
+      "extraordinary-pony",
+    ]
   `)
 })
 
@@ -107,7 +107,7 @@ test('women and men', () => {
 })
 
 test('animals with custom formatter', () => {
-  const generator = animals.modify(params => ({
+  const generator = nicknames.modify(params => ({
     rng: params.rng.seed('animals'),
     format: word => params.format(word).replace(/-/g, '_'),
     join: parts => ({joined: parts.join('.'), parts}),
