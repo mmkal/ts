@@ -60,7 +60,7 @@ export const createNameGenerator = <T>(params: Params<T>): NameGenerator<T> => {
   }
 }
 
-export const animals = createNameGenerator({
+export const nicknames = createNameGenerator({
   dictionaries: ['positiveAdjective', 'animal'],
   // prettier-ignore
   format: x => x.toLowerCase().split(/\W/).filter(Boolean).join('-'),
@@ -69,7 +69,7 @@ export const animals = createNameGenerator({
   choose: ({dict, rng}) => dict[Math.floor(rng() * dict.length)],
 })
 
-export const people = animals.modify({
+export const people = nicknames.modify({
   dictionaries: [['maleName', 'femaleName'], 'lastName'],
   format: x => x.slice(0, 1).toUpperCase() + x.slice(1),
   join: parts => parts.join(' '),
