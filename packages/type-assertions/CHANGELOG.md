@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/mmkal/js/compare/@mmkal/type-assertions@0.2.0...@mmkal/type-assertions@0.3.0) (2020-02-09)
+
+
+### Bug Fixes
+
+* remove reference to deleted script ([9192376](https://github.com/mmkal/js/commit/9192376a2fa369cfbd8f599edef4cfd64e0e28cd))
+
+
+### Features
+
+* parameters and property helpers ([#8](https://github.com/mmkal/js/issues/8)) ([2dcd2e0](https://github.com/mmkal/js/commit/2dcd2e058ec33f49bc718f084075bd88af0cf709))
+* toBeNullable ([#7](https://github.com/mmkal/js/issues/7)) ([c966ddd](https://github.com/mmkal/js/commit/c966dddbba2fcb65a6a4d4283811204a5aeb5c1a))
+
+
+
+
+
 # [0.2.0](https://github.com/mmkal/js/compare/@mmkal/type-assertions@0.1.1...@mmkal/type-assertions@0.2.0) (2020-01-26)
 
 
