@@ -7,7 +7,7 @@ module.exports = {
     'local',
   ],
   rules: {
-    'prettier/prettier': ['error', require('./.prettierrc.json')],
+    'prettier/prettier': ['warn', require('./.prettierrc.json')],
     'local/barrelme': 'error',
     'local/codegen': 'error',
   },

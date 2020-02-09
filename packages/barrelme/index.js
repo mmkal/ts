@@ -107,20 +107,19 @@ module.exports = {
           const example = source.slice(slicePoints[0], slicePoints[1]).trim()
 
           const [beforeExample, _opts, afterExample] = markdown.split(markers.start)
-          const betweenMarkers = ['```typescript', options.header ? `${options.header}${os.EOL}` : '', example, '```']
-            .filter(Boolean)
-            .join(os.EOL)
-            .trim()
+          const betweenMarkers =
+            ['```typescript', options.header ? `${options.header}${os.EOL}` : '', example, '```']
+              .filter(Boolean)
+              .join(os.EOL)
+              .trim() + os.EOL
           const range = [startMatch.index + startMatch[0].length + os.EOL.length, endMatch.index]
 
-          if (betweenMarkers !== markdown.slice(...range).trimRight()) {
+          if (betweenMarkers !== markdown.slice(...range)) {
             const loc = {start: position(range[0]), end: position(range[1])}
             return context.report({
               message: `example doesn't match ${util.inspect(options)}`,
               loc,
-              fix: fixer => {
-                return fixer.replaceTextRange(range, betweenMarkers + os.EOL) //fixer.replaceTextRange([0, markdown.length], newMarkdownContent)
-              },
+              fix: fixer => fixer.replaceTextRange(range, betweenMarkers),
             })
           }
         }
