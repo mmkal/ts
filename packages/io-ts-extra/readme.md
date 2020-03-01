@@ -4,7 +4,7 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
 
 ## Motivation
 
-### Comparison with io-ts
+### Comparison with [io-ts](https://github.com/gcanti/io-ts)
 
 The maintainers of io-ts are (rightly) strict about keeping the API surface small and manageable, and the implementation clean. As a result, io-ts is a powerful but somewhat low-level framework.
 
