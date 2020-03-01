@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/mmkal/js/compare/@mmkal/io-ts-extra@0.2.0...@mmkal/io-ts-extra@0.3.0) (2020-03-01)
+
+
+### Features
+
+* new types ([#12](https://github.com/mmkal/js/issues/12)) ([bd97bf5](https://github.com/mmkal/js/commit/bd97bf54b43e835060cced26e61dcec035c20c18))
+
+
+
+
+
 # [0.2.0](https://github.com/mmkal/js/compare/@mmkal/io-ts-extra@0.1.3...@mmkal/io-ts-extra@0.2.0) (2020-02-29)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/mmkal/js/compare/@mmkal/name-gen@0.1.0...@mmkal/name-gen@0.1.1) (2020-03-01)
+
+**Note:** Version bump only for package @mmkal/name-gen
+
+
+
+
+
 # [0.1.0](https://github.com/mmkal/js/compare/@mmkal/name-gen@0.0.3...@mmkal/name-gen@0.1.0) (2020-02-09)
 
 
