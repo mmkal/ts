@@ -8,7 +8,7 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 npm install @mmkal/type-assertions
 ```
 
-<!-- codegen:start {source: src/__tests__/index.test.ts, between: [it(', it('], header: "import {expectTypeOf} from '@mmkal/type-assertions'"} -->
+<!-- codegen:start {preset: regex, source: src/__tests__/index.test.ts, between: [it(', it('], header: "import {expectTypeOf} from '@mmkal/type-assertions'"} -->
 ```typescript
 import {expectTypeOf} from '@mmkal/type-assertions'
 
