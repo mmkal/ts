@@ -1,11 +1,15 @@
 import {Type, union, Props, nullType, undefined as undefinedType, intersection, partial, type, mixed} from 'io-ts'
 import * as t from 'io-ts'
 
-interface Optional {
+export interface Optional {
   optional: true
 }
 
-export const optional = <T>(rt: Type<T>, name?: string) => {
+/**
+ * unions the passed-in type with `null` and `undefined`.
+ * @see sparseType
+ */
+export const optional = <RT extends t.Mixed>(rt: RT, name?: string) => {
   const unionType = union([rt, nullType, undefinedType], name || rt.name + '?')
   return Object.assign(unionType, {optional: true} as Optional)
 }
@@ -16,10 +20,27 @@ type RequiredPropsKeys<P extends Props> = {[K in keyof P]: P[K] extends Optional
 type RequiredPropsTypes<P extends Props> = {[K in RequiredPropsKeys<P>]: P[K]['_A']}
 type RequiredPropsOutputs<P extends Props> = {[K in RequiredPropsKeys<P>]: P[K]['_O']}
 
+/**
+ * Can be used much like `t.type` from io-ts, but any property types wrapped with `optional` from
+ * this package need not be supplied. Roughly equivalent to using `t.intersection` with `t.type` and `t.partial`.
+ * @example
+ * const Person = sparseType({
+ *   name: t.string,
+ *   age: optional(t.number),
+ * })
+ *
+ * // no error - `age` is optional
+ * const bob: typeof Person._A = { name: 'bob' }
+ * @param props equivalent to the `props` passed into `t.type`
+ * @returns a type with `props` field, so the result can be introspected similarly to a type built with
+ * `t.type` or `t.partial` - which isn't the case if you manually use `t.intersection([t.type({...}), t.partial({...})])
+ */
 export const sparseType = <P extends Props>(
   props: P,
   name?: string
-): Type<OptionalPropsTypes<P> & RequiredPropsTypes<P>, OptionalPropsOutputs<P> & RequiredPropsOutputs<P>, mixed> => {
+): Type<OptionalPropsTypes<P> & RequiredPropsTypes<P>, OptionalPropsOutputs<P> & RequiredPropsOutputs<P>, mixed> & {
+  props: P
+} => {
   let someOptional = false
   let someRequired = false
   const optionalProps: Props = {}
@@ -36,7 +57,7 @@ export const sparseType = <P extends Props>(
   }
   const computedName = name || getInterfaceTypeName(props)
   if (someOptional && someRequired) {
-    return intersection([type(requiredProps), partial(optionalProps)], computedName) as any
+    return Object.assign(intersection([type(requiredProps), partial(optionalProps)], computedName) as any, {props})
   } else if (someOptional) {
     return partial(props, computedName) as any
   } else {
@@ -52,6 +73,14 @@ const getNameFromProps = (props: Props): string =>
 const getInterfaceTypeName = (props: Props): string => {
   return `{ ${getNameFromProps(props)} }`
 }
+
+/**
+ * Validates that a value is an instance of a class using the `instanceof` operator
+ * @example
+ * const DateType = instanceOf(Date)
+ * DateType.is(new Date())  // right(Date(...))
+ * DateType.is('abc')       // left(...)
+ */
 export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
   new t.Type<T>(
     `InstanceOf<${cns.name || 'anonymous'}>`,
@@ -59,3 +88,17 @@ export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
     (s, c) => (s instanceof cns ? t.success(s) : t.failure(s, c)),
     t.identity
   )
+
+/**
+ * A refinement of `t.string` which validates that the input matches a regular expression.
+ *
+ * @example
+ * const AllCaps = regex(/^[A-Z]*$/)
+ * AllCaps.is('HELLO')  // right('HELLO')
+ * AllCaps.is('hello')  // left(...)
+ * AllCaps.is(123)      // left(...)
+ */
+export const regex = (pattern: string | RegExp, name?: string) => {
+  const regexInstance = new RegExp(pattern)
+  return t.refinement(t.string, value => regexInstance.test(value))
+}

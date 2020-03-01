@@ -133,9 +133,9 @@ describe('parser', () => {
   })
 
   it('catches failures', () => {
-    const StringFromBool_Broken = mapper(t.boolean, t.string, b => (b ? RichError.throw({b}) : 'nope'))
-    expect(StringFromBool_Broken.decode(false)).toEqual(right('nope'))
-    expect(StringFromBool_Broken.decode(true)).toMatchInlineSnapshot(`
+    const StringFromBool_WithDecoderBug = mapper(t.boolean, t.string, b => (b ? RichError.throw({b}) : 'nope'))
+    expect(StringFromBool_WithDecoderBug.decode(false)).toEqual(right('nope'))
+    expect(StringFromBool_WithDecoderBug.decode(true)).toMatchInlineSnapshot(`
       _tag: Left
       left:
         - value: true
