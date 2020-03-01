@@ -88,28 +88,27 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
 /**
  * match an object against a number of cases.
  * @example
- * ```typescript
-// get a value which could be a string or a number:
-const value = Math.random() < 0.5 ? 'foo' : 123
-const stringified = match(value)
-    .case(t.number, n => `the number is ${n}`)
-    .case(t.string, s => `the message is ${s}`)
-    .get()
-```
+ * // get a value which could be a string or a number:
+ * const value = Math.random() < 0.5 ? 'foo' : 123
+ * const stringified = match(value)
+ *  .case(t.number, n => `the number is ${n}`)
+ *  .case(t.string, s => `the message is ${s}`)
+ *  .get()
+ *
+ * @description
  * you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`
  * note: when using `t.refinement`, the type being refined is not considered as exhaustively matched,
  * so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback
  * case (the equivalent of `.case(t.any, ...)`):
+ *
  * @example
- * ```typescript
-// value which could be a string, or a real number in [0, 10):
-const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
-const stringified = match(value)
-    .case(t.refinement(t.number, n => n > 2), n => `big number: ${n}`)
-    .case(t.number, n => `small number: ${n}`)
-    .default(x => `not a number: ${x}`)
-    .get()
-```
+ * // value which could be a string, or a real number in [0, 10):
+ * const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+ * const stringified = match(value)
+ *  .case(t.refinement(t.number, n => n > 2), n => `big number: ${n}`)
+ *  .case(t.number, n => `small number: ${n}`)
+ *  .default(x => `not a number: ${x}`)
+ *  .get()
  * @param obj the object to be pattern-matched
  */
 export const match = <Input>(obj: Input) => patternMatcher([], obj)
@@ -118,30 +117,29 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  * Like @see match but no object is passed in when constructing the case statements.
  * Instead `.get` is a function into which a value should be passed.
  * @example
- *  ```typescript
-const Cat = t.interface({ miaow: t.string })
-const Dog = t.interface({ bark: t.string })
-const Pet = t.union([Cat, Dog])
-type Pet = typeof Pet._A
-
-const petSound = partialFunction<Pet>()
-    .case(Dog, d => d.bark)
-    .case(Cat, c => c.miaow)
-    .get(myPet)
-```
+ * const Cat = t.interface({ miaow: t.string })
+ * const Dog = t.interface({ bark: t.string })
+ * const Pet = t.union([Cat, Dog])
+ * type Pet = typeof Pet._A
+ *
+ * const petSound = partialFunction<Pet>()
+ *  .case(Dog, d => d.bark)
+ *  .case(Cat, c => c.miaow)
+ *  .get(myPet)
+ *
+ * @description
  * The function returned by `.get` is stateless and has no `this` context,
  * you can store it in a variable and pass it around:
+ *
  * @example
- * ```typescript
-const getPetSound = partialFunction<Pet>()
-    .case(Dog, d => d.bark)
-    .case(Cat, c => c.miaow)
-    .get
-
-const allPets: Pet[] = getAllPets();
-// sounds for all pets, using the function created above:
-const cacophony = allPets.map(getPetSound);
-```
+ * const getPetSound = partialFunction<Pet>()
+ *  .case(Dog, d => d.bark)
+ *  .case(Cat, c => c.miaow)
+ *  .get
+ *
+ * const allPets: Pet[] = getAllPets();
+ * // sounds for all pets, using the function created above:
+ * const cacophony = allPets.map(getPetSound);
  */
 export const partialFunction = <In = any>(): PartialFunctionBuilder<In, never, never> => partialFunctionRecursive([])
 
