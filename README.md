@@ -1,5 +1,16 @@
 # js
 
+Assorted javascript projects, written in typescript.
+
+## Packages
+
+<!-- codegen:start {preset: workspaces} -->
+1. [@mmkal/eslint-plugin-codegen](./packages/eslint-plugin-codegen) - An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
+2. [@mmkal/io-ts-extra](./packages/io-ts-extra) - Some codecs and combinators not provided by io-ts or io-ts-types.
+3. [@mmkal/name-gen](./packages/name-gen) - Name generator with some in-built dictionaries and presets.
+4. [@mmkal/type-assertions](./packages/type-assertions) - Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
+<!-- codegen:end -->
+
 ## Publishing
 
 ### Canary releases
