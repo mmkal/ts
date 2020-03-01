@@ -89,6 +89,15 @@ export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
     t.identity
   )
 
+/**
+ * A refinement of `t.string` which validates that the input matches a regular expression.
+ *
+ * @example
+ * const AllCaps = regex(/^[A-Z]*$/)
+ * AllCaps.is('HELLO')  // right('HELLO')
+ * AllCaps.is('hello')  // left(...)
+ * AllCaps.is(123)      // left(...)
+ */
 export const regex = (pattern: string | RegExp, name?: string) => {
   const regexInstance = new RegExp(pattern)
   return t.refinement(t.string, value => regexInstance.test(value))
