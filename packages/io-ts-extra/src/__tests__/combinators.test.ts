@@ -3,6 +3,7 @@ import * as t from 'io-ts'
 import {expectRight, expectLeft} from './either-serializer'
 import {expectTypeOf} from '@mmkal/type-assertions'
 import {inspect} from 'util'
+import {instanceOf} from '../combinators'
 
 describe('sparseType', () => {
   it('handles mixed props', () => {
@@ -50,4 +51,10 @@ describe('sparseType', () => {
     expectRight(Person.decode({name: 'bob'}))
     expectRight(Person.decode({}))
   })
+})
+
+test('instanceOf', () => {
+  const DateType = instanceOf(Date)
+  expectRight(DateType.decode(new Date()))
+  expectLeft(DateType.decode('not a date'))
 })
