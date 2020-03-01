@@ -1,3 +1,3 @@
-# @mmkal/barrelme
+# @mmkal/eslint-plugin-codegen
 
-An eslint rule that makes sure a barrel file is implemented properly, with an auto-fixer if it isn't.
+An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
