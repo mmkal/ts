@@ -8,7 +8,6 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc.json')],
-    'local/barrelme': 'error',
     'local/codegen': 'error',
   },
 }
