@@ -33,7 +33,7 @@ type RequiredPropsOutputs<P extends Props> = {[K in RequiredPropsKeys<P>]: P[K][
  * const bob: typeof Person._A = { name: 'bob' }
  * @param props equivalent to the `props` passed into `t.type`
  * @returns a type with `props` field, so the result can be introspected similarly to a type built with
- * `t.type` or `t.partial` - which isn't the case if you manually use `t.intersection([t.type({...}), t.partial({...})])
+ * `t.type` or `t.partial` - which isn't the case if you manually use `t.intersection([t.type({...}), t.partial({...})])`
  */
 export const sparseType = <P extends Props>(
   props: P,

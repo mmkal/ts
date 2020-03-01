@@ -9,11 +9,11 @@ const chain = either.chain
  * 2. Passes in `Context` to the predicate argument, so you can check parent key names etc.
  * 3. Optionally allows returning another io-ts codec instead of a boolean for better error messages.
  */
-export function refinement<C extends Any, D extends Any>(
+export const refinement = <C extends Any, D extends Any>(
   codec: C,
   predicate: (value: TypeOf<C>, context: Context) => D | boolean,
   name: string = `(${codec.name} | ${getFunctionName(predicate)})`
-): RefinementC<C> {
+): RefinementC<C> => {
   return new RefinementType(
     name,
     (u): u is TypeOf<C> => {

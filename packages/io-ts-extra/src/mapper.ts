@@ -22,11 +22,8 @@ interface Mapper {
  * )
  * StringsFromMixedArray.decode(['a', 1, 'b', 2]) // right(['a', 'b'])
  * StringsFromMixedArray.decode('not an array')   // left(...)
- * const IntFromString = mapper(t.string, t.Integer, parseFloat)
- * IntFromString.decode('123')          // right(123)
- * IntFromString.decode('123.4')        // left(...)
- * IntFromString.decode('not a number') // left(...)
- * IntFromString.decode(123)            // left(...)
+ *
+ * @see parser
  *
  * @param from the expected type of input value
  * @param to the expected type of the decoded value
