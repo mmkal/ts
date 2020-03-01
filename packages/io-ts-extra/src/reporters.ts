@@ -9,7 +9,7 @@ import {EOL} from 'os'
  */
 export const validationErrors = (validation: t.Validation<unknown>, typeAlias?: string) => {
   if (validation._tag === 'Right') {
-    return ['no errors']
+    return ['No errors!']
   }
   return validation.left.map(e => {
     const name = typeAlias || (e.context[0] && e.context[0].type.name)
