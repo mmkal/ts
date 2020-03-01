@@ -3,7 +3,7 @@ import * as t from 'io-ts'
 import {expectRight, expectLeft} from './either-serializer'
 import {expectTypeOf} from '@mmkal/type-assertions'
 import {inspect} from 'util'
-import {instanceOf} from '../combinators'
+import {instanceOf, regex} from '../combinators'
 
 describe('sparseType', () => {
   it('handles mixed props', () => {
@@ -57,4 +57,11 @@ test('instanceOf', () => {
   const DateType = instanceOf(Date)
   expectRight(DateType.decode(new Date()))
   expectLeft(DateType.decode('not a date'))
+})
+
+test('regex', () => {
+  const AllCaps = regex(/^[A-Z]*$/)
+  expectRight(AllCaps.decode('HELLO'))
+  expectLeft(AllCaps.decode('hello'))
+  expectLeft(AllCaps.decode(123))
 })

@@ -88,3 +88,8 @@ export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
     (s, c) => (s instanceof cns ? t.success(s) : t.failure(s, c)),
     t.identity
   )
+
+export const regex = (pattern: string | RegExp, name?: string) => {
+  const regexInstance = new RegExp(pattern)
+  return t.refinement(t.string, value => regexInstance.test(value))
+}
