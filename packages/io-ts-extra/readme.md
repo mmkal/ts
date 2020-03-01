@@ -25,8 +25,7 @@ This package is also less mature. It's currently in v0, so will have a different
 <!-- codegen:start {preset: jsdoc, module: src/combinators.ts, export: sparseType} -->
 #### [sparseType](./src/combinators.ts#L38)
 
-Can be used much like `t.type` from io-ts, but any property types wrapped with `optional` from
- this package need not be supplied. Roughly equivalent to using `t.intersection` with `t.type` and `t.partial`.
+Can be used much like `t.type` from io-ts, but any property types wrapped with `optional` from this package need not be supplied. Roughly equivalent to using `t.intersection` with `t.type` and `t.partial`.
 
 ##### Example
 
@@ -61,8 +60,7 @@ unions the passed-in type with `null` and `undefined`.
 <!-- codegen:start {preset: jsdoc, module: src/mapper.ts, export: mapper} -->
 #### [mapper](./src/mapper.ts#L33)
 
-A helper for building "parser-decoder" types - that is, types that validate an input,
- transform it into another type, and then validate the target type.
+A helper for building "parser-decoder" types - that is, types that validate an input, transform it into another type, and then validate the target type.
 
 ##### Example
 
@@ -143,8 +141,8 @@ A refinement of `t.string` which validates that the input matches a regular expr
 
 ```typescript
 const AllCaps = regex(/^[A-Z]*$/)
-AllCaps.is('HELLO')  // right('HELLO')
-AllCaps.is('hello')  // left(...)
-AllCaps.is(123)      // left(...)
+AllCaps.decode('HELLO')  // right('HELLO')
+AllCaps.decode('hello')  // left(...)
+AllCaps.decode(123)      // left(...)
 ```
 <!-- codegen:end -->

@@ -94,9 +94,9 @@ export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
  *
  * @example
  * const AllCaps = regex(/^[A-Z]*$/)
- * AllCaps.is('HELLO')  // right('HELLO')
- * AllCaps.is('hello')  // left(...)
- * AllCaps.is(123)      // left(...)
+ * AllCaps.decode('HELLO')  // right('HELLO')
+ * AllCaps.decode('hello')  // left(...)
+ * AllCaps.decode(123)      // left(...)
  */
 export const regex = (pattern: string | RegExp, name?: string) => {
   const regexInstance = new RegExp(pattern)
