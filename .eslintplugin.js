@@ -1,3 +1,3 @@
 module.exports = {
-  ...require('./packages/barrelme')
+  ...require('./packages/eslint-plugin-codegen')
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@mmkal/barrelme",
+  "name": "@mmkal/eslint-plugin-codegen",
   "version": "0.1.0",
   "repository": "https://github.com/mmkal/js",
   "main": "index.js",
