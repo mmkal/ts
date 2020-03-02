@@ -4,10 +4,10 @@ module.exports = {
   plugins: [
     '@typescript-eslint/eslint-plugin',
     'prettier',
-    'local',
+    'codegen'
   ],
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc.json')],
-    'local/codegen': 'error',
+    'codegen/codegen': 'error',
   },
 }
