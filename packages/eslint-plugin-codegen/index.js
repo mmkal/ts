@@ -104,7 +104,7 @@ module.exports = {
             }
             const maybeOptions = tryCatch(() => jsYaml.safeLoad(startMatch[1]), err => err)
             if (maybeOptions._tag === 'Left') {
-              return context.report({message: `Error parsing options. ${err}`, loc: startMarkerLoc})
+              return context.report({message: `Error parsing options. ${maybeOptions.left}`, loc: startMarkerLoc})
             }
             const opts = maybeOptions.right || {}
             if (typeof presets[opts.preset] !== 'function') {
