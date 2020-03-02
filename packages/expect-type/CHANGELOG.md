@@ -3,15 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.3.1](https://github.com/mmkal/js/compare/@mmkal/type-assertions@0.3.0...@mmkal/type-assertions@0.3.1) (2020-03-01)
+## [0.3.1](https://github.com/mmkal/js/compare/@mmkal/expect-type@0.3.0...@mmkal/expect-type@0.3.1) (2020-03-01)
 
-**Note:** Version bump only for package @mmkal/type-assertions
-
-
+**Note:** Version bump only for package @mmkal/expect-type
 
 
 
-# [0.3.0](https://github.com/mmkal/js/compare/@mmkal/type-assertions@0.2.0...@mmkal/type-assertions@0.3.0) (2020-02-09)
+
+
+# [0.3.0](https://github.com/mmkal/js/compare/@mmkal/expect-type@0.2.0...@mmkal/expect-type@0.3.0) (2020-02-09)
 
 
 ### Bug Fixes
@@ -28,7 +28,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-# [0.2.0](https://github.com/mmkal/js/compare/@mmkal/type-assertions@0.1.1...@mmkal/type-assertions@0.2.0) (2020-01-26)
+# [0.2.0](https://github.com/mmkal/js/compare/@mmkal/expect-type@0.1.1...@mmkal/expect-type@0.2.0) (2020-01-26)
 
 
 ### Features
@@ -40,9 +40,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.1.1](https://github.com/mmkal/js/compare/@mmkal/type-assertions@0.1.0...@mmkal/type-assertions@0.1.1) (2020-01-26)
+## [0.1.1](https://github.com/mmkal/js/compare/@mmkal/expect-type@0.1.0...@mmkal/expect-type@0.1.1) (2020-01-26)
 
-**Note:** Version bump only for package @mmkal/type-assertions
+**Note:** Version bump only for package @mmkal/expect-type
 
 
 

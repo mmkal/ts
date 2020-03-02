@@ -12,6 +12,6 @@
     "io-ts": "^2.0.1"
   },
   "devDependencies": {
-    "@mmkal/type-assertions": "0.3.1"
+    "@mmkal/expect-type": "0.3.1"
   }
 }
