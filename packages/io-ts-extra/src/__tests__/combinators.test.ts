@@ -1,7 +1,7 @@
 import {sparseType, optional} from '../index'
 import * as t from 'io-ts'
 import {expectRight, expectLeft} from './either-serializer'
-import {expectTypeOf} from '@mmkal/expect-type'
+import {expectTypeOf} from 'expect-type'
 import {inspect} from 'util'
 import {instanceOf, regex} from '../combinators'
 

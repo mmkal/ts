@@ -1,12 +1,12 @@
-# @mmkal/name-gen
+# name-gen
 
 Name generator with some in-built dictionaries and presets.
 
 ## Usage
 
-<!-- codegen:start {source: src/__tests__/index.test.ts, between: [test('nicknames', test], header: "import {nicknames} from '@mmkal/name-gen'"} -->
+<!-- codegen:start {source: src/__tests__/index.test.ts, between: [test('nicknames', test], header: "import {nicknames} from 'name-gen'"} -->
 ```typescript
-import {nicknames} from '@mmkal/name-gen'
+import {nicknames} from 'name-gen'
 
 test('nicknames', () => {
   const generator = nicknames.modify(params => ({

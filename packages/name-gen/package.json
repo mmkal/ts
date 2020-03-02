@@ -1,5 +1,5 @@
 {
-  "name": "@mmkal/name-gen",
+  "name": "name-gen",
   "version": "0.1.1",
   "repository": "https://github.com/mmkal/js",
   "main": "dist/index.js",
