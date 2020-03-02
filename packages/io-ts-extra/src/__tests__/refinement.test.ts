@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 import {refinement} from '../refinement'
 import {expectRight, expectLeft} from './either-serializer'
-import {expectTypeOf} from '@mmkal/type-assertions'
+import {expectTypeOf} from '@mmkal/expect-type'
 import {validationErrors} from '../reporters'
 
 it('refines', () => {

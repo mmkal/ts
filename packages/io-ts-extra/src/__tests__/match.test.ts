@@ -1,6 +1,6 @@
 import * as t from 'io-ts'
 import {collect, match, partialFunction} from '../match'
-import {expectTypeOf} from '@mmkal/type-assertions'
+import {expectTypeOf} from '@mmkal/expect-type'
 
 import './either-serializer'
 
