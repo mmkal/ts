@@ -1,5 +1,5 @@
 {
-  "name": "@mmkal/eslint-plugin-codegen",
+  "name": "eslint-plugin-codegen",
   "version": "0.2.0",
   "repository": "https://github.com/mmkal/js",
   "main": "index.js",

@@ -1,16 +1,16 @@
-# @mmkal/expect-type
+# expect-type
 
 Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 
 ## Usage
 
 ```cli
-npm install @mmkal/expect-type
+npm install expect-type
 ```
 
-<!-- codegen:start {preset: regex, source: src/__tests__/index.test.ts, between: [it(', it('], header: "import {expectTypeOf} from '@mmkal/expect-type'"} -->
+<!-- codegen:start {preset: regex, source: src/__tests__/index.test.ts, between: [it(', it('], header: "import {expectTypeOf} from 'expect-type'"} -->
 ```typescript
-import {expectTypeOf} from '@mmkal/expect-type'
+import {expectTypeOf} from 'expect-type'
 
 it('tests types', () => {
   expectTypeOf({a: 1}).toEqualTypeOf({a: 1})

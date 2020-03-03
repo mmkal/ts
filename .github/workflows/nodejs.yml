@@ -12,9 +12,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: find json
-      run: find ./packages -name '*.json'
-      if: github.ref == 'master' && matrix.node-version == '12.x'
     - name: run ci
       run: |
         yarn
@@ -23,8 +20,8 @@ jobs:
         yarn test
       env:
         CI: true
-    - name: setup github packages as npm registry
-      run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+    - name: setup npm registry login
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
     - name: publish
       if: github.ref == 'refs/heads/master' && matrix.node-version == '12.x'
       env:

@@ -1,5 +1,5 @@
 {
-  "name": "@mmkal/io-ts-extra",
+  "name": "io-ts-extra",
   "version": "0.3.0",
   "repository": "https://github.com/mmkal/js",
   "main": "dist/index.js",
@@ -12,6 +12,6 @@
     "io-ts": "^2.0.1"
   },
   "devDependencies": {
-    "@mmkal/expect-type": "0.3.1"
+    "expect-type": "0.3.1"
   }
 }

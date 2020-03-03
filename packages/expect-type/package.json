@@ -1,5 +1,5 @@
 {
-  "name": "@mmkal/expect-type",
+  "name": "expect-type",
   "version": "0.3.1",
   "repository": "https://github.com/mmkal/js",
   "main": "dist/index.js",

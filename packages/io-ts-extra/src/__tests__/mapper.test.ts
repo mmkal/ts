@@ -2,7 +2,7 @@ import {right} from 'fp-ts/lib/Either'
 import {RichError} from '../util'
 import * as t from 'io-ts'
 import {mapper, parser} from '../mapper'
-import {expectTypeOf} from '@mmkal/expect-type'
+import {expectTypeOf} from 'expect-type'
 import './either-serializer'
 import {instanceOf} from '../combinators'
 

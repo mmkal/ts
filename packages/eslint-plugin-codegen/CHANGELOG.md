@@ -16,7 +16,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-# [0.1.0](https://github.com/mmkal/js/compare/@mmkal/barrelme@0.0.2...@mmkal/barrelme@0.1.0) (2020-02-09)
+# [0.1.0](https://github.com/mmkal/js/compare/barrelme@0.0.2...barrelme@0.1.0) (2020-02-09)
 
 
 ### Features
@@ -29,4 +29,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 0.0.2 (2020-01-26)
 
-**Note:** Version bump only for package @mmkal/barrelme
+**Note:** Version bump only for package barrelme

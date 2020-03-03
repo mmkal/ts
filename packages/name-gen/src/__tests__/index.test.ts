@@ -1,6 +1,6 @@
 import {nicknames, people, women, men} from '..'
 import {range} from 'lodash'
-import {expectTypeOf} from '@mmkal/expect-type'
+import {expectTypeOf} from 'expect-type'
 
 test('nicknames', () => {
   const generator = nicknames.modify(params => ({
