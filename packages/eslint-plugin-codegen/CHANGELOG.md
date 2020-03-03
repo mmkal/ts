@@ -8,20 +8,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **name:** rename barrelme to eslint-plugin-codegen ([#13](https://github.com/mmkal/js/issues/13)) ([4da6857](https://github.com/mmkal/js/commit/4da685728bc460b45a11806dfd6118d46bb9476c))
-* **presets:** codegen presets ([3e257bc](https://github.com/mmkal/js/commit/3e257bcf8d4706d75f1db4b3482cb590261c773f))
+* **name:** rename barrelme to eslint-plugin-codegen ([#13](https://github.com/mmkal/ts/issues/13)) ([4da6857](https://github.com/mmkal/ts/commit/4da685728bc460b45a11806dfd6118d46bb9476c))
+* **presets:** codegen presets ([3e257bc](https://github.com/mmkal/ts/commit/3e257bcf8d4706d75f1db4b3482cb590261c773f))
 
 
 
 
 
 
-# [0.1.0](https://github.com/mmkal/js/compare/barrelme@0.0.2...barrelme@0.1.0) (2020-02-09)
+# [0.1.0](https://github.com/mmkal/ts/compare/barrelme@0.0.2...barrelme@0.1.0) (2020-02-09)
 
 
 ### Features
 
-* **lint:** codegen rule ([#11](https://github.com/mmkal/js/issues/11)) ([3491a1c](https://github.com/mmkal/js/commit/3491a1c94b36a037e53ce781fb020afc7d1e6f4b))
+* **lint:** codegen rule ([#11](https://github.com/mmkal/ts/issues/11)) ([3491a1c](https://github.com/mmkal/ts/commit/3491a1c94b36a037e53ce781fb020afc7d1e6f4b))
 
 
 

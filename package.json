@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "js monorepo",
   "main": "index.js",
-  "repository": "https://github.com/mmkal/js",
+  "repository": "https://github.com/mmkal/ts",
   "author": "mmkal <misha.kaletsky@gmail.com>",
   "license": "Apache-2.0",
   "private": true,

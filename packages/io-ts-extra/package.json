@@ -1,8 +1,8 @@
 {
   "name": "io-ts-extra",
   "version": "0.3.0",
-  "repository": "https://github.com/mmkal/js",
-  "homepage": "https://github.com/mmkal/js/tree/master/packages/io-ts-extra#readme",
+  "repository": "https://github.com/mmkal/ts",
+  "homepage": "https://github.com/mmkal/ts/tree/master/packages/io-ts-extra#readme",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
