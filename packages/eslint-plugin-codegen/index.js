@@ -220,7 +220,7 @@ const presets = {
       }
       if (sec.type === 'description') {
         // line breaks that run into letters aren't respected by jsdoc, so shouldn't be in markdown either
-        return sec.content.replace(/[\r\n]\s+([a-zA-Z])/g, ' $1')
+        return sec.content.replace(/\r?\n\s*([a-zA-Z])/g, ' $1')
       }
       if (sec.type === 'see') {
         return null
