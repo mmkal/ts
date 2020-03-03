@@ -16,7 +16,7 @@ io-ts-types exists for similar reasons. This library will aim to be orthogonal t
 
 io-ts-extra will also aim to provide more high-level utilities and combinators than pre-defined codecs.
 
-Philosophically, this library will skew slightly more towards pragmatism at the expensive of type soundness - for example the stance on [t.refinement vs t.brand](https://github.com/gcanti/io-ts/issues/373).
+Philosophically, this library will skew slightly more towards pragmatism at the expense of type soundness - for example the stance on [t.refinement vs t.brand](https://github.com/gcanti/io-ts/issues/373).
 
 This package is also less mature. It's currently in v0, so will have a different release cadence than io-ts-types.
 
