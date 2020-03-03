@@ -16,7 +16,6 @@
     "current-branch": "echo \"${CURRENT_BRANCH-$(git rev-parse --abbrev-ref HEAD)}\" | sed -E 's/refs\\/heads\\///' | sed -E 's/\\W|_/-/g'",
     "canary-preid": "echo \"$(yarn --silent current-branch)-$(yarn --silent commit-date)\"",
     "publish-canary": "lerna publish --canary --preid $(yarn --silent canary-preid) --dist-tag $(yarn --silent current-branch)",
-    "prepublish-packages": "node scripts/prepublish",
     "publish-packages": "lerna publish"
   },
   "workspaces": [
