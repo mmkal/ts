@@ -1,7 +1,9 @@
 {
-  "name": "name-gen",
+  "name": "memorable-moniker",
   "version": "0.1.1",
   "repository": "https://github.com/mmkal/js",
+  "homepage": "https://github.com/mmkal/js/tree/master/packages/memorable-moniker#readme",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

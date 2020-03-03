@@ -10,7 +10,8 @@
   "scripts": {
     "build": "lerna run build",
     "test": "jest",
-    "lint": "eslint **/*.ts",
+    "eslint": "eslint --ext .ts,.js,.md",
+    "lint": "yarn eslint .",
     "commit-date": "git log -n 1 --date=format:'%Y-%m-%d-%H-%M-%S' --pretty=format:'%ad'",
     "current-branch": "echo \"${CURRENT_BRANCH-$(git rev-parse --abbrev-ref HEAD)}\" | sed -E 's/refs\\/heads\\///' | sed -E 's/\\W|_/-/g'",
     "canary-preid": "echo \"$(yarn --silent current-branch)-$(yarn --silent commit-date)\"",

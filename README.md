@@ -5,10 +5,10 @@ Assorted javascript projects, written in typescript.
 ## Packages
 
 <!-- codegen:start {preset: workspaces} -->
-1. [eslint-plugin-codegen](./packages/eslint-plugin-codegen) - An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
-2. [expect-type](./packages/expect-type) - Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
-3. [io-ts-extra](./packages/io-ts-extra) - Some codecs and combinators not provided by io-ts or io-ts-types.
-4. [name-gen](./packages/name-gen) - Name generator with some in-built dictionaries and presets.
+1. [eslint-plugin-codegen](https://github.com/mmkal/js/tree/master/packages/eslint-plugin-codegen#readme) - An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
+2. [expect-type](https://github.com/mmkal/js/tree/master/packages/expect-type#readme) - Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
+3. [io-ts-extra](https://github.com/mmkal/js/tree/master/packages/io-ts-extra#readme) - Some codecs and combinators not provided by io-ts or io-ts-types.
+4. [memorable-moniker](https://github.com/mmkal/js/tree/master/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
 <!-- codegen:end -->
 
 ## Publishing

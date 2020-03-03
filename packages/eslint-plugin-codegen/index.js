@@ -21,7 +21,7 @@ const readableReporter = (validation, typeAlias) => {
   })
 }
 
-/* eslint-disable local/codegen */
+/* eslint-disable codegen/codegen */
 module.exports = {
   processors: {
     '.md': {

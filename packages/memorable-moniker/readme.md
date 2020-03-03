@@ -1,12 +1,12 @@
-# name-gen
+# memorable-moniker
 
 Name generator with some in-built dictionaries and presets.
 
 ## Usage
 
-<!-- codegen:start {preset: regex, source: src/__tests__/index.test.ts, between: [test('nicknames', test], header: "import {nicknames} from 'name-gen'"} -->
+<!-- codegen:start {preset: regex, source: src/__tests__/index.test.ts, between: [test('nicknames', test], header: "import {nicknames} from 'memorable-moniker'"} -->
 ```typescript
-import {nicknames} from 'name-gen'
+import {nicknames} from 'memorable-moniker'
 
 test('nicknames', () => {
   const generator = nicknames.modify(params => ({

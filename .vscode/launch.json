@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "eslint",
       "program": "${workspaceFolder}/node_modules/eslint/bin/eslint",
-      "args": ["packages/name-gen/readme.md", "--fix"],
+      "args": ["packages/memorable-moniker/readme.md", "--fix"],
       "sourceMaps": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
