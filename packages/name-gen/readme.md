@@ -4,7 +4,7 @@ Name generator with some in-built dictionaries and presets.
 
 ## Usage
 
-<!-- codegen:start {source: src/__tests__/index.test.ts, between: [test('nicknames', test], header: "import {nicknames} from 'name-gen'"} -->
+<!-- codegen:start {preset: regex, source: src/__tests__/index.test.ts, between: [test('nicknames', test], header: "import {nicknames} from 'name-gen'"} -->
 ```typescript
 import {nicknames} from 'name-gen'
 
