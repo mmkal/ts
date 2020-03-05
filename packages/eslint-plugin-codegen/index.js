@@ -265,7 +265,10 @@ const presets = {
       .toString()
       .split('\n')
       .map(line => line.trim())
-    const headings = lines.filter(line => line.match(/^#+ /))
+    const headings = lines
+      .filter(line => line.match(/^#+ /))
+      .filter(line => line.startsWith('#'.repeat(options.minDepth || 1)))
+      .filter(line => line.split(' ')[0].length < (options.maxDepth || Infinity))
     const minHashes = lodash.min(headings.map(h => h.split(' ')[0].length))
     return headings
       .map(h => {

@@ -2,36 +2,34 @@
 
 Some codecs and combinators not provided by io-ts or io-ts-types.
 
+## Features
+
+* Pattern matching
+* Optional properties
+* Advanced refinement types
+* Regex types
+* Parser helpers
+
 ## Contents
-<!-- codegen:start {preset: md-toc} -->
-- [io-ts-extra](#io-ts-extra)
-   - [Contents](#Contents)
-   - [Motivation](#Motivation)
-      - [Comparison with io-ts](#Comparison-with-io-ts)
-      - [Comparison with io-ts-types](#Comparison-with-io-ts-types)
-   - [Usage](#Usage)
-      - [Codecs/Combinators](#CodecsCombinators)
-         - [sparseType](#sparseType)
-            - [Example](#Example)
-            - [Params](#Params)
-            - [Returns](#Returns)
-         - [optional](#optional)
-         - [mapper](#mapper)
-            - [Example](#Example-1)
-            - [Params](#Params-1)
-         - [parser](#parser)
-            - [Example](#Example-2)
-            - [Params](#Params-2)
-         - [refinement](#refinement)
-         - [validationErrors](#validationErrors)
-            - [Params](#Params-3)
-         - [regex](#regex)
-            - [Example](#Example-3)
-      - [Pattern matching](#Pattern-matching)
-         - [match](#match)
-            - [Example](#Example-4)
-            - [Example](#Example-5)
-            - [Params](#Params-4)
+<!-- codegen:start {preset: md-toc, minDepth: 2, maxDepth: 5} -->
+- [Features](#Features)
+- [Contents](#Contents)
+- [Motivation](#Motivation)
+   - [Comparison with io-ts](#Comparison-with-io-ts)
+   - [Comparison with io-ts-types](#Comparison-with-io-ts-types)
+- [Documentation](#Documentation)
+   - [Pattern matching](#Pattern-matching)
+      - [match](#match)
+      - [matcher](#matcher)
+   - [Codecs/Combinators](#CodecsCombinators)
+      - [sparseType](#sparseType)
+      - [optional](#optional)
+      - [mapper](#mapper)
+      - [parser](#parser)
+      - [refinement](#refinement)
+      - [validationErrors](#validationErrors)
+      - [regex](#regex)
+      - [instanceOf](#instanceOf)
 <!-- codegen:end -->
 
 
@@ -53,7 +51,84 @@ Philosophically, this library will skew slightly more towards pragmatism at the 
 
 This package is also less mature. It's currently in v0, so will have a different release cadence than io-ts-types.
 
-## Usage
+## Documentation
+
+### Pattern matching
+
+<!-- codegen:start {preset: jsdoc, module: src/match.ts, export: match} -->
+#### [match](./src/match.ts#L115)
+
+Match an object against a number of cases. Loosely based on Scala's pattern matching.
+
+##### Example
+
+```typescript
+// get a value which could be a string or a number:
+const value = Math.random() < 0.5 ? 'foo' : 123
+const stringified = match(value)
+ .case(t.number, n => `the number is ${n}`)
+ .case(t.string, s => `the message is ${s}`)
+ .get()
+```
+
+you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
+
+##### Example
+
+```typescript
+// value which could be a string, or a real number in [0, 10):
+const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+const stringified = match(value)
+ .case(t.refinement(t.number, n => n > 2), n => `big number: ${n}`)
+ .case(t.number, n => `small number: ${n}`)
+ .default(x => `not a number: ${x}`)
+ .get()
+```
+
+note: when using `t.refinement`, the type being refined is not considered as exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`)
+
+##### Params
+
+|name|description|
+|-|-|
+|obj|the object to be pattern-matched|
+<!-- codegen:end -->
+
+<!-- codegen:start {preset: jsdoc, module: src/match.ts, export: matcher} -->
+#### [matcher](./src/match.ts#L145)
+
+Like
+
+##### Example
+
+```typescript
+const Email = t.interface({sender: t.string, subject: t.string, body: t.string})
+const SMS = t.interface({from: t.string, content: t.string})
+const Message = t.union([Email, SMS])
+type Message = typeof Message._A
+
+const content = matcher<MessageType>()
+  .case(SMS, s => s.content)
+  .case(Email, e => e.subject + '\n\n' + e.body)
+  .get({from: '123', content: 'hello'})
+
+expect(content).toEqual('hello')
+```
+
+The function returned by `.get` is stateless and has no `this` context, you can store it in a variable and pass it around:
+
+##### Example
+
+```typescript
+const getContent = matcher<Message>()
+  .case(SMS, s => s.content)
+  .case(Email, e => e.subject + '\n\n' + e.body)
+  .get
+
+const allMessages: Message[] = getAllMessages();
+const contents = allMessages.map(getContent);
+```
+<!-- codegen:end -->
 
 ### Codecs/Combinators
 
@@ -182,44 +257,16 @@ AllCaps.decode(123)      // left(...)
 ```
 <!-- codegen:end -->
 
-### Pattern matching
+<!-- codegen:start {preset: jsdoc, module: src/combinators.ts, export: instanceOf} -->
+#### [instanceOf](./src/combinators.ts#L84)
 
-<!-- codegen:start {preset: jsdoc, module: src/match.ts, export: match} -->
-#### [match](./src/match.ts#L115)
-
-Match an object against a number of cases. Loosely based on Scala's pattern matching.
+Validates that a value is an instance of a class using the `instanceof` operator
 
 ##### Example
 
 ```typescript
-// get a value which could be a string or a number:
-const value = Math.random() < 0.5 ? 'foo' : 123
-const stringified = match(value)
- .case(t.number, n => `the number is ${n}`)
- .case(t.string, s => `the message is ${s}`)
- .get()
+const DateType = instanceOf(Date)
+DateType.is(new Date())  // right(Date(...))
+DateType.is('abc')       // left(...)
 ```
-
-you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
-
-##### Example
-
-```typescript
-// value which could be a string, or a real number in [0, 10):
-const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
-const stringified = match(value)
- .case(t.refinement(t.number, n => n > 2), n => `big number: ${n}`)
- .case(t.number, n => `small number: ${n}`)
- .default(x => `not a number: ${x}`)
- .get()
-```
-
-note: when using `t.refinement`, the type being refined is not considered as exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`)
-
-##### Params
-
-|name|description|
-|-|-|
-|obj|the object to be pattern-matched|
 <!-- codegen:end -->
-
