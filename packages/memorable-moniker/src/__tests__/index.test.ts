@@ -238,3 +238,26 @@ test('families', () => {
     ]
   `)
 })
+
+test('custom dictionary', () => {
+  const generator = nicknames.modify(params => ({
+    rng: params.rng.seed('chucklebrothers'),
+    dictionaries: [{words: ['Barry', 'Paul']}],
+  }))
+
+  const samples = range(0, 5)
+    .map(generator.next)
+    .join(', ')
+
+  expect(samples).toMatchInlineSnapshot(`"paul, paul, paul, barry, paul"`)
+})
+
+test('recover from invalid rng', () => {
+  jest.spyOn(console, 'error').mockReset()
+  const generator = nicknames.modify({
+    rng: () => 200,
+  })
+
+  range(0, 20).map(generator.next)
+  expect(console.error).toHaveBeenCalled()
+})
