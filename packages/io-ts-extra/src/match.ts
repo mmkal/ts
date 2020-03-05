@@ -2,6 +2,7 @@ import * as Either from 'fp-ts/lib/Either'
 import * as t from 'io-ts'
 import {IsNeverOrAny, RichError} from './util'
 
+/** Not a real type that anything will have at runtime. Just a way of giving helpful compiler errors. */
 type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
   | {
       /** compile time only. basically a fake property to signal at compile time that you didn't exhaustively match before calling `.get`. Don't try to use this value, it won't exist! */
