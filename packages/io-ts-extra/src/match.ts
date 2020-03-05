@@ -68,11 +68,6 @@ const matchObject = (obj: any, cases: Cases) => {
     return either.right
   }
 
-  for (const c of cases) {
-    if (c[0].is(obj)) {
-      return c[1](obj)
-    }
-  }
   RichError.throw({noMatchFoundFor: obj, types: cases.map(c => c[0])})
 }
 
