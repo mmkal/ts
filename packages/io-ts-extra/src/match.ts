@@ -82,7 +82,8 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
   } as any)
 
 /**
- * match an object against a number of cases.
+ * Match an object against a number of cases. Loosely based on Scala's pattern matching.
+ *
  * @example
  * // get a value which could be a string or a number:
  * const value = Math.random() < 0.5 ? 'foo' : 123
@@ -92,10 +93,7 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
  *  .get()
  *
  * @description
- * you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`
- * note: when using `t.refinement`, the type being refined is not considered as exhaustively matched,
- * so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback
- * case (the equivalent of `.case(t.any, ...)`):
+ * you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
  *
  * @example
  * // value which could be a string, or a real number in [0, 10):
@@ -105,6 +103,13 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
  *  .case(t.number, n => `small number: ${n}`)
  *  .default(x => `not a number: ${x}`)
  *  .get()
+ *
+ * @description
+ *
+ * note: when using `t.refinement`, the type being refined is not considered as exhaustively matched,
+ * so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback
+ * case (the equivalent of `.case(t.any, ...)`)
+ *
  * @param obj the object to be pattern-matched
  */
 export const match = <Input>(obj: Input) => patternMatcher([], obj)

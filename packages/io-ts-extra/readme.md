@@ -22,6 +22,8 @@ This package is also less mature. It's currently in v0, so will have a different
 
 ## Usage
 
+### Codecs/Combinators
+
 <!-- codegen:start {preset: jsdoc, module: src/combinators.ts, export: sparseType} -->
 #### [sparseType](./src/combinators.ts#L38)
 
@@ -146,3 +148,43 @@ AllCaps.decode('hello')  // left(...)
 AllCaps.decode(123)      // left(...)
 ```
 <!-- codegen:end -->
+
+### Pattern matching
+
+<!-- codegen:start {preset: jsdoc, module: src/match.ts, export: match} -->
+#### [match](./src/match.ts#L111)
+
+Match an object against a number of cases. Loosely based on Scala's pattern matching.
+
+##### Example
+
+```typescript
+// get a value which could be a string or a number:
+const value = Math.random() < 0.5 ? 'foo' : 123
+const stringified = match(value)
+ .case(t.number, n => `the number is ${n}`)
+ .case(t.string, s => `the message is ${s}`)
+ .get()
+```
+
+you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2` note: when using `t.refinement`, the type being refined is not considered as exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`):
+
+##### Example
+
+```typescript
+// value which could be a string, or a real number in [0, 10):
+const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+const stringified = match(value)
+ .case(t.refinement(t.number, n => n > 2), n => `big number: ${n}`)
+ .case(t.number, n => `small number: ${n}`)
+ .default(x => `not a number: ${x}`)
+ .get()
+```
+
+##### Params
+
+|name|description|
+|-|-|
+|obj|the object to be pattern-matched|
+<!-- codegen:end -->
+
