@@ -1,8 +1,8 @@
 # ts
 
-Monorepo of assorted typescript projects.
-
 ![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
+
+Monorepo of assorted typescript projects.
 
 ## Packages
 
