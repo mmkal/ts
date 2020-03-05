@@ -119,10 +119,13 @@ module.exports = {
             const existingContent = sourceCode.slice(...range)
             const normalise = val => val.trim().replace(/\r?\n/g, os.EOL)
 
-            const result = presets[opts.preset]({
-              meta: {filename: context.getFilename(), existingContent},
-              options: opts,
-            })
+            const result = tryCatch(
+              () => {
+                const meta = {filename: context.getFilename(), existingContent}
+                return presets[opts.preset]({meta, options: opts})
+              },
+              err => `${err}`
+            )
 
             if (result._tag === 'Left') {
               return context.report({message: result.left, loc: startMarkerLoc})
@@ -163,21 +166,21 @@ const presets = {
     // prettier-ignore
     const normalise = s => s.replace(/['"`]/g, `'`).replace(/;/, '').trim()
     if (normalise(expectedContent) === normalise(meta.existingContent)) {
-      return right(meta.existingContent)
+      return meta.existingContent
     }
 
-    return right(expectedContent)
+    return expectedContent
   },
   jsdoc: ({meta, options: {module: relativeFile, export: exportName, loc, markers}}) => {
     const targetFile = path.join(path.dirname(meta.filename), relativeFile)
     if (!fs.existsSync(targetFile) || !fs.statSync(targetFile).isFile()) {
-      return left(`Couldn't find module ${targetFile}`)
+      throw Error(`Couldn't find module ${targetFile}`)
     }
     const targetContent = fs.readFileSync(targetFile).toString()
     const lines = targetContent.split('\n').map(line => line.trim())
     const exportLineIndex = lines.findIndex(line => line.startsWith(`export const ${exportName}`))
     if (exportLineIndex < 2 || lines[exportLineIndex - 1] !== '*/') {
-      return left(`Couldn't find export in ${relativeFile} with jsdoc called ${exportName}`)
+      throw Error(`Couldn't find export in ${relativeFile} with jsdoc called ${exportName}`)
     }
     const contentUpToExport = lines.slice(0, exportLineIndex).join('\n')
     const jsdoc = contentUpToExport
@@ -231,27 +234,25 @@ const presets = {
       }
       return [`##### ${lodash.startCase(sec.type)}`, sec.content].join(os.EOL + os.EOL)
     })
-    return right(
-      [`#### [${exportName}](./${relativeFile}#L${exportLineIndex + 1})`, ...formatted]
-        .filter(Boolean)
-        .join(os.EOL + os.EOL)
-    )
+    return [`#### [${exportName}](./${relativeFile}#L${exportLineIndex + 1})`, ...formatted]
+      .filter(Boolean)
+      .join(os.EOL + os.EOL)
   },
   regex: ({meta, options}) => {
     const sourcePath = path.join(path.dirname(meta.filename), options.source)
     if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
-      return left(`Source path doesn't exist: ${sourcePath}`)
+      throw Error(`Source path doesn't exist: ${sourcePath}`)
     }
     const source = fs.readFileSync(sourcePath).toString()
     const slicePoints = [source.indexOf(options.between[0])]
     slicePoints.push(source.indexOf(options.between[1], slicePoints[0] + 1))
     if (!slicePoints.every(i => i >= 0)) {
-      return left(`couldn't find markers in source file: ${sourcePath}: ${options.between.join(', ')}`)
+      throw Error(`couldn't find markers in source file: ${sourcePath}: ${options.between.join(', ')}`)
     }
 
     const example = source.slice(slicePoints[0], slicePoints[1]).trim()
 
-    return right(
+    return (
       ['```typescript', options.header ? `${options.header}${os.EOL}` : '', example, '```']
         .filter(Boolean)
         .join(os.EOL)
@@ -266,26 +267,24 @@ const presets = {
       .map(line => line.trim())
     const headings = lines.filter(line => line.match(/^#+ /))
     const minHashes = lodash.min(headings.map(h => h.split(' ')[0].length))
-    return right(
-      headings
-        .map(h => {
-          const hashes = h.split(' ')[0]
-          const indent = ' '.repeat(3 * (hashes.length - minHashes))
-          const text = h
-            .slice(hashes.length + 1)
-            .split(']')[0]
-            .split('[')
-            .slice(-1)[0]
-          const href = text.replace(/\W+/g, '-')
-          return {indent, text, href}
-        })
-        .map(({indent, text, href}, i, arr) => {
-          const previousDupes = arr.filter((x, j) => x.href === href && j < i)
-          const fixedHref = previousDupes.length === 0 ? href : `${href}-${previousDupes.length}`
-          return `${indent}- [${text}](#${fixedHref})`
-        })
-        .join(os.EOL)
-    )
+    return headings
+      .map(h => {
+        const hashes = h.split(' ')[0]
+        const indent = ' '.repeat(3 * (hashes.length - minHashes))
+        const text = h
+          .slice(hashes.length + 1)
+          .split(']')[0]
+          .split('[')
+          .slice(-1)[0]
+        const href = text.replace(/\W+/g, '-')
+        return {indent, text, href}
+      })
+      .map(({indent, text, href}, i, arr) => {
+        const previousDupes = arr.filter((x, j) => x.href === href && j < i)
+        const fixedHref = previousDupes.length === 0 ? href : `${href}-${previousDupes.length}`
+        return `${indent}- [${text}](#${fixedHref})`
+      })
+      .join(os.EOL)
   },
   'monorepo-toc': ({meta, options}) => {
     const contextDir = match(options.repoRoot)
@@ -299,7 +298,7 @@ const presets = {
       .default(() => readJsonFile('package.json').workspaces)
       .get()
     if (!Array.isArray(packageGlobs)) {
-      return left(`expected to find workspaces array in ${options.workspaces}`)
+      throw Error(`expected to find workspaces array in ${options.workspaces}`)
     }
     const leafPackages = lodash
       .flatMap(packageGlobs, pattern => glob.sync(`${pattern}/package.json`))
@@ -335,6 +334,6 @@ const presets = {
         return `${index + 1}. [${name}](${homepage}) - ${description}`.trim()
       })
 
-    return right(leafPackages.join(os.EOL))
+    return leafPackages.join(os.EOL)
   },
 }
