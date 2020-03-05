@@ -30,7 +30,7 @@ module.exports = {
         '/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove' +
           os.EOL +
           text
-            .split(os.EOL)
+            .split(/\r?\n/)
             .map(line => `// eslint-plugin-codegen:trim${line}`)
             .join(os.EOL),
       ],
@@ -195,8 +195,8 @@ const presets = {
           .replace(/^\*\/$/, '') // clean up     */
       })
       .join(os.EOL)
-    const sections = `@description ${jsdoc}`
-      .split('@')
+    const sections = `\n@description ${jsdoc}`
+      .split(/\n@/)
       .map(section => section.trim())
       .filter(Boolean)
       .map((section, index) => {
@@ -279,7 +279,6 @@ const presets = {
           .replace(/\]\(.*\)/g, '')
           .replace(/[\[\]]/g, '')
         const href = text.replace(/\s/g, '-').replace(/[^\w-]/g, '')
-        console.log({text, href})
         return {indent, text, href}
       })
       .map(({indent, text, href}, i, arr) => {

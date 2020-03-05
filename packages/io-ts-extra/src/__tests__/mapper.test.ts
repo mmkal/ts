@@ -70,7 +70,7 @@ describe('mapper', () => {
 
 describe('parser', () => {
   it('parses', () => {
-    const IntFromString = parser(t.Integer, parseFloat)
+    const IntFromString = parser(t.Int, parseFloat)
     expectTypeOf(IntFromString._O).toEqualTypeOf('1')
     expectTypeOf(IntFromString._I).toEqualTypeOf('1')
     expectTypeOf(IntFromString._A).toEqualTypeOf(1)
@@ -85,12 +85,12 @@ describe('parser', () => {
           context:
             - key: ''
               type:
-                name: string |> parseFloat |> Integer
+                name: string |> parseFloat |> Int
                 from:
                   name: string
                   _tag: StringType
                 to:
-                  name: Integer
+                  name: Int
                   type:
                     name: number
                     _tag: NumberType
@@ -104,12 +104,12 @@ describe('parser', () => {
           context:
             - key: ''
               type:
-                name: string |> parseFloat |> Integer
+                name: string |> parseFloat |> Int
                 from:
                   name: string
                   _tag: StringType
                 to:
-                  name: Integer
+                  name: Int
                   type:
                     name: number
                     _tag: NumberType

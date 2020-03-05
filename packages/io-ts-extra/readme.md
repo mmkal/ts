@@ -97,13 +97,13 @@ note: when using `t.refinement`, the type being refined is not considered as exh
 <!-- codegen:start {preset: jsdoc, module: src/match.ts, export: matcher} -->
 #### [matcher](./src/match.ts#L145)
 
-Like
+Like @see match but no object is passed in when constructing the case statements. Instead `.get` is a function into which a value should be passed.
 
 ##### Example
 
 ```typescript
-const Email = t.interface({sender: t.string, subject: t.string, body: t.string})
-const SMS = t.interface({from: t.string, content: t.string})
+const Email = t.type({sender: t.string, subject: t.string, body: t.string})
+const SMS = t.type({from: t.string, content: t.string})
 const Message = t.union([Email, SMS])
 type Message = typeof Message._A
 
@@ -203,7 +203,7 @@ A helper for parsing strings into other types. A wrapper around `mapper` where t
 ##### Example
 
 ```typescript
-const IntFromString = parser(t.string, parseFloat)
+const IntFromString = parser(t.Int, parseFloat)
 IntFromString.decode('123')          // right(123)
 IntFromString.decode('123.4')        // left(...)
 IntFromString.decode('not a number') // left(...)

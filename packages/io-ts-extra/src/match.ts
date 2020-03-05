@@ -118,8 +118,8 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  * Like @see match but no object is passed in when constructing the case statements.
  * Instead `.get` is a function into which a value should be passed.
  * @example
- * const Email = t.interface({sender: t.string, subject: t.string, body: t.string})
- * const SMS = t.interface({from: t.string, content: t.string})
+ * const Email = t.type({sender: t.string, subject: t.string, body: t.string})
+ * const SMS = t.type({from: t.string, content: t.string})
  * const Message = t.union([Email, SMS])
  * type Message = typeof Message._A
  *
