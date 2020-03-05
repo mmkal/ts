@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.4.0 (2020-03-05)
+
+
+### Bug Fixes
+
+* secret symbol as a better IsAny implementation ([e4a17cf](https://github.com/mmkal/ts/commit/e4a17cfec90cb74de0c5a13e7d4610588572d601))
+* typo ([feeb802](https://github.com/mmkal/ts/commit/feeb802f7fec304426bd2eec708975b36f05344d))
+
+
+### Features
+
+* **matcher:** rename partialFunction to matcher ([#16](https://github.com/mmkal/ts/issues/16)) ([1c1c165](https://github.com/mmkal/ts/commit/1c1c165a35e0ad6981cf1e4b755bcc70704379dd))
+* contextual refinement ([8316dc8](https://github.com/mmkal/ts/commit/8316dc8f2c9e5501c6002ae967d9cc808d6d7fcf))
+* fix name similar to others + license ([3f91ec6](https://github.com/mmkal/ts/commit/3f91ec6da89e2de07453fbc27379a783d754d8b8))
+* new types ([#12](https://github.com/mmkal/ts/issues/12)) ([bd97bf5](https://github.com/mmkal/ts/commit/bd97bf54b43e835060cced26e61dcec035c20c18))
+* publicise ([#15](https://github.com/mmkal/ts/issues/15)) ([0afdd45](https://github.com/mmkal/ts/commit/0afdd459e1dc89c2c39f56dcebf2ecdabb5df123))
+* **actions:** publish to github packages registry ([#3](https://github.com/mmkal/ts/issues/3)) ([9d62910](https://github.com/mmkal/ts/commit/9d62910758762b087cb59226b4b42a39b8dc6c68))
+* **refinement:** let predicates return codecs ([bf46442](https://github.com/mmkal/ts/commit/bf46442f2f813d823b3bb9d1a176d50868db0ece))
+
+
+
+
+
+
 # [0.3.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.2.0...io-ts-extra@0.3.0) (2020-03-01)
 
 

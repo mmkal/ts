@@ -1,6 +1,6 @@
 {
   "name": "io-ts-extra",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "repository": "https://github.com/mmkal/ts",
   "homepage": "https://github.com/mmkal/ts/tree/master/packages/io-ts-extra#readme",
   "license": "Apache-2.0",
@@ -14,6 +14,6 @@
     "io-ts": "^2.0.1"
   },
   "devDependencies": {
-    "expect-type": "0.3.1"
+    "expect-type": "0.4.0"
   }
 }

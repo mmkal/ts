@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0 (2020-03-05)
+
+
+### Bug Fixes
+
+* linter on unix ([7be909f](https://github.com/mmkal/ts/commit/7be909fc350f87ff7355bc8fba745971a1679453))
+
+
+### Features
+
+* **monorepo-toc:** sortBy readme-length ([4a863a2](https://github.com/mmkal/ts/commit/4a863a2d5c34f3839047377e7fc12ae8ea68453b))
+* **toc:** two separate toc presets ([208417e](https://github.com/mmkal/ts/commit/208417eec09543a39fede1c798c8ce69a688fc7e))
+* fix name similar to others + license ([3f91ec6](https://github.com/mmkal/ts/commit/3f91ec6da89e2de07453fbc27379a783d754d8b8))
+* publicise ([#15](https://github.com/mmkal/ts/issues/15)) ([0afdd45](https://github.com/mmkal/ts/commit/0afdd459e1dc89c2c39f56dcebf2ecdabb5df123))
+* **name:** rename barrelme to eslint-plugin-codegen ([#13](https://github.com/mmkal/ts/issues/13)) ([4da6857](https://github.com/mmkal/ts/commit/4da685728bc460b45a11806dfd6118d46bb9476c))
+* **presets:** codegen presets ([3e257bc](https://github.com/mmkal/ts/commit/3e257bcf8d4706d75f1db4b3482cb590261c773f))
+
+
+
+
+
+
 # 0.2.0 (2020-03-01)
 
 

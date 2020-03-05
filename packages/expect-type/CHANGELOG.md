@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.4.0 (2020-03-05)
+
+
+### Features
+
+* fix name similar to others + license ([3f91ec6](https://github.com/mmkal/ts/commit/3f91ec6da89e2de07453fbc27379a783d754d8b8))
+* publicise ([#15](https://github.com/mmkal/ts/issues/15)) ([0afdd45](https://github.com/mmkal/ts/commit/0afdd459e1dc89c2c39f56dcebf2ecdabb5df123))
+
+
+
+
+
+
 ## [0.3.1](https://github.com/mmkal/ts/compare/expect-type@0.3.0...expect-type@0.3.1) (2020-03-01)
 
 **Note:** Version bump only for package expect-type
