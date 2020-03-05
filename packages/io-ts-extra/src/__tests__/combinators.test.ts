@@ -57,6 +57,15 @@ test('instanceOf', () => {
   const DateType = instanceOf(Date)
   expectRight(DateType.decode(new Date()))
   expectLeft(DateType.decode('not a date'))
+
+  expect(DateType.is(new Date())).toBe(true)
+  expect(DateType.is('not a date')).toBe(false)
+})
+
+test('instanceOf names anonymous functions appropriately', () => {
+  class Foo {}
+  Object.defineProperty(Foo, 'name', {value: null})
+  expect(instanceOf(Foo).name).toEqual('InstanceOf<anonymous>')
 })
 
 test('regex', () => {
