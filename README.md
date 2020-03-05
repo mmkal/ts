@@ -2,6 +2,8 @@
 
 Monorepo of assorted typescript projects.
 
+![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
+
 ## Packages
 
 <!-- codegen:start {preset: monorepo-toc, sortBy: readme-length} -->
