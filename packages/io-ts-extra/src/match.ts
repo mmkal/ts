@@ -16,18 +16,18 @@ type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
     }
   | never
 
-interface PartialFunctionBuilder<In, InSoFar, Out> {
+interface MatcherBuilder<In, InSoFar, Out> {
   case: {
     <NextIn extends In, MapperIn extends NextIn, NextOut>(
       type: t.RefinementType<t.Type<NextIn>>,
       map: (obj: MapperIn) => NextOut
-    ): PartialFunctionBuilder<In, InSoFar, Out | NextOut>
+    ): MatcherBuilder<In, InSoFar, Out | NextOut>
     <NextIn extends In, MapperIn extends NextIn, NextOut>(
       type: t.Type<NextIn>,
       map: (obj: MapperIn) => NextOut
-    ): PartialFunctionBuilder<In, InSoFar | NextIn, Out | NextOut>
+    ): MatcherBuilder<In, InSoFar | NextIn, Out | NextOut>
   }
-  default: <NextOut>(map: (obj: In) => NextOut) => PartialFunctionBuilder<In, any, Out | NextOut>
+  default: <NextOut>(map: (obj: In) => NextOut) => MatcherBuilder<In, any, Out | NextOut>
   get: IsNeverOrAny<Exclude<In, InSoFar>> extends 1
     ? (obj: InSoFar) => Out
     : UnionOfCasesDoesNotMatchExpected<InSoFar, In>
@@ -123,7 +123,7 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  * const Pet = t.union([Cat, Dog])
  * type Pet = typeof Pet._A
  *
- * const petSound = partialFunction<Pet>()
+ * const petSound = matcher<Pet>()
  *  .case(Dog, d => d.bark)
  *  .case(Cat, c => c.miaow)
  *  .get(myPet)
@@ -133,7 +133,7 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  * you can store it in a variable and pass it around:
  *
  * @example
- * const getPetSound = partialFunction<Pet>()
+ * const getPetSound = matcher<Pet>()
  *  .case(Dog, d => d.bark)
  *  .case(Cat, c => c.miaow)
  *  .get
@@ -142,14 +142,12 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  * // sounds for all pets, using the function created above:
  * const cacophony = allPets.map(getPetSound);
  */
-export const partialFunction = <In = any>(): PartialFunctionBuilder<In, never, never> => partialFunctionRecursive([])
+export const matcher = <In = any>(): MatcherBuilder<In, never, never> => matcherRecursive([])
 
-const partialFunctionRecursive = <In = any, InSoFar = never, Out = never>(
-  cases: Cases
-): PartialFunctionBuilder<In, InSoFar, Out> =>
+const matcherRecursive = <In = any, InSoFar = never, Out = never>(cases: Cases): MatcherBuilder<In, InSoFar, Out> =>
   ({
-    case: (type: t.Any, map: UnknownFn) => partialFunctionRecursive(cases.concat([[type, map]])),
-    default: (map: UnknownFn) => partialFunctionRecursive(cases.concat([[t.any, map]])),
+    case: (type: t.Any, map: UnknownFn) => matcherRecursive(cases.concat([[type, map]])),
+    default: (map: UnknownFn) => matcherRecursive(cases.concat([[t.any, map]])),
     get: (obj: unknown) => matchObject(obj, cases),
     tryGet: (obj: unknown) => maybeMatchObject(obj, cases),
   } as any)

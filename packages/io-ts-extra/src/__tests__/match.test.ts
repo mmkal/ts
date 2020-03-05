@@ -1,5 +1,5 @@
 import * as t from 'io-ts'
-import {collect, match, partialFunction} from '../match'
+import {collect, match, matcher} from '../match'
 import {expectTypeOf} from 'expect-type'
 
 import './either-serializer'
@@ -29,7 +29,7 @@ describe('case matching', () => {
   })
 
   it('can build partial functions', () => {
-    const sound = partialFunction<PetType>()
+    const sound = matcher<PetType>()
       .case(Dog, d => d.bark)
       .case(Cat, c => c.miaow)
       .get({miaow: 'meow'})
@@ -38,7 +38,7 @@ describe('case matching', () => {
   })
 
   it('can refine', () => {
-    const getSound = partialFunction<PetType>()
+    const getSound = matcher<PetType>()
       .case(t.refinement(Cat, c => c.miaow.startsWith('m')), c => c.miaow)
       .case(Cat, c => 'not meow, but ' + c.miaow)
       .case(Dog, d => d.bark + ', ' + d.bark).get
@@ -54,7 +54,7 @@ describe('case matching', () => {
   })
 
   it('uses default for partial function', () => {
-    const number = partialFunction()
+    const number = matcher()
       .case(t.boolean, () => 123)
       .default(Number)
       .get('456')
@@ -63,7 +63,7 @@ describe('case matching', () => {
   })
 
   it('throws when no match found', () => {
-    const doubleNumber = partialFunction().case(t.number, n => n * 2).get
+    const doubleNumber = matcher().case(t.number, n => n * 2).get
 
     expect(() => doubleNumber('hello' as any)).toThrowErrorMatchingInlineSnapshot(`
 "{
@@ -79,7 +79,7 @@ describe('case matching', () => {
   })
 
   it('try get gives a left when no match found', () => {
-    const doubleNumber = partialFunction().case(t.number, n => n * 2).tryGet
+    const doubleNumber = matcher().case(t.number, n => n * 2).tryGet
 
     expect(doubleNumber('hello' as any)).toMatchInlineSnapshot(`
       _tag: Left
@@ -92,7 +92,7 @@ describe('case matching', () => {
   })
 
   it('try get gives a right when match is found', () => {
-    const doubleNumber = partialFunction().case(t.number, n => n * 2).tryGet
+    const doubleNumber = matcher().case(t.number, n => n * 2).tryGet
     expect(doubleNumber(2)).toMatchInlineSnapshot(`
       _tag: Right
       right: 4
@@ -107,7 +107,7 @@ describe('case matching', () => {
     const animals: TAnimal[] = [{hiss: 'sss'}, {miaow: 'meow'}, {bark: 'woof'}]
     const petSounds = collect(
       animals,
-      partialFunction()
+      matcher()
         .case(Cat, c => c.miaow)
         .case(Dog, d => d.bark).tryGet
     )
