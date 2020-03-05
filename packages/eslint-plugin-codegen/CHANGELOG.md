@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.3.0...eslint-plugin-codegen@0.4.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* links ([1dba940](https://github.com/mmkal/ts/commit/1dba940a91bbeb7a0147462396b028e65d964add))
+
+
+### Features
+
+* **toc:** minDepth and maxDepth ([3179e4b](https://github.com/mmkal/ts/commit/3179e4b847df7ee0c58577f380bd8d2802c72b31))
+
+
+
+
+
 # 0.3.0 (2020-03-05)
 
 
