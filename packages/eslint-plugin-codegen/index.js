@@ -127,7 +127,7 @@ module.exports = {
             if (normalise(existingContent) !== normalise(expected)) {
               const loc = {start: position(range[0]), end: position(range[1])}
               return context.report({
-                message: `content doesn't match ${util.inspect(opts)}`,
+                message: `content doesn't match ${util.inspect({existingContent, expected})}`,
                 loc,
                 fix: fixer => fixer.replaceTextRange(range, normalise(expected) + os.EOL),
               })
