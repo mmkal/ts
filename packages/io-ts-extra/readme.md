@@ -2,6 +2,39 @@
 
 Some codecs and combinators not provided by io-ts or io-ts-types.
 
+## Contents
+<!-- codegen:start {preset: md-toc} -->
+- [io-ts-extra](#io-ts-extra)
+   - [Contents](#Contents)
+   - [Motivation](#Motivation)
+      - [io-ts](#io-ts)
+      - [io-ts-types](#io-ts-types)
+   - [Usage](#Usage)
+      - [Codecs/Combinators](#Codecs-Combinators)
+         - [sparseType](#sparseType)
+            - [Example](#Example)
+            - [Params](#Params)
+            - [Returns](#Returns)
+         - [optional](#optional)
+         - [mapper](#mapper)
+            - [Example](#Example-1)
+            - [Params](#Params-1)
+         - [parser](#parser)
+            - [Example](#Example-2)
+            - [Params](#Params-2)
+         - [refinement](#refinement)
+         - [validationErrors](#validationErrors)
+            - [Params](#Params-3)
+         - [regex](#regex)
+            - [Example](#Example-3)
+      - [Pattern matching](#Pattern-matching)
+         - [match](#match)
+            - [Example](#Example-4)
+            - [Example](#Example-5)
+            - [Params](#Params-4)
+<!-- codegen:end -->
+
+
 ## Motivation
 
 ### Comparison with [io-ts](https://github.com/gcanti/io-ts)
