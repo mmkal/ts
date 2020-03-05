@@ -16,6 +16,14 @@ test('validationErrors', () => {
   `)
 })
 
+test('no type alias', () => {
+  expect(validationErrors(t.string.decode(123))).toMatchInlineSnapshot(`
+    Array [
+      "Invalid value {123} supplied to string. Expected string.",
+    ]
+  `)
+})
+
 test('getRightUnsafe', () => {
   const Person = t.type({name: t.string, age: t.number})
   expect(() => getRightUnsafe(Person.decode({foo: 'bar'}), 'Person')).toThrowErrorMatchingInlineSnapshot(`
