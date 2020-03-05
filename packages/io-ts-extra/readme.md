@@ -12,24 +12,24 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
 
 ## Contents
 <!-- codegen:start {preset: md-toc, minDepth: 2, maxDepth: 5} -->
-- [Features](#Features)
-- [Contents](#Contents)
-- [Motivation](#Motivation)
-   - [Comparison with io-ts](#Comparison-with-io-ts)
-   - [Comparison with io-ts-types](#Comparison-with-io-ts-types)
-- [Documentation](#Documentation)
-   - [Pattern matching](#Pattern-matching)
+- [Features](#features)
+- [Contents](#contents)
+- [Motivation](#motivation)
+   - [Comparison with io-ts](#comparison-with-io-ts)
+   - [Comparison with io-ts-types](#comparison-with-io-ts-types)
+- [Documentation](#documentation)
+   - [Pattern matching](#pattern-matching)
       - [match](#match)
       - [matcher](#matcher)
-   - [Codecs/Combinators](#CodecsCombinators)
-      - [sparseType](#sparseType)
+   - [Codecs/Combinators](#codecscombinators)
+      - [sparseType](#sparsetype)
       - [optional](#optional)
       - [mapper](#mapper)
       - [parser](#parser)
       - [refinement](#refinement)
-      - [validationErrors](#validationErrors)
+      - [validationErrors](#validationerrors)
       - [regex](#regex)
-      - [instanceOf](#instanceOf)
+      - [instanceOf](#instanceof)
 <!-- codegen:end -->
 
 
