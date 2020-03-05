@@ -8,6 +8,7 @@ const util = require('util')
 const lodash = require('lodash')
 const matchAll = require('string.prototype.matchall')
 const glob = require('glob')
+const {match} = require('io-ts-extra')
 
 const readableReporter = (validation, typeAlias) => {
   if (validation._tag === 'Right') {
@@ -108,7 +109,10 @@ module.exports = {
             }
             const opts = maybeOptions.right || {}
             if (typeof presets[opts.preset] !== 'function') {
-              return context.report({message: `unknown preset ${opts.preset}`, loc: startMarkerLoc})
+              return context.report({
+                message: `unknown preset ${opts.preset}. Available presets: ${Object.keys(presets).join(', ')}`,
+                loc: startMarkerLoc,
+              })
             }
 
             const range = [startMatch.index + startMatch[0].length + os.EOL.length, endMatch.index]
@@ -254,24 +258,64 @@ const presets = {
         .trim() + os.EOL
     )
   },
-  workspaces: ({meta, options}) => {
-    const contextDir = path.dirname(meta.filename)
-    const packageJsonFile = path.join(contextDir, 'package.json')
-    if (!fs.existsSync(packageJsonFile)) {
-      return left(`expected to find package.json file at ${packageJsonFile}`)
-    }
-    const rootPkg = JSON.parse(fs.readFileSync(packageJsonFile).toString())
-    if (!Array.isArray(rootPkg.workspaces)) {
-      return left(`expected to find workspaces array in package.json`)
+  'md-toc': ({meta, options}) => {
+    const lines = fs
+      .readFileSync(meta.filename)
+      .toString()
+      .split('\n')
+      .map(line => line.trim())
+    const headings = lines.filter(line => line.match(/^#+ /))
+    const minHashes = lodash.min(headings.map(h => h.split(' ')[0].length))
+    return right(
+      headings
+        .map(h => {
+          const hashes = h.split(' ')[0]
+          const indent = ' '.repeat(3 * (hashes.length - minHashes))
+          const text = h
+            .slice(hashes.length + 1)
+            .split(']')[0]
+            .split('[')
+            .slice(-1)[0]
+          const href = text.replace(/\W+/g, '-')
+          return {indent, text, href}
+        })
+        .map(({indent, text, href}, i, arr) => {
+          const previousDupes = arr.filter((x, j) => x.href === href && j < i)
+          const fixedHref = previousDupes.length === 0 ? href : `${href}-${previousDupes.length}`
+          return `${indent}- [${text}](#${fixedHref})`
+        })
+        .join(os.EOL)
+    )
+  },
+  'monorepo-toc': ({meta, options}) => {
+    const contextDir = match(options.repoRoot)
+      .case(t.string, s => path.join(path.dirname(meta.filename), s))
+      .default(() => path.dirname(meta.filename))
+      .get()
+    const readJsonFile = f => JSON.parse(fs.readFileSync(path.join(contextDir, f)).toString())
+    const packageGlobs = match(options.workspaces)
+      .case(t.array(t.string), arr => arr)
+      .case(t.literal('lerna'), () => readJsonFile('lerna.json').packages)
+      .default(() => readJsonFile('package.json').workspaces)
+      .get()
+    if (!Array.isArray(packageGlobs)) {
+      return left(`expected to find workspaces array in ${options.workspaces}`)
     }
     const leafPackages = lodash
-      .flatMap(rootPkg.workspaces, pattern => glob.sync(`${pattern}/package.json`))
-      .map((leafPath, index) => {
+      .flatMap(packageGlobs, pattern => glob.sync(`${pattern}/package.json`))
+      .map(leafPath => {
         const relativePath = path
           .dirname(leafPath)
           .replace(contextDir, '')
           .replace(/\\/g, '/')
-        const leafPkg = JSON.parse(fs.readFileSync(path.join(contextDir, leafPath)).toString())
+        const leafPkg = readJsonFile(leafPath)
+        if (typeof options.filter === 'string' && !new RegExp(options.filter).test(leafPkg.name)) {
+          return null
+        }
+        return {relativePath, leafPkg}
+      })
+      .filter(Boolean)
+      .map(({relativePath, leafPkg}, index) => {
         const description = (() => {
           const readmePath = [
             path.join(contextDir, relativePath, 'readme.md'),
