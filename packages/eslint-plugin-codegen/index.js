@@ -278,7 +278,10 @@ const presets = {
           .slice(hashes.length + 1)
           .replace(/\]\(.*\)/g, '')
           .replace(/[\[\]]/g, '')
-        const href = text.replace(/\s/g, '-').replace(/[^\w-]/g, '')
+        const href = text
+          .toLowerCase()
+          .replace(/\s/g, '-')
+          .replace(/[^\w-]/g, '')
         return {indent, text, href}
       })
       .map(({indent, text, href}, i, arr) => {
