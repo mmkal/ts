@@ -113,29 +113,29 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  * Like @see match but no object is passed in when constructing the case statements.
  * Instead `.get` is a function into which a value should be passed.
  * @example
- * const Cat = t.interface({ miaow: t.string })
- * const Dog = t.interface({ bark: t.string })
- * const Pet = t.union([Cat, Dog])
- * type Pet = typeof Pet._A
+ * const Email = t.interface({sender: t.string, subject: t.string, body: t.string})
+ * const SMS = t.interface({from: t.string, content: t.string})
+ * const Message = t.union([Email, SMS])
+ * type Message = typeof Message._A
  *
- * const petSound = matcher<Pet>()
- *  .case(Dog, d => d.bark)
- *  .case(Cat, c => c.miaow)
- *  .get(myPet)
+ * const content = matcher<MessageType>()
+ *   .case(SMS, s => s.content)
+ *   .case(Email, e => e.subject + '\n\n' + e.body)
+ *   .get({from: '123', content: 'hello'})
  *
+ * expect(content).toEqual('hello')
  * @description
  * The function returned by `.get` is stateless and has no `this` context,
  * you can store it in a variable and pass it around:
  *
  * @example
- * const getPetSound = matcher<Pet>()
- *  .case(Dog, d => d.bark)
- *  .case(Cat, c => c.miaow)
- *  .get
+ * const getContent = matcher<Message>()
+ *   .case(SMS, s => s.content)
+ *   .case(Email, e => e.subject + '\n\n' + e.body)
+ *   .get
  *
- * const allPets: Pet[] = getAllPets();
- * // sounds for all pets, using the function created above:
- * const cacophony = allPets.map(getPetSound);
+ * const allMessages: Message[] = getAllMessages();
+ * const contents = allMessages.map(getContent);
  */
 export const matcher = <In = any>(): MatcherBuilder<In, never, never> => matcherRecursive([])
 
