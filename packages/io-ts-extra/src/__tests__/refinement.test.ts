@@ -12,10 +12,15 @@ it('refines', () => {
       refinement(Person, (val, ctx) => ctx.length === 0 || val.name === ctx[ctx.length - 1].key)
     ),
   })
-  expectTypeOf(Family._A).toEqualTypeOf({} as {members: Record<string, {name: string}>})
+  expectTypeOf(Family._A).toEqualTypeOf<{members: Record<string, {name: string}>}>()
 
   expectRight(Family.decode({members: {bob: {name: 'bob'}}}))
   expectLeft(Family.decode({members: {bob: {name: 'bib'}}}))
+
+  expect(Family.is({members: {bob: {name: 'bob'}}})).toBe(true)
+
+  // note! only decode passes context to the predicate, so .is can have unexpected behaviour:
+  expect(Family.is({members: {bob: {name: 'bib'}}})).toBe(true)
 })
 
 it('refines primitives', () => {
@@ -41,10 +46,9 @@ it('can refine with another codec', () => {
       t.type({type: t.literal('service'), databaseConnectionString: t.string}),
     ]),
     ([db]) =>
-      t.tuple([
-        t.any, // already validated
-        t.type({databaseConnectionString: t.literal(`${db.username}:${db.password}`)}),
-      ])
+      t.type({
+        1: t.type({databaseConnectionString: t.literal(`${db.username}:${db.password}`)}),
+      })
   )
 
   expectRight(
@@ -54,12 +58,21 @@ it('can refine with another codec', () => {
     ] as typeof CloudResources._A)
   )
 
-  const invalidResources = CloudResources.decode([
+  expect(
+    CloudResources.is([
+      {type: 'database', username: 'user', password: 'pass'},
+      {type: 'service', databaseConnectionString: 'user:pass'},
+    ] as typeof CloudResources._A)
+  ).toBe(true)
+
+  const badResources = [
     {type: 'database', username: 'user'}, // missing password
     {type: 'service', databaseConnectionString: 'user:pass'},
-  ])
-  expectLeft(invalidResources)
-  expect(validationErrors(invalidResources, 'CloudResources')).toMatchInlineSnapshot(`
+  ]
+  const badResourcesValidation = CloudResources.decode(badResources)
+  expectLeft(badResourcesValidation)
+  expect(CloudResources.is(badResources)).toBe(false)
+  expect(validationErrors(badResourcesValidation, 'CloudResources')).toMatchInlineSnapshot(`
     Array [
       "Invalid value {undefined} supplied to CloudResources.0.password. Expected string.",
     ]

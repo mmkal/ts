@@ -16,18 +16,18 @@ type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
     }
   | never
 
-interface PartialFunctionBuilder<In, InSoFar, Out> {
+interface MatcherBuilder<In, InSoFar, Out> {
   case: {
     <NextIn extends In, MapperIn extends NextIn, NextOut>(
       type: t.RefinementType<t.Type<NextIn>>,
       map: (obj: MapperIn) => NextOut
-    ): PartialFunctionBuilder<In, InSoFar, Out | NextOut>
+    ): MatcherBuilder<In, InSoFar, Out | NextOut>
     <NextIn extends In, MapperIn extends NextIn, NextOut>(
       type: t.Type<NextIn>,
       map: (obj: MapperIn) => NextOut
-    ): PartialFunctionBuilder<In, InSoFar | NextIn, Out | NextOut>
+    ): MatcherBuilder<In, InSoFar | NextIn, Out | NextOut>
   }
-  default: <NextOut>(map: (obj: In) => NextOut) => PartialFunctionBuilder<In, any, Out | NextOut>
+  default: <NextOut>(map: (obj: In) => NextOut) => MatcherBuilder<In, any, Out | NextOut>
   get: IsNeverOrAny<Exclude<In, InSoFar>> extends 1
     ? (obj: InSoFar) => Out
     : UnionOfCasesDoesNotMatchExpected<InSoFar, In>
@@ -68,11 +68,6 @@ const matchObject = (obj: any, cases: Cases) => {
     return either.right
   }
 
-  for (const c of cases) {
-    if (c[0].is(obj)) {
-      return c[1](obj)
-    }
-  }
   RichError.throw({noMatchFoundFor: obj, types: cases.map(c => c[0])})
 }
 
@@ -87,7 +82,8 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
   } as any)
 
 /**
- * match an object against a number of cases.
+ * Match an object against a number of cases. Loosely based on Scala's pattern matching.
+ *
  * @example
  * // get a value which could be a string or a number:
  * const value = Math.random() < 0.5 ? 'foo' : 123
@@ -97,10 +93,7 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
  *  .get()
  *
  * @description
- * you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`
- * note: when using `t.refinement`, the type being refined is not considered as exhaustively matched,
- * so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback
- * case (the equivalent of `.case(t.any, ...)`):
+ * you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
  *
  * @example
  * // value which could be a string, or a real number in [0, 10):
@@ -110,6 +103,13 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
  *  .case(t.number, n => `small number: ${n}`)
  *  .default(x => `not a number: ${x}`)
  *  .get()
+ *
+ * @description
+ *
+ * note: when using `t.refinement`, the type being refined is not considered as exhaustively matched,
+ * so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback
+ * case (the equivalent of `.case(t.any, ...)`)
+ *
  * @param obj the object to be pattern-matched
  */
 export const match = <Input>(obj: Input) => patternMatcher([], obj)
@@ -118,38 +118,36 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  * Like @see match but no object is passed in when constructing the case statements.
  * Instead `.get` is a function into which a value should be passed.
  * @example
- * const Cat = t.interface({ miaow: t.string })
- * const Dog = t.interface({ bark: t.string })
- * const Pet = t.union([Cat, Dog])
- * type Pet = typeof Pet._A
+ * const Email = t.interface({sender: t.string, subject: t.string, body: t.string})
+ * const SMS = t.interface({from: t.string, content: t.string})
+ * const Message = t.union([Email, SMS])
+ * type Message = typeof Message._A
  *
- * const petSound = partialFunction<Pet>()
- *  .case(Dog, d => d.bark)
- *  .case(Cat, c => c.miaow)
- *  .get(myPet)
+ * const content = matcher<MessageType>()
+ *   .case(SMS, s => s.content)
+ *   .case(Email, e => e.subject + '\n\n' + e.body)
+ *   .get({from: '123', content: 'hello'})
  *
+ * expect(content).toEqual('hello')
  * @description
  * The function returned by `.get` is stateless and has no `this` context,
  * you can store it in a variable and pass it around:
  *
  * @example
- * const getPetSound = partialFunction<Pet>()
- *  .case(Dog, d => d.bark)
- *  .case(Cat, c => c.miaow)
- *  .get
+ * const getContent = matcher<Message>()
+ *   .case(SMS, s => s.content)
+ *   .case(Email, e => e.subject + '\n\n' + e.body)
+ *   .get
  *
- * const allPets: Pet[] = getAllPets();
- * // sounds for all pets, using the function created above:
- * const cacophony = allPets.map(getPetSound);
+ * const allMessages: Message[] = getAllMessages();
+ * const contents = allMessages.map(getContent);
  */
-export const partialFunction = <In = any>(): PartialFunctionBuilder<In, never, never> => partialFunctionRecursive([])
+export const matcher = <In = any>(): MatcherBuilder<In, never, never> => matcherRecursive([])
 
-const partialFunctionRecursive = <In = any, InSoFar = never, Out = never>(
-  cases: Cases
-): PartialFunctionBuilder<In, InSoFar, Out> =>
+const matcherRecursive = <In = any, InSoFar = never, Out = never>(cases: Cases): MatcherBuilder<In, InSoFar, Out> =>
   ({
-    case: (type: t.Any, map: UnknownFn) => partialFunctionRecursive(cases.concat([[type, map]])),
-    default: (map: UnknownFn) => partialFunctionRecursive(cases.concat([[t.any, map]])),
+    case: (type: t.Any, map: UnknownFn) => matcherRecursive(cases.concat([[type, map]])),
+    default: (map: UnknownFn) => matcherRecursive(cases.concat([[t.any, map]])),
     get: (obj: unknown) => matchObject(obj, cases),
     tryGet: (obj: unknown) => maybeMatchObject(obj, cases),
   } as any)
@@ -157,7 +155,7 @@ const partialFunctionRecursive = <In = any, InSoFar = never, Out = never>(
 export const collect = <T, U>(items: T[], partialFunc: (t: T) => Hopefully<U>) =>
   items
     .map(partialFunc)
-    .filter(o => o._tag === 'Right')
-    .map(o => (o._tag === 'Right' ? o.right : RichError.throw(o)))
+    .filter((o): o is Either.Right<U> => o._tag === 'Right')
+    .map(o => o.right)
 
 export type Hopefully<T> = Either.Either<unknown, T>
