@@ -273,10 +273,10 @@ const presets = {
         const indent = ' '.repeat(3 * (hashes.length - minHashes))
         const text = h
           .slice(hashes.length + 1)
-          .split(']')[0]
-          .split('[')
-          .slice(-1)[0]
-        const href = text.replace(/\W+/g, '-')
+          .replace(/\]\(.*\)/g, '')
+          .replace(/[\[\]]/g, '')
+        const href = text.replace(/\s/g, '-').replace(/[^\w-]/g, '')
+        console.log({text, href})
         return {indent, text, href}
       })
       .map(({indent, text, href}, i, arr) => {
