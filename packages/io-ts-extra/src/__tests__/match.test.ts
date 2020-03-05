@@ -5,55 +5,57 @@ import {expectTypeOf} from 'expect-type'
 import './either-serializer'
 
 describe('case matching', () => {
-  const Cat = t.interface({miaow: t.string})
-  const Dog = t.interface({bark: t.string})
-  const Pet = t.union([Cat, Dog])
-  type PetType = typeof Pet._A
+  const Email = t.interface({sender: t.string, subject: t.string, body: t.string})
+  const SMS = t.interface({from: t.string, content: t.string})
+  const Message = t.union([Email, SMS])
+  type MessageType = typeof Message._A
 
   it('matches', () => {
-    const sound = match({miaow: 'meow'} as PetType)
-      .case(Dog, d => d.bark)
-      .case(Cat, c => c.miaow)
+    const content = match({from: '123', content: 'hello'} as MessageType)
+      .case(SMS, s => s.content)
+      .case(Email, e => e.subject + '\n\n' + e.body)
       .get()
 
-    expect(sound).toEqual('meow')
+    expect(content).toEqual('hello')
   })
 
   it('can use default', () => {
-    const sound = match<PetType>({miaow: 'meow'})
-      .case(Dog, d => d.bark)
+    const sound = match<MessageType>({from: '123', content: 'hello'})
+      .case(Email, e => e.body)
       .default(JSON.stringify)
       .get()
 
-    expect(sound).toEqual(`{"miaow":"meow"}`)
+    expect(sound).toEqual(`{"from":"123","content":"hello"}`)
   })
 
-  it('can build partial functions', () => {
-    const sound = matcher<PetType>()
-      .case(Dog, d => d.bark)
-      .case(Cat, c => c.miaow)
-      .get({miaow: 'meow'})
+  it('can build matchers', () => {
+    const sound = matcher<MessageType>()
+      .case(SMS, s => s.content)
+      .case(Email, e => e.body)
+      .get({from: '123', content: 'hello'})
 
-    expect(sound).toEqual('meow')
+    expect(sound).toEqual('hello')
   })
 
   it('can refine', () => {
-    const getSound = matcher<PetType>()
-      .case(t.refinement(Cat, c => c.miaow.startsWith('m')), c => c.miaow)
-      .case(Cat, c => 'not meow, but ' + c.miaow)
-      .case(Dog, d => d.bark + ', ' + d.bark).get
+    const getSenderType = matcher<MessageType>()
+      .case(t.refinement(Email, e => e.sender.startsWith('mailing')), () => 'mailer')
+      .case(Email, e => 'personal contact: ' + e.sender)
+      .case(SMS, s => s.from).get
 
-    expectTypeOf(getSound)
+    expectTypeOf(getSenderType)
       .parameter(0)
-      .toEqualTypeOf({} as PetType)
-    expectTypeOf(getSound).returns.toEqualTypeOf('')
+      .toEqualTypeOf({} as MessageType)
+    expectTypeOf(getSenderType).returns.toEqualTypeOf('')
 
-    expect(getSound({miaow: 'meow'})).toEqual('meow')
-    expect(getSound({miaow: 'woof'})).toEqual('not meow, but woof')
-    expect(getSound({bark: 'ruff'})).toEqual('ruff, ruff')
+    expect(getSenderType({sender: 'mailing@abc.com', subject: 'hi', body: 'pls buy product'})).toEqual('mailer')
+    expect(getSenderType({sender: 'bob@xyz.com', subject: 'hi', body: 'how are you'})).toEqual(
+      'personal contact: bob@xyz.com'
+    )
+    expect(getSenderType({from: '+123', content: 'hello'})).toEqual('+123')
   })
 
-  it('uses default for partial function', () => {
+  it('uses default for matcher', () => {
     const number = matcher()
       .case(t.boolean, () => 123)
       .default(Number)
@@ -100,21 +102,25 @@ describe('case matching', () => {
   })
 
   it('collects', () => {
-    const Snake = t.interface({hiss: t.string})
-    const Animal = t.union([Cat, Dog, Snake])
-    type TAnimal = typeof Animal._A
+    const VoiceMemo = t.interface({recorder: t.string, link: t.string})
+    const MixedMedia = t.union([Email, SMS, VoiceMemo])
+    type MixedMedia = typeof MixedMedia._A
 
-    const animals: TAnimal[] = [{hiss: 'sss'}, {miaow: 'meow'}, {bark: 'woof'}]
+    const animals: MixedMedia[] = [
+      {recorder: 'bob', link: 'voicememo.mp3'},
+      {sender: 'a@b.com', subject: 'abc', body: 'email body'},
+      {from: '+123', content: 'sms content'},
+    ]
     const petSounds = collect(
       animals,
       matcher()
-        .case(Cat, c => c.miaow)
-        .case(Dog, d => d.bark).tryGet
+        .case(Email, e => e.body)
+        .case(SMS, s => s.content).tryGet
     )
     expect(petSounds).toMatchInlineSnapshot(`
       Array [
-        "meow",
-        "woof",
+        "email body",
+        "sms content",
       ]
     `)
   })
