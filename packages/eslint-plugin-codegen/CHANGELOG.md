@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.4.0...eslint-plugin-codegen@0.4.1) (2020-03-05)
+
+
+### Bug Fixes
+
+* **toc:** lowercase links on npm ([03935a3](https://github.com/mmkal/ts/commit/03935a399be1bb9f237aebb4abb00095a44330b0))
+
+
+
+
+
 # [0.4.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.3.0...eslint-plugin-codegen@0.4.0) (2020-03-05)
 
 
