@@ -152,7 +152,7 @@ AllCaps.decode(123)      // left(...)
 ### Pattern matching
 
 <!-- codegen:start {preset: jsdoc, module: src/match.ts, export: match} -->
-#### [match](./src/match.ts#L111)
+#### [match](./src/match.ts#L115)
 
 Match an object against a number of cases. Loosely based on Scala's pattern matching.
 
@@ -167,7 +167,7 @@ const stringified = match(value)
  .get()
 ```
 
-you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2` note: when using `t.refinement`, the type being refined is not considered as exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`):
+you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
 
 ##### Example
 
@@ -180,6 +180,8 @@ const stringified = match(value)
  .default(x => `not a number: ${x}`)
  .get()
 ```
+
+note: when using `t.refinement`, the type being refined is not considered as exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`)
 
 ##### Params
 
