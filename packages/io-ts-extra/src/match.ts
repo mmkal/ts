@@ -150,7 +150,7 @@ const matcherRecursive = <In = any, InSoFar = never, Out = never>(cases: Cases):
 export const collect = <T, U>(items: T[], partialFunc: (t: T) => Hopefully<U>) =>
   items
     .map(partialFunc)
-    .filter(o => o._tag === 'Right')
-    .map(o => (o._tag === 'Right' ? o.right : RichError.throw(o)))
+    .filter((o): o is Either.Right<U> => o._tag === 'Right')
+    .map(o => o.right)
 
 export type Hopefully<T> = Either.Either<unknown, T>
