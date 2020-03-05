@@ -8,7 +8,7 @@ const util = require('util')
 const lodash = require('lodash')
 const matchAll = require('string.prototype.matchall')
 const glob = require('glob')
-const {match} = require('io-ts-extra')
+const {match, RichError} = require('io-ts-extra')
 
 const readableReporter = (validation, typeAlias) => {
   if (validation._tag === 'Right') {
@@ -303,26 +303,31 @@ const presets = {
     const leafPackages = lodash
       .flatMap(packageGlobs, pattern => glob.sync(`${pattern}/package.json`))
       .map(leafPath => {
-        const relativePath = path
-          .dirname(leafPath)
-          .replace(contextDir, '')
-          .replace(/\\/g, '/')
+        const dirname = path.dirname(leafPath)
+        const relativePath = dirname.replace(contextDir, '').replace(/\\/g, '/')
         const leafPkg = readJsonFile(leafPath)
         if (typeof options.filter === 'string' && !new RegExp(options.filter).test(leafPkg.name)) {
           return null
         }
-        return {relativePath, leafPkg}
+        const readmePath = [
+          path.join(contextDir, relativePath, 'readme.md'),
+          path.join(contextDir, relativePath, 'README.md'),
+        ].find(p => fs.existsSync(p))
+        const readme = [readmePath && fs.readFileSync(readmePath).toString(), leafPkg.description]
+          .filter(Boolean)
+          .join(os.EOL + os.EOL)
+        return {relativePath, leafPkg, readme}
       })
       .filter(Boolean)
-      .map(({relativePath, leafPkg}, index) => {
+      .sort(
+        match(options.sortBy)
+          .case(t.literal('readme-length'), () => (a, b) => b.readme.length - a.readme.length)
+          .case(t.undefined, () => undefined)
+          .default(RichError.thrower('invalid sortBy'))
+          .get()
+      )
+      .map(({relativePath, leafPkg, readme}, index) => {
         const description = (() => {
-          const readmePath = [
-            path.join(contextDir, relativePath, 'readme.md'),
-            path.join(contextDir, relativePath, 'README.md'),
-          ].find(p => fs.existsSync(p))
-          const readme = [readmePath && fs.readFileSync(readmePath).toString(), leafPkg.description]
-            .filter(Boolean)
-            .join(os.EOL + os.EOL)
           return readme
             .split('\n')
             .map(line => line.trim())
