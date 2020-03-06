@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.4.1...eslint-plugin-codegen@0.5.0) (2020-03-06)
+
+
+### Features
+
+* **presets:** jest2md ([07752ef](https://github.com/mmkal/ts/commit/07752ef5e8fcac347434e2ca3cf1fc2f81a7ecd7))
+
+
+
+
+
 ## [0.4.1](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.4.0...eslint-plugin-codegen@0.4.1) (2020-03-05)
 
 
