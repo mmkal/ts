@@ -51,6 +51,19 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
+
+/**
+ * Similar to Jest's `expect`, but with type-awareness.
+ * Gives you access to a number of type-matchers that let you make assertions about the
+ * form of a reference or generic type parameter.
+ *
+ * @example
+ * expectTypeOf({a: 1}).toMatchTypeOf({a: 2})
+ * expectTypeOf({a: 1}).property('a').toBeNumber()
+ *
+ * @description
+ * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
+ */
 export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
   const nonFunctionProperties = ['parameters', 'returns', 'resolves', 'not', 'items'] as const
   type Keys = keyof ExpectTypeOf<any, any>
