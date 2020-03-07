@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/mmkal/ts/compare/memorable-moniker@0.2.0...memorable-moniker@0.2.1) (2020-03-07)
+
+
+### Bug Fixes
+
+* **types:** input rng no longer requires seed ([93d9978](https://github.com/mmkal/ts/commit/93d99784e37fdb0bb1947619eb83b32c65aa7a9d))
+
+
+
+
+
 # 0.2.0 (2020-03-05)
 
 
