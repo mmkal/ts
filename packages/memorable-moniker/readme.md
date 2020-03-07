@@ -1,5 +1,8 @@
 # memorable-moniker
 
+![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
+![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
+
 Name generator with some in-built dictionaries and presets.
 
 ## Usage

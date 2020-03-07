@@ -38,6 +38,9 @@ import {expectTypeOf} from 'expect-type'
 
 ## Documentation
 
+![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
+![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
+
 <!-- codegen:start {preset: jest2md, source: src/__tests__/index.test.ts} -->
 Type-check object references:
 
