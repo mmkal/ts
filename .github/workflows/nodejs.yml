@@ -26,7 +26,7 @@ jobs:
     - name: setup npm registry login
       run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
     - name: publish
-      if: github.ref == 'refs/heads/master' && matrix.node-version == '12.x'
+      if: contains(github.event.head_commit.message, '/publish-canary') && matrix.node-version == '12.x'
       env:
         CURRENT_BRANCH: ${{ github.ref }}
       run: yarn publish-canary --yes
