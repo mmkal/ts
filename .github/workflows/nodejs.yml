@@ -17,9 +17,12 @@ jobs:
         yarn
         yarn build
         yarn lint
-        yarn test
+        yarn test --coverage
       env:
         CI: true
+    - name: Coverage
+      uses: codecov/codecov-action@v1
+      if: matrix.node-version == '12.x'
     - name: setup npm registry login
       run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
     - name: publish
