@@ -2,105 +2,176 @@
 
 Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 
-## Usage
+<!-- codegen:start {preset: jsdoc, module: src/index.ts, export: expectTypeOf} -->
+#### [expectTypeOf](./src/index.ts#L67)
+
+Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
+
+##### Example
+
+```typescript
+expectTypeOf({a: 1}).toMatchTypeOf({a: 2})
+expectTypeOf({a: 1}).property('a').toBeNumber()
+```
+
+See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
+<!-- codegen:end -->
+
+## Contents
+<!-- codegen:start {preset: md-toc, minDepth: 2, maxDepth: 5} -->
+- [expectTypeOf](#expecttypeof)
+- [Contents](#contents)
+- [Installation and usage](#installation-and-usage)
+- [Documentation](#documentation)
+- [Similar projects](#similar-projects)
+<!-- codegen:end -->
+
+## Installation and usage
 
 ```cli
 npm install expect-type
 ```
 
-<!-- codegen:start {preset: regex, source: src/__tests__/index.test.ts, between: [it(', it('], header: "import {expectTypeOf} from 'expect-type'"} -->
 ```typescript
 import {expectTypeOf} from 'expect-type'
+```
 
-it('tests types', () => {
-  expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
-  expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
-  expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
+## Documentation
 
-  expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
+<!-- codegen:start {preset: jest2md, source: src/__tests__/index.test.ts} -->
+Type-check object references:
 
-  expectTypeOf<unknown>().toBeUnknown()
-  expectTypeOf<any>().toBeAny()
-  expectTypeOf<never>().toBeNever()
+```typescript
+expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
+expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
+```
 
-  expectTypeOf(() => 1).toBeFunction()
-  expectTypeOf({}).toBeObject()
-  expectTypeOf([]).toBeArray()
-  expectTypeOf('').toBeString()
-  expectTypeOf(1).toBeNumber()
-  expectTypeOf(true).toBeBoolean()
-  expectTypeOf(Promise.resolve(123)).resolves.toBeNumber()
-  expectTypeOf(Symbol(1)).toBeSymbol()
+Assertions can be inverted:
 
-  expectTypeOf(undefined).toBeUndefined()
-  expectTypeOf(undefined).toBeNullable()
-  expectTypeOf(undefined).not.toBeNull()
+```typescript
+expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
+```
 
-  expectTypeOf(null).toBeNull()
-  expectTypeOf(null).toBeNullable()
-  expectTypeOf(null).not.toBeUndefined()
+Catch any/unknown/never types:
 
-  expectTypeOf<1 | undefined>().toBeNullable()
-  expectTypeOf<1 | null>().toBeNullable()
-  expectTypeOf<1 | undefined | null>().toBeNullable()
+```typescript
+expectTypeOf<unknown>().toBeUnknown()
+expectTypeOf<any>().toBeAny()
+expectTypeOf<never>().toBeNever()
+```
 
-  expectTypeOf(1).not.toBeUnknown()
-  expectTypeOf(1).not.toBeAny()
-  expectTypeOf(1).not.toBeNever()
-  expectTypeOf(1).not.toBeNull()
-  expectTypeOf(1).not.toBeUndefined()
-  expectTypeOf(1).not.toBeNullable()
+Test for basic javascript types:
 
-  const obj = {a: 1, b: ''}
+```typescript
+expectTypeOf(() => 1).toBeFunction()
+expectTypeOf({}).toBeObject()
+expectTypeOf([]).toBeArray()
+expectTypeOf('').toBeString()
+expectTypeOf(1).toBeNumber()
+expectTypeOf(true).toBeBoolean()
+expectTypeOf(Promise.resolve(123)).resolves.toBeNumber()
+expectTypeOf(Symbol(1)).toBeSymbol()
+```
 
-  expectTypeOf(obj)
-    .property('a')
-    .toEqualTypeOf(1)
-  expectTypeOf(obj)
-    .property('b')
-    .toEqualTypeOf<string>()
+Nullable types:
 
-  const f = (a: number) => [a, a]
+```typescript
+expectTypeOf(undefined).toBeUndefined()
+expectTypeOf(undefined).toBeNullable()
+expectTypeOf(undefined).not.toBeNull()
 
-  expectTypeOf(f).toBeFunction()
-  expectTypeOf('hi').not.toBeFunction()
+expectTypeOf(null).toBeNull()
+expectTypeOf(null).toBeNullable()
+expectTypeOf(null).not.toBeUndefined()
 
-  expectTypeOf(f).toBeCallableWith(1)
-  expectTypeOf(f).not.toBeAny()
-  expectTypeOf(f).returns.not.toBeAny()
-  expectTypeOf(f).returns.toEqualTypeOf([1, 2])
-  expectTypeOf(f).returns.toEqualTypeOf([1, 2, 3])
-  expectTypeOf(f)
-    .parameter(0)
-    .not.toEqualTypeOf('1')
-  expectTypeOf(f)
-    .parameter(0)
-    .toEqualTypeOf(1)
-  expectTypeOf(1)
-    .parameter(0)
-    .toBeNever()
+expectTypeOf<1 | undefined>().toBeNullable()
+expectTypeOf<1 | null>().toBeNullable()
+expectTypeOf<1 | undefined | null>().toBeNullable()
+```
 
-  const twoArgFunc = (a: number, b: string) => ({a, b})
+Assertions can be inverted with `.not`:
 
-  expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
+```typescript
+expectTypeOf(1).not.toBeUnknown()
+expectTypeOf(1).not.toBeAny()
+expectTypeOf(1).not.toBeNever()
+expectTypeOf(1).not.toBeNull()
+expectTypeOf(1).not.toBeUndefined()
+expectTypeOf(1).not.toBeNullable()
+```
 
-  const asyncFunc = async () => 123
+Make assertions about object properties:
 
-  expectTypeOf(asyncFunc).returns.resolves.toBeNumber()
+```typescript
+const obj = {a: 1, b: ''}
 
-  const thrower = () => {
-    throw Error()
-  }
+expectTypeOf(obj)
+  .property('a')
+  .toEqualTypeOf(1)
+expectTypeOf(obj)
+  .property('b')
+  .toEqualTypeOf<string>()
+```
 
-  expectTypeOf(thrower).returns.toBeNever()
+Assert on function parameters (using `.parameter(n)` or `.parameters`) and return values (using `.return`):
 
-  expectTypeOf([1, 2, 3]).items.toBeNumber()
-  expectTypeOf([1, 2, 3]).items.not.toBeString()
+```typescript
+const f = (a: number) => [a, a]
 
-  expectTypeOf<{a: number; b?: number}>().not.toEqualTypeOf<{a: number}>()
-  expectTypeOf<{a: number; b?: number | null}>().not.toEqualTypeOf<{a: number; b?: number}>()
-  expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
-})
+expectTypeOf(f).toBeFunction()
+
+expectTypeOf(f).toBeCallableWith(1)
+expectTypeOf(f).not.toBeAny()
+expectTypeOf(f).returns.not.toBeAny()
+expectTypeOf(f).returns.toEqualTypeOf([1, 2])
+expectTypeOf(f).returns.toEqualTypeOf([1, 2, 3])
+expectTypeOf(f)
+  .parameter(0)
+  .not.toEqualTypeOf('1')
+expectTypeOf(f)
+  .parameter(0)
+  .toEqualTypeOf(1)
+expectTypeOf(1)
+  .parameter(0)
+  .toBeNever()
+
+const twoArgFunc = (a: number, b: string) => ({a, b})
+
+expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
+```
+
+Promise resolution types can be checked with `.resolves`:
+
+```typescript
+const asyncFunc = async () => 123
+
+expectTypeOf(asyncFunc).returns.resolves.toBeNumber()
+```
+
+Array items can be checked with `.items`:
+
+```typescript
+expectTypeOf([1, 2, 3]).items.toBeNumber()
+expectTypeOf([1, 2, 3]).items.not.toBeString()
+```
+
+Check that functions never return:
+
+```typescript
+const thrower = () => {
+  throw Error()
+}
+
+expectTypeOf(thrower).returns.toBeNever()
+```
+
+Generics can be used rather than references:
+
+```typescript
+expectTypeOf<{a: number; b?: number}>().not.toEqualTypeOf<{a: number}>()
+expectTypeOf<{a: number; b?: number | null}>().not.toEqualTypeOf<{a: number; b?: number}>()
+expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
 ```
 <!-- codegen:end -->
 

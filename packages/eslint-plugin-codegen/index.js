@@ -30,7 +30,7 @@ module.exports = {
         '/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove' +
           os.EOL +
           text
-            .split(os.EOL)
+            .split(/\r?\n/)
             .map(line => `// eslint-plugin-codegen:trim${line}`)
             .join(os.EOL),
       ],
@@ -151,7 +151,7 @@ module.exports = {
 }
 
 const presets = {
-  empty: () => right(''),
+  empty: () => '',
   barrel: ({meta}) => {
     const barrelDir = path.dirname(meta.filename)
     const filesToBarrel = fs
@@ -195,8 +195,8 @@ const presets = {
           .replace(/^\*\/$/, '') // clean up     */
       })
       .join(os.EOL)
-    const sections = `@description ${jsdoc}`
-      .split('@')
+    const sections = `\n@description ${jsdoc}`
+      .split(/\n@/)
       .map(section => section.trim())
       .filter(Boolean)
       .map((section, index) => {
@@ -278,8 +278,10 @@ const presets = {
           .slice(hashes.length + 1)
           .replace(/\]\(.*\)/g, '')
           .replace(/[\[\]]/g, '')
-        const href = text.replace(/\s/g, '-').replace(/[^\w-]/g, '')
-        console.log({text, href})
+        const href = text
+          .toLowerCase()
+          .replace(/\s/g, '-')
+          .replace(/[^\w-]/g, '')
         return {indent, text, href}
       })
       .map(({indent, text, href}, i, arr) => {
@@ -288,6 +290,50 @@ const presets = {
         return `${indent}- [${text}](#${fixedHref})`
       })
       .join(os.EOL)
+  },
+  jest2md: ({meta, options}) => {
+    const sourcePath = path.join(path.dirname(meta.filename), options.source)
+    const parse = require('@babel/parser')
+    const traverse = require('@babel/traverse').default
+    const generate = require('@babel/generator').default
+    const sourceCode = fs.readFileSync(sourcePath).toString()
+    const ast = parse.parse(sourceCode, {sourceType: 'module', plugins: ['typescript']})
+    const specs = []
+    const t = traverse(ast, {
+      // enter(path) {
+      //   console.log(path)
+      // },
+      CallExpression(ce) {
+        const identifier = lodash.get(ce, 'node')
+        const isSpec = identifier && ['it', 'test'].includes(lodash.get(identifier, 'callee.name'))
+        if (!isSpec) return
+        const hasArgs =
+          identifier.arguments.length >= 2 &&
+          identifier.arguments[0].type === 'StringLiteral' &&
+          identifier.arguments[1].body
+        if (!hasArgs) return
+        const func = identifier.arguments[1]
+        const lines = sourceCode
+          .slice(func.start, func.end)
+          .split(/\r?\n/)
+          .slice(1, -1)
+        const indent = lodash.min(lines.filter(Boolean).map(line => line.length - line.trim().length))
+        const body = lines.map(line => line.replace(' '.repeat(indent), '')).join(os.EOL)
+        specs.push({title: identifier.arguments[0].value, code: body})
+      },
+    })
+    const tripleBacktick = '```'
+    return specs
+      .map(s => {
+        const lines = [
+          `${'#'.repeat(options.headerLevel || 0)} ${s.title}${lodash.get(s, 'suffix', ':')}${os.EOL}`.trimLeft(),
+          `${tripleBacktick}typescript`,
+          s.code,
+          tripleBacktick,
+        ]
+        return lines.join(os.EOL).trim()
+      })
+      .join(os.EOL + os.EOL)
   },
   'monorepo-toc': ({meta, options}) => {
     const contextDir = match(options.repoRoot)

@@ -59,7 +59,7 @@ export const mapper: Mapper = <From, To>(
  * @see mapper
  *
  * @example
- * const IntFromString = parser(t.string, parseFloat)
+ * const IntFromString = parser(t.Int, parseFloat)
  * IntFromString.decode('123')          // right(123)
  * IntFromString.decode('123.4')        // left(...)
  * IntFromString.decode('not a number') // left(...)

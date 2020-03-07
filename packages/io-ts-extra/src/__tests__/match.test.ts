@@ -5,8 +5,8 @@ import {expectTypeOf} from 'expect-type'
 import './either-serializer'
 
 describe('case matching', () => {
-  const Email = t.interface({sender: t.string, subject: t.string, body: t.string})
-  const SMS = t.interface({from: t.string, content: t.string})
+  const Email = t.type({sender: t.string, subject: t.string, body: t.string})
+  const SMS = t.type({from: t.string, content: t.string})
   const Message = t.union([Email, SMS])
   type MessageType = typeof Message._A
 
@@ -102,7 +102,7 @@ describe('case matching', () => {
   })
 
   it('collects', () => {
-    const VoiceMemo = t.interface({recorder: t.string, link: t.string})
+    const VoiceMemo = t.type({recorder: t.string, link: t.string})
     const MixedMedia = t.union([Email, SMS, VoiceMemo])
     type MixedMedia = typeof MixedMedia._A
 

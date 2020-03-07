@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.4.1...eslint-plugin-codegen@0.5.0) (2020-03-06)
+
+
+### Features
+
+* **presets:** jest2md ([07752ef](https://github.com/mmkal/ts/commit/07752ef5e8fcac347434e2ca3cf1fc2f81a7ecd7))
+
+
+
+
+
+## [0.4.1](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.4.0...eslint-plugin-codegen@0.4.1) (2020-03-05)
+
+
+### Bug Fixes
+
+* **toc:** lowercase links on npm ([03935a3](https://github.com/mmkal/ts/commit/03935a399be1bb9f237aebb4abb00095a44330b0))
+
+
+
+
+
+# [0.4.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.3.0...eslint-plugin-codegen@0.4.0) (2020-03-05)
+
+
+### Bug Fixes
+
+* links ([1dba940](https://github.com/mmkal/ts/commit/1dba940a91bbeb7a0147462396b028e65d964add))
+
+
+### Features
+
+* **toc:** minDepth and maxDepth ([3179e4b](https://github.com/mmkal/ts/commit/3179e4b847df7ee0c58577f380bd8d2802c72b31))
+
+
+
+
+
 # 0.3.0 (2020-03-05)
 
 
