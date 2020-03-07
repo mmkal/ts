@@ -2,11 +2,11 @@ import {nicknames, people, women, men} from '..'
 import {range} from 'lodash'
 import {expectTypeOf} from 'expect-type'
 
-test('nicknames', () => {
+test('Nicknames/handles', () => {
   const generator = nicknames.modify(params => ({
     rng: params.rng.seed('nicknames'),
   }))
-  const samples = [...Array(15)].map(() => generator.next())
+  const samples = range(0, 15).map(() => generator.next())
   expect(samples).toMatchInlineSnapshot(`
     Array [
       "excited-goosander",
@@ -28,7 +28,7 @@ test('nicknames', () => {
   `)
 })
 
-test('women', () => {
+test("Women's names", () => {
   const generator = women.modify(params => ({
     rng: params.rng.seed('women'),
   }))
@@ -54,7 +54,7 @@ test('women', () => {
   `)
 })
 
-test('men', () => {
+test("Men's names", () => {
   const generator = men.modify(params => ({
     rng: params.rng.seed('men'),
   }))
@@ -80,7 +80,7 @@ test('men', () => {
   `)
 })
 
-test('women and men', () => {
+test("Women's and men's names", () => {
   const generator = people.modify(params => ({
     rng: params.rng.seed('people'),
   }))
@@ -106,15 +106,78 @@ test('women and men', () => {
   `)
 })
 
-test('animals with custom formatter', () => {
+test('Custom combination of built-in dictionaries', () => {
+  const doubleBarreledNames = people.modify(params => ({
+    rng: params.rng.seed('double-barreled'),
+    dictionaries: [['femaleName', 'maleName'], 'lastName', 'lastName'],
+    join: parts => `${parts[0]} ${parts[1]}-${parts[2]}`,
+  }))
+  const samples = range(0, 15)
+    .map(doubleBarreledNames.next)
+    .join('\n')
+  expect(samples).toMatchInlineSnapshot(`
+    "Tiana Denson-Dozier
+    Leighton Escobedo-Ulrich
+    Colson Saucedo-Shockley
+    Monica Holton-Rooney
+    Tristian Lyle-Huang
+    Saint Monahan-Naylor
+    Justus Boles-Gatlin
+    Tristen Whatley-Schaeffer
+    Royal Zepeda-Alonzo
+    Kyleigh Satterfield-Jansen
+    Dorothy Schwab-Ponder
+    Addisyn Wilburn-Patten
+    Yehuda Jacques-Joy
+    Emory Beebe-Squires
+    Esteban Mize-Barney"
+  `)
+})
+
+test('Use a custom dictionary', () => {
+  const generator = nicknames.modify(params => ({
+    rng: params.rng.seed('coin'),
+    dictionaries: [{words: ['heads', 'tails']}],
+  }))
+  const samples = range(0, 15)
+    .map(generator.next)
+    .join('\n')
+  expect(samples).toMatchInlineSnapshot(`
+    "heads
+    tails
+    heads
+    heads
+    heads
+    heads
+    heads
+    heads
+    heads
+    tails
+    tails
+    heads
+    tails
+    tails
+    heads"
+  `)
+})
+
+test('Use a custom random number generator', () => {
+  const generator = nicknames.modify(params => ({
+    rng: () => 0,
+    dictionaries: [{words: ['heads', 'tails']}],
+  }))
+  const samples = range(0, 15).map(generator.next)
+  expect(samples).toEqual(range(0, 15).map(() => 'heads'))
+})
+
+test('Use a custom formatter to complex outputs', () => {
   const generator = nicknames.modify(params => ({
     rng: params.rng.seed('animals'),
     format: word => params.format(word).replace(/-/g, '_'),
     join: parts => ({joined: parts.join('.'), parts}),
   }))
   const result = generator.next()
-  expect(result.joined.length).toBeGreaterThan(0)
-  expect(result.parts.length).toBeGreaterThan(0)
+  expectTypeOf(result).toEqualTypeOf<{joined: string; parts: string[]}>()
   expect(result).toMatchInlineSnapshot(`
     Object {
       "joined": "superb.capybara",
@@ -126,7 +189,7 @@ test('animals with custom formatter', () => {
   `)
 })
 
-test('families', () => {
+test('full families', () => {
   const generator = people.modify(params => {
     const rng = params.rng.seed('families')
     return {
