@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
+    "clean": "lerna exec -- 'rm -rf dist'",
     "test": "jest",
     "eslint": "eslint --ext .ts,.js,.md",
     "lint": "yarn eslint .",
@@ -15,7 +16,7 @@
     "current-branch": "echo \"${CURRENT_BRANCH-$(git rev-parse --abbrev-ref HEAD)}\" | sed -E 's/refs\\/heads\\///' | sed -E 's/\\W|_/-/g'",
     "canary-preid": "echo \"$(yarn --silent current-branch)-$(yarn --silent commit-date)\"",
     "publish-canary": "lerna publish --canary --preid $(yarn --silent canary-preid) --dist-tag $(yarn --silent current-branch)",
-    "prepublish-packages": "node scripts/prepublish",
+    "prepublish-packages": "node scripts/prepublish && yarn clean && yarn build",
     "publish-packages": "lerna publish"
   },
   "workspaces": [
