@@ -1,9 +1,9 @@
 # io-ts-extra
 
+Some codecs and combinators not provided by io-ts or io-ts-types.
+
 ![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
 ![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
-
-Some codecs and combinators not provided by io-ts or io-ts-types.
 
 ## Features
 
