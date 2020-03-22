@@ -21,6 +21,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "resolutions": {
+    "minimist": "^1.2.5"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
