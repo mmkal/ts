@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.5.0...eslint-plugin-codegen@0.6.0) (2020-03-22)
+
+
+### Features
+
+* **presets:** rename most presets, as well as docs ([09271bc](https://github.com/mmkal/ts/commit/09271bc37a4d1ac12b1e0dbda23177bd56b4b26e))
+
+
+
+
+
+
 # [0.5.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.4.1...eslint-plugin-codegen@0.5.0) (2020-03-06)
 
 
