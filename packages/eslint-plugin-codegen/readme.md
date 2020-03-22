@@ -86,32 +86,34 @@ To trigger the rule, add a comment line to a source file.
 
 In markdown:
 
-```markdown
- <!-- codegen:start {{ OPTIONS }} -->
-```
+`<!-- codegen:start {{ OPTIONS }} -->`
 
 In typescript/javascript:
 
-```javascript
-// codegen:start {{ OPTIONS }}
-```
+`// codegen:start {{ OPTIONS }}`
 
-Where `{{ OPTIONS }}` are a yaml-formatted inline object in the format:
+Where `{{ OPTIONS }}` are an inline object in the format:
 
-```yaml
-{preset: presetName, key1: value1, key2: value2}
-```
+`{preset: presetName, key1: value1, key2: value2}`
 
-Where `key1` and `key2` are options passed to the codegen preset.
+Where `key1` and `key2` are options passed to the codegen preset. yaml is used to parse the object, So any valid yaml that fits on one line can be passed as options. In practise, the one-line restriction means using [yaml's "flow style"](https://yaml.org/spec/1.2/spec.html#id2759963) for collections.
 
 See below for documentation. This repo also has [lots of usage examples](https://github.com/mmkal/ts/search?q=%22codegen%3Astart%22&unscoped_q=%22codegen%3Astart%22).
 
 ### Presets
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: monorepoTOC} -->
-#### [monorepoTOC](./src/presets.ts#L212)
+#### [monorepoTOC](./src/presets.ts#L232)
 
 Generate a table of contents for a monorepo.
+
+##### Example (basic)
+
+`<!-- codegen:start {preset: monorepoTOC} -->`
+
+##### Example (using config options)
+
+`<!-- codegen:start {preset: monorepoTOC, repoRoot: .., workspaces: lerna, filter: {package.name: foo}, sort: -readme.length} -->`
 
 ##### Params
 
@@ -128,9 +130,12 @@ Generate a table of contents for a monorepo.
 ![](./gifs/monorepoTOC.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: barrel} -->
-#### [barrel](./src/presets.ts#L21)
+#### [barrel](./src/presets.ts#L22)
 
 Rollup exports from several modules into a single convenient module, typically named `index.ts`
+
+##### Example
+`// codegen:start {preset: barrel, include: foo, exclude: bar}`
 
 ##### Params
 
@@ -145,9 +150,12 @@ Rollup exports from several modules into a single convenient module, typically n
 ![](./gifs/barrel.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromJsdoc} -->
-#### [markdownFromJsdoc](./src/presets.ts#L49)
+#### [markdownFromJsdoc](./src/presets.ts#L53)
 
 Convert jsdoc for an es export from a javascript/typescript file to markdown.
+
+##### Example
+`<!-- codegen:start {preset: markdownFromJsdoc, source: src/foo.ts, export: bar} -->
 
 ##### Params
 
@@ -162,9 +170,12 @@ Convert jsdoc for an es export from a javascript/typescript file to markdown.
 ![](./gifs/markdownFromJsdoc.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownTOC} -->
-#### [markdownTOC](./src/presets.ts#L126)
+#### [markdownTOC](./src/presets.ts#L133)
 
 Generate a table of contents from the current markdown file, based on markdown headers (e.g. `### My section title`)
+
+##### Example
+`<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
 
 ##### Params
 
@@ -179,9 +190,12 @@ Generate a table of contents from the current markdown file, based on markdown h
 ![](./gifs/markdownTOC.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromTests} -->
-#### [markdownFromTests](./src/presets.ts#L165)
+#### [markdownFromTests](./src/presets.ts#L177)
 
-Use a jest test file to generate library usage documentation
+Use a test file to generate library usage documentation. Note: this has been tested with jest. It _might_ also work fine with mocha, and maybe ava, but those haven't been tested.
+
+##### Example
+`<!-- codegen:start {preset: markdownFromTests, source: test/foo.test.ts, headerLevel: 3} -->
 
 ##### Params
 
@@ -196,9 +210,23 @@ Use a jest test file to generate library usage documentation
 ![](./gifs/markdownFromTests.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: custom} -->
-#### [custom](./src/presets.ts#L292)
+#### [custom](./src/presets.ts#L326)
 
-Define your own codegen function, which will receive all options specified.
+Define your own codegen function, which will receive all options specified. Import the `Preset` type from this library to define a strongly-typed preset function:
+
+##### Example
+
+```typescript
+import {Preset} from 'eslint-plugin-codegen'
+
+export const jsonPrinter: Preset<{myCustomProp: string}> = ({meta, options}) => {
+  return 'filename: ' + meta.filename + '\\ncustom prop: ' + options.myCustomProp
+}
+```
+
+This can be used with:
+
+`<!-- codegen:start {preset: custom, source: ./lib/my-custom-preset.js, export: jsonPrinter, myCustomProp: hello}`
 
 ##### Params
 

@@ -61,14 +61,14 @@ const codegen: eslint.Rule.RuleModule = {
         return {line: lines.length, column: lines[lines.length - 1].length}
       }
 
-      const startMatches = [...matchAll(sourceCode, markers.start)]
+      const startMatches = [...matchAll(sourceCode, markers.start)].filter(startMatch => {
+        const prevCharacter = sourceCode[startMatch.index! - 1]
+        return !prevCharacter || prevCharacter === '\n'
+      })
+
       startMatches.forEach((startMatch, startMatchesIndex) => {
         if (typeof startMatch.index !== 'number') {
           return context.report({message: `Couldn't parse file`, loc: {line: 1, column: 0}})
-        }
-        const prevCharacter = sourceCode[startMatch.index - 1]
-        if (prevCharacter && prevCharacter !== '\n') {
-          return
         }
         const start = position(startMatch.index)
         const startMarkerLoc = {start, end: {...start, column: start.column + startMatch[0].length}}

@@ -10,10 +10,11 @@ import traverse from '@babel/traverse'
 
 export type Preset<Options> = (params: {meta: {filename: string; existingContent: string}; options: Options}) => string
 
-export const empty: Preset<{}> = () => ''
-
 /**
  * Rollup exports from several modules into a single convenient module, typically named `index.ts`
+ *
+ * ##### Example
+ * `// codegen:start {preset: barrel, include: foo, exclude: bar}`
  *
  * @param include [optional] If specified, the barrel will only include filenames that match this regex
  * @param exclude [optional] If specified, the barrel will only include filenames that don't match this regex
@@ -42,6 +43,9 @@ export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, opti
 
 /**
  * Convert jsdoc for an es export from a javascript/typescript file to markdown.
+ *
+ * ##### Example
+ * `<!-- codegen:start {preset: markdownFromJsdoc, source: src/foo.ts, export: bar} -->
  *
  * @param source {string} relative file path containing the export with jsdoc that should be copied to markdown
  * @param export {string} the name of the export
@@ -120,6 +124,9 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
 /**
  * Generate a table of contents from the current markdown file, based on markdown headers (e.g. `### My section title`)
  *
+ * ##### Example
+ * `<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
+ *
  * @param minDepth exclude headers with lower "depth". e.g. if set to 2, `# H1` would be excluded but `## H2` would be included.
  * @param maxDepth exclude headers with higher "depth". e.g. if set to 3, `#### H4` would be excluded but `### H3` would be included.
  */
@@ -157,7 +164,12 @@ export const markdownTOC: Preset<{minDepth?: number; maxDepth?: number}> = ({met
 }
 
 /**
- * Use a jest test file to generate library usage documentation
+ * Use a test file to generate library usage documentation.
+ *
+ * Note: this has been tested with jest. It _might_ also work fine with mocha, and maybe ava, but those haven't been tested.
+ *
+ * ##### Example
+ * `<!-- codegen:start {preset: markdownFromTests, source: test/foo.test.ts, headerLevel: 3} -->
  *
  * @param source the jest test file
  * @param headerLevel The number of `#` characters to prefix each title with
@@ -203,6 +215,14 @@ export const markdownFromTests: Preset<{source: string; headerLevel: number}> = 
 
 /**
  * Generate a table of contents for a monorepo.
+ *
+ * ##### Example (basic)
+ *
+ * `<!-- codegen:start {preset: monorepoTOC} -->`
+ *
+ * ##### Example (using config options)
+ *
+ * `<!-- codegen:start {preset: monorepoTOC, repoRoot: .., workspaces: lerna, filter: {package.name: foo}, sort: -readme.length} -->`
  *
  * @param repoRoot [optional] the relative path to the root of the git repository. Defaults to the current md file directory.
  * @param workspaces [optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key in package.json. Set to `lerna` to parse `lerna.json`.
@@ -286,6 +306,20 @@ export const monorepoTOC: Preset<{
 /**
  * Define your own codegen function, which will receive all options specified.
  *
+ * Import the `Preset` type from this library to define a strongly-typed preset function:
+ *
+ * @example
+ * import {Preset} from 'eslint-plugin-codegen'
+ *
+ * export const jsonPrinter: Preset<{myCustomProp: string}> = ({meta, options}) => {
+ *   return 'filename: ' + meta.filename + '\\ncustom prop: ' + options.myCustomProp
+ * }
+ *
+ * @description
+ * This can be used with:
+ *
+ * `<!-- codegen:start {preset: custom, source: ./lib/my-custom-preset.js, export: jsonPrinter, myCustomProp: hello}`
+ *
  * @param source Relative path to the module containing the custom preset
  * @param export The name of the export. If omitted, the module itself should be a preset function.
  */
@@ -301,3 +335,8 @@ export const custom: Preset<{source: string; export?: string}> = ({meta, options
   }
   return func({meta, options})
 }
+
+/**
+ * Removes all content between start and end markers.
+ */
+export const empty: Preset<{}> = () => ''
