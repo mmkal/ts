@@ -7,11 +7,11 @@ Monorepo of assorted typescript projects.
 
 ## Packages
 
-<!-- codegen:start {preset: monorepo-toc, sortBy: readme-length} -->
-1. [io-ts-extra](https://github.com/mmkal/ts/tree/master/packages/io-ts-extra#readme) - Some codecs and combinators not provided by io-ts or io-ts-types.
-2. [memorable-moniker](https://github.com/mmkal/ts/tree/master/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
-3. [expect-type](https://github.com/mmkal/ts/tree/master/packages/expect-type#readme) - Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
-4. [eslint-plugin-codegen](https://github.com/mmkal/ts/tree/master/packages/eslint-plugin-codegen#readme) - An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
+<!-- codegen:start {preset: monorepoTOC, sort: package.name} -->
+- [eslint-plugin-codegen](https://github.com/mmkal/ts/tree/master/packages/eslint-plugin-codegen#readme) - An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
+- [expect-type](https://github.com/mmkal/ts/tree/master/packages/expect-type#readme) - Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
+- [io-ts-extra](https://github.com/mmkal/ts/tree/master/packages/io-ts-extra#readme) - Some codecs and combinators not provided by io-ts or io-ts-types.
+- [memorable-moniker](https://github.com/mmkal/ts/tree/master/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
 <!-- codegen:end -->
 
 ## Publishing

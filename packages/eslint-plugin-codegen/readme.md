@@ -1,3 +1,215 @@
 # eslint-plugin-codegen
 
 An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
+
+## Motivation
+
+Sometimes the same information is useful in multiple places - for example, jsdoc comments in code can double as markdown-formatted documentation for a library.
+
+This allows generating code in a project using eslint, without having to incorporate any extra build tools, either for the codegen itself, or to validate that the generated code is up to date. So references to other parts of the project will always stay up to date - and your existing CI tools can enforce this just by running eslint.
+
+Here's an example of it being used along with VSCode's eslint plugin, with auto-fix-on-save:
+
+![](./gifs/monorepoTOC.gif)
+
+## Contents
+
+<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
+- [Motivation](#motivation)
+- [Contents](#contents)
+- [How to use](#how-to-use)
+   - [Caveat](#caveat)
+   - [Setup](#setup)
+   - [Presets](#presets)
+      - [monorepoTOC](#monorepotoc)
+      - [barrel](#barrel)
+      - [markdownFromJsdoc](#markdownfromjsdoc)
+      - [markdownTOC](#markdowntoc)
+      - [markdownFromTests](#markdownfromtests)
+      - [custom](#custom)
+<!-- codegen:end -->
+
+## How to use
+
+### Caveat
+
+Before you use this, note that it's still in v0. That means:
+
+1. Breaking changes might happen. Presets might be renamed, or have their options changed. The documentation should stay up to date though, since that's partly the point of the project.
+1. There are missing features, or incompletely-implemented ones. For example, `markdownFromJsdoc` only works with `export const ...` style exports. Currently the features implemented are ones that are specifically needed for this git repo.
+1. There might be bugs.
+
+### Setup
+
+In an eslint-enabled project, install with
+
+```bash
+npm install --save-dev eslint-plugin-codegen
+```
+
+or
+
+```bash
+yarn add --dev eslint-plugin-codegen
+````
+
+Then add the plugin and rule to your eslint config, for example in `eslintrc.js`:
+
+```js
+module.exports = {
+  ...
+  plugins: [
+    ...
+    'codegen'
+  ],
+  rules: {
+    ...
+    'codegen/codegen': 'error',
+  },
+}
+```
+
+You can use the rule by running eslint in a standard way, with something like this in an npm script: `eslint --ext .ts,.js,.md .`
+
+In vscode, if using the eslint plugin, you may need to tell it to validate markdown files in your repo's `.vscode/settings.json` file (see [this repo for an example](../../.vscode/settings.json)):
+
+```json
+{
+  "eslint.validate": ["markdown", "javascript", "typescript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+To trigger the rule, add a comment line to a source file.
+
+In markdown:
+
+```markdown
+ <!-- codegen:start {{ OPTIONS }} -->
+```
+
+In typescript/javascript:
+
+```javascript
+// codegen:start {{ OPTIONS }}
+```
+
+Where `{{ OPTIONS }}` are a yaml-formatted inline object in the format:
+
+```yaml
+{preset: presetName, key1: value1, key2: value2}
+```
+
+Where `key1` and `key2` are options passed to the codegen preset.
+
+See below for documentation. This repo also has [lots of usage examples](https://github.com/mmkal/ts/search?q=%22codegen%3Astart%22&unscoped_q=%22codegen%3Astart%22).
+
+### Presets
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: monorepoTOC} -->
+#### [monorepoTOC](./src/presets.ts#L212)
+
+Generate a table of contents for a monorepo.
+
+##### Params
+
+|name|description|
+|-|-|
+|repoRoot|[optional] the relative path to the root of the git repository. Defaults to the current md file directory.|
+|workspaces|[optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key in package.json. Set to `lerna` to parse `lerna.json`.|
+|filter|[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys, e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
+|sort|[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending. e.g. `sort: -readme.length`|
+<!-- codegen:end -->
+
+##### Demo
+
+![](./gifs/monorepoTOC.gif)
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: barrel} -->
+#### [barrel](./src/presets.ts#L21)
+
+Rollup exports from several modules into a single convenient module, typically named `index.ts`
+
+##### Params
+
+|name|description|
+|-|-|
+|include|[optional] If specified, the barrel will only include filenames that match this regex|
+|exclude|[optional] If specified, the barrel will only include filenames that don't match this regex|
+<!-- codegen:end -->
+
+##### Demo
+
+![](./gifs/barrel.gif)
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromJsdoc} -->
+#### [markdownFromJsdoc](./src/presets.ts#L49)
+
+Convert jsdoc for an es export from a javascript/typescript file to markdown.
+
+##### Params
+
+|name|description|
+|-|-|
+|source|{string} relative file path containing the export with jsdoc that should be copied to markdown|
+|export|{string} the name of the export|
+<!-- codegen:end -->
+
+##### Demo
+
+![](./gifs/markdownFromJsdoc.gif)
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownTOC} -->
+#### [markdownTOC](./src/presets.ts#L126)
+
+Generate a table of contents from the current markdown file, based on markdown headers (e.g. `### My section title`)
+
+##### Params
+
+|name|description|
+|-|-|
+|minDepth|exclude headers with lower "depth". e.g. if set to 2, `# H1` would be excluded but `## H2` would be included.|
+|maxDepth|exclude headers with higher "depth". e.g. if set to 3, `#### H4` would be excluded but `### H3` would be included.|
+<!-- codegen:end -->
+
+##### Demo
+
+![](./gifs/markdownTOC.gif)
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromTests} -->
+#### [markdownFromTests](./src/presets.ts#L165)
+
+Use a jest test file to generate library usage documentation
+
+##### Params
+
+|name|description|
+|-|-|
+|source|the jest test file|
+|headerLevel|The number of `#` characters to prefix each title with|
+<!-- codegen:end -->
+
+##### Demo
+
+![](./gifs/markdownFromTests.gif)
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: custom} -->
+#### [custom](./src/presets.ts#L292)
+
+Define your own codegen function, which will receive all options specified.
+
+##### Params
+
+|name|description|
+|-|-|
+|source|Relative path to the module containing the custom preset|
+|export|The name of the export. If omitted, the module itself should be a preset function.|
+<!-- codegen:end -->
+
+##### Demo
+
+![](./gifs/custom.gif)
+
+Note: right now, this preset isn't smart enough to follow source maps or transpile code, so `source` should point at compiled javascript, not typescript. And VSCode's eslint plugin caches modules, so if you edit the custom preset, you may need to recompile and reload VSCode for it to work properly. 
