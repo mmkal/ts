@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.6.2...eslint-plugin-codegen@0.7.0) (2020-03-22)
+
+
+### Features
+
+* more docs ([f8aa847](https://github.com/mmkal/ts/commit/f8aa8471b1dfdcf77c98698fdcac53e408c14e20))
+
+
+
+
+
 ## [0.6.2](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.6.1...eslint-plugin-codegen@0.6.2) (2020-03-22)
 
 
