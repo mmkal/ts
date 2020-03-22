@@ -1,6 +1,8 @@
+import {split} from './util'
+
 // from https://web.archive.org/web/20191102140950/https://names.mongabay.com/baby_names/girls250.html
 
-export const femaleName = `
+export const femaleName = split(`
 Esmeralda
 Kira
 Miracle
@@ -580,4 +582,4 @@ Joselyn
 Luella
 Jaylee
 Zola
-`.split('\n')
+`)

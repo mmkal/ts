@@ -1,6 +1,8 @@
+import {split} from './util'
+
 // from https://web.archive.org/web/20191223202350/https://www.scribd.com/document/357627199/Feeling-Adjectives-1
 
-export const positiveAdjective = `
+export const positiveAdjective = split(`
 admirable
 energetic
 lucky
@@ -142,4 +144,4 @@ zealous
 enchanting
 loyal
 zestful
-`.split('\n')
+`)

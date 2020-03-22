@@ -1,6 +1,8 @@
+import {split} from './util'
+
 // from https://web.archive.org/web/20190430233641/https://names.mongabay.com/most_common_surnames2.htm
 
-export const lastName = `
+export const lastName = split(`
 Reagan
 Hough
 Esquivel
@@ -530,4 +532,4 @@ Coy
 Bunn
 Andrew
 Thrasher
-`.split('\n')
+`)

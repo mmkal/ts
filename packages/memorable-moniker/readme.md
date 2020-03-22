@@ -7,7 +7,7 @@ Name generator with some in-built dictionaries and presets.
 
 ## Usage
 
-<!-- codegen:start {preset: jest2md, source: src/__tests__/index.test.ts, between: [test('nicknames', test], header: "import {nicknames} from 'memorable-moniker'"} -->
+<!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
 Nicknames/handles:
 
 ```typescript

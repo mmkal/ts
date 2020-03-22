@@ -1,7 +1,9 @@
+import {split} from './util'
+
 // from https://web.archive.org/web/20200105051826/https://en.wikipedia.org/wiki/List_of_animal_names
 // ran in dev tools: [...document.querySelectorAll('table.wikitable')[1].querySelectorAll('tr')].slice(1).map(td => td.querySelector('a')).filter(Boolean).map(a => a.innerText).filter(Boolean).map(t => t.split(' (')[0]).filter(Boolean).filter(t => !t.includes('Wikipedia')).join('\n')
 
-export const animal = `
+export const animal = split(`
 Aardvark
 Albatross
 Alligator
@@ -268,4 +270,4 @@ Wren
 X-ray tetra
 Yak
 Zebra
-`.split('\n')
+`)

@@ -14,7 +14,7 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
 * Parser helpers
 
 ## Contents
-<!-- codegen:start {preset: md-toc, minDepth: 2, maxDepth: 5} -->
+<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
 - [Features](#features)
 - [Contents](#contents)
 - [Motivation](#motivation)
@@ -58,7 +58,7 @@ This package is also less mature. It's currently in v0, so will have a different
 
 ### Pattern matching
 
-<!-- codegen:start {preset: jsdoc, module: src/match.ts, export: match} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: match} -->
 #### [match](./src/match.ts#L115)
 
 Match an object against a number of cases. Loosely based on Scala's pattern matching.
@@ -97,7 +97,7 @@ note: when using `t.refinement`, the type being refined is not considered as exh
 |obj|the object to be pattern-matched|
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: jsdoc, module: src/match.ts, export: matcher} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: matcher} -->
 #### [matcher](./src/match.ts#L145)
 
 Like @see match but no object is passed in when constructing the case statements. Instead `.get` is a function into which a value should be passed.
@@ -135,7 +135,7 @@ const contents = allMessages.map(getContent);
 
 ### Codecs/Combinators
 
-<!-- codegen:start {preset: jsdoc, module: src/combinators.ts, export: sparseType} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: sparseType} -->
 #### [sparseType](./src/combinators.ts#L38)
 
 Can be used much like `t.type` from io-ts, but any property types wrapped with `optional` from this package need not be supplied. Roughly equivalent to using `t.intersection` with `t.type` and `t.partial`.
@@ -164,13 +164,13 @@ a type with `props` field, so the result can be introspected similarly to a type
 `t.type` or `t.partial` - which isn't the case if you manually use `t.intersection([t.type({...}), t.partial({...})])`
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: jsdoc, module: src/combinators.ts, export: optional} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: optional} -->
 #### [optional](./src/combinators.ts#L12)
 
 unions the passed-in type with `null` and `undefined`.
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: jsdoc, module: src/mapper.ts, export: mapper} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/mapper.ts, export: mapper} -->
 #### [mapper](./src/mapper.ts#L33)
 
 A helper for building "parser-decoder" types - that is, types that validate an input, transform it into another type, and then validate the target type.
@@ -198,7 +198,7 @@ StringsFromMixedArray.decode('not an array')   // left(...)
 <!-- codegen:end -->
 
 
-<!-- codegen:start {preset: jsdoc, module: src/mapper.ts, export: parser} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/mapper.ts, export: parser} -->
 #### [parser](./src/mapper.ts#L72)
 
 A helper for parsing strings into other types. A wrapper around `mapper` where the `from` type is `t.string`.
@@ -223,7 +223,7 @@ IntFromString.decode(123)            // left(...)
 <!-- codegen:end -->
 
 
-<!-- codegen:start {preset: jsdoc, module: src/refinement.ts, export: refinement} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/refinement.ts, export: refinement} -->
 #### [refinement](./src/refinement.ts#L12)
 
 Like io-ts's refinement type but:
@@ -232,7 +232,7 @@ Like io-ts's refinement type but:
 3. Optionally allows returning another io-ts codec instead of a boolean for better error messages.
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: jsdoc, module: src/reporters.ts, export: validationErrors} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/reporters.ts, export: validationErrors} -->
 #### [validationErrors](./src/reporters.ts#L10)
 
 Similar to io-ts's PathReporter, but gives slightly less verbose output.
@@ -245,7 +245,7 @@ Similar to io-ts's PathReporter, but gives slightly less verbose output.
 |typeAlias|io-ts type names can be very verbose. If the type you're using doesn't have a name, you can use this to keep error messages shorter.|
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: jsdoc, module: src/combinators.ts, export: regex} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regex} -->
 #### [regex](./src/combinators.ts#L101)
 
 A refinement of `t.string` which validates that the input matches a regular expression.
@@ -260,7 +260,7 @@ AllCaps.decode(123)      // left(...)
 ```
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: jsdoc, module: src/combinators.ts, export: instanceOf} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: instanceOf} -->
 #### [instanceOf](./src/combinators.ts#L84)
 
 Validates that a value is an instance of a class using the `instanceof` operator

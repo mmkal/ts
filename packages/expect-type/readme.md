@@ -2,7 +2,7 @@
 
 Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 
-<!-- codegen:start {preset: jsdoc, module: src/index.ts, export: expectTypeOf} -->
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/index.ts, export: expectTypeOf} -->
 #### [expectTypeOf](./src/index.ts#L67)
 
 Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
@@ -18,7 +18,7 @@ See the [full docs](https://npmjs.com/package/expect-type#documentation) for lot
 <!-- codegen:end -->
 
 ## Contents
-<!-- codegen:start {preset: md-toc, minDepth: 2, maxDepth: 5} -->
+<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
 - [expectTypeOf](#expecttypeof)
 - [Contents](#contents)
 - [Installation and usage](#installation-and-usage)
@@ -41,7 +41,7 @@ import {expectTypeOf} from 'expect-type'
 ![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
 ![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
 
-<!-- codegen:start {preset: jest2md, source: src/__tests__/index.test.ts} -->
+<!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
 Type-check object references:
 
 ```typescript

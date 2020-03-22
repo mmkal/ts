@@ -1,6 +1,8 @@
+import {split} from './util'
+
 // from https://web.archive.org/web/20191102122550/https://names.mongabay.com/baby_names/boys250.html
 
-export const maleName = `
+export const maleName = split(`
 Esteban
 Drake
 Kashton
@@ -562,4 +564,4 @@ Randall
 Benton
 Coleman
 Markus
-`.split('\n')
+`)
