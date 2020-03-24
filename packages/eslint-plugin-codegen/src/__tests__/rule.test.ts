@@ -55,7 +55,7 @@ tester.run('codegen', codegen.rules.codegen, {
     {
       filename: __filename,
       code: dedent`
-      // codegen:start {preset: custom, source: custom-preset.js, export: getText, input: foo}
+      // codegen:start {preset: custom, source: custom-preset.js, input: foo}
       // codegen:end
       `,
       errors: [{message: /content doesn't match/}],
