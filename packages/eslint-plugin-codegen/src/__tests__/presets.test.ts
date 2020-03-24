@@ -391,7 +391,7 @@ describe('barrel', () => {
     `)
   })
 
-  test('is unopinionated about quotes', () => {
+  test('is unopinionated about formatting', () => {
     Object.assign(mockFs, {
       'index.ts': '',
       'a.ts': '',
@@ -399,11 +399,12 @@ describe('barrel', () => {
       'c.ts': '',
     })
 
-    const oldContent = dedent`
-      export * from "./a"
-      export * from "./b"
-      export * from "./c"
-    `
+    const oldContent = [
+      `export * from './a';\n`, // breakme
+      `export * from "./b";\r\n`,
+      `export * from "./c"`,
+    ].join('')
+
     expect(
       presets.barrel({
         meta: {

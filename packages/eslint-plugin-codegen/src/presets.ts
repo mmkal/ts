@@ -34,7 +34,7 @@ export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, opti
 
   // ignore differences that are just semicolons and quotemarks
   // prettier-ignore
-  const normalise = (s: string) => s.replace(/['"`]/g, `'`).replace(/;/, '').replace(/\r?\n/g, '\n').trim()
+  const normalise = (s: string) => s.replace(/['"`]/g, `'`).replace(/;/g, '').replace(/\r?\n/g, '\n').trim()
   if (normalise(expectedContent) === normalise(meta.existingContent)) {
     return meta.existingContent
   }
