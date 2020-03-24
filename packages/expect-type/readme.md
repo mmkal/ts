@@ -2,6 +2,9 @@
 
 Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 
+![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
+![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
+
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/index.ts, export: expectTypeOf} -->
 #### [expectTypeOf](./src/index.ts#L67)
 
@@ -37,9 +40,6 @@ import {expectTypeOf} from 'expect-type'
 ```
 
 ## Documentation
-
-![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
-![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
 Type-check object references:

@@ -2,6 +2,9 @@
 
 An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
 
+![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
+![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
+
 ## Motivation
 
 Sometimes the same information is useful in multiple places - for example, jsdoc comments in code can double as markdown-formatted documentation for a library.
