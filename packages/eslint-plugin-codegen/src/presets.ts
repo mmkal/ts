@@ -177,7 +177,8 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
   const sourceCode = fs.readFileSync(sourcePath).toString()
   const ast = parse(sourceCode, {sourceType: 'module', plugins: ['typescript']})
   const specs: any[] = []
-  const t = traverse(ast, {
+  // todo: fix types/babel package versions - shouldn't need any here
+  const t = traverse(ast as any, {
     CallExpression(ce) {
       const identifier: any = lodash.get(ce, 'node')
       const isSpec = identifier && ['it', 'test'].includes(lodash.get(identifier, 'callee.name'))
@@ -197,14 +198,13 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
       specs.push({title: identifier.arguments[0].value, code: body})
     },
   })
-  const tripleBacktick = '```'
   return specs
     .map(s => {
       const lines = [
         `${'#'.repeat(options.headerLevel || 0)} ${s.title}${lodash.get(s, 'suffix', ':')}${os.EOL}`.trimLeft(),
-        `${tripleBacktick}typescript`,
+        '```typescript',
         s.code,
-        tripleBacktick,
+        '```',
       ]
       return lines.join(os.EOL).trim()
     })
