@@ -6,6 +6,7 @@ import {tryCatch} from 'fp-ts/lib/Either'
 import * as util from 'util'
 import * as eslint from 'eslint'
 import * as presets from './presets'
+import expect from 'expect'
 
 type MatchAll = (text: string, pattern: string | RegExp) => Iterable<NonNullable<ReturnType<string['match']>>>
 const matchAll: MatchAll = require('string.prototype.matchall')
@@ -115,13 +116,17 @@ const codegen: eslint.Rule.RuleModule = {
           return context.report({message: result.left, loc: startMarkerLoc})
         }
         const expected = result.right
-        if (normalise(existingContent) !== normalise(expected)) {
+        try {
+          expect(normalise(existingContent)).toBe(normalise(expected))
+        } catch (e) {
           const loc = {start: position(range[0]), end: position(range[1])}
           return context.report({
-            message: `content doesn't match ${util.inspect({existingContent, expected})}`,
+            message: `content doesn't match: ${e}`,
             loc,
             fix: fixer => fixer.replaceTextRange(range, normalise(expected) + os.EOL),
           })
+        }
+        if (normalise(existingContent) !== normalise(expected)) {
         }
 
         return
