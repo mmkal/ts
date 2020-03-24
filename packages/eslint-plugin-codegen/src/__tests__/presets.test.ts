@@ -420,7 +420,7 @@ describe('custom', () => {
   test('loads custom export', () => {
     const customPreset = require('./custom-preset')
 
-    expect(Object.keys(customPreset)).toEqual(['getText'])
+    expect(Object.keys(customPreset)).toEqual(['getText', 'thrower'])
 
     expect(customPreset.getText.toString().trim()).toMatch(/'Named export with input: ' \+ options.input/)
 
@@ -450,6 +450,13 @@ describe('custom', () => {
         meta: {filename: __filename, existingContent: ''},
         options: {source: './custom-preset.js', export: 'doesNotExist', input: 'abc'},
       })
-    ).toThrowError(/Couldn't find export doesNotExist from .*custom-preset.js! Got undefined/)
+    ).toThrowError(/Couldn't find export doesNotExist from .*custom-preset.js - got undefined/)
+
+    expect(() =>
+      presets.custom({
+        meta: {filename: __filename, existingContent: ''},
+        options: {source: './invalid-custom-preset.js', input: 'abc'},
+      })
+    ).toThrowError(/Couldn't find export function from .*invalid-custom-preset.js - got object/)
   })
 })

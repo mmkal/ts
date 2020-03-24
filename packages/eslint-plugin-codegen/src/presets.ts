@@ -329,7 +329,7 @@ export const custom: Preset<{source: string; export?: string} & Record<string, a
   const sourceModule = require(sourcePath)
   const func = options.export ? sourceModule[options.export] : sourceModule
   if (typeof func !== 'function') {
-    throw Error(`Couldn't find export ${options.export} from ${sourcePath}! Got ${typeof func}`)
+    throw Error(`Couldn't find export ${options.export || 'function'} from ${sourcePath} - got ${typeof func}`)
   }
   return func({meta, options})
 }
