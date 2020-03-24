@@ -360,6 +360,18 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
+        options: {include: 'a|b'},
+      })
+    ).toMatchInlineSnapshot(`
+      "export * from './a'
+      export * from './b'
+      export * from './a-util'
+      export * from './b-util'"
+    `)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
         options: {exclude: 'util'},
       })
     ).toMatchInlineSnapshot(`
