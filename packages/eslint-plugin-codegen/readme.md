@@ -106,7 +106,7 @@ See below for documentation. This repo also has [lots of usage examples](https:/
 ### Presets
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: monorepoTOC} -->
-#### [monorepoTOC](./src/presets.ts#L231)
+#### [monorepoTOC](./src/presets.ts#L235)
 
 Generate a table of contents for a monorepo.
 
@@ -133,11 +133,12 @@ Generate a table of contents for a monorepo.
 ![](./gifs/monorepoTOC.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: barrel} -->
-#### [barrel](./src/presets.ts#L23)
+#### [barrel](./src/presets.ts#L24)
 
 Rollup exports from several modules into a single convenient module, typically named `index.ts`
 
 ##### Example
+
 `// codegen:start {preset: barrel, include: foo, exclude: bar}`
 
 ##### Params
@@ -153,12 +154,13 @@ Rollup exports from several modules into a single convenient module, typically n
 ![](./gifs/barrel.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromJsdoc} -->
-#### [markdownFromJsdoc](./src/presets.ts#L55)
+#### [markdownFromJsdoc](./src/presets.ts#L57)
 
 Convert jsdoc for an es export from a javascript/typescript file to markdown.
 
 ##### Example
-`<!-- codegen:start {preset: markdownFromJsdoc, source: src/foo.ts, export: bar} -->
+
+`<!-- codegen:start {preset: markdownFromJsdoc, source: src/foo.ts, export: bar} -->`
 
 ##### Params
 
@@ -173,12 +175,13 @@ Convert jsdoc for an es export from a javascript/typescript file to markdown.
 ![](./gifs/markdownFromJsdoc.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownTOC} -->
-#### [markdownTOC](./src/presets.ts#L132)
+#### [markdownTOC](./src/presets.ts#L135)
 
 Generate a table of contents from the current markdown file, based on markdown headers (e.g. `### My section title`)
 
 ##### Example
-`<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
+
+`<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->`
 
 ##### Params
 
@@ -193,12 +196,13 @@ Generate a table of contents from the current markdown file, based on markdown h
 ![](./gifs/markdownTOC.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromTests} -->
-#### [markdownFromTests](./src/presets.ts#L176)
+#### [markdownFromTests](./src/presets.ts#L180)
 
 Use a test file to generate library usage documentation. Note: this has been tested with jest. It _might_ also work fine with mocha, and maybe ava, but those haven't been tested.
 
 ##### Example
-`<!-- codegen:start {preset: markdownFromTests, source: test/foo.test.ts, headerLevel: 3} -->
+
+`<!-- codegen:start {preset: markdownFromTests, source: test/foo.test.ts, headerLevel: 3} -->`
 
 ##### Params
 
@@ -213,7 +217,7 @@ Use a test file to generate library usage documentation. Note: this has been tes
 ![](./gifs/markdownFromTests.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: custom} -->
-#### [custom](./src/presets.ts#L325)
+#### [custom](./src/presets.ts#L329)
 
 Define your own codegen function, which will receive all options specified. Import the `Preset` type from this library to define a strongly-typed preset function:
 

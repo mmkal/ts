@@ -15,6 +15,7 @@ export type Preset<Options> = (params: {meta: {filename: string; existingContent
  * Rollup exports from several modules into a single convenient module, typically named `index.ts`
  *
  * ##### Example
+ *
  * `// codegen:start {preset: barrel, include: foo, exclude: bar}`
  *
  * @param include [optional] If specified, the barrel will only include filenames that match this regex
@@ -47,7 +48,8 @@ export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, opti
  * Convert jsdoc for an es export from a javascript/typescript file to markdown.
  *
  * ##### Example
- * `<!-- codegen:start {preset: markdownFromJsdoc, source: src/foo.ts, export: bar} -->
+ *
+ * `<!-- codegen:start {preset: markdownFromJsdoc, source: src/foo.ts, export: bar} -->`
  *
  * @param source {string} relative file path containing the export with jsdoc that should be copied to markdown
  * @param export {string} the name of the export
@@ -124,7 +126,8 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
  * Generate a table of contents from the current markdown file, based on markdown headers (e.g. `### My section title`)
  *
  * ##### Example
- * `<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
+ *
+ * `<!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->`
  *
  * @param minDepth exclude headers with lower "depth". e.g. if set to 2, `# H1` would be excluded but `## H2` would be included.
  * @param maxDepth exclude headers with higher "depth". e.g. if set to 3, `#### H4` would be excluded but `### H3` would be included.
@@ -168,7 +171,8 @@ export const markdownTOC: Preset<{minDepth?: number; maxDepth?: number}> = ({met
  * Note: this has been tested with jest. It _might_ also work fine with mocha, and maybe ava, but those haven't been tested.
  *
  * ##### Example
- * `<!-- codegen:start {preset: markdownFromTests, source: test/foo.test.ts, headerLevel: 3} -->
+ *
+ * `<!-- codegen:start {preset: markdownFromTests, source: test/foo.test.ts, headerLevel: 3} -->`
  *
  * @param source the jest test file
  * @param headerLevel The number of `#` characters to prefix each title with
