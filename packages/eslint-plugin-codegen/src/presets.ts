@@ -29,6 +29,7 @@ export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, opti
     .filter(file => file.match(include || /.*/))
     .filter(file => ['.js', '.ts', '.tsx'].includes(path.extname(file)))
     .map(file => file.replace(/\.\w+$/, ''))
+
   const expectedBarrelLines = filesToBarrel.map(f => `export * from './${f}'`)
   const expectedContent = expectedBarrelLines.join(os.EOL)
 

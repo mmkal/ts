@@ -54,7 +54,7 @@ tester.run('codegen', codegen.rules.codegen, {
     },
     {
       filename: __filename,
-      parserOptions: {ecmaVersion: 2015},
+      parserOptions: {ecmaVersion: 2015, sourceType: 'module'},
       code: dedent`
         // codegen:start {preset: barrel}
         // codegen:end
