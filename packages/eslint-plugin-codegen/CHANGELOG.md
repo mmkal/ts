@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.7.0...eslint-plugin-codegen@0.7.1) (2020-03-24)
+
+
+### Bug Fixes
+
+* allow for multiple semicolons in barrel ([8a59d63](https://github.com/mmkal/ts/commit/8a59d633afae78a2b5b9fa9b57e5e9ba8eac2b28))
+
+
+
+
+
 # [0.7.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.6.2...eslint-plugin-codegen@0.7.0) (2020-03-22)
 
 
