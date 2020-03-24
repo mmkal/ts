@@ -54,9 +54,10 @@ tester.run('codegen', codegen.rules.codegen, {
     },
     {
       filename: __filename,
+      parserOptions: {ecmaVersion: 2015},
       code: dedent`
-      // codegen:start {preset: custom, source: custom-preset.js, input: foo}
-      // codegen:end
+        // codegen:start {preset: barrel}
+        // codegen:end
       `,
       errors: [{message: /content doesn't match/}],
     },
