@@ -7,6 +7,7 @@ import * as glob from 'glob'
 import {match} from 'io-ts-extra'
 import {parse} from '@babel/parser'
 import traverse from '@babel/traverse'
+import {inspect} from 'util'
 
 export type Preset<Options> = (params: {meta: {filename: string; existingContent: string}; options: Options}) => string
 
@@ -28,12 +29,13 @@ export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, opti
     .filter(file => file.match(include || /.*/))
     .filter(file => ['.js', '.ts', '.tsx'].includes(path.extname(file)))
     .map(file => file.replace(/\.\w+$/, ''))
+
   const expectedBarrelLines = filesToBarrel.map(f => `export * from './${f}'`)
   const expectedContent = expectedBarrelLines.join(os.EOL)
 
   // ignore differences that are just semicolons and quotemarks
   // prettier-ignore
-  const normalise = (s: string) => s.replace(/['"`]/g, `'`).replace(/;/, '').trim()
+  const normalise = (s: string) => s.replace(/['"`]/g, `'`).replace(/;/g, '').replace(/\r?\n/g, '\n').trim()
   if (normalise(expectedContent) === normalise(meta.existingContent)) {
     return meta.existingContent
   }
@@ -55,9 +57,6 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
   options: {source: relativeFile, export: exportName},
 }) => {
   const targetFile = path.join(path.dirname(meta.filename), relativeFile)
-  if (!fs.existsSync(targetFile) || !fs.statSync(targetFile).isFile()) {
-    throw Error(`Couldn't find module ${targetFile}`)
-  }
   const targetContent = fs.readFileSync(targetFile).toString()
   const lines = targetContent.split('\n').map(line => line.trim())
   const exportLineIndex = lines.findIndex(line => line.startsWith(`export const ${exportName}`))
@@ -144,7 +143,7 @@ export const markdownTOC: Preset<{minDepth?: number; maxDepth?: number}> = ({met
   return headings
     .map(h => {
       const hashes = h.split(' ')[0]
-      const indent = ' '.repeat(3 * (hashes.length - (minHashes || 0)))
+      const indent = ' '.repeat(3 * (hashes.length - minHashes!))
       const text = h
         .slice(hashes.length + 1)
         .replace(/\]\(.*\)/g, '')
@@ -174,12 +173,13 @@ export const markdownTOC: Preset<{minDepth?: number; maxDepth?: number}> = ({met
  * @param source the jest test file
  * @param headerLevel The number of `#` characters to prefix each title with
  */
-export const markdownFromTests: Preset<{source: string; headerLevel: number}> = ({meta, options}) => {
+export const markdownFromTests: Preset<{source: string; headerLevel?: number}> = ({meta, options}) => {
   const sourcePath = path.join(path.dirname(meta.filename), options.source)
   const sourceCode = fs.readFileSync(sourcePath).toString()
   const ast = parse(sourceCode, {sourceType: 'module', plugins: ['typescript']})
   const specs: any[] = []
-  const t = traverse(ast, {
+  // todo: fix types/babel package versions - shouldn't need any here
+  const t = traverse(ast as any, {
     CallExpression(ce) {
       const identifier: any = lodash.get(ce, 'node')
       const isSpec = identifier && ['it', 'test'].includes(lodash.get(identifier, 'callee.name'))
@@ -199,14 +199,13 @@ export const markdownFromTests: Preset<{source: string; headerLevel: number}> = 
       specs.push({title: identifier.arguments[0].value, code: body})
     },
   })
-  const tripleBacktick = '```'
   return specs
     .map(s => {
       const lines = [
         `${'#'.repeat(options.headerLevel || 0)} ${s.title}${lodash.get(s, 'suffix', ':')}${os.EOL}`.trimLeft(),
-        `${tripleBacktick}typescript`,
+        '```typescript',
         s.code,
-        tripleBacktick,
+        '```',
       ]
       return lines.join(os.EOL).trim()
     })
@@ -249,7 +248,7 @@ export const monorepoTOC: Preset<{
     })
     .get()
   if (!Array.isArray(packageGlobs)) {
-    throw Error(`expected to find workspaces array in ${options.workspaces}`)
+    throw Error(`Expected to find workspaces array, got ${inspect(packageGlobs)}`)
   }
   const leafPackages = lodash
     .flatMap(packageGlobs, pattern => glob.sync(`${pattern}/package.json`))
@@ -323,7 +322,7 @@ export const monorepoTOC: Preset<{
  * @param source Relative path to the module containing the custom preset
  * @param export The name of the export. If omitted, the module itself should be a preset function.
  */
-export const custom: Preset<{source: string; export?: string}> = ({meta, options}) => {
+export const custom: Preset<{source: string; export?: string} & Record<string, any>> = ({meta, options}) => {
   const sourcePath = path.join(path.dirname(meta.filename), options.source)
   if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
     throw Error(`Source path doesn't exist: ${sourcePath}`)
@@ -331,7 +330,7 @@ export const custom: Preset<{source: string; export?: string}> = ({meta, options
   const sourceModule = require(sourcePath)
   const func = options.export ? sourceModule[options.export] : sourceModule
   if (typeof func !== 'function') {
-    throw Error(`Couldn't find function from options ${JSON.stringify(options)}! Got ${typeof func}`)
+    throw Error(`Couldn't find export ${options.export || 'function'} from ${sourcePath} - got ${typeof func}`)
   }
   return func({meta, options})
 }

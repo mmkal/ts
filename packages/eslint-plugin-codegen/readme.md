@@ -103,7 +103,7 @@ See below for documentation. This repo also has [lots of usage examples](https:/
 ### Presets
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: monorepoTOC} -->
-#### [monorepoTOC](./src/presets.ts#L232)
+#### [monorepoTOC](./src/presets.ts#L231)
 
 Generate a table of contents for a monorepo.
 
@@ -130,7 +130,7 @@ Generate a table of contents for a monorepo.
 ![](./gifs/monorepoTOC.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: barrel} -->
-#### [barrel](./src/presets.ts#L22)
+#### [barrel](./src/presets.ts#L23)
 
 Rollup exports from several modules into a single convenient module, typically named `index.ts`
 
@@ -150,7 +150,7 @@ Rollup exports from several modules into a single convenient module, typically n
 ![](./gifs/barrel.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromJsdoc} -->
-#### [markdownFromJsdoc](./src/presets.ts#L53)
+#### [markdownFromJsdoc](./src/presets.ts#L55)
 
 Convert jsdoc for an es export from a javascript/typescript file to markdown.
 
@@ -170,7 +170,7 @@ Convert jsdoc for an es export from a javascript/typescript file to markdown.
 ![](./gifs/markdownFromJsdoc.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownTOC} -->
-#### [markdownTOC](./src/presets.ts#L133)
+#### [markdownTOC](./src/presets.ts#L132)
 
 Generate a table of contents from the current markdown file, based on markdown headers (e.g. `### My section title`)
 
@@ -190,7 +190,7 @@ Generate a table of contents from the current markdown file, based on markdown h
 ![](./gifs/markdownTOC.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromTests} -->
-#### [markdownFromTests](./src/presets.ts#L177)
+#### [markdownFromTests](./src/presets.ts#L176)
 
 Use a test file to generate library usage documentation. Note: this has been tested with jest. It _might_ also work fine with mocha, and maybe ava, but those haven't been tested.
 
@@ -210,7 +210,7 @@ Use a test file to generate library usage documentation. Note: this has been tes
 ![](./gifs/markdownFromTests.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: custom} -->
-#### [custom](./src/presets.ts#L326)
+#### [custom](./src/presets.ts#L325)
 
 Define your own codegen function, which will receive all options specified. Import the `Preset` type from this library to define a strongly-typed preset function:
 

@@ -1,11 +1,10 @@
 import * as path from 'path'
 import * as os from 'os'
 import * as jsYaml from 'js-yaml'
-import * as t from 'io-ts'
 import {tryCatch} from 'fp-ts/lib/Either'
-import * as util from 'util'
 import * as eslint from 'eslint'
 import * as presets from './presets'
+import expect from 'expect'
 
 type MatchAll = (text: string, pattern: string | RegExp) => Iterable<NonNullable<ReturnType<string['match']>>>
 const matchAll: MatchAll = require('string.prototype.matchall')
@@ -67,21 +66,16 @@ const codegen: eslint.Rule.RuleModule = {
       })
 
       startMatches.forEach((startMatch, startMatchesIndex) => {
-        if (typeof startMatch.index !== 'number') {
-          return context.report({message: `Couldn't parse file`, loc: {line: 1, column: 0}})
-        }
-        const start = position(startMatch.index)
+        const startIndex = startMatch.index!.valueOf()
+        const start = position()
         const startMarkerLoc = {start, end: {...start, column: start.column + startMatch[0].length}}
-        if (startMatch === startMatches.slice(0, startMatchesIndex).find(other => other[0] === startMatch[0])) {
-          return context.report({message: `duplicate start marker`, loc: startMarkerLoc})
-        }
         const searchForEndMarkerUpTo =
           startMatchesIndex === startMatches.length - 1 ? sourceCode.length : startMatches[startMatchesIndex + 1].index
         const endMatch = [...matchAll(sourceCode.slice(0, searchForEndMarkerUpTo), markers.end)].find(
           e => e.index! > startMatch.index!
         )
         if (!endMatch) {
-          const afterStartMatch = startMatch.index + startMatch[0].length
+          const afterStartMatch = startIndex + startMatch[0].length
           return context.report({
             message: `couldn't find end marker (expected regex ${markers.end})`,
             loc: startMarkerLoc,
@@ -104,7 +98,7 @@ const codegen: eslint.Rule.RuleModule = {
           })
         }
 
-        const range: eslint.AST.Range = [startMatch.index + startMatch[0].length + os.EOL.length, endMatch.index!]
+        const range: eslint.AST.Range = [startIndex + startMatch[0].length + os.EOL.length, endMatch.index!]
         const existingContent = sourceCode.slice(...range)
         const normalise = (val: string) => val.trim().replace(/\r?\n/g, os.EOL)
 
@@ -120,10 +114,12 @@ const codegen: eslint.Rule.RuleModule = {
           return context.report({message: result.left, loc: startMarkerLoc})
         }
         const expected = result.right
-        if (normalise(existingContent) !== normalise(expected)) {
+        try {
+          expect(normalise(existingContent)).toBe(normalise(expected))
+        } catch (e) {
           const loc = {start: position(range[0]), end: position(range[1])}
           return context.report({
-            message: `content doesn't match ${util.inspect({existingContent, expected})}`,
+            message: `content doesn't match: ${e}`,
             loc,
             fix: fixer => fixer.replaceTextRange(range, normalise(expected) + os.EOL),
           })
