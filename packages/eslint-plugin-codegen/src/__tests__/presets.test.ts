@@ -31,21 +31,23 @@ jest.mock('glob')
 
 jest.spyOn(glob, 'sync').mockImplementation(pattern => Object.keys(mockFs).filter(k => minimatch(k, pattern)))
 
-const mdMeta = (existingContent = 'abc'): Parameters<presets.Preset<{}>>[0]['meta'] => ({
-  filename: 'abc.md',
-  existingContent,
-})
+const emptyReadme = {filename: 'readme.md', existingContent: ''}
 
 describe('empty', () => {
   test('generates nothing', () => {
-    expect(presets.empty({meta: mdMeta(), options: {}})).toEqual('')
+    expect(
+      presets.empty({
+        meta: emptyReadme,
+        options: {},
+      })
+    ).toEqual('')
   })
 })
 
 describe('markdownTOC', () => {
   test('generate markdown', () => {
     Object.assign(mockFs, {
-      'abc.md': dedent`
+      'readme.md': dedent`
         # H1
         Text
         ## H2
@@ -63,7 +65,12 @@ describe('markdownTOC', () => {
       `,
     })
 
-    expect(presets.markdownTOC({meta: mdMeta(`abc`), options: {}})).toMatchInlineSnapshot(`
+    expect(
+      presets.markdownTOC({
+        meta: emptyReadme,
+        options: {},
+      })
+    ).toMatchInlineSnapshot(`
       "- [H1](#h1)
          - [H2](#h2)
             - [H3](#h3)
@@ -75,7 +82,15 @@ describe('markdownTOC', () => {
          - [Another H2](#another-h2)"
     `)
 
-    expect(presets.markdownTOC({meta: mdMeta(`abc`), options: {minDepth: 2, maxDepth: 3}})).toMatchInlineSnapshot(`
+    expect(
+      presets.markdownTOC({
+        meta: emptyReadme,
+        options: {
+          minDepth: 2,
+          maxDepth: 3,
+        },
+      })
+    ).toMatchInlineSnapshot(`
       "- [H2](#h2)
       - [Another H2](#another-h2)"
     `)
@@ -83,7 +98,7 @@ describe('markdownTOC', () => {
 
   test('calculates min hashes', () => {
     Object.assign(mockFs, {
-      'abc.md': dedent`
+      'readme.md': dedent`
         ### H3
         ### Another H3
         #### H4 duplicate
@@ -92,7 +107,12 @@ describe('markdownTOC', () => {
       `,
     })
 
-    expect(presets.markdownTOC({meta: mdMeta(`abc`), options: {}})).toMatchInlineSnapshot(`
+    expect(
+      presets.markdownTOC({
+        meta: emptyReadme,
+        options: {},
+      })
+    ).toMatchInlineSnapshot(`
       "- [H3](#h3)
       - [Another H3](#another-h3)
          - [H4 duplicate](#h4-duplicate)
@@ -100,7 +120,15 @@ describe('markdownTOC', () => {
             - [H5](#h5-1)"
     `)
 
-    expect(presets.markdownTOC({meta: mdMeta(`abc`), options: {minDepth: 2, maxDepth: 3}})).toMatchInlineSnapshot(`""`)
+    expect(
+      presets.markdownTOC({
+        meta: emptyReadme,
+        options: {
+          minDepth: 2,
+          maxDepth: 3,
+        },
+      })
+    ).toMatchInlineSnapshot(`""`)
   })
 })
 
@@ -128,48 +156,69 @@ describe('monorepoTOC', () => {
         Readme for package 3
       `,
 
-      'packages/package4/package.json': '{ "name": "package3", "description": "fourth package" }',
+      'packages/package4/package.json': '{ "name": "package4", "description": "fourth package" }',
       'packages/package4/README.md': dedent`
         # Package 4
         
         ## Subheading
 
-        More details about package 4. This is a detailed readme, with multiple sections
+        More details about package 4. Package 4 has a detailed readme, with multiple sections
 
         ### Sub-sub-heading
 
-        There's another section, with more markdown content in it.
+        Here's another section, with more markdown content in it.
       `,
     })
 
-    expect(presets.monorepoTOC({meta: mdMeta(`abc`), options: {}})).toMatchInlineSnapshot(`
+    expect(
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {},
+      })
+    ).toMatchInlineSnapshot(`
       "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2
       - [package3](./packages/package3) - Readme for package 3
-      - [package3](./packages/package4) - More details about package 4. This is a detailed readme, with multiple sections"
+      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
     `)
 
-    expect(presets.monorepoTOC({meta: mdMeta(`abc`), options: {filter: {'package.name': 'package1|package3'}}}))
-      .toMatchInlineSnapshot(`
+    expect(
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {filter: {'package.name': 'package1|package3'}},
+      })
+    ).toMatchInlineSnapshot(`
       "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package3](./packages/package3) - Readme for package 3
-      - [package3](./packages/package4) - More details about package 4. This is a detailed readme, with multiple sections"
+      - [package3](./packages/package3) - Readme for package 3"
     `)
 
-    expect(presets.monorepoTOC({meta: mdMeta(`abc`), options: {sort: '-readme.length'}})).toMatchInlineSnapshot(`
-      "- [package3](./packages/package4) - More details about package 4. This is a detailed readme, with multiple sections
+    expect(
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {sort: '-readme.length'},
+      })
+    ).toMatchInlineSnapshot(`
+      "- [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
       - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2
       - [package3](./packages/package3) - Readme for package 3"
     `)
 
-    expect(presets.monorepoTOC({meta: mdMeta(`abc`), options: {workspaces: 'lerna'}})).toMatchInlineSnapshot(`
+    expect(
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {workspaces: 'lerna'},
+      })
+    ).toMatchInlineSnapshot(`
       "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2"
     `)
 
     expect(
-      presets.monorepoTOC({meta: mdMeta(`abc`), options: {workspaces: ['packages/package1', 'packages/package3']}})
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {workspaces: ['packages/package1', 'packages/package3']},
+      })
     ).toMatchInlineSnapshot(`
       "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package3](./packages/package3) - Readme for package 3"
@@ -182,12 +231,16 @@ describe('monorepoTOC', () => {
       })
     ).toThrowError(/ENOENT: no such file or directory, open 'subdir.*package.json'/)
 
-    expect(presets.monorepoTOC({meta: {filename: 'subdir/test.md', existingContent: ''}, options: {repoRoot: '..'}}))
-      .toMatchInlineSnapshot(`
+    expect(
+      presets.monorepoTOC({
+        meta: {filename: 'subdir/test.md', existingContent: ''},
+        options: {repoRoot: '..'},
+      })
+    ).toMatchInlineSnapshot(`
       "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2
       - [package3](./packages/package3) - Readme for package 3
-      - [package3](./packages/package4) - More details about package 4. This is a detailed readme, with multiple sections"
+      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
     `)
   })
 
@@ -197,12 +250,18 @@ describe('monorepoTOC', () => {
       'lerna.json': '{ "packages": "lerna.json - not an array" }',
     })
 
-    expect(() => presets.monorepoTOC({meta: {filename: 'readme.md', existingContent: ''}, options: {}})).toThrowError(
-      /Expected to find workspaces array, got 'package.json - not an array'/
-    )
+    expect(() =>
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {},
+      })
+    ).toThrowError(/Expected to find workspaces array, got 'package.json - not an array'/)
 
     expect(() =>
-      presets.monorepoTOC({meta: {filename: 'readme.md', existingContent: ''}, options: {workspaces: 'lerna'}})
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {workspaces: 'lerna'},
+      })
     ).toThrowError(/Expected to find workspaces array, got 'lerna.json - not an array'/)
   })
 })
@@ -240,7 +299,10 @@ describe('markdownFromTests', () => {
       `,
     })
 
-    const withHeaders = presets.markdownFromTests({meta: mdMeta(`abc`), options: {source: 'test.ts', headerLevel: 4}})
+    const withHeaders = presets.markdownFromTests({
+      meta: emptyReadme,
+      options: {source: 'test.ts', headerLevel: 4},
+    })
     expect(withHeaders).toMatchInlineSnapshot(`
       "#### addition:
 
@@ -261,7 +323,7 @@ describe('markdownFromTests', () => {
       \`\`\`"
     `)
     const withoutHeaders = presets.markdownFromTests({
-      meta: mdMeta(`abc`),
+      meta: emptyReadme,
       options: {source: 'test.ts'},
     })
 
@@ -281,7 +343,12 @@ describe('barrel', () => {
       'util.ts': '',
     })
 
-    expect(presets.barrel({meta: {filename: 'index.ts', existingContent: ''}, options: {}})).toMatchInlineSnapshot(`
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {},
+      })
+    ).toMatchInlineSnapshot(`
       "export * from './a'
       export * from './b'
       export * from './c'
@@ -290,15 +357,22 @@ describe('barrel', () => {
       export * from './util'"
     `)
 
-    expect(presets.barrel({meta: {filename: 'index.ts', existingContent: ''}, options: {exclude: 'util'}}))
-      .toMatchInlineSnapshot(`
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {exclude: 'util'},
+      })
+    ).toMatchInlineSnapshot(`
       "export * from './a'
       export * from './b'
       export * from './c'"
     `)
 
     expect(
-      presets.barrel({meta: {filename: 'index.ts', existingContent: ''}, options: {include: 'a|b', exclude: 'util'}})
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {include: 'a|b', exclude: 'util'},
+      })
     ).toMatchInlineSnapshot(`
       "export * from './a'
       export * from './b'"
@@ -366,8 +440,12 @@ describe('markdownFromJsdoc', () => {
       `,
     })
 
-    expect(presets.markdownFromJsdoc({meta: mdMeta(`abc`), options: {source: 'index.ts', export: 'add'}}))
-      .toMatchInlineSnapshot(`
+    expect(
+      presets.markdownFromJsdoc({
+        meta: emptyReadme,
+        options: {source: 'index.ts', export: 'add'},
+      })
+    ).toMatchInlineSnapshot(`
       "#### [add](./index.ts#L17)
 
       Adds two numbers
@@ -409,7 +487,7 @@ describe('markdownFromJsdoc', () => {
 
     expect(() =>
       presets.markdownFromJsdoc({
-        meta: {filename: 'readme.md', existingContent: ''},
+        meta: emptyReadme,
         options: {source: 'index.ts', export: 'subtract'},
       })
     ).toThrowError(/Couldn't find export in .*index.ts with jsdoc called subtract/)
