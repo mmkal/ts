@@ -14,5 +14,21 @@
   },
   "devDependencies": {
     "@types/seedrandom": "^2.4.28"
-  }
+  },
+  "keywords": [
+		"word",
+		"words",
+		"list",
+		"array",
+		"random",
+		"animal",
+		"dictionary",
+		"dictionaries",
+		"name",
+		"names",
+		"female",
+    "male",
+    "nicknames",
+    "generator"
+  ]
 }
