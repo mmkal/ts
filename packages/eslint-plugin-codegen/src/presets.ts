@@ -194,10 +194,7 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
         identifier.arguments[1].body
       if (!hasArgs) return
       const func = identifier.arguments[1]
-      const lines = sourceCode
-        .slice(func.start, func.end)
-        .split(/\r?\n/)
-        .slice(1, -1)
+      const lines = sourceCode.slice(func.start, func.end).split(/\r?\n/).slice(1, -1)
       const indent = lodash.min(lines.filter(Boolean).map(line => line.length - line.trim().length))!
       const body = lines.map(line => line.replace(' '.repeat(indent), '')).join(os.EOL)
       specs.push({title: identifier.arguments[0].value, code: body})
@@ -297,10 +294,7 @@ export const monorepoTOC: Preset<{
       })()
       const name = leafPkg.name
       const homepage = leafPkg.homepage || `./${relativePath}`
-      return [`- [${name}](${homepage})`, description]
-        .filter(Boolean)
-        .join(' - ')
-        .trim()
+      return [`- [${name}](${homepage})`, description].filter(Boolean).join(' - ').trim()
     })
 
   return leafPackages.join(os.EOL)

@@ -199,7 +199,7 @@ StringsFromMixedArray.decode('not an array')   // left(...)
 
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/mapper.ts, export: parser} -->
-#### [parser](./src/mapper.ts#L72)
+#### [parser](./src/mapper.ts#L78)
 
 A helper for parsing strings into other types. A wrapper around `mapper` where the `from` type is `t.string`.
 

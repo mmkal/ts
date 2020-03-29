@@ -39,7 +39,10 @@ describe('case matching', () => {
 
   it('can refine', () => {
     const getSenderType = matcher<MessageType>()
-      .case(t.refinement(Email, e => e.sender.startsWith('mailing')), () => 'mailer')
+      .case(
+        t.refinement(Email, e => e.sender.startsWith('mailing')),
+        () => 'mailer'
+      )
       .case(Email, e => 'personal contact: ' + e.sender)
       .case(SMS, s => s.from).get
 

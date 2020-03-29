@@ -44,8 +44,14 @@ export const mapper: Mapper = <From, To>(
       to.is,
       (s, c) =>
         pipe(
-          Either.tryCatch(() => map(s), err => `error thrown decoding: [${err}]`),
-          Either.fold(e => fail(s, c, e), value => to.validate(value, c))
+          Either.tryCatch(
+            () => map(s),
+            err => `error thrown decoding: [${err}]`
+          ),
+          Either.fold(
+            e => fail(s, c, e),
+            value => to.validate(value, c)
+          )
         ),
       unmap
     ),

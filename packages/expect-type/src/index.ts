@@ -41,7 +41,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeNullable: (...MISMATCH: MismatchArgs<Not<Equal<Actual, NonNullable<Actual>>>, B>) => true
   toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
   toEqualTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>) => true
-  toBeCallableWith: B extends true ? ((...args: Params<Actual>) => true) : never
+  toBeCallableWith: B extends true ? (...args: Params<Actual>) => true : never
   property<K extends keyof Actual>(key: K): ExpectTypeOf<Actual[K], B>
   parameter<K extends keyof Params<Actual>>(number: K): ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
@@ -68,7 +68,7 @@ export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true
   const nonFunctionProperties = ['parameters', 'returns', 'resolves', 'not', 'items'] as const
   type Keys = keyof ExpectTypeOf<any, any>
 
-  type FunctionsDict = Record<Exclude<Keys, (typeof nonFunctionProperties)[number]>, any>
+  type FunctionsDict = Record<Exclude<Keys, typeof nonFunctionProperties[number]>, any>
   const obj: FunctionsDict = {
     toBeAny: fn,
     toBeUnknown: fn,

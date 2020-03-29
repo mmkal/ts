@@ -42,9 +42,7 @@ Women's names:
 const generator = women.modify(params => ({
   rng: params.rng.seed('women'),
 }))
-const samples = range(0, 15)
-  .map(generator.next)
-  .join('\n')
+const samples = range(0, 15).map(generator.next).join('\n')
 expect(samples).toMatchInlineSnapshot(`
   "Blair Brower
   Mae Carrasco
@@ -70,9 +68,7 @@ Men's names:
 const generator = men.modify(params => ({
   rng: params.rng.seed('men'),
 }))
-const samples = range(0, 15)
-  .map(generator.next)
-  .join('\n')
+const samples = range(0, 15).map(generator.next).join('\n')
 expect(samples).toMatchInlineSnapshot(`
   "Willie Schuler
   Vihaan Trahan
@@ -98,9 +94,7 @@ Women's and men's names:
 const generator = people.modify(params => ({
   rng: params.rng.seed('people'),
 }))
-const samples = range(0, 15)
-  .map(generator.next)
-  .join('\n')
+const samples = range(0, 15).map(generator.next).join('\n')
 expect(samples).toMatchInlineSnapshot(`
   "Legacy Couture
   Baylor Tinsley
@@ -128,9 +122,7 @@ const doubleBarreledNames = people.modify(params => ({
   dictionaries: [['femaleName', 'maleName'], 'lastName', 'lastName'],
   join: parts => `${parts[0]} ${parts[1]}-${parts[2]}`,
 }))
-const samples = range(0, 15)
-  .map(doubleBarreledNames.next)
-  .join('\n')
+const samples = range(0, 15).map(doubleBarreledNames.next).join('\n')
 expect(samples).toMatchInlineSnapshot(`
   "Tiana Denson-Dozier
   Leighton Escobedo-Ulrich
@@ -157,9 +149,7 @@ const generator = nicknames.modify(params => ({
   rng: params.rng.seed('coin'),
   dictionaries: [{words: ['heads', 'tails']}],
 }))
-const samples = range(0, 15)
-  .map(generator.next)
-  .join('\n')
+const samples = range(0, 15).map(generator.next).join('\n')
 expect(samples).toMatchInlineSnapshot(`
   "heads
   tails

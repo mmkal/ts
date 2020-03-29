@@ -120,7 +120,11 @@ describe('parser', () => {
 
   it('parses dates', () => {
     const ValidDate = t.refinement(instanceOf(Date), d => !isNaN(d.getTime()))
-    const DateFromString = parser(ValidDate, s => new Date(s), d => d.toISOString())
+    const DateFromString = parser(
+      ValidDate,
+      s => new Date(s),
+      d => d.toISOString()
+    )
     expect(DateFromString.decode('2000')).toMatchInlineSnapshot(`
       _tag: Right
       right: 2000-01-01T00:00:00.000Z

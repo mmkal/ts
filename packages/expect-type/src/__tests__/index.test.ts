@@ -53,12 +53,8 @@ test('Assertions can be inverted with `.not`', () => {
 test('Make assertions about object properties', () => {
   const obj = {a: 1, b: ''}
 
-  expectTypeOf(obj)
-    .property('a')
-    .toEqualTypeOf(1)
-  expectTypeOf(obj)
-    .property('b')
-    .toEqualTypeOf<string>()
+  expectTypeOf(obj).property('a').toEqualTypeOf(1)
+  expectTypeOf(obj).property('b').toEqualTypeOf<string>()
 })
 
 test('Assert on function parameters (using `.parameter(n)` or `.parameters`) and return values (using `.return`)', () => {
@@ -71,15 +67,9 @@ test('Assert on function parameters (using `.parameter(n)` or `.parameters`) and
   expectTypeOf(f).returns.not.toBeAny()
   expectTypeOf(f).returns.toEqualTypeOf([1, 2])
   expectTypeOf(f).returns.toEqualTypeOf([1, 2, 3])
-  expectTypeOf(f)
-    .parameter(0)
-    .not.toEqualTypeOf('1')
-  expectTypeOf(f)
-    .parameter(0)
-    .toEqualTypeOf(1)
-  expectTypeOf(1)
-    .parameter(0)
-    .toBeNever()
+  expectTypeOf(f).parameter(0).not.toEqualTypeOf('1')
+  expectTypeOf(f).parameter(0).toEqualTypeOf(1)
+  expectTypeOf(1).parameter(0).toBeNever()
 
   const twoArgFunc = (a: number, b: string) => ({a, b})
 

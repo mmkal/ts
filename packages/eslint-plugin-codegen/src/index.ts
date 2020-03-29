@@ -86,7 +86,10 @@ const codegen: eslint.Rule.RuleModule = {
               ),
           })
         }
-        const maybeOptions = tryCatch(() => jsYaml.safeLoad(startMatch[1]), err => err)
+        const maybeOptions = tryCatch(
+          () => jsYaml.safeLoad(startMatch[1]),
+          err => err
+        )
         if (maybeOptions._tag === 'Left') {
           return context.report({message: `Error parsing options. ${maybeOptions.left}`, loc: startMarkerLoc})
         }
