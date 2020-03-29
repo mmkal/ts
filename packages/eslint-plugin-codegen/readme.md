@@ -30,6 +30,7 @@ Here's an example of it being used along with VSCode's eslint plugin, with auto-
       - [markdownTOC](#markdowntoc)
       - [markdownFromTests](#markdownfromtests)
       - [custom](#custom)
+   - [Customisation](#customisation)
 <!-- codegen:end -->
 
 ## How to use
@@ -248,3 +249,92 @@ This can be used with:
 ![](./gifs/custom.gif)
 
 Note: right now, this preset isn't smart enough to follow source maps or transpile code, so `source` should point at compiled javascript, not typescript. And VSCode's eslint plugin caches modules, so if you edit the custom preset, you may need to recompile and reload VSCode for it to work properly. 
+
+### Customisation
+
+In addition to the [custom](#custom) preset, you can also define your own presets in eslint configuration, e.g.:
+
+```js
+module.exports = {
+  ...
+  plugins: [
+    ...
+    'codegen'
+  ],
+  rules: {
+    ...
+    'codegen/codegen': [
+      'error',
+      {presets: require('./my-custom-presets')}
+    ],
+  },
+}
+```
+
+`presets` should be a record of preset functions, conforming to the `Preset` interface from this package. This can be used to extend the in-built ones. For example, you could make generated markdown collapsible:
+
+_Before:_
+
+```
+ <!-- codegen:start {preset: markdownTOC}-->
+ - [Section1](#section1)
+ - [Section2](#section2)
+ <!-- codegen:end -->
+```
+
+`my-custom-presets.js`:
+
+```js
+const {presets} = require('eslint-plugin-codegen')
+
+module.exports.markdownTOC = (params) => {
+  const toc = presets.markdownTOC(params)
+  return [
+    '<details>',
+    '<summary>click to expand</summary>',
+    '',
+    toc,
+    '</details>',
+  ].join('\n')
+}
+```
+
+`.eslintrc.js`:
+
+```js
+module.exports = {
+  ...
+  plugins: [
+    ...
+    'codegen'
+  ],
+  rules: {
+    ...
+    'codegen/codegen': ['error', {presets: require('./my-custom-presets')}],
+  },
+}
+```
+
+_After_:
+
+`readme.md`:
+
+```
+ <!-- codegen:start {preset: markdownTOC}-->
+ <details>
+  <summary>click to expand</summary>
+
+ - [Section1](#section1)
+ - [Section2](#section2)
+ </details>
+ <!-- codegen:end -->
+```
+
+_Rendered_:
+
+<details>
+<summary>click to expand</summary>
+
+- [Section1](#section1)
+- [Section2](#section2)
+</details>

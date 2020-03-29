@@ -3,7 +3,7 @@ import * as os from 'os'
 import * as jsYaml from 'js-yaml'
 import {tryCatch} from 'fp-ts/lib/Either'
 import * as eslint from 'eslint'
-import * as presets from './presets'
+import * as presetsModule from './presets'
 import expect from 'expect'
 
 type MatchAll = (text: string, pattern: string | RegExp) => Iterable<NonNullable<ReturnType<string['match']>>>
@@ -11,7 +11,7 @@ const matchAll: MatchAll = require('string.prototype.matchall')
 
 export {Preset} from './presets'
 
-export {presets}
+export {presetsModule as presets}
 
 export const processors: Record<string, eslint.Linter.LintOptions> = {
   '.md': {
@@ -94,7 +94,12 @@ const codegen: eslint.Rule.RuleModule = {
           return context.report({message: `Error parsing options. ${maybeOptions.left}`, loc: startMarkerLoc})
         }
         const opts = maybeOptions.right || {}
-        if (typeof (presets as any)[opts.preset] !== 'function') {
+        const presets: Record<string, presetsModule.Preset<unknown> | undefined> = {
+          ...presetsModule,
+          ...context.options?.[0]?.presets,
+        }
+        const preset = presets[opts.preset]
+        if (typeof preset !== 'function') {
           return context.report({
             message: `unknown preset ${opts.preset}. Available presets: ${Object.keys(presets).join(', ')}`,
             loc: startMarkerLoc,
@@ -108,7 +113,7 @@ const codegen: eslint.Rule.RuleModule = {
         const result = tryCatch(
           () => {
             const meta = {filename: context.getFilename(), existingContent}
-            return presets[opts.preset as keyof typeof presets]({meta, options: opts})
+            return preset({meta, options: opts})
           },
           err => `${err}`
         )
