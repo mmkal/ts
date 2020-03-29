@@ -15,5 +15,15 @@
   },
   "devDependencies": {
     "expect-type": "0.4.5"
-  }
+  },
+  "keywords": [
+    "typescript",
+    "validation",
+    "inference",
+    "codecs",
+    "types",
+    "runtime",
+    "io-ts",
+    "pattern matching"
+  ]
 }
