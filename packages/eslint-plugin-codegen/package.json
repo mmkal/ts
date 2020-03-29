@@ -28,5 +28,19 @@
     "js-yaml": "3.13.1",
     "lodash": "4.17.15",
     "string.prototype.matchall": "^4.0.2"
-  }
+  },
+  "keywords": [
+    "eslint",
+    "eslint plugin",
+    "codegen",
+    "markdown",
+    "typescript",
+    "documentation",
+    "generator",
+    "generation",
+    "md",
+    "contents",
+    "jsdoc",
+    "barrel"
+  ]
 }
