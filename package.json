@@ -17,6 +17,8 @@
     "canary-preid": "echo \"$(yarn --silent current-branch)-$(yarn --silent commit-date)\"",
     "publish-canary": "lerna publish --canary --preid $(yarn --silent canary-preid) --dist-tag $(yarn --silent current-branch)",
     "prepublish-packages": "node scripts/prepublish && yarn clean && yarn build",
+    "prepack": "check-clean && node scripts/permalink",
+    "postpack": "git checkout -- .",
     "publish-packages": "lerna publish"
   },
   "workspaces": [
@@ -41,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
     "babel-jest": "^24.9.0",
+    "check-clean": "^0.1.0",
     "dedent": "^0.7.0",
     "eslint": "^6.8.0",
     "eslint-plugin-local": "^1.0.0",
@@ -52,6 +55,7 @@
     "minimatch": "^3.0.4",
     "mock-fs": "^4.11.0",
     "prettier": "^2.0.2",
+    "read-pkg-up": "^7.0.1",
     "typescript": "^3.7.4"
   }
 }
