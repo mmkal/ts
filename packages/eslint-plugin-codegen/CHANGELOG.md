@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.7.2...eslint-plugin-codegen@0.8.0) (2020-03-30)
+
+
+### Features
+
+* eslint config customisation ([5fa99f1](https://github.com/mmkal/ts/commit/5fa99f1a45d6c823823d6973b6041d2c78cf9c91))
+
+
+
+
+
+
 ## [0.7.2](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.7.1...eslint-plugin-codegen@0.7.2) (2020-03-24)
 
 **Note:** Version bump only for package eslint-plugin-codegen
