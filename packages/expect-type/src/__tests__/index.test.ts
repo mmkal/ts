@@ -57,7 +57,7 @@ test('Make assertions about object properties', () => {
   expectTypeOf(obj).property('b').toEqualTypeOf<string>()
 })
 
-test('Assert on function parameters (using `.parameter(n)` or `.parameters`) and return values (using `.return`)', () => {
+test('Assert on function parameters (using `.parameter(n)` or `.parameters`) and return values (using `.returns`)', () => {
   const f = (a: number) => [a, a]
 
   expectTypeOf(f).toBeFunction()

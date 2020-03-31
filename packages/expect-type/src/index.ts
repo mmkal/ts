@@ -25,6 +25,7 @@ export type Equal<Left, Right> = And<
 export type Params<Actual> = Actual extends (...args: infer P) => any ? P : [never]
 
 type MismatchArgs<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never]
+
 export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeAny: (...MISMATCH: MismatchArgs<IsAny<Actual>, B>) => true
   toBeUnknown: (...MISMATCH: MismatchArgs<IsUnknown<Actual>, B>) => true
