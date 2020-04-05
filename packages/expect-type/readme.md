@@ -6,7 +6,7 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 ![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/index.ts, export: expectTypeOf} -->
-#### [expectTypeOf](./src/index.ts#L68)
+#### [expectTypeOf](./src/index.ts#L71)
 
 Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
 
@@ -109,8 +109,14 @@ Make assertions about object properties:
 ```typescript
 const obj = {a: 1, b: ''}
 
-expectTypeOf(obj).property('a').toEqualTypeOf(1)
-expectTypeOf(obj).property('b').toEqualTypeOf<string>()
+// check that properties exist (or don't) with `.toHaveProperty`
+expectTypeOf(obj).toHaveProperty('a')
+expectTypeOf(obj).not.toHaveProperty('c')
+
+// check types of properties
+expectTypeOf(obj).toHaveProperty('a').toBeNumber()
+expectTypeOf(obj).toHaveProperty('b').toBeString()
+expectTypeOf(obj).toHaveProperty('a').not.toBeString()
 ```
 
 Assert on function parameters (using `.parameter(n)` or `.parameters`) and return values (using `.returns`):

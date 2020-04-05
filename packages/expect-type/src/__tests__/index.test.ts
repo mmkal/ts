@@ -53,8 +53,14 @@ test('Assertions can be inverted with `.not`', () => {
 test('Make assertions about object properties', () => {
   const obj = {a: 1, b: ''}
 
-  expectTypeOf(obj).property('a').toEqualTypeOf(1)
-  expectTypeOf(obj).property('b').toEqualTypeOf<string>()
+  // check that properties exist (or don't) with `.toHaveProperty`
+  expectTypeOf(obj).toHaveProperty('a')
+  expectTypeOf(obj).not.toHaveProperty('c')
+
+  // check types of properties
+  expectTypeOf(obj).toHaveProperty('a').toBeNumber()
+  expectTypeOf(obj).toHaveProperty('b').toBeString()
+  expectTypeOf(obj).toHaveProperty('a').not.toBeString()
 })
 
 test('Assert on function parameters (using `.parameter(n)` or `.parameters`) and return values (using `.returns`)', () => {

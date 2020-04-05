@@ -43,7 +43,10 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
   toEqualTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>) => true
   toBeCallableWith: B extends true ? (...args: Params<Actual>) => true : never
-  property<K extends keyof Actual>(key: K): ExpectTypeOf<Actual[K], B>
+  toHaveProperty: <K extends string>(
+    key: K,
+    ...MISMATCH: MismatchArgs<Extends<K, keyof Actual>, B>
+  ) => K extends keyof Actual ? ExpectTypeOf<Actual[K], B> : true
   parameter<K extends keyof Params<Actual>>(number: K): ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
@@ -87,7 +90,7 @@ export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true
     toMatchTypeOf: fn,
     toEqualTypeOf: fn,
     toBeCallableWith: fn,
-    property: expectTypeOf,
+    toHaveProperty: expectTypeOf,
     parameter: expectTypeOf,
   }
 
