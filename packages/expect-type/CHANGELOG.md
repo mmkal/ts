@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/mmkal/ts/compare/expect-type@0.5.0...expect-type@0.5.1) (2020-04-05)
+
+
+### Bug Fixes
+
+* out of date docs ([46f4fcc](https://github.com/mmkal/ts/commit/46f4fccda0db250218d0762f2a5b46f924c7f96d))
+
+
+
+
+
 # [0.5.0](https://github.com/mmkal/ts/compare/expect-type@0.4.6...expect-type@0.5.0) (2020-04-05)
 
 
