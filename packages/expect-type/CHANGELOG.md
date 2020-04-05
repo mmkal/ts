@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/mmkal/ts/compare/expect-type@0.4.6...expect-type@0.5.0) (2020-04-05)
+
+
+### Features
+
+* **toHaveProperty:** rename from `property` ([71db1ab](https://github.com/mmkal/ts/commit/71db1ab62ea19a96bf7c9261c06c8a6a5c08d034))
+* returns not return ([4c5a5b7](https://github.com/mmkal/ts/commit/4c5a5b708f86d7073008f1f16e8c56e4583df2ed))
+
+
+
+
+
+
 ## [0.4.6](https://github.com/mmkal/ts/compare/expect-type@0.4.5...expect-type@0.4.6) (2020-03-30)
 
 **Note:** Version bump only for package expect-type
