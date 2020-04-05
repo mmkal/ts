@@ -13,9 +13,6 @@
     "fp-ts": "^2.1.0",
     "io-ts": "^2.0.1"
   },
-  "devDependencies": {
-    "expect-type": "0.5.1"
-  },
   "keywords": [
     "typescript",
     "validation",

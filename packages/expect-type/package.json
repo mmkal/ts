@@ -9,10 +9,6 @@
   "scripts": {
     "build": "tsc -p ."
   },
-  "dependencies": {
-    "fp-ts": "^2.1.0",
-    "io-ts": "^2.0.1"
-  },
   "keywords": [
     "typescript",
     "validation",
