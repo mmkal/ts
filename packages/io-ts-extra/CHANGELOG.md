@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.10](https://github.com/mmkal/ts/compare/io-ts-extra@0.5.9...io-ts-extra@0.5.10) (2020-04-05)
+
+**Note:** Version bump only for package io-ts-extra
+
+
+
+
+
 ## [0.5.9](https://github.com/mmkal/ts/compare/io-ts-extra@0.5.8...io-ts-extra@0.5.9) (2020-04-05)
 
 **Note:** Version bump only for package io-ts-extra
