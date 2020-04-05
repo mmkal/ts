@@ -63,7 +63,7 @@ const fn: any = () => true
  *
  * @example
  * expectTypeOf({a: 1}).toMatchTypeOf({a: 2})
- * expectTypeOf({a: 1}).property('a').toBeNumber()
+ * expectTypeOf({a: 1}).toHaveProperty('a').toBeNumber()
  *
  * @description
  * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.

@@ -14,7 +14,7 @@ Similar to Jest's `expect`, but with type-awareness. Gives you access to a numbe
 
 ```typescript
 expectTypeOf({a: 1}).toMatchTypeOf({a: 2})
-expectTypeOf({a: 1}).property('a').toBeNumber()
+expectTypeOf({a: 1}).toHaveProperty('a').toBeNumber()
 ```
 
 See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
