@@ -54,7 +54,7 @@ const codegen: eslint.Rule.RuleModule = {
       markersByExtension['.js'] = markersByExtension['.ts']
 
       const markers = markersByExtension[path.extname(context.getFilename())]
-      const position = (index?: number) => {
+      const position = (index: number) => {
         const stringUpToPosition = sourceCode.slice(0, index)
         const lines = stringUpToPosition.split(os.EOL)
         return {line: lines.length, column: lines[lines.length - 1].length}
@@ -67,7 +67,7 @@ const codegen: eslint.Rule.RuleModule = {
 
       startMatches.forEach((startMatch, startMatchesIndex) => {
         const startIndex = startMatch.index!.valueOf()
-        const start = position()
+        const start = position(startIndex)
         const startMarkerLoc = {start, end: {...start, column: start.column + startMatch[0].length}}
         const searchForEndMarkerUpTo =
           startMatchesIndex === startMatches.length - 1 ? sourceCode.length : startMatches[startMatchesIndex + 1].index

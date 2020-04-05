@@ -38,6 +38,14 @@ tester.run('codegen', codegen.rules.codegen, {
     {
       filename: __filename,
       code: dedent`
+        // codegen:start {preset: doesNotExist}
+        // codegen:end
+      `,
+      errors: [{message: /unknown preset doesNotExist. Available presets: .*/}],
+    },
+    {
+      filename: __filename,
+      code: dedent`
         // codegen:start {abc: !Tag: not valid yaml!}
         // codegen:end
       `,

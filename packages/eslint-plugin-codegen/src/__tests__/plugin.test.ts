@@ -1,11 +1,10 @@
 import {processors} from '..'
 import dedent from 'dedent'
-import {Linter} from 'eslint'
 
 describe('markdown processor', () => {
   const markdownProcessor = processors['.md']
 
-  test('preprocessor comments out markdown correctly', () => {
+  test('preprocessor comments out markdown', () => {
     const markdown = dedent`
       # Title
 
