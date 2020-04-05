@@ -5,7 +5,32 @@ Name generator with some in-built dictionaries and presets.
 ![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
 ![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
 
-## Usage
+## Documentation
+
+### Installation
+
+```bash
+npm install memorable-moniker
+```
+
+or
+
+```bash
+yarn add memorable-moniker
+```
+
+### Usage
+
+The package exports some pre-defined name generators, which have a `.modify(...)` function for customisation. The pre-defined generators are `nicknames`, `people`, `women` and `men`. They are exposed as named exports, e.g.:
+
+```typescript
+import { nicknames } from 'memorable-moniker'
+
+// get a random nickname:
+nicknames.next()
+```
+
+The `.modify` function allows tweaking the behavior of the generators. Here are some usage examples:
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
 Nicknames/handles:
