@@ -13,26 +13,24 @@ const chain = either.chain
  * const CloudResources = narrow(
  *   t.type({
  *     database: t.type({username: t.string, password: t.string}),
- *     service: t.type({databaseConnectionString: t.string}),
+ *     service: t.type({dbConnectionString: t.string}),
  *   }),
  *   ({database}) => t.type({
- *     service: t.type({databaseConnectionString: t.literal(`${database.username}:${database.password}`)}),
+ *     service: t.type({dbConnectionString: t.literal(`${database.username}:${database.password}`)}),
  *   })
  * )
  *
  * const valid = CloudResources.decode({
  *   database: {username: 'user', password: 'pass'},
- *   service: {databaseConnectionString: 'user:pass'},
- * } as typeof CloudResources._A)
+ *   service: {dbConnectionString: 'user:pass'},
+ * })
+ * // returns a `Right`
  *
  * const invalid = CloudResources.decode({
  *   database: {username: 'user', password: 'pass'},
- *   service: {databaseConnectionString: 'user:typo'},
- * } as typeof CloudResources._A)
- *
- * // `invalid` is a `Left`, because `service.databaseConnectionString`
- * // doesn't match `database.username/password`.
- *
+ *   service: {dbConnectionString: 'user:wrongpassword'},
+ * })
+ * // returns a `Left` - service.dbConnectionString expected "user:pass", but got "user:wrongpassword"
  */
 export const narrow = <C extends Any, D extends Any>(
   codec: C,
