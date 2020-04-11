@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.5.10...io-ts-extra@0.6.0) (2020-04-11)
+
+
+### Features
+
+* **narrow:** rename from refinemet ([#23](https://github.com/mmkal/ts/issues/23)) ([2d08c08](https://github.com/mmkal/ts/commit/2d08c08298d42d1e711725a34eca859c6a7d8e54))
+
+
+
+
+
 ## [0.5.10](https://github.com/mmkal/ts/compare/io-ts-extra@0.5.9...io-ts-extra@0.5.10) (2020-04-05)
 
 **Note:** Version bump only for package io-ts-extra
