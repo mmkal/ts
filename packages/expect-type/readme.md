@@ -26,7 +26,9 @@ See the [full docs](https://npmjs.com/package/expect-type#documentation) for lot
 - [Contents](#contents)
 - [Installation and usage](#installation-and-usage)
 - [Documentation](#documentation)
+   - [Features](#features)
 - [Similar projects](#similar-projects)
+   - [Comparison](#comparison)
 <!-- codegen:end -->
 
 ## Installation and usage
@@ -40,6 +42,10 @@ import {expectTypeOf} from 'expect-type'
 ```
 
 ## Documentation
+
+The `expectTypeOf` method takes a single argument, or a generic parameter. Neither it, nor the functions chained off its return value, have any meaninful runtime behaviour. The assertions you write will be _compile-time_ errors if they don't hold true.
+
+### Features
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
 Type-check object references:
@@ -183,3 +189,20 @@ Other projects with similar goals:
 - [`tsd-check`](https://github.com/SamVerschueren/tsd-check/issues/10) is a CLI that runs the TypeScript type checker over assertions
 - [`type-plus`](https://github.com/unional/type-plus) comes with various type and runtime TypeScript assertions
 - [`static-type-assert`](https://github.com/ksxnodemodules/static-type-assert) type assertion functions
+
+### Comparison
+
+The key differences in this project are:
+
+- a fluent, jest-inspired API, making the difference between `actual` and `expected` clear. This becomes especially important with complex types and assertions.
+- inverting assertions intuitively and easily via `expectType(...).not`
+- first-class support for:
+  - `any` (as well as `unknown` and `never`).
+    - This can be especially useful in combination with `not`, to protect against functions returning too-permissive types. e.g. `const parseFile = (filename: string) => JSON.parse(readFileSync(filename).toString())` returns `any`, which could lead to errors. After giving it a proper return-type, you can add a test for this with `expect(parseFile).returns.not.toBeAny()`
+  - object properties
+  - function parameters
+  - function return values
+  - array item values
+  - nullable
+- assertions on types "matching" rather than exact type equality, for "is-a" relationships e.g. `expectTypeOf(square).toMatchTypeOf<Shape>()`
+- built into existing tooling with no dependencies. No extra build step, cli tool, or lint plugin is needed. Just import the function and start writing tests.
