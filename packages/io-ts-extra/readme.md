@@ -223,8 +223,8 @@ IntFromString.decode(123)            // left(...)
 <!-- codegen:end -->
 
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/refinement.ts, export: refinement} -->
-#### [refinement](./src/refinement.ts#L12)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/narrow.ts, export: narrow} -->
+#### [narrow](./src/narrow.ts#L12)
 
 Like io-ts's refinement type but:
 1. Not deprecated (see https://github.com/gcanti/io-ts/issues/373)

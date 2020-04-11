@@ -1,5 +1,5 @@
 import * as t from 'io-ts'
-import {refinement} from '../refinement'
+import {narrow} from '../narrow'
 import {expectRight, expectLeft} from './either-serializer'
 import {expectTypeOf} from 'expect-type'
 import {validationErrors} from '../reporters'
@@ -9,7 +9,7 @@ it('refines', () => {
   const Family = t.type({
     members: t.record(
       t.string,
-      refinement(Person, (val, ctx) => ctx.length === 0 || val.name === ctx[ctx.length - 1].key)
+      narrow(Person, (val, ctx) => ctx.length === 0 || val.name === ctx[ctx.length - 1].key)
     ),
   })
   expectTypeOf(Family._A).toEqualTypeOf<{members: Record<string, {name: string}>}>()
@@ -28,7 +28,7 @@ it('refines primitives', () => {
     members: t.record(
       t.string,
       t.type({
-        name: refinement(t.string, (val, ctx) => {
+        name: narrow(t.string, (val, ctx) => {
           return ctx.length <= 2 || val === ctx[ctx.length - 2].key
         }),
       })
@@ -40,29 +40,31 @@ it('refines primitives', () => {
 })
 
 it('can refine with another codec', () => {
-  const CloudResources = refinement(
-    t.tuple([
-      t.type({type: t.literal('database'), username: t.string, password: t.string}),
-      t.type({type: t.literal('service'), databaseConnectionString: t.string}),
-    ]),
-    ([db]) =>
-      t.type({
-        1: t.type({databaseConnectionString: t.literal(`${db.username}:${db.password}`)}),
+  const CloudResources = narrow(
+    t.type({
+      database: t.type({username: t.string, password: t.string}),
+      service: t.type({databaseConnectionString: t.string}),
+    }),
+    ({database}) => {
+      expectTypeOf(database).toEqualTypeOf<{username: string; password: string}>()
+      return t.type({
+        service: t.type({databaseConnectionString: t.literal(`${database.username}:${database.password}`)}),
       })
+    }
   )
 
   expectRight(
-    CloudResources.decode([
-      {type: 'database', username: 'user', password: 'pass'},
-      {type: 'service', databaseConnectionString: 'user:pass'},
-    ] as typeof CloudResources._A)
+    CloudResources.decode({
+      database: {username: 'user', password: 'pass'},
+      service: {databaseConnectionString: 'user:pass'},
+    } as typeof CloudResources._A)
   )
 
   expect(
-    CloudResources.is([
-      {type: 'database', username: 'user', password: 'pass'},
-      {type: 'service', databaseConnectionString: 'user:pass'},
-    ] as typeof CloudResources._A)
+    CloudResources.is({
+      database: {username: 'user', password: 'pass'},
+      service: {databaseConnectionString: 'user:pass'},
+    } as typeof CloudResources._A)
   ).toBe(true)
 
   const badResources = [
