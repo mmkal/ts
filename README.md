@@ -1,7 +1,7 @@
 # ts
 
-![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
-![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
+[![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts)
 
 Monorepo of assorted typescript projects.
 

@@ -2,8 +2,11 @@
 
 Name generator with some in-built dictionaries and presets.
 
-![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
-![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
+<!-- codegen:start {preset: badges} -->
+[![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/master/packages/memorable-moniker)
+[![npm version](https://badge.fury.io/js/memorable-moniker.svg)](https://npmjs.com/package/memorable-moniker)
+<!-- codegen:end -->
 
 ## Documentation
 
@@ -24,10 +27,21 @@ yarn add memorable-moniker
 The package exports some pre-defined name generators, which have a `.modify(...)` function for customisation. The pre-defined generators are `nicknames`, `people`, `women` and `men`. They are exposed as named exports, e.g.:
 
 ```typescript
-import { nicknames } from 'memorable-moniker'
+import {nicknames} from 'memorable-moniker'
 
 // get a random nickname:
 nicknames.next()
+```
+
+There are a few predefined name generators, which are exposed as named exports. Basic usage example, with sample outputs as comments:
+
+```typescript
+import {nicknames, women, men, people} from 'memorable-moniker'
+
+nicknames.next()  // dynamic-capybara
+women.next()      // Dani Snowden
+men.next()        // Stanley Coronado
+people.next()     // Javion Farrar
 ```
 
 The `.modify` function allows tweaking the behavior of the generators. Here are some usage examples:

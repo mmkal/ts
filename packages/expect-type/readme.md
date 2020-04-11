@@ -2,9 +2,11 @@
 
 Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 
-![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
-![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
-![npm version](https://badge.fury.io/js/expect-type.svg)
+<!-- codegen:start {preset: badges} -->
+[![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/master/packages/expect-type)
+[![npm version](https://badge.fury.io/js/expect-type.svg)](https://npmjs.com/package/expect-type)
+<!-- codegen:end -->
 
 Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
 
