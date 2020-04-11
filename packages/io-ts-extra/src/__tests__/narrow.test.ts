@@ -43,12 +43,12 @@ it('can refine with another codec', () => {
   const CloudResources = narrow(
     t.type({
       database: t.type({username: t.string, password: t.string}),
-      service: t.type({databaseConnectionString: t.string}),
+      service: t.type({dbConnectionString: t.string}),
     }),
     ({database}) => {
       expectTypeOf(database).toEqualTypeOf<{username: string; password: string}>()
       return t.type({
-        service: t.type({databaseConnectionString: t.literal(`${database.username}:${database.password}`)}),
+        service: t.type({dbConnectionString: t.literal(`${database.username}:${database.password}`)}),
       })
     }
   )
@@ -56,38 +56,38 @@ it('can refine with another codec', () => {
   expectRight(
     CloudResources.decode({
       database: {username: 'user', password: 'pass'},
-      service: {databaseConnectionString: 'user:pass'},
+      service: {dbConnectionString: 'user:pass'},
     } as typeof CloudResources._A)
   )
 
   expect(
     CloudResources.is({
       database: {username: 'user', password: 'pass'},
-      service: {databaseConnectionString: 'user:pass'},
+      service: {dbConnectionString: 'user:pass'},
     } as typeof CloudResources._A)
   ).toBe(true)
 
-  const badResources = [
-    {type: 'database', username: 'user'}, // missing password
-    {type: 'service', databaseConnectionString: 'user:pass'},
-  ]
+  const badResources = {
+    database: {username: 'user'}, // missing password
+    service: {dbConnectionString: 'user:pass'},
+  }
   const badResourcesValidation = CloudResources.decode(badResources)
   expectLeft(badResourcesValidation)
   expect(CloudResources.is(badResources)).toBe(false)
   expect(validationErrors(badResourcesValidation, 'CloudResources')).toMatchInlineSnapshot(`
     Array [
-      "Invalid value {undefined} supplied to CloudResources.0.password. Expected string.",
+      "Invalid value {undefined} supplied to CloudResources.database.password. Expected string.",
     ]
   `)
 
-  const invalidConnectionString = CloudResources.decode([
-    {type: 'database', username: 'user', password: 'pass'},
-    {type: 'service', databaseConnectionString: 'user:typo'},
-  ] as typeof CloudResources._A)
+  const invalidConnectionString = CloudResources.decode({
+    database: {username: 'user', password: 'pass'},
+    service: {dbConnectionString: 'user:typo'},
+  } as typeof CloudResources._A)
   expectLeft(invalidConnectionString)
   expect(validationErrors(invalidConnectionString, 'CloudResources')).toMatchInlineSnapshot(`
     Array [
-      "Invalid value {'user:typo'} supplied to CloudResources.1.databaseConnectionString. Expected \\"user:pass\\".",
+      "Invalid value {'user:typo'} supplied to CloudResources.service.dbConnectionString. Expected \\"user:pass\\".",
     ]
   `)
 })
