@@ -4,6 +4,7 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 
 ![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)
 ![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
+![npm version](https://badge.fury.io/js/expect-type.svg)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/index.ts, export: expectTypeOf} -->
 #### [expectTypeOf](./src/index.ts#L71)
