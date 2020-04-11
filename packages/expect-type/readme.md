@@ -6,24 +6,31 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 ![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)
 ![npm version](https://badge.fury.io/js/expect-type.svg)
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/index.ts, export: expectTypeOf} -->
-#### [expectTypeOf](./src/index.ts#L71)
-
 Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
+
+It can be used in your existing test files - or anywhere other type-checked file you'd like.
 
 ##### Example
 
 ```typescript
-expectTypeOf({a: 1}).toMatchTypeOf({a: 2})
-expectTypeOf({a: 1}).toHaveProperty('a').toBeNumber()
+import {foo, bar} from '../foo'
+import {expectTypeOf} from 'expect-type'
+
+test('foo types', () => {
+  // make sure `foo` has type {a: number}
+  expectTypeOf(foo).toMatchTypeOf({a: 1})
+  expectTypeOf(foo).toHaveProperty('a').toBeNumber()
+
+  // make sure `bar` is a function taking a string:
+  expectTypeOf(bar).parameter(0).toBeString()
+  expectTypeOf(bar).returns.not.toBeAny()
+})
 ```
 
-See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
-<!-- codegen:end -->
+See the [documentation](#documentation) for lots more examples.
 
 ## Contents
 <!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
-- [expectTypeOf](#expecttypeof)
 - [Contents](#contents)
 - [Installation and usage](#installation-and-usage)
 - [Documentation](#documentation)
@@ -44,7 +51,7 @@ import {expectTypeOf} from 'expect-type'
 
 ## Documentation
 
-The `expectTypeOf` method takes a single argument, or a generic parameter. Neither it, nor the functions chained off its return value, have any meaninful runtime behaviour. The assertions you write will be _compile-time_ errors if they don't hold true.
+The `expectTypeOf` method takes a single argument, or a generic parameter. Neither it, nor the functions chained off its return value, have any meaningful runtime behaviour. The assertions you write will be _compile-time_ errors if they don't hold true.
 
 ### Features
 
