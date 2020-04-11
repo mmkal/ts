@@ -8,8 +8,31 @@ const chain = either.chain
  * 1. Not deprecated (see https://github.com/gcanti/io-ts/issues/373)
  * 2. Passes in `Context` to the predicate argument, so you can check parent key names etc.
  * 3. Optionally allows returning another io-ts codec instead of a boolean for better error messages.
+ *
+ * @example
+ * const CloudResources = narrow(
+ *   t.type({
+ *     database: t.type({username: t.string, password: t.string}),
+ *     service: t.type({dbConnectionString: t.string}),
+ *   }),
+ *   ({database}) => t.type({
+ *     service: t.type({dbConnectionString: t.literal(`${database.username}:${database.password}`)}),
+ *   })
+ * )
+ *
+ * const valid = CloudResources.decode({
+ *   database: {username: 'user', password: 'pass'},
+ *   service: {dbConnectionString: 'user:pass'},
+ * })
+ * // returns a `Right`
+ *
+ * const invalid = CloudResources.decode({
+ *   database: {username: 'user', password: 'pass'},
+ *   service: {dbConnectionString: 'user:wrongpassword'},
+ * })
+ * // returns a `Left` - service.dbConnectionString expected "user:pass", but got "user:wrongpassword"
  */
-export const refinement = <C extends Any, D extends Any>(
+export const narrow = <C extends Any, D extends Any>(
   codec: C,
   predicate: (value: TypeOf<C>, context: Context) => D | boolean,
   name: string = `(${codec.name} | ${getFunctionName(predicate)})`
