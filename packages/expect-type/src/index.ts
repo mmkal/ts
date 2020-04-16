@@ -23,6 +23,7 @@ export type Equal<Left, Right> = And<
 >
 
 export type Params<Actual> = Actual extends (...args: infer P) => any ? P : [never]
+export type ReturnTypeOrNever<Actual> = Actual extends (...args: any[]) => infer R ? R : never
 
 type MismatchArgs<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never]
 
@@ -53,6 +54,11 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : never
   not: ExpectTypeOf<Actual, Not<B>>
+  with: <K>(k?: K) => ExpectTypeOf<Extract<Actual, K>, B>
+  withParams: <P extends Params<Actual>>(p?: P) => ExpectTypeOf<Extract<Actual, (...args: P) => any>, B>
+  withReturnType: <R extends ReturnTypeOrNever<Actual>>(
+    r?: R
+  ) => ExpectTypeOf<Extract<Actual, (...args: any[]) => R>, B>
 }
 const fn: any = () => true
 
@@ -92,6 +98,9 @@ export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true
     toBeCallableWith: fn,
     toHaveProperty: expectTypeOf,
     parameter: expectTypeOf,
+    with: expectTypeOf,
+    withParams: expectTypeOf,
+    withReturnType: expectTypeOf,
   }
 
   const getterProperties: readonly Keys[] = nonFunctionProperties

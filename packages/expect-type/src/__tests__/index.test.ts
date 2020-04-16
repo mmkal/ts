@@ -10,9 +10,30 @@ test('Assertions can be inverted', () => {
   expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
 })
 
+test('Overloads', () => {
+  type O1 = {
+    (a: string): string
+    (b: number): number
+  }
+
+  type O = ((a: string) => string) | ((a: number) => number)
+
+  type OS = Extract<O, (a: [string]) => any>
+
+  // todo: expectExpression('...').not.toCompile()
+  expectTypeOf<O>().returns.toMatchTypeOf<string>()
+  expectTypeOf<O>().returns.toBeNumber()
+  expectTypeOf<O>().with<(b: string) => any>().parameter(0).toBeString()
+  expectTypeOf<O>().with<(b: number) => number>().parameter(0).toBeNumber()
+  expectTypeOf<O>().withParams<[number]>().parameter(0).toBeString()
+  expectTypeOf<O>().withParams<[number]>().parameter(0).toBeNumber()
+  expectTypeOf<O>().withReturnType<number>().parameter(0).toBeNumber()
+  expectTypeOf<any>().toBeString()
+})
+
 test('Catch any/unknown/never types', () => {
   expectTypeOf<unknown>().toBeUnknown()
-  expectTypeOf<any>().toBeAny()
+  expectTypeOf<any>().not.toBeAny()
   expectTypeOf<never>().toBeNever()
 })
 
