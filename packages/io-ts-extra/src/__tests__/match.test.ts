@@ -19,6 +19,34 @@ describe('case matching', () => {
     expect(content).toEqual('hello')
   })
 
+  it('can use shorthand', () => {
+    const inputs = [{message: 'hi'}, 'hello', 'custom greeting', 37, [1, 2] as [number, number]]
+    const content = inputs.map(i =>
+      match(i)
+        .case('hello', () => 'you said hi')
+        .case(String, greeting => `you gave a custom greeting: "${greeting}"`)
+        .case({message: String}, m => {
+          expectTypeOf(m).toEqualTypeOf<{message: string}>()
+          return `you left a message: "${m.message}"`
+        })
+        .case({message: {}}, m => `invalid message type: ${typeof m.message}`)
+        .case(Number, n => `number: ${n}`)
+        .case([Number, Number], ns => `two numbers: ${ns}`)
+        .get()
+    )
+
+    expectTypeOf(content).items.toBeString()
+    expect(content).toMatchInlineSnapshot(`
+      Array [
+        "you left a message: \\"hi\\"",
+        "you said hi",
+        "you gave a custom greeting: \\"custom greeting\\"",
+        "number: 37",
+        "two numbers: 1,2",
+      ]
+    `)
+  })
+
   it('can use default', () => {
     const sound = match<MessageType>({from: '123', content: 'hello'})
       .case(Email, e => e.body)
