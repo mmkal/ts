@@ -1,11 +1,5 @@
 import * as t from 'io-ts'
 
-// const mappings = [
-//   //
-//   [String, t.string],
-//   []
-// ] as const
-
 export type ShorthandInput = string | number | boolean | null | undefined | object
 export type Sh<V extends ShorthandInput> = V extends string | number | boolean
   ? t.LiteralC<V>
