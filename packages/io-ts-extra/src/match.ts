@@ -1,7 +1,7 @@
 import * as Either from 'fp-ts/lib/Either'
 import * as t from 'io-ts'
 import {IsNeverOrAny, RichError} from './util'
-import {ShorthandInput, Sh, codecFromShorthand} from './shorthand'
+import {ShorthandInput, Shorthand, codecFromShorthand} from './shorthand'
 
 /** Not a real type that anything will have at runtime. Just a way of giving helpful compiler errors. */
 type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
@@ -41,15 +41,10 @@ interface PatternMatchBuilder<In, InSoFar, Out> {
       type: t.RefinementType<t.Type<NextIn>>,
       map: (obj: NextIn) => NextOut
     ): PatternMatchBuilder<In, InSoFar, Out | NextOut>
-    <NextIn extends In, NextOut>(type: t.Type<NextIn>, map: (obj: NextIn) => NextOut): PatternMatchBuilder<
-      In,
-      InSoFar | NextIn,
-      Out | NextOut
-    >
     <NextIn extends ShorthandInput, NextOut>(
       shorthand: NextIn,
-      map: (obj: Sh<NextIn>['_A']) => NextOut
-    ): PatternMatchBuilder<In, InSoFar | Sh<NextIn>['_A'], Out | NextOut>
+      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+    ): PatternMatchBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
   }
   default: <NextOut>(map: (obj: In) => NextOut) => PatternMatchBuilder<In, any, Out | NextOut>
   get: IsNeverOrAny<Exclude<In, InSoFar>> extends 1 ? () => Out : UnionOfCasesDoesNotMatchExpected<InSoFar, In>

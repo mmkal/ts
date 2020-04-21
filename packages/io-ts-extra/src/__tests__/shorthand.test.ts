@@ -8,15 +8,20 @@ const expectTypeRuntimeBehaviour = (inverted = false): typeof e => (actual: any)
   const json = (obj: unknown) => JSON.stringify(obj, null, 2)
   const assertions = {
     ...e,
-    toEqualTypeOf: (...other: any[]) => (other.length === 0 ? {} : jestExpect(json(actual)).toEqual(json(other[0]))),
-    toMatchTypeOf: (...other: any[]) =>
-      other.length === 0 ? {} : jestExpect(json(actual)).toMatchObject(json(other[0])),
+    toEqualTypeOf: (...other: any[]) => {
+      if (other.length === 0) return
+      jestExpect(json(actual)).toEqual(json(other[0]))
+    },
+    toMatchTypeOf: (...other: any[]) => {
+      if (other.length === 0) return
+      jestExpect(json(actual)).toMatchObject(json(other[0]))
+    },
     toHaveProperty: (prop: string) => {
       jestExpect(actual).toHaveProperty(prop)
-      return expectTypeRuntimeBehaviour(actual[prop])
+      return expectTypeRuntimeBehaviour(inverted)(actual[prop])
     },
   }
-  Object.defineProperty(assertions, 'not', {get: () => expectTypeRuntimeBehaviour(!inverted)})
+  Object.defineProperty(assertions, 'not', {get: () => expectTypeRuntimeBehaviour(!inverted)(actual)})
 
   return assertions
 }
@@ -24,18 +29,14 @@ const expectTypeRuntimeBehaviour = (inverted = false): typeof e => (actual: any)
 const expectTypeOf = expectTypeRuntimeBehaviour()
 
 test('shorthand types', () => {
+  expectTypeOf(codecFromShorthand()).toEqualTypeOf(t.unknown)
   expectTypeOf(codecFromShorthand(String)).toEqualTypeOf(t.string)
   expectTypeOf(codecFromShorthand(t.string)).toEqualTypeOf(t.string)
   expectTypeOf(codecFromShorthand('hi')).toEqualTypeOf(t.literal('hi'))
   expectTypeOf(codecFromShorthand(1)).toEqualTypeOf(t.literal(1))
+  expectTypeOf(codecFromShorthand([])).toEqualTypeOf(t.array(t.unknown))
   expectTypeOf(codecFromShorthand([String])).toEqualTypeOf(t.array(t.string))
-  expectTypeOf(codecFromShorthand([String, Number] as const)._A)
-    .toHaveProperty('0')
-    .toMatchTypeOf<string>()
-  expectTypeOf(codecFromShorthand([String, Number] as const)._A)
-    .toHaveProperty('1')
-    .toMatchTypeOf<number>()
-  expectTypeOf(codecFromShorthand([String, Number] as const)._A).not.toHaveProperty('2')
+  expectTypeOf(codecFromShorthand([String, Number])).toEqualTypeOf(t.tuple([t.string, t.number]))
   expectTypeOf(codecFromShorthand({foo: String, bar: {baz: Number}})).toEqualTypeOf(
     t.type({foo: t.string, bar: t.type({baz: t.number})})
   )
