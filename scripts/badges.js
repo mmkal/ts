@@ -6,6 +6,7 @@ const path = require('path')
 module.exports = params => {
   const {path: rootPath, packageJson: rootPkg} = readPkgUp.sync()
   const {path: leafPath, packageJson: leafPkg} = readPkgUp.sync({cwd: params.meta.filename})
+
   const relativePath = path.relative(path.dirname(rootPath), path.dirname(leafPath)).replace(/\\/g, '/')
 
   const repo = 'https://github.com/mmkal/ts'
