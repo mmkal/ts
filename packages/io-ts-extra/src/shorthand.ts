@@ -44,6 +44,20 @@ export type CodecFromShortHand = {
   <V extends ShorthandInput>(v: V): Shorthand<V>
 }
 
+/**
+ * Gets an io-ts codec from a shorthand input:
+ *
+ * - `String`, `Number`, `Boolean` are mapped to `t.string`, `t.number`, `t.boolean`.
+ * - Literal raw strings, numbers and booleans are mapped to `t.literal`.
+ * - `null` and `undefined` are mapped to `t.null` and `t.undefined`
+ * - No input is mapped to `t.unknown` (note - this is not the same as explicitly passing `undefined`)
+ * - Objects are recursively mapped to `t.type(...)`. e.g. `{ foo: String, bar: { baz: Number } }` => `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
+ * - An empty array is mapped to `t.array(t.unknown)`
+ * - A one-element array is mapped to `t.array(type)` where `type` is the codec from the element's shorthand representation.
+ * - Tuples are mapped to `t.tuple`. e.g. `[String, Number]` => `t.tuple([t.string, t.number])`
+ * - io-ts codecs are returned unchanged.
+ * - Unions, intersections, partials and other complex types are not supported, except by passing in an io-ts codec.
+ */
 export const codecFromShorthand: CodecFromShortHand = (...args: unknown[]): any => {
   if (args.length === 0) return t.unknown
   const v = args[0]

@@ -62,9 +62,23 @@ This package is also less mature. It's currently in v0, so will have a different
 ### Pattern matching
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: match} -->
-#### [match](./src/match.ts#L115)
+#### [match](./src/match.ts#L151)
 
 Match an object against a number of cases. Loosely based on Scala's pattern matching.
+
+##### Example
+
+```typescript
+// get a value which could be a string or a number:
+const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+const stringified = match(value)
+ .case(String, s => `the message is ${s}`)
+ .case(7, () => 'exactly seven')
+ .case(Number, n => `the number is ${n}`)
+ .get()
+```
+
+Under the hood, io-ts is used for validation. The first argument can be a "shorthand" for a type, but you can also pass in io-ts codecs directly for more complex types:
 
 ##### Example
 
@@ -77,7 +91,19 @@ const stringified = match(value)
  .get()
 ```
 
-you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
+you can use a predicate function or `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
+
+##### Example
+
+```typescript
+// value which could be a string, or a real number in [0, 10):
+const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+const stringified = match(value)
+ .case(Number, n => n > 2, n => `big number: ${n}`)
+ .case(Number, n => `small number: ${n}`)
+ .default(x => `not a number: ${x}`)
+ .get()
+```
 
 ##### Example
 
@@ -91,7 +117,7 @@ const stringified = match(value)
  .get()
 ```
 
-note: when using `t.refinement`, the type being refined is not considered as exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`)
+note: when using predicates or `t.refinement`, the type being refined is not considered exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`)
 
 ##### Params
 
@@ -101,7 +127,7 @@ note: when using `t.refinement`, the type being refined is not considered as exh
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: matcher} -->
-#### [matcher](./src/match.ts#L145)
+#### [matcher](./src/match.ts#L183)
 
 Like @see match but no object is passed in when constructing the case statements. Instead `.get` is a function into which a value should be passed.
 

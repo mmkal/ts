@@ -100,6 +100,19 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
  *
  * @example
  * // get a value which could be a string or a number:
+ * const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+ * const stringified = match(value)
+ *  .case(String, s => `the message is ${s}`)
+ *  .case(7, () => 'exactly seven')
+ *  .case(Number, n => `the number is ${n}`)
+ *  .get()
+ *
+ * @description
+ * Under the hood, io-ts is used for validation. The first argument can be a "shorthand" for a type,
+ * but you can also pass in io-ts codecs directly for more complex types:
+ *
+ * @example
+ * // get a value which could be a string or a number:
  * const value = Math.random() < 0.5 ? 'foo' : 123
  * const stringified = match(value)
  *  .case(t.number, n => `the number is ${n}`)
@@ -107,7 +120,16 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
  *  .get()
  *
  * @description
- * you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
+ * you can use a predicate function or `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
+ *
+ * @example
+ * // value which could be a string, or a real number in [0, 10):
+ * const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+ * const stringified = match(value)
+ *  .case(Number, n => n > 2, n => `big number: ${n}`)
+ *  .case(Number, n => `small number: ${n}`)
+ *  .default(x => `not a number: ${x}`)
+ *  .get()
  *
  * @example
  * // value which could be a string, or a real number in [0, 10):
@@ -120,7 +142,7 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
  *
  * @description
  *
- * note: when using `t.refinement`, the type being refined is not considered as exhaustively matched,
+ * note: when using predicates or `t.refinement`, the type being refined is not considered exhaustively matched,
  * so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback
  * case (the equivalent of `.case(t.any, ...)`)
  *
@@ -131,6 +153,7 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
 /**
  * Like @see match but no object is passed in when constructing the case statements.
  * Instead `.get` is a function into which a value should be passed.
+ *
  * @example
  * const Email = t.type({sender: t.string, subject: t.string, body: t.string})
  * const SMS = t.type({from: t.string, content: t.string})
@@ -143,6 +166,7 @@ export const match = <Input>(obj: Input) => patternMatcher([], obj)
  *   .get({from: '123', content: 'hello'})
  *
  * expect(content).toEqual('hello')
+ *
  * @description
  * The function returned by `.get` is stateless and has no `this` context,
  * you can store it in a variable and pass it around:
