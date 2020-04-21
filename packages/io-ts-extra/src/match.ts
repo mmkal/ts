@@ -23,10 +23,15 @@ interface MatcherBuilder<In, InSoFar, Out> {
       type: t.RefinementType<t.Type<NextIn>>,
       map: (obj: MapperIn) => NextOut
     ): MatcherBuilder<In, InSoFar, Out | NextOut>
-    <NextIn extends In, MapperIn extends NextIn, NextOut>(
-      type: t.Type<NextIn>,
-      map: (obj: MapperIn) => NextOut
-    ): MatcherBuilder<In, InSoFar | NextIn, Out | NextOut>
+    <NextIn extends ShorthandInput, NextOut>(
+      shorthand: NextIn,
+      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+    ): MatcherBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
+    <NextIn extends ShorthandInput, NextOut>(
+      shorthand: NextIn,
+      predicate: (value: Shorthand<NextIn>['_A']) => boolean,
+      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+    ): MatcherBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
   }
   default: <NextOut>(map: (obj: In) => NextOut) => MatcherBuilder<In, any, Out | NextOut>
   get: IsNeverOrAny<Exclude<In, InSoFar>> extends 1
@@ -43,6 +48,11 @@ interface PatternMatchBuilder<In, InSoFar, Out> {
     ): PatternMatchBuilder<In, InSoFar, Out | NextOut>
     <NextIn extends ShorthandInput, NextOut>(
       shorthand: NextIn,
+      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+    ): PatternMatchBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
+    <NextIn extends ShorthandInput, NextOut>(
+      shorthand: NextIn,
+      predicate: (value: Shorthand<NextIn>['_A']) => boolean,
       map: (obj: Shorthand<NextIn>['_A']) => NextOut
     ): PatternMatchBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
   }
@@ -76,8 +86,11 @@ const patternMatcher = <In = any, InSoFar = never, Out = never>(
   obj: In
 ): PatternMatchBuilder<In, InSoFar, Out> =>
   ({
-    case: (type: t.Type<unknown>, map: UnknownFn) =>
-      patternMatcher(cases.concat([[codecFromShorthand(type), map]]), obj),
+    case: (type: t.Type<unknown>, ...fns: UnknownFn[]) => {
+      const codec = codecFromShorthand(type)
+      const refined = fns.length > 1 ? t.refinement(codec, fns[0] as any) : codec
+      return patternMatcher(cases.concat([[refined, fns[fns.length - 1]]]), obj)
+    },
     default: (map: UnknownFn) => patternMatcher(cases.concat([[t.any, map]]), obj),
     get: () => matchObject(obj, cases),
   } as any)
@@ -147,7 +160,12 @@ export const matcher = <In = any>(): MatcherBuilder<In, never, never> => matcher
 
 const matcherRecursive = <In = any, InSoFar = never, Out = never>(cases: Cases): MatcherBuilder<In, InSoFar, Out> =>
   ({
-    case: (type: t.Any, map: UnknownFn) => matcherRecursive(cases.concat([[type, map]])),
+    case: (type: t.Type<unknown>, ...fns: UnknownFn[]) => {
+      const codec = codecFromShorthand(type)
+      const refined = fns.length > 1 ? t.refinement(codec, fns[0] as any) : codec
+      return matcherRecursive(cases.concat([[refined, fns[fns.length - 1]]]))
+    },
+    // case: (type: t.Any, map: UnknownFn) => matcherRecursive(cases.concat([[type, map]])),
     default: (map: UnknownFn) => matcherRecursive(cases.concat([[t.any, map]])),
     get: (obj: unknown) => matchObject(obj, cases),
     tryGet: (obj: unknown) => maybeMatchObject(obj, cases),

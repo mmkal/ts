@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
 import {collect, match, matcher} from '../match'
 import {expectTypeOf} from 'expect-type'
+import * as fp from 'lodash/fp'
 
 import './either-serializer'
 
@@ -20,14 +21,15 @@ describe('case matching', () => {
   })
 
   it('can use shorthand', () => {
-    const inputs = [{message: 'hi'}, 'hello', 'custom greeting', 37, [1, 2] as [number, number]]
+    const inputs = ['hi', {message: 'how are you'}, 'hello', 'bonjour', 37, [1, 2] as [number, number]]
     const content = inputs.map(i =>
       match(i)
-        .case('hello', () => 'you said hi')
-        .case(String, greeting => `you gave a custom greeting: "${greeting}"`)
+        .case('hi', () => 'you just said hi')
+        .case(String, fp.startsWith('h'), s => `greeting: ${s}`)
+        .case(String, s => `custom greeting: ${s}`)
         .case({message: String}, m => {
           expectTypeOf(m).toEqualTypeOf<{message: string}>()
-          return `you left a message: "${m.message}"`
+          return `you left a message: ${m.message}`
         })
         .case({message: {}}, m => `invalid message type: ${typeof m.message}`)
         .case(Number, n => `number: ${n}`)
@@ -38,11 +40,31 @@ describe('case matching', () => {
     expectTypeOf(content).items.toBeString()
     expect(content).toMatchInlineSnapshot(`
       Array [
-        "you left a message: \\"hi\\"",
-        "you said hi",
-        "you gave a custom greeting: \\"custom greeting\\"",
+        "you just said hi",
+        "you left a message: how are you",
+        "greeting: hello",
+        "custom greeting: bonjour",
         "number: 37",
         "two numbers: 1,2",
+      ]
+    `)
+  })
+
+  it('can use shorthand with matcher', () => {
+    const inputs = ['hi', 'hello', `what's going on`, 37]
+    const content = inputs.map(
+      matcher<typeof inputs[number]>()
+        .case(String, fp.startsWith('h'), s => `greeting: ${s}`)
+        .case(String, s => `custom message: ${s}`)
+        .case(Number, n => `number: ${n}`).get
+    )
+
+    expect(content).toMatchInlineSnapshot(`
+      Array [
+        "greeting: hi",
+        "greeting: hello",
+        "custom message: what's going on",
+        "number: 37",
       ]
     `)
   })
