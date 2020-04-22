@@ -30,13 +30,20 @@ const expectTypeOf = expectTypeRuntimeBehaviour()
 
 test('shorthand types', () => {
   expectTypeOf(codecFromShorthand()).toEqualTypeOf(t.unknown)
+  expectTypeOf(codecFromShorthand(undefined)).toEqualTypeOf(t.undefined)
+  expectTypeOf(codecFromShorthand(null)).toEqualTypeOf(t.null)
+
   expectTypeOf(codecFromShorthand(String)).toEqualTypeOf(t.string)
+  expectTypeOf(codecFromShorthand(Number)).toEqualTypeOf(t.number)
   expectTypeOf(codecFromShorthand(t.string)).toEqualTypeOf(t.string)
+
   expectTypeOf(codecFromShorthand('hi')).toEqualTypeOf(t.literal('hi'))
   expectTypeOf(codecFromShorthand(1)).toEqualTypeOf(t.literal(1))
+
   expectTypeOf(codecFromShorthand([])).toEqualTypeOf(t.array(t.unknown))
   expectTypeOf(codecFromShorthand([String])).toEqualTypeOf(t.array(t.string))
   expectTypeOf(codecFromShorthand([String, Number])).toEqualTypeOf(t.tuple([t.string, t.number]))
+
   expectTypeOf(codecFromShorthand({foo: String, bar: {baz: Number}})).toEqualTypeOf(
     t.type({foo: t.string, bar: t.type({baz: t.number})})
   )
