@@ -128,3 +128,30 @@ describe('case matching', () => {
     `)
   })
 })
+
+describe('type-level tests', () => {
+  test('match conditions narrow type', () => {
+    const inputs = [{foo: 'bar'}, 123]
+
+    const results = inputs.map(i =>
+      match(i)
+        .case(t.object, o => o.foo)
+        .case(t.number, n => n.toString())
+        .get()
+    )
+
+    expectTypeOf(results).items.toBeString()
+  })
+
+  test('matcher conditions narrow type', () => {
+    const inputs = [{foo: 'bar'}, 123]
+
+    const mapper = matcher<typeof inputs[number]>()
+      .case(t.object, o => o.foo)
+      .case(t.number, n => n.toString())
+
+    const results = inputs.map(mapper.get)
+
+    expectTypeOf(results).items.toBeString()
+  })
+})
