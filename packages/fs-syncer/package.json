@@ -1,0 +1,7 @@
+{
+  "name": "fs-syncer",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "tsc -p ."
+  }
+}
