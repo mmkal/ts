@@ -6,11 +6,8 @@ export const getPaths = (obj: unknown, route: Route = []): Route[] => {
   if (typeof obj !== 'object' || !obj) {
     return [route]
   }
-  const entries = Object.entries(obj)
-  if (entries.length === 0) {
-    return [route]
-  }
-  const newRoutes = entries.map(e => {
+
+  const newRoutes = Object.entries(obj).map(e => {
     return getPaths(e[1], [...route, e[0]])
   })
 

@@ -11,6 +11,7 @@ import {getPaths, get} from './util'
  */
 export const fsSyncer = <T extends object>(baseDir: string, targetState: T) => {
   const write = () => {
+    fs.mkdirSync(baseDir, {recursive: true})
     const paths = getPaths(targetState)
     paths.forEach(p => {
       const filepath = path.join(baseDir, ...p)
@@ -27,7 +28,7 @@ export const fsSyncer = <T extends object>(baseDir: string, targetState: T) => {
       }
     }, {})
   }
-  const read = () => readdir(baseDir)
+  const read = () => (fs.existsSync(baseDir) ? readdir(baseDir) : {})
 
   /** writes all target files to file system, and deletes files not in the target state object */
   const sync = () => {

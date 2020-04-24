@@ -1,7 +1,8 @@
 import {getPaths} from '../util'
 
-test('getPaths', () => {
-  expect(getPaths({a: {b: {c: 1, d: {e: null}}, x: 'y'}})).toMatchInlineSnapshot(`
+describe('getPaths', () => {
+  test('nested object', () => {
+    expect(getPaths({a: {b: {c: 1, d: {e: null}}, x: 'y'}})).toMatchInlineSnapshot(`
     Array [
       Array [
         "a",
@@ -20,4 +21,9 @@ test('getPaths', () => {
       ],
     ]
   `)
+  })
+
+  test('empty object', () => {
+    expect(getPaths({})).toEqual([])
+  })
 })
