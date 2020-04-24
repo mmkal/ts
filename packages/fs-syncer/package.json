@@ -6,7 +6,8 @@
   "files": [
     "dist/*.js",
     "dist/*.ts",
-    "dist/*.map"
+    "dist/*.map",
+    "src/*.ts"
   ],
   "scripts": {
     "build": "tsc -p ."
