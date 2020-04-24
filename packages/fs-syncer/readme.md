@@ -2,6 +2,13 @@
 
 A helper to recursively read and write text files to a specified directory.
 
+<!-- codegen:start {preset: badges} -->
+[![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/master/packages/fs-syncer)
+[![npm version](https://badge.fury.io/js/fs-syncer.svg)](https://npmjs.com/package/fs-syncer)
+<!-- codegen:end -->
+
+
 ## The idea
 
 It's a pain to write tests for tools that interact with the filesystem. It would be useful to write assertions that look something like:
