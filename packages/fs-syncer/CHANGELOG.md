@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/mmkal/ts/compare/fs-syncer@0.1.2...fs-syncer@0.2.0) (2020-04-26)
+
+
+### Features
+
+* **sync:** return syncer from .sync() ([60adcc3](https://github.com/mmkal/ts/commit/60adcc3450e22561575a97c421d4efbdd454aa1e))
+
+
+
+
+
 ## [0.1.2](https://github.com/mmkal/ts/compare/fs-syncer@0.1.1...fs-syncer@0.1.2) (2020-04-24)
 
 
