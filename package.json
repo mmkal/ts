@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "build": "lerna run build",
+    "build": "lerna run build --scope expect-type && lerna run build --ignore expect-type",
     "clean": "lerna exec -- 'rm -rf dist'",
     "test": "jest",
     "eslint": "eslint --ext .ts,.js,.md",
