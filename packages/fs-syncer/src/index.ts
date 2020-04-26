@@ -38,7 +38,10 @@ export const fsSyncer = <T extends object>(baseDir: string, targetState: T) => {
     fsPaths
       .filter(p => typeof get(targetState, p) === 'undefined')
       .forEach(p => fs.unlinkSync(path.join(baseDir, ...p)))
+    return syncer
   }
 
-  return {read, write, sync, targetState, baseDir}
+  const syncer = {read, write, sync, targetState, baseDir}
+
+  return syncer
 }
