@@ -11,29 +11,27 @@ test('Assertions can be inverted', () => {
 })
 
 test('Overloads', () => {
-  type O1 = {
-    (a: string): string
-    (b: number): number
-  }
+  type Overloaded = ((a: string) => string) | ((a: number) => number)
 
-  type O = ((a: string) => string) | ((a: number) => number)
+  // @ts-expect-error
+  expectTypeOf<Overloaded>().returns.toMatchTypeOf<string>()
 
-  type OS = Extract<O, (a: [string]) => any>
+  // @ts-expect-error
+  expectTypeOf<Overloaded>().returns.toBeNumber()
 
-  // todo: expectExpression('...').not.toCompile()
-  expectTypeOf<O>().returns.toMatchTypeOf<string>()
-  expectTypeOf<O>().returns.toBeNumber()
-  expectTypeOf<O>().with<(b: string) => any>().parameter(0).toBeString()
-  expectTypeOf<O>().with<(b: number) => number>().parameter(0).toBeNumber()
-  expectTypeOf<O>().withParams<[number]>().parameter(0).toBeString()
-  expectTypeOf<O>().withParams<[number]>().parameter(0).toBeNumber()
-  expectTypeOf<O>().withReturnType<number>().parameter(0).toBeNumber()
-  expectTypeOf<any>().toBeString()
+  expectTypeOf<Overloaded>().with<(b: string) => any>().parameter(0).toBeString()
+  expectTypeOf<Overloaded>().with<(b: number) => number>().parameter(0).toBeNumber()
+
+  expectTypeOf<Overloaded>().withParams<[string]>().parameter(0).toBeString()
+  expectTypeOf<Overloaded>().withParams<[number]>().parameter(0).toBeNumber()
+
+  expectTypeOf<Overloaded>().withReturnType<string>().parameter(0).toBeString()
+  expectTypeOf<Overloaded>().withReturnType<number>().parameter(0).toBeNumber()
 })
 
 test('Catch any/unknown/never types', () => {
   expectTypeOf<unknown>().toBeUnknown()
-  expectTypeOf<any>().not.toBeAny()
+  expectTypeOf<any>().toBeAny()
   expectTypeOf<never>().toBeNever()
 })
 

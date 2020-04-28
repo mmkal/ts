@@ -55,6 +55,6 @@
     "mock-fs": "^4.11.0",
     "prettier": "^2.0.2",
     "read-pkg-up": "^7.0.1",
-    "typescript": "^3.7.4"
+    "typescript": "^3.9.0-beta"
   }
 }
