@@ -1,0 +1,27 @@
+{
+  "name": "fs-syncer",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*.js",
+    "dist/*.ts",
+    "dist/*.map",
+    "src/*.ts"
+  ],
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "keywords": [
+    "fs",
+    "file",
+    "file system",
+    "sync",
+    "syncer",
+    "copy",
+    "directory",
+    "recursive",
+    "read",
+    "write"
+  ]
+}

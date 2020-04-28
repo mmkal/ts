@@ -16,13 +16,15 @@ type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
     }
   | never
 
+type Mappable<In, NextIn> = IsNeverOrAny<In> extends 1 ? NextIn : In & NextIn
+
 interface MatcherBuilder<In, InSoFar, Out> {
   case: {
-    <NextIn extends In, MapperIn extends NextIn, NextOut>(
+    <NextIn, MapperIn extends Mappable<In, NextIn>, NextOut>(
       type: t.RefinementType<t.Type<NextIn>>,
       map: (obj: MapperIn) => NextOut
     ): MatcherBuilder<In, InSoFar, Out | NextOut>
-    <NextIn extends In, MapperIn extends NextIn, NextOut>(
+    <NextIn, MapperIn extends Mappable<In, NextIn>, NextOut>(
       type: t.Type<NextIn>,
       map: (obj: MapperIn) => NextOut
     ): MatcherBuilder<In, InSoFar | NextIn, Out | NextOut>
@@ -36,11 +38,11 @@ interface MatcherBuilder<In, InSoFar, Out> {
 
 interface PatternMatchBuilder<In, InSoFar, Out> {
   case: {
-    <NextIn extends In, NextOut>(
+    <NextIn, NextOut>(
       type: t.RefinementType<t.Type<NextIn>>,
-      map: (obj: NextIn) => NextOut
+      map: (obj: Mappable<In, NextIn>) => NextOut
     ): PatternMatchBuilder<In, InSoFar, Out | NextOut>
-    <NextIn extends In, NextOut>(type: t.Type<NextIn>, map: (obj: NextIn) => NextOut): PatternMatchBuilder<
+    <NextIn, NextOut>(type: t.Type<NextIn>, map: (obj: Mappable<In, NextIn>) => NextOut): PatternMatchBuilder<
       In,
       InSoFar | NextIn,
       Out | NextOut

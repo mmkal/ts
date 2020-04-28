@@ -6,8 +6,9 @@ module.exports = {
     'prettier',
     'codegen'
   ],
+  ignorePatterns: ['dist', 'node_modules'],
   rules: {
-    'prettier/prettier': ['warn', require('./.prettierrc.json')],
+    'prettier/prettier': ['warn', require('./.prettierrc')],
     'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
   },
 }
