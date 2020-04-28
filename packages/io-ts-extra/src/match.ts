@@ -16,7 +16,7 @@ type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
     }
   | never
 
-type Mappable<In, NextIn> = NextIn & (IsNeverOrAny<In> extends 1 ? unknown : In)
+type Mappable<In, NextIn> = IsNeverOrAny<In> extends 1 ? NextIn : In & NextIn
 
 interface MatcherBuilder<In, InSoFar, Out> {
   case: {
