@@ -204,11 +204,11 @@ Other projects with similar goals:
 
 The key differences in this project are:
 
-- a fluent, jest-inspired API, making the difference between `actual` and `expected` clear. This becomes especially important with complex types and assertions.
+- a fluent, jest-inspired API, making the difference between `actual` and `expected` clear. This is helpful with complex types and assertions.
 - inverting assertions intuitively and easily via `expectType(...).not`
 - first-class support for:
   - `any` (as well as `unknown` and `never`).
-    - This can be especially useful in combination with `not`, to protect against functions returning too-permissive types. e.g. `const parseFile = (filename: string) => JSON.parse(readFileSync(filename).toString())` returns `any`, which could lead to errors. After giving it a proper return-type, you can add a test for this with `expect(parseFile).returns.not.toBeAny()`
+    - This can be especially useful in combination with `not`, to protect against functions returning too-permissive types. For example, `const parseFile = (filename: string) => JSON.parse(readFileSync(filename).toString())` returns `any`, which could lead to errors. After giving it a proper return-type, you can add a test for this with `expect(parseFile).returns.not.toBeAny()`
   - object properties
   - function parameters
   - function return values

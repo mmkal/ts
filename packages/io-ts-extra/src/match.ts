@@ -17,20 +17,22 @@ type UnionOfCasesDoesNotMatchExpected<InSoFar, In> =
     }
   | never
 
+type Mappable<In, NextIn> = IsNeverOrAny<In> extends 1 ? NextIn : In & NextIn
+
 interface MatcherBuilder<In, InSoFar, Out> {
   case: {
-    <NextIn extends In, MapperIn extends NextIn, NextOut>(
+    <NextIn, MapperIn extends Mappable<In, NextIn>, NextOut>(
       type: t.RefinementType<t.Type<NextIn>>,
       map: (obj: MapperIn) => NextOut
     ): MatcherBuilder<In, InSoFar, Out | NextOut>
     <NextIn extends ShorthandInput, NextOut>(
       shorthand: NextIn,
-      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+      map: (obj: Mappable<In, Shorthand<NextIn>['_A']>) => NextOut
     ): MatcherBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
     <NextIn extends ShorthandInput, NextOut>(
       shorthand: NextIn,
       predicate: (value: Shorthand<NextIn>['_A']) => boolean,
-      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+      map: (obj: Mappable<In, Shorthand<NextIn>['_A']>) => NextOut
     ): MatcherBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
   }
   default: <NextOut>(map: (obj: In) => NextOut) => MatcherBuilder<In, any, Out | NextOut>
@@ -42,18 +44,18 @@ interface MatcherBuilder<In, InSoFar, Out> {
 
 interface PatternMatchBuilder<In, InSoFar, Out> {
   case: {
-    <NextIn extends In, NextOut>(
+    <NextIn, NextOut>(
       type: t.RefinementType<t.Type<NextIn>>,
-      map: (obj: NextIn) => NextOut
+      map: (obj: Mappable<In, NextIn>) => NextOut
     ): PatternMatchBuilder<In, InSoFar, Out | NextOut>
     <NextIn extends ShorthandInput, NextOut>(
       shorthand: NextIn,
-      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+      map: (obj: Mappable<In, Shorthand<NextIn>['_A']>) => NextOut
     ): PatternMatchBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
     <NextIn extends ShorthandInput, NextOut>(
       shorthand: NextIn,
       predicate: (value: Shorthand<NextIn>['_A']) => boolean,
-      map: (obj: Shorthand<NextIn>['_A']) => NextOut
+      map: (obj: Mappable<In, Shorthand<NextIn>['_A']>) => NextOut
     ): PatternMatchBuilder<In, InSoFar | Shorthand<NextIn>['_A'], Out | NextOut>
   }
   default: <NextOut>(map: (obj: In) => NextOut) => PatternMatchBuilder<In, any, Out | NextOut>

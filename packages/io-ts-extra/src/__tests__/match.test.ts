@@ -178,3 +178,52 @@ describe('case matching', () => {
     `)
   })
 })
+
+describe('type-level tests', () => {
+  test('match conditions narrow type', () => {
+    const inputs = [{foo: 'bar'}, 123]
+
+    const results = inputs.map(i =>
+      match(i)
+        .case(t.object, o => expectTypeOf(o).toEqualTypeOf({foo: 'bar'}))
+        .case(t.number, n => expectTypeOf(n).toBeNumber())
+        .get()
+    )
+
+    expectTypeOf(results).items.toEqualTypeOf<true>()
+  })
+
+  test(`match conditions don't narrow any or never`, () => {
+    match({} as any).case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
+    match({} as never).case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
+  })
+
+  test('matcher conditions narrow type', () => {
+    const inputs = [{foo: 'bar'}, 123]
+
+    const mapper = matcher<typeof inputs[number]>()
+      .case(t.object, o => expectTypeOf(o).toEqualTypeOf({foo: 'bar'}))
+      .case(t.number, n => expectTypeOf(n).toBeNumber())
+
+    const results = inputs.map(mapper.get)
+
+    expectTypeOf(results).items.toEqualTypeOf<true>()
+  })
+
+  test(`matcher conditions don't narrow any or never`, () => {
+    matcher<any>().case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
+    matcher<never>().case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
+  })
+})
