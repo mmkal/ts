@@ -143,6 +143,17 @@ describe('type-level tests', () => {
     expectTypeOf(results).items.toEqualTypeOf<true>()
   })
 
+  test(`match conditions don't narrow any or never`, () => {
+    match(1 as any).case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
+    match(1 as never).case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
+  })
+
   test('matcher conditions narrow type', () => {
     const inputs = [{foo: 'bar'}, 123]
 
@@ -153,5 +164,16 @@ describe('type-level tests', () => {
     const results = inputs.map(mapper.get)
 
     expectTypeOf(results).items.toEqualTypeOf<true>()
+  })
+
+  test(`matcher conditions don't narrow any or never`, () => {
+    matcher<any>().case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
+    matcher<never>().case(t.object, o => {
+      expectTypeOf(o).not.toBeAny()
+      expectTypeOf(o).toEqualTypeOf<object>()
+    })
   })
 })
