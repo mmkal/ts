@@ -8,18 +8,7 @@ module.exports = {
   ],
   ignorePatterns: ['dist', 'node_modules'],
   rules: {
-    'prettier/prettier': [
-      'warn',
-      {
-        singleQuote: true,
-        semi: false,
-        arrowParens: 'avoid',
-        trailingComma: 'es5',
-        bracketSpacing: false,
-        endOfLine: 'auto',
-        printWidth: 120
-      },
-    ],
+    'prettier/prettier': ['warn', require('./.prettierrc')],
     'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
   },
 }
