@@ -144,11 +144,11 @@ describe('type-level tests', () => {
   })
 
   test(`match conditions don't narrow any or never`, () => {
-    match(1 as any).case(t.object, o => {
+    match({} as any).case(t.object, o => {
       expectTypeOf(o).not.toBeAny()
       expectTypeOf(o).toEqualTypeOf<object>()
     })
-    match(1 as never).case(t.object, o => {
+    match({} as never).case(t.object, o => {
       expectTypeOf(o).not.toBeAny()
       expectTypeOf(o).toEqualTypeOf<object>()
     })
