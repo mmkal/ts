@@ -6,8 +6,8 @@ import {pipe} from 'fp-ts/lib/pipeable'
 export type Decoder<A, O = A, I = unknown> = Omit<t.Type<A, O, I>, 'encode'>
 // prettier-ignore
 interface Mapper {
-  <From, To>(from: t.Type<From>, to: t.Type<To>, map: (f: From) => To): Decoder<To, From> & {from: From; to: To}
-  <From, To>(from: t.Type<From>, to: t.Type<To>, map: (f: From) => To, unmap: (t: To) => From): t.Type<To, From, From> & {from: From; to: To}
+  <From, ToO, ToA extends ToO | t.Branded<ToO, any>>(from: t.Type<From>, to: t.Type<ToA, ToO>, map: (f: From) => ToO): Decoder<ToA, From> & {from: From; to: ToA}
+  <From, ToO, ToA extends ToO | t.Branded<ToO, any>>(from: t.Type<From>, to: t.Type<ToA, ToO>, map: (f: From) => ToO, unmap: (t: ToA) => From): t.Type<ToA, From> & {from: From; to: ToA}
 }
 
 /**
@@ -75,5 +75,8 @@ export const mapper: Mapper = <From, To>(
  * @param decode transform a string into the target type
  * @param encode transform the target type back into a string
  */
-export const parser = <T>(type: t.Type<T>, decode: (value: string) => T, encode: (value: T) => string = String) =>
-  mapper(t.string, type, decode, encode)
+export const parser = <ToO, ToA extends ToO | t.Branded<ToO, any>>(
+  type: t.Type<ToA, ToO>,
+  decode: (value: string) => ToO,
+  encode: (value: ToA) => string = String
+): t.Type<ToA, string> & {from: string; to: ToA} => mapper(t.string, type, decode, encode)
