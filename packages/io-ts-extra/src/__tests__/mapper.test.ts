@@ -71,9 +71,9 @@ describe('mapper', () => {
 describe('parser', () => {
   it('parses', () => {
     const IntFromString = parser(t.Int, parseFloat)
-    expectTypeOf(IntFromString._O).toEqualTypeOf('1')
-    expectTypeOf(IntFromString._I).toEqualTypeOf('1')
-    expectTypeOf(IntFromString._A).toEqualTypeOf(1)
+    expectTypeOf(IntFromString._A).toMatchTypeOf<number>()
+    expectTypeOf(IntFromString._A).toEqualTypeOf<t.Branded<number, t.IntBrand>>()
+    expectTypeOf(IntFromString._O).toBeString()
     expect(IntFromString.decode('123')).toMatchInlineSnapshot(`
       _tag: Right
       right: 123
