@@ -81,17 +81,3 @@ export const codecFromShorthand: CodecFromShortHand = (...args: unknown[]): any 
     )
   return t.never
 }
-
-const codecs = [
-  //
-  codecFromShorthand({foo: {bar: Number, baz: String}}),
-  codecFromShorthand('hello'),
-  codecFromShorthand(String),
-  codecFromShorthand({hi: String}),
-  codecFromShorthand([String, Number] as const),
-  codecFromShorthand([Boolean]),
-  codecFromShorthand(t.type({x: t.string})),
-  codecFromShorthand('!!!!!!!!!!!!!!!!!!!!!!!!!!!'),
-] as const
-
-// codecs[0]._A.foo.baz
