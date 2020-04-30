@@ -48,7 +48,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
     key: K,
     ...MISMATCH: MismatchArgs<Extends<K, keyof Actual>, B>
   ) => K extends keyof Actual ? ExpectTypeOf<Actual[K], B> : true
-  parameter<K extends keyof Params<Actual>>(number: K): ExpectTypeOf<Params<Actual>[K], B>
+  parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never

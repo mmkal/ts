@@ -63,6 +63,7 @@ test('instanceOf', () => {
 })
 
 test('instanceOf names anonymous functions appropriately', () => {
+  // eslint-disable-next-line @typescript-eslint/no-extraneous-class
   class Foo {}
   Object.defineProperty(Foo, 'name', {value: null})
   expect(instanceOf(Foo).name).toEqual('InstanceOf<anonymous>')

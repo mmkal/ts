@@ -80,7 +80,7 @@ const getInterfaceTypeName = (props: Props): string => {
  * DateType.is(new Date())  // right(Date(...))
  * DateType.is('abc')       // left(...)
  */
-export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
+export const instanceOf = <T>(cns: new (...args: any[]) => T) =>
   new t.Type<T>(
     `InstanceOf<${cns.name || 'anonymous'}>`,
     (v): v is T => v instanceof cns,

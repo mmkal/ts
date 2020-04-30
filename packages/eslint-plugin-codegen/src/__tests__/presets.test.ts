@@ -6,6 +6,7 @@ import minimatch from 'minimatch'
 const mockFs: any = {}
 
 beforeEach(() => {
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   Object.keys(mockFs).forEach(k => delete mockFs[k])
 })
 

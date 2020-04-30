@@ -34,7 +34,7 @@ const resolveDictionaries = (dictionary: Dictionary): string[] => {
   return dictionary.words
 }
 
-export type Rng = {(): number} & {seed: (seed: any) => Rng}
+export type Rng = (() => number) & {seed: (seed: any) => Rng}
 export const getRng = (seed?: string): Rng => Object.assign(seedrandom(seed), {seed: getRng})
 
 export const createNameGenerator = <T>(params: Params<T>): NameGenerator<T> => {

@@ -207,7 +207,7 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
   return specs
     .map(s => {
       const lines = [
-        `${'#'.repeat(options.headerLevel || 0)} ${s.title}${lodash.get(s, 'suffix', ':')}${os.EOL}`.trimStart(),
+        `${'#'.repeat(options.headerLevel || 0)} ${s.title}${lodash.get(s, 'suffix', ':')}${os.EOL}`.trimLeft(),
         '```typescript',
         s.code,
         '```',
@@ -271,10 +271,7 @@ export const monorepoTOC: Preset<{
       return {package: leafPkg, path: relativePath, readme}
     })
     .filter(props => {
-      const filter =
-        typeof options.filter === 'object'
-          ? options.filter
-          : ({'package.name': options.filter!} as Record<string, string>)
+      const filter = typeof options.filter === 'object' ? options.filter : {'package.name': options.filter!}
       return Object.keys(filter)
         .filter(key => typeof filter[key] === 'string')
         .every(key => new RegExp(lodash.get(filter, key)).test(lodash.get(props, key)))

@@ -1,6 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  parserOptions: {ecmaVersion: 2018, sourceType: 'module'},
+  parserOptions: {ecmaVersion: 2018, sourceType: 'module', extraFileExtensions: ['.md']},
   plugins: [
     '@typescript-eslint/eslint-plugin',
     'prettier',
@@ -18,7 +18,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:jest/recommended',
     'xo',
-    // 'xo-typescript',
+    'xo-typescript',
   ],
   ignorePatterns: ['dist', 'node_modules', 'coverage'],
   rules: {
@@ -49,6 +49,8 @@ module.exports = {
     'indent': 'off',
     'semi': 'off',
     'quotes': 'off',
+    '@typescript-eslint/semi': 'off',
+    '@typescript-eslint/quotes': 'off',
     'eol-last': 'off',
     'no-trailing-spaces': 'off',
     '@typescript-eslint/member-delimiter-style': 'off',
@@ -77,6 +79,8 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
     'unicorn/no-null': 'off',
     'unicorn/filename-case': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off',
+    '@typescript-eslint/prefer-regexp-exec': 'off',
 
     // covered by `@typescript-eslint/no-unsued-vars`
     'no-unused-vars': 'off',
@@ -93,6 +97,10 @@ module.exports = {
     'unicorn/throw-new-error': 'off',
     'unicorn/catch-error-name': 'off',
     'unicorn/prefer-trim-start-end': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/no-base-to-string': 'off',
   },
   overrides: [
     {
