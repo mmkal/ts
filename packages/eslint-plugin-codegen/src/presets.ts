@@ -36,7 +36,7 @@ export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, opti
 
   // ignore differences that are just semicolons and quotemarks
   // prettier-ignore
-  const normalise = (s: string) => s.replace(/['"`]/g, `'`).replace(/;/g, '').replace(/\r?\n/g, '\n').trim()
+  const normalise = (s: string) => s.replace(/["'`]/g, `'`).replace(/;/g, '').replace(/\r?\n/g, '\n').trim()
   if (normalise(expectedContent) === normalise(meta.existingContent)) {
     return meta.existingContent
   }
@@ -110,7 +110,7 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
     }
     if (sec.type === 'description') {
       // line breaks that run into letters aren't respected by jsdoc, so shouldn't be in markdown either
-      return sec.content.replace(/\r?\n\s*([a-zA-Z])/g, ' $1')
+      return sec.content.replace(/\r?\n\s*([A-Za-z])/g, ' $1')
     }
     if (sec.type === 'see') {
       return null
@@ -149,7 +149,7 @@ export const markdownTOC: Preset<{minDepth?: number; maxDepth?: number}> = ({met
       const indent = ' '.repeat(3 * (hashes.length - minHashes!))
       const text = h
         .slice(hashes.length + 1)
-        .replace(/\]\(.*\)/g, '')
+        .replace(/]\(.*\)/g, '')
         .replace(/[[\]]/g, '')
       const href = text
         .toLowerCase()
@@ -207,7 +207,7 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
   return specs
     .map(s => {
       const lines = [
-        `${'#'.repeat(options.headerLevel || 0)} ${s.title}${lodash.get(s, 'suffix', ':')}${os.EOL}`.trimLeft(),
+        `${'#'.repeat(options.headerLevel || 0)} ${s.title}${lodash.get(s, 'suffix', ':')}${os.EOL}`.trimStart(),
         '```typescript',
         s.code,
         '```',
@@ -294,7 +294,7 @@ export const monorepoTOC: Preset<{
           .split('\n')
           .map(line => line.trim())
           .filter(Boolean)
-          .find(line => line.match(/^[a-zA-Z]/))
+          .find(line => line.match(/^[A-Za-z]/))
       })()
       const name = leafPkg.name
       const homepage = leafPkg.homepage || `./${relativePath}`

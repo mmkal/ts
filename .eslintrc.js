@@ -14,13 +14,13 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    // 'plugin:unicorn/recommended',
+    'plugin:unicorn/recommended',
     'plugin:import/typescript',
     'plugin:jest/recommended',
     'xo',
     // 'xo-typescript',
   ],
-  ignorePatterns: ['dist', 'node_modules'],
+  ignorePatterns: ['dist', 'node_modules', 'coverage'],
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc')],
     'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
@@ -75,6 +75,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
+    'unicorn/no-null': 'off',
+    'unicorn/filename-case': 'off',
 
     // covered by `@typescript-eslint/no-unsued-vars`
     'no-unused-vars': 'off',
@@ -82,8 +84,15 @@ module.exports = {
     'no-warning-comments': 'off',
     'no-dupe-class-members': 'off',
 
+    // Sindre Sorwho?
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/consistent-function-scoping': 'off',
+    'unicorn/no-fn-reference-in-iterator': 'off',
+    'unicorn/no-nested-ternary': 'off',
+    'unicorn/new-for-builtins': 'off',
+    'unicorn/throw-new-error': 'off',
+    'unicorn/catch-error-name': 'off',
+    'unicorn/prefer-trim-start-end': 'off',
   },
   overrides: [
     {
@@ -91,6 +100,12 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       }
-    }
+    },
+    {
+      files: ['**/*.md'],
+      rules: {
+        'unicorn/filename-case': 'off',
+      }
+    },
   ]
 }

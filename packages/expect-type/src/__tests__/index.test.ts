@@ -95,7 +95,7 @@ test('Array items can be checked with `.items`', () => {
 
 test('Check that functions never return', () => {
   const thrower = () => {
-    throw Error()
+    throw Error('oh no')
   }
 
   expectTypeOf(thrower).returns.toBeNever()

@@ -119,7 +119,7 @@ describe('parser', () => {
   })
 
   it('parses dates', () => {
-    const ValidDate = t.refinement(instanceOf(Date), d => !isNaN(d.getTime()))
+    const ValidDate = t.refinement(instanceOf(Date), d => !Number.isNaN(d.getTime()))
     const DateFromString = parser(
       ValidDate,
       s => new Date(s),

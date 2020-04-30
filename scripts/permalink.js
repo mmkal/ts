@@ -18,7 +18,7 @@ readmes.forEach(file => {
   }
   const tag = gitHash
   const content = fs.readFileSync(file).toString()
-  const withPermaLinks = content.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, href) => {
+  const withPermaLinks = content.replace(/\[(.*?)]\((.*?)\)/g, (match, text, href) => {
     if (
       href.startsWith('#') ||
       href.startsWith('http://') ||
