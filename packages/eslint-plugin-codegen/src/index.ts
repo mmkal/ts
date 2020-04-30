@@ -132,8 +132,6 @@ const codegen: eslint.Rule.RuleModule = {
             fix: fixer => fixer.replaceTextRange(range, normalise(expected) + os.EOL),
           })
         }
-
-        return
       })
     }
     validate()

@@ -40,6 +40,28 @@ module.exports = {
     '@typescript-eslint/indent': 'off',
     'indent': 'off',
     'semi': 'off',
+    'quotes': 'off',
+    'eol-last': 'off',
+    'no-trailing-spaces': 'off',
+    
+    'capitalized-comments': 'off',
+
+    'jest/expect-expect': [
+      'error',
+      {assertFunctionNames: ['expect', 'expectTypeOf', 'expectLeft', 'expectRigh']}
+    ],
+
+    'no-else-return': ['warn', {allowElseIf: true}],
+
+    'camelcase': ['warn', {
+      properties: 'never',
+      ignoreDestructuring: true,
+      ignoreImports: true,
+    }],
+
+    // maybe turn on later?
+    'padding-line-between-statements': 'off',
+    'lines-between-class-members': 'off',
 
     // covered by `@typescript-eslint/no-unsued-vars`
     // 'no-unused-vars': 'off',

@@ -150,7 +150,7 @@ export const markdownTOC: Preset<{minDepth?: number; maxDepth?: number}> = ({met
       const text = h
         .slice(hashes.length + 1)
         .replace(/\]\(.*\)/g, '')
-        .replace(/[\[\]]/g, '')
+        .replace(/[[\]]/g, '')
       const href = text
         .toLowerCase()
         .replace(/\s/g, '-')
@@ -187,12 +187,16 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
     CallExpression(ce) {
       const identifier: any = lodash.get(ce, 'node')
       const isSpec = identifier && ['it', 'test'].includes(lodash.get(identifier, 'callee.name'))
-      if (!isSpec) return
+      if (!isSpec) {
+        return
+      }
       const hasArgs =
         identifier.arguments.length >= 2 &&
         identifier.arguments[0].type === 'StringLiteral' &&
         identifier.arguments[1].body
-      if (!hasArgs) return
+      if (!hasArgs) {
+        return
+      }
       const func = identifier.arguments[1]
       const lines = sourceCode.slice(func.start, func.end).split(/\r?\n/).slice(1, -1)
       const indent = lodash.min(lines.filter(Boolean).map(line => line.length - line.trim().length))!
@@ -284,7 +288,7 @@ export const monorepoTOC: Preset<{
       return comp * multiplier
     })
     .map(props => ({relativePath: props.path, leafPkg: props.package, readme: props.readme}))
-    .map(({relativePath, leafPkg, readme}, index) => {
+    .map(({relativePath, leafPkg, readme}) => {
       const description = (() => {
         return readme
           .split('\n')

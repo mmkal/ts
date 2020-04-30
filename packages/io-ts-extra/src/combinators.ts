@@ -60,9 +60,8 @@ export const sparseType = <P extends Props>(
     return Object.assign(intersection([type(requiredProps), partial(optionalProps)], computedName) as any, {props})
   } else if (someOptional) {
     return partial(props, computedName) as any
-  } else {
-    return type(props, computedName) as any
   }
+  return type(props, computedName) as any
 }
 
 const getNameFromProps = (props: Props): string =>

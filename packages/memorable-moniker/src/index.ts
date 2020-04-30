@@ -29,7 +29,7 @@ const resolveDictionaries = (dictionary: Dictionary): string[] => {
     return dict[dictionary]
   }
   if (Array.isArray(dictionary)) {
-    return new Array<string>().concat(...dictionary.map(resolveDictionaries))
+    return ([] as string[]).concat(...dictionary.map(resolveDictionaries))
   }
   return dictionary.words
 }
