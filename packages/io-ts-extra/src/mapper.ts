@@ -6,8 +6,8 @@ import {pipe} from 'fp-ts/lib/pipeable'
 export type Decoder<A, O = A, I = unknown> = Omit<t.Type<A, O, I>, 'encode'>
 // prettier-ignore
 interface Mapper {
-  <From, ToO, ToA extends ToO | t.Branded<ToO, any>>(from: t.Type<From>, to: t.Type<ToA, ToO>, map: (f: From) => ToO): Decoder<ToA, From> & {from: From; to: ToA}
-  <From, ToO, ToA extends ToO | t.Branded<ToO, any>>(from: t.Type<From>, to: t.Type<ToA, ToO>, map: (f: From) => ToO, unmap: (t: ToA) => From): t.Type<ToA, From> & {from: From; to: ToA}
+  <From, ToO, ToA extends ToO | t.Branded<ToO, any>>(from: t.Type<From>, to: t.Type<ToA, ToO>, map: (f: From) => ToO): Decoder<ToA, From> & {from: From; to: ToA};
+  <From, ToO, ToA extends ToO | t.Branded<ToO, any>>(from: t.Type<From>, to: t.Type<ToA, ToO>, map: (f: From) => ToO, unmap: (t: ToA) => From): t.Type<ToA, From> & {from: From; to: ToA};
 }
 
 /**

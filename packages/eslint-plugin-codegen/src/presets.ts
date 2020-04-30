@@ -329,6 +329,7 @@ export const custom: Preset<{source: string; export?: string} & Record<string, a
   if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
     throw Error(`Source path doesn't exist: ${sourcePath}`)
   }
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const sourceModule = require(sourcePath)
   const func = options.export ? sourceModule[options.export] : sourceModule
   if (typeof func !== 'function') {

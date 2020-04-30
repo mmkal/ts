@@ -37,7 +37,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeNumber: (...MISMATCH: MismatchArgs<Extends<Actual, number>, B>) => true
   toBeString: (...MISMATCH: MismatchArgs<Extends<Actual, string>, B>) => true
   toBeBoolean: (...MISMATCH: MismatchArgs<Extends<Actual, boolean>, B>) => true
-  toBeSymbol: (...MISMATCH: MismatchArgs<Extends<Actual, Symbol>, B>) => true
+  toBeSymbol: (...MISMATCH: MismatchArgs<Extends<Actual, symbol>, B>) => true
   toBeNull: (...MISMATCH: MismatchArgs<Extends<Actual, null>, B>) => true
   toBeUndefined: (...MISMATCH: MismatchArgs<Extends<Actual, undefined>, B>) => true
   toBeNullable: (...MISMATCH: MismatchArgs<Not<Equal<Actual, NonNullable<Actual>>>, B>) => true

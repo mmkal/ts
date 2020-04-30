@@ -12,8 +12,8 @@ module.exports = {
   env: { 'jest/globals': true, node: true },
   extends: [
     'eslint:recommended',
-    // 'plugin:@typescript-eslint/eslint-recommended',
-    // 'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
     // 'plugin:unicorn/recommended',
     'plugin:import/typescript',
     'plugin:jest/recommended',
@@ -51,7 +51,9 @@ module.exports = {
     'quotes': 'off',
     'eol-last': 'off',
     'no-trailing-spaces': 'off',
-    
+    '@typescript-eslint/member-delimiter-style': 'off',
+    'camelcase': 'off',
+
     'capitalized-comments': 'off',
 
     'jest/expect-expect': [
@@ -61,7 +63,7 @@ module.exports = {
 
     'no-else-return': ['warn', {allowElseIf: true}],
 
-    'camelcase': ['warn', {
+    '@typescript-eslint/camelcase': ['warn', {
       properties: 'never',
       ignoreDestructuring: true,
       ignoreImports: true,
@@ -70,6 +72,9 @@ module.exports = {
     // maybe turn on later?
     'padding-line-between-statements': 'off',
     'lines-between-class-members': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
 
     // covered by `@typescript-eslint/no-unsued-vars`
     'no-unused-vars': 'off',
@@ -80,4 +85,12 @@ module.exports = {
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/consistent-function-scoping': 'off',
   },
+  overrides: [
+    {
+      files: ['**/*.js'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+      }
+    }
+  ]
 }

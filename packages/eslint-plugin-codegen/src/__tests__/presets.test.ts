@@ -509,6 +509,7 @@ describe('markdownFromJsdoc', () => {
 
 describe('custom', () => {
   test('loads custom export', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const customPreset = require('./custom-preset')
 
     expect(Object.keys(customPreset)).toEqual(['getText', 'thrower'])

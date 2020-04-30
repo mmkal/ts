@@ -16,7 +16,7 @@ export interface Params<T> {
 export type InputParams<T> =
   // prettier-ignore
   Partial<Omit<Params<T>, 'rng'> & {
-    rng: () => number
+    rng: () => number;
   }>
 export interface NameGenerator<T> {
   params: Params<T>
