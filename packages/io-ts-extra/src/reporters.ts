@@ -1,3 +1,4 @@
+import * as t from 'io-ts'
 import {inspect} from 'util'
 import {EOL} from 'os'
 
