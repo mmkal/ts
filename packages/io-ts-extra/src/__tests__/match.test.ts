@@ -69,6 +69,17 @@ describe('case matching', () => {
     `)
   })
 
+  it('can use shorthand with matcher + narrowing', () => {
+    type PersonAttributes = {name: string; age: number}
+    type Employee = PersonAttributes & {type: 'Employee'; employeeId: string}
+    type Customer = PersonAttributes & {type: 'Customer'; orders: string[]}
+    type Person = Employee | Customer
+
+    matcher<Person>()
+      .case({type: 'Employee'} as const, e => expectTypeOf(e.employeeId).toBeString())
+      .case({type: 'Customer'} as const, e => expectTypeOf(e.orders).toEqualTypeOf<string[]>())
+  })
+
   it('can use default', () => {
     const sound = match<MessageType>({from: '123', content: 'hello'})
       .case(Email, e => e.body)
