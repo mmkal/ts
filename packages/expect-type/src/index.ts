@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export type Not<T extends boolean> = T extends true ? false : true
 export type Or<Types extends boolean[]> = Types[number] extends false ? false : true
 export type And<Types extends boolean[]> = Types[number] extends true ? true : false

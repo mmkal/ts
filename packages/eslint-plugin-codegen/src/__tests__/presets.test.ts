@@ -11,7 +11,7 @@ beforeEach(() => {
 
 jest.mock('fs', () => {
   const actual = require.requireActual('fs')
-  const reader = (orig: string, mockImpl: (...args: any[]) => any) => (...args: any[]) => {
+  const reader = (orig: string) => (...args: any[]) => {
     const path = args[0].replace(/\\/g, '/')
     // const fn = path in mockFs ? mockImpl : actual[orig]
     if (path in mockFs) {
@@ -20,8 +20,8 @@ jest.mock('fs', () => {
     return actual[orig](...args)
   }
   return {
-    readFileSync: reader('readFileSync', path => mockFs[path]),
-    existsSync: reader('existsSync', path => path in mockFs),
+    readFileSync: reader('readFileSync'),
+    existsSync: reader('existsSync'),
     readdirSync: (path: string) => Object.keys(mockFs).filter(k => k.startsWith(path.replace(/^\.\/?/, ''))),
     statSync: () => ({isFile: () => true, isDirectory: () => false}),
   }

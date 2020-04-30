@@ -32,6 +32,14 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'off',	
     '@typescript-eslint/unified-signatures': 'off',
 
+    '@typescript-eslint/no-unused-vars': ['error', {
+      varsIgnorePattern: '^_',
+      argsIgnorePattern: '^_',
+      caughtErrorsIgnorePattern: '^_',
+      ignoreRestSiblings: true,
+      args: 'after-used',
+    }],
+
     // xo defaults that overlap with prettier
     'comma-dangle': 'off',
     'object-curly-spacing': 'off',
@@ -64,7 +72,7 @@ module.exports = {
     'lines-between-class-members': 'off',
 
     // covered by `@typescript-eslint/no-unsued-vars`
-    // 'no-unused-vars': 'off',
+    'no-unused-vars': 'off',
 
     'no-warning-comments': 'off',
     'no-dupe-class-members': 'off',

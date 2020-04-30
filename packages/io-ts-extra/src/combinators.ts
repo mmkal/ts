@@ -99,5 +99,5 @@ export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
  */
 export const regex = (pattern: string | RegExp, name?: string) => {
   const regexInstance = new RegExp(pattern)
-  return t.refinement(t.string, value => regexInstance.test(value))
+  return t.refinement(t.string, value => regexInstance.test(value), name || `RegExp<${pattern}>`)
 }
