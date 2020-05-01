@@ -152,7 +152,7 @@ test('Use a custom dictionary', () => {
 })
 
 test('Use a custom random number generator', () => {
-  const generator = nicknames.modify(params => ({
+  const generator = nicknames.modify(() => ({
     rng: () => 0,
     dictionaries: [{words: ['heads', 'tails']}],
   }))

@@ -167,6 +167,7 @@ describe('type-level tests', () => {
   })
 
   test(`matcher conditions don't narrow any or never`, () => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
     matcher<any>().case(t.object, o => {
       expectTypeOf(o).not.toBeAny()
       expectTypeOf(o).toEqualTypeOf<object>()

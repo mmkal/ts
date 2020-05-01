@@ -16,7 +16,7 @@ export interface Params<T> {
 export type InputParams<T> =
   // prettier-ignore
   Partial<Omit<Params<T>, 'rng'> & {
-    rng: () => number
+    rng: () => number;
   }>
 export interface NameGenerator<T> {
   params: Params<T>
@@ -29,12 +29,12 @@ const resolveDictionaries = (dictionary: Dictionary): string[] => {
     return dict[dictionary]
   }
   if (Array.isArray(dictionary)) {
-    return new Array<string>().concat(...dictionary.map(resolveDictionaries))
+    return ([] as string[]).concat(...dictionary.map(resolveDictionaries))
   }
   return dictionary.words
 }
 
-export type Rng = {(): number} & {seed: (seed: any) => Rng}
+export type Rng = (() => number) & {seed: (seed: any) => Rng}
 export const getRng = (seed?: string): Rng => Object.assign(seedrandom(seed), {seed: getRng})
 
 export const createNameGenerator = <T>(params: Params<T>): NameGenerator<T> => {

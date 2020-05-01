@@ -3,6 +3,7 @@ import * as codegen from '..'
 import dedent from 'dedent'
 
 Object.assign(RuleTester, {
+  // eslint-disable-next-line jest/expect-expect
   it: (name: string, fn: any) => test(name.replace(/\r?\n/g, ' \\n ').trim(), fn),
 })
 

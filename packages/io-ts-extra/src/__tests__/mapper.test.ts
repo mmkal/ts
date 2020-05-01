@@ -119,7 +119,7 @@ describe('parser', () => {
   })
 
   it('parses dates', () => {
-    const ValidDate = t.refinement(instanceOf(Date), d => !isNaN(d.getTime()))
+    const ValidDate = t.refinement(instanceOf(Date), d => !Number.isNaN(d.getTime()))
     const DateFromString = parser(
       ValidDate,
       s => new Date(s),
@@ -137,6 +137,7 @@ describe('parser', () => {
   })
 
   it('catches failures', () => {
+    // eslint-disable-next-line @typescript-eslint/camelcase
     const StringFromBool_WithDecoderBug = mapper(t.boolean, t.string, b => (b ? RichError.throw({b}) : 'nope'))
     expect(StringFromBool_WithDecoderBug.decode(false)).toEqual(right('nope'))
     expect(StringFromBool_WithDecoderBug.decode(true)).toMatchInlineSnapshot(`

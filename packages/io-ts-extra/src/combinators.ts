@@ -60,9 +60,8 @@ export const sparseType = <P extends Props>(
     return Object.assign(intersection([type(requiredProps), partial(optionalProps)], computedName) as any, {props})
   } else if (someOptional) {
     return partial(props, computedName) as any
-  } else {
-    return type(props, computedName) as any
   }
+  return type(props, computedName) as any
 }
 
 const getNameFromProps = (props: Props): string =>
@@ -81,7 +80,7 @@ const getInterfaceTypeName = (props: Props): string => {
  * DateType.is(new Date())  // right(Date(...))
  * DateType.is('abc')       // left(...)
  */
-export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
+export const instanceOf = <T>(cns: new (...args: any[]) => T) =>
   new t.Type<T>(
     `InstanceOf<${cns.name || 'anonymous'}>`,
     (v): v is T => v instanceof cns,
@@ -100,5 +99,5 @@ export const instanceOf = <T>(cns: {new (...args: any[]): T}) =>
  */
 export const regex = (pattern: string | RegExp, name?: string) => {
   const regexInstance = new RegExp(pattern)
-  return t.refinement(t.string, value => regexInstance.test(value))
+  return t.refinement(t.string, value => regexInstance.test(value), name || `RegExp<${pattern}>`)
 }

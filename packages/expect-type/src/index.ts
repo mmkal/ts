@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export type Not<T extends boolean> = T extends true ? false : true
 export type Or<Types extends boolean[]> = Types[number] extends false ? false : true
 export type And<Types extends boolean[]> = Types[number] extends true ? true : false
@@ -36,7 +37,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeNumber: (...MISMATCH: MismatchArgs<Extends<Actual, number>, B>) => true
   toBeString: (...MISMATCH: MismatchArgs<Extends<Actual, string>, B>) => true
   toBeBoolean: (...MISMATCH: MismatchArgs<Extends<Actual, boolean>, B>) => true
-  toBeSymbol: (...MISMATCH: MismatchArgs<Extends<Actual, Symbol>, B>) => true
+  toBeSymbol: (...MISMATCH: MismatchArgs<Extends<Actual, symbol>, B>) => true
   toBeNull: (...MISMATCH: MismatchArgs<Extends<Actual, null>, B>) => true
   toBeUndefined: (...MISMATCH: MismatchArgs<Extends<Actual, undefined>, B>) => true
   toBeNullable: (...MISMATCH: MismatchArgs<Not<Equal<Actual, NonNullable<Actual>>>, B>) => true
@@ -47,7 +48,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
     key: K,
     ...MISMATCH: MismatchArgs<Extends<K, keyof Actual>, B>
   ) => K extends keyof Actual ? ExpectTypeOf<Actual[K], B> : true
-  parameter<K extends keyof Params<Actual>>(number: K): ExpectTypeOf<Params<Actual>[K], B>
+  parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never

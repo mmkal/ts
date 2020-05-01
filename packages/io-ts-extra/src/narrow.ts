@@ -35,7 +35,7 @@ const chain = either.chain
 export const narrow = <C extends Any, D extends Any>(
   codec: C,
   predicate: (value: TypeOf<C>, context: Context) => D | boolean,
-  name: string = `(${codec.name} | ${getFunctionName(predicate)})`
+  name = `(${codec.name} | ${getFunctionName(predicate)})`
 ): RefinementC<C> => {
   return new RefinementType(
     name,

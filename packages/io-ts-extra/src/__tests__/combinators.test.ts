@@ -1,4 +1,4 @@
-import {sparseType, optional} from '../index'
+import {sparseType, optional} from '..'
 import * as t from 'io-ts'
 import {expectRight, expectLeft} from './either-serializer'
 import {expectTypeOf} from 'expect-type'
@@ -63,6 +63,7 @@ test('instanceOf', () => {
 })
 
 test('instanceOf names anonymous functions appropriately', () => {
+  // eslint-disable-next-line @typescript-eslint/no-extraneous-class
   class Foo {}
   Object.defineProperty(Foo, 'name', {value: null})
   expect(instanceOf(Foo).name).toEqual('InstanceOf<anonymous>')

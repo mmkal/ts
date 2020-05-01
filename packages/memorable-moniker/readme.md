@@ -211,7 +211,7 @@ expect(samples).toMatchInlineSnapshot(`
 Use a custom random number generator:
 
 ```typescript
-const generator = nicknames.modify(params => ({
+const generator = nicknames.modify(() => ({
   rng: () => 0,
   dictionaries: [{words: ['heads', 'tails']}],
 }))
