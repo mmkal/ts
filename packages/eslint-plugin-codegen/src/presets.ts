@@ -36,7 +36,7 @@ export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, opti
 
   // ignore differences that are just semicolons and quotemarks
   // prettier-ignore
-  const normalise = (s: string) => s.replace(/['"`]/g, `'`).replace(/;/g, '').replace(/\r?\n/g, '\n').trim()
+  const normalise = (s: string) => s.replace(/["'`]/g, `'`).replace(/;/g, '').replace(/\r?\n/g, '\n').trim()
   if (normalise(expectedContent) === normalise(meta.existingContent)) {
     return meta.existingContent
   }
@@ -110,7 +110,7 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
     }
     if (sec.type === 'description') {
       // line breaks that run into letters aren't respected by jsdoc, so shouldn't be in markdown either
-      return sec.content.replace(/\r?\n\s*([a-zA-Z])/g, ' $1')
+      return sec.content.replace(/\r?\n\s*([A-Za-z])/g, ' $1')
     }
     if (sec.type === 'see') {
       return null
@@ -149,8 +149,8 @@ export const markdownTOC: Preset<{minDepth?: number; maxDepth?: number}> = ({met
       const indent = ' '.repeat(3 * (hashes.length - minHashes!))
       const text = h
         .slice(hashes.length + 1)
-        .replace(/\]\(.*\)/g, '')
-        .replace(/[\[\]]/g, '')
+        .replace(/]\(.*\)/g, '')
+        .replace(/[[\]]/g, '')
       const href = text
         .toLowerCase()
         .replace(/\s/g, '-')
@@ -183,16 +183,20 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
   const ast = parse(sourceCode, {sourceType: 'module', plugins: ['typescript']})
   const specs: any[] = []
   // todo: fix types/babel package versions - shouldn't need any here
-  const t = traverse(ast as any, {
+  traverse(ast as any, {
     CallExpression(ce) {
       const identifier: any = lodash.get(ce, 'node')
       const isSpec = identifier && ['it', 'test'].includes(lodash.get(identifier, 'callee.name'))
-      if (!isSpec) return
+      if (!isSpec) {
+        return
+      }
       const hasArgs =
         identifier.arguments.length >= 2 &&
         identifier.arguments[0].type === 'StringLiteral' &&
         identifier.arguments[1].body
-      if (!hasArgs) return
+      if (!hasArgs) {
+        return
+      }
       const func = identifier.arguments[1]
       const lines = sourceCode.slice(func.start, func.end).split(/\r?\n/).slice(1, -1)
       const indent = lodash.min(lines.filter(Boolean).map(line => line.length - line.trim().length))!
@@ -267,10 +271,7 @@ export const monorepoTOC: Preset<{
       return {package: leafPkg, path: relativePath, readme}
     })
     .filter(props => {
-      const filter =
-        typeof options.filter === 'object'
-          ? options.filter
-          : ({'package.name': options.filter!} as Record<string, string>)
+      const filter = typeof options.filter === 'object' ? options.filter : {'package.name': options.filter!}
       return Object.keys(filter)
         .filter(key => typeof filter[key] === 'string')
         .every(key => new RegExp(lodash.get(filter, key)).test(lodash.get(props, key)))
@@ -284,13 +285,13 @@ export const monorepoTOC: Preset<{
       return comp * multiplier
     })
     .map(props => ({relativePath: props.path, leafPkg: props.package, readme: props.readme}))
-    .map(({relativePath, leafPkg, readme}, index) => {
+    .map(({relativePath, leafPkg, readme}) => {
       const description = (() => {
         return readme
           .split('\n')
           .map(line => line.trim())
           .filter(Boolean)
-          .find(line => line.match(/^[a-zA-Z]/))
+          .find(line => line.match(/^[A-Za-z]/))
       })()
       const name = leafPkg.name
       const homepage = leafPkg.homepage || `./${relativePath}`
@@ -325,6 +326,7 @@ export const custom: Preset<{source: string; export?: string} & Record<string, a
   if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
     throw Error(`Source path doesn't exist: ${sourcePath}`)
   }
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const sourceModule = require(sourcePath)
   const func = options.export ? sourceModule[options.export] : sourceModule
   if (typeof func !== 'function') {

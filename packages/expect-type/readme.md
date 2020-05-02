@@ -175,7 +175,7 @@ Check that functions never return:
 
 ```typescript
 const thrower = () => {
-  throw Error()
+  throw Error('oh no')
 }
 
 expectTypeOf(thrower).returns.toBeNever()

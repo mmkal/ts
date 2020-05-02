@@ -7,6 +7,7 @@ import * as presetsModule from './presets'
 import expect from 'expect'
 
 type MatchAll = (text: string, pattern: string | RegExp) => Iterable<NonNullable<ReturnType<string['match']>>>
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const matchAll: MatchAll = require('string.prototype.matchall')
 
 export {Preset} from './presets'
@@ -34,7 +35,7 @@ const codegen: eslint.Rule.RuleModule = {
   meta: {fixable: true},
   create: (context: eslint.Rule.RuleContext) => {
     const validate = () => {
-      let sourceCode = context
+      const sourceCode = context
         .getSourceCode()
         .text.split(os.EOL)
         .filter(line => !line.includes('eslint-plugin-codegen:remove'))
@@ -132,8 +133,6 @@ const codegen: eslint.Rule.RuleModule = {
             fix: fixer => fixer.replaceTextRange(range, normalise(expected) + os.EOL),
           })
         }
-
-        return
       })
     }
     validate()

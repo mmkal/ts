@@ -62,7 +62,7 @@ This package is also less mature. It's currently in v0, so will have a different
 ### Pattern matching
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: match} -->
-#### [match](./src/match.ts#L151)
+#### [match](./src/match.ts#L117)
 
 Match an object against a number of cases. Loosely based on Scala's pattern matching.
 
@@ -127,7 +127,7 @@ note: when using predicates or `t.refinement`, the type being refined is not con
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: matcher} -->
-#### [matcher](./src/match.ts#L183)
+#### [matcher](./src/match.ts#L147)
 
 Like @see match but no object is passed in when constructing the case statements. Instead `.get` is a function into which a value should be passed.
 
@@ -288,7 +288,7 @@ const invalid = CloudResources.decode({
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/reporters.ts, export: validationErrors} -->
-#### [validationErrors](./src/reporters.ts#L10)
+#### [validationErrors](./src/reporters.ts#L9)
 
 Similar to io-ts's PathReporter, but gives slightly less verbose output.
 
@@ -301,7 +301,7 @@ Similar to io-ts's PathReporter, but gives slightly less verbose output.
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regex} -->
-#### [regex](./src/combinators.ts#L101)
+#### [regex](./src/combinators.ts#L100)
 
 A refinement of `t.string` which validates that the input matches a regular expression.
 
@@ -316,7 +316,7 @@ AllCaps.decode(123)      // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: instanceOf} -->
-#### [instanceOf](./src/combinators.ts#L84)
+#### [instanceOf](./src/combinators.ts#L83)
 
 Validates that a value is an instance of a class using the `instanceof` operator
 
