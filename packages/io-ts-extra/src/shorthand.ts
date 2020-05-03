@@ -61,23 +61,46 @@ export type CodecFromShortHand = {
  * |Unions, intersections, partials, one-element tuples and other complex types|not supported, except by passing in an io-ts codec|
  */
 export const codecFromShorthand: CodecFromShortHand = (...args: unknown[]): any => {
-  if (args.length === 0) return t.unknown
+  if (args.length === 0) {
+    return t.unknown
+  }
   const v = args[0]
-  if (v === String) return t.string
-  if (v === Number) return t.number
-  if (v === Boolean) return t.boolean
-  if (v === null) return t.null
-  if (typeof v === 'undefined') return t.undefined
-  if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') return t.literal(v)
-  if (Array.isArray(v) && v.length === 0) return t.array(t.unknown)
-  if (Array.isArray(v) && v.length === 1) return t.array(codecFromShorthand(v[0]))
-  if (Array.isArray(v)) return t.tuple(v.map(codecFromShorthand) as any)
-  if (v instanceof t.Type) return v
-  if (typeof v === 'object' && v)
+  if (v === String) {
+    return t.string
+  }
+  if (v === Number) {
+    return t.number
+  }
+  if (v === Boolean) {
+    return t.boolean
+  }
+  if (v === null) {
+    return t.null
+  }
+  if (typeof v === 'undefined') {
+    return t.undefined
+  }
+  if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+    return t.literal(v)
+  }
+  if (Array.isArray(v) && v.length === 0) {
+    return t.array(t.unknown)
+  }
+  if (Array.isArray(v) && v.length === 1) {
+    return t.array(codecFromShorthand(v[0]))
+  }
+  if (Array.isArray(v)) {
+    return t.tuple(v.map(codecFromShorthand) as any)
+  }
+  if (v instanceof t.Type) {
+    return v
+  }
+  if (typeof v === 'object' && v) {
     return t.type(
       Object.entries(v).reduce((acc, [prop, val]) => {
         return {...acc, [prop]: codecFromShorthand(val)}
       }, {})
     )
+  }
   return t.never
 }

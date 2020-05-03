@@ -62,7 +62,7 @@ This package is also less mature. It's currently in v0, so will have a different
 ### Pattern matching
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: match} -->
-#### [match](./src/match.ts#L117)
+#### [match](./src/match.ts#L153)
 
 Match an object against a number of cases. Loosely based on Scala's pattern matching.
 
@@ -127,7 +127,7 @@ note: when using predicates or `t.refinement`, the type being refined is not con
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: matcher} -->
-#### [matcher](./src/match.ts#L147)
+#### [matcher](./src/match.ts#L185)
 
 Like @see match but no object is passed in when constructing the case statements. Instead `.get` is a function into which a value should be passed.
 
@@ -288,7 +288,7 @@ const invalid = CloudResources.decode({
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/reporters.ts, export: validationErrors} -->
-#### [validationErrors](./src/reporters.ts#L9)
+#### [validationErrors](./src/reporters.ts#L10)
 
 Similar to io-ts's PathReporter, but gives slightly less verbose output.
 

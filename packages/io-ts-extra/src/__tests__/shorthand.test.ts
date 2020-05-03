@@ -3,17 +3,24 @@ import {codecFromShorthand} from '../shorthand'
 import {expectTypeOf as e} from 'expect-type'
 
 const expectTypeRuntimeBehaviour = (inverted = false): typeof e => (actual: any): any => {
-  if (typeof actual === 'undefined') return e(actual)
+  if (typeof actual === 'undefined') {
+    return e(actual)
+  }
+  // eslint-disable-next-line jest/valid-expect
   const jestExpect = (inverted ? (...args) => expect(...args).not : expect) as typeof expect
   const json = (obj: unknown) => JSON.stringify(obj, null, 2)
   const assertions = {
     ...e,
     toEqualTypeOf: (...other: any[]) => {
-      if (other.length === 0) return
+      if (other.length === 0) {
+        return
+      }
       jestExpect(json(actual)).toEqual(json(other[0]))
     },
     toMatchTypeOf: (...other: any[]) => {
-      if (other.length === 0) return
+      if (other.length === 0) {
+        return
+      }
       jestExpect(json(actual)).toMatchObject(json(other[0]))
     },
     toHaveProperty: (prop: string) => {

@@ -69,6 +69,7 @@ describe('case matching', () => {
     `)
   })
 
+  // eslint-disable-next-line jest/expect-expect
   it('can use shorthand with matcher + narrowing', () => {
     type PersonAttributes = {name: string; age: number}
     type Employee = PersonAttributes & {type: 'Employee'; employeeId: string}
