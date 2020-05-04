@@ -156,6 +156,17 @@ const twoArgFunc = (a: number, b: string) => ({a, b})
 expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
 ```
 
+Assert on constructor parameters:
+
+```typescript
+expectTypeOf(Date).toBeConstructibleWith('1970')
+expectTypeOf(Date).toBeConstructibleWith(0)
+expectTypeOf(Date).toBeConstructibleWith(new Date())
+expectTypeOf(Date).toBeConstructibleWith()
+
+expectTypeOf(Date).constructorParameters.toEqualTypeOf<[] | [string | number | Date]>()
+```
+
 Promise resolution types can be checked with `.resolves`:
 
 ```typescript

@@ -82,6 +82,15 @@ test('Assert on function parameters (using `.parameter(n)` or `.parameters`) and
   expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
 })
 
+test('Assert on constructor parameters', () => {
+  expectTypeOf(Date).toBeConstructibleWith('1970')
+  expectTypeOf(Date).toBeConstructibleWith(0)
+  expectTypeOf(Date).toBeConstructibleWith(new Date())
+  expectTypeOf(Date).toBeConstructibleWith()
+
+  expectTypeOf(Date).constructorParameters.toEqualTypeOf<[] | [string | number | Date]>()
+})
+
 test('Promise resolution types can be checked with `.resolves`', () => {
   const asyncFunc = async () => 123
 

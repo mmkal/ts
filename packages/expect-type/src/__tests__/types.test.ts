@@ -1,7 +1,7 @@
 import * as a from '..'
 import {expectTypeOf} from '..'
 
-it('can do boolean type logic', () => {
+test('boolean type logic', () => {
   expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
   expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
   expectTypeOf<a.And<[true, false]>>().toEqualTypeOf<false>()
@@ -46,4 +46,19 @@ it('can do boolean type logic', () => {
   expectTypeOf<a.Equal<any, never>>().toEqualTypeOf<false>()
   expectTypeOf<a.Equal<any, unknown>>().toEqualTypeOf<false>()
   expectTypeOf<a.Equal<never, unknown>>().toEqualTypeOf<false>()
+})
+
+test('constructor params', () => {
+  // The built-in ConstructorParameters type helper fails to pick up no-argument overloads.
+  // This test checks that's still the case to avoid unnecessarily maintaining a workaround,
+  // in case it's fixed in a future version
+
+  // broken built-in behaviour:
+  expectTypeOf<ConstructorParameters<typeof Date>>().toEqualTypeOf<[string | number | Date]>()
+  expectTypeOf<typeof Date extends new (...args: infer Args) => any ? Args : never>().toEqualTypeOf<
+    [string | number | Date]
+  >()
+
+  // workaround:
+  expectTypeOf<a.ConstructorParams<typeof Date>>().toEqualTypeOf<[] | [string | number | Date]>()
 })
