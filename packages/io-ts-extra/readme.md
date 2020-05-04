@@ -262,7 +262,7 @@ const invalid = CloudResources.decode({
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/reporters.ts, export: validationErrors} -->
-#### [validationErrors](./src/reporters.ts#L9)
+#### [validationErrors](./src/reporters.ts#L10)
 
 Similar to io-ts's PathReporter, but gives slightly less verbose output.
 
