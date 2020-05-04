@@ -57,6 +57,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   constructorParameters: ExpectTypeOf<ConstructorParams<Actual>, B>
+  instance: Actual extends new (...args: any[]) => infer I ? ExpectTypeOf<I, B> : never
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : never
@@ -77,7 +78,15 @@ const fn: any = () => true
  * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
  */
 export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
-  const nonFunctionProperties = ['parameters', 'returns', 'resolves', 'not', 'items', 'constructorParameters'] as const
+  const nonFunctionProperties = [
+    'parameters',
+    'returns',
+    'resolves',
+    'not',
+    'items',
+    'constructorParameters',
+    'instance',
+  ] as const
   type Keys = keyof ExpectTypeOf<any, any>
 
   type FunctionsDict = Record<Exclude<Keys, typeof nonFunctionProperties[number]>, any>

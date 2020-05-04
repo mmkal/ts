@@ -167,6 +167,12 @@ expectTypeOf(Date).toBeConstructibleWith()
 expectTypeOf(Date).constructorParameters.toEqualTypeOf<[] | [string | number | Date]>()
 ```
 
+Class instance types:
+
+```typescript
+expectTypeOf(Date).instance.toHaveProperty('toISOString')
+```
+
 Promise resolution types can be checked with `.resolves`:
 
 ```typescript

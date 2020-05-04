@@ -91,6 +91,10 @@ test('Assert on constructor parameters', () => {
   expectTypeOf(Date).constructorParameters.toEqualTypeOf<[] | [string | number | Date]>()
 })
 
+test('Class instance types', () => {
+  expectTypeOf(Date).instance.toHaveProperty('toISOString')
+})
+
 test('Promise resolution types can be checked with `.resolves`', () => {
   const asyncFunc = async () => 123
 
