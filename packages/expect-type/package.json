@@ -11,9 +11,11 @@
   },
   "keywords": [
     "typescript",
-    "validation",
-    "inference",
+    "type-check",
+    "assert",
     "types",
-    "runtime"
+    "typings",
+    "test",
+    "testing"
   ]
 }
