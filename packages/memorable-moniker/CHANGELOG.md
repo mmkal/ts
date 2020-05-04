@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.8](https://github.com/mmkal/ts/compare/memorable-moniker@0.2.7...memorable-moniker@0.2.8) (2020-05-04)
+
+
+### Bug Fixes
+
+* **parser:** allow mapping to branded types ([#28](https://github.com/mmkal/ts/issues/28)) ([1808143](https://github.com/mmkal/ts/commit/180814329681f1164fac559c86b9173d615077e3))
+
+
+
+
+
+
 ## [0.2.7](https://github.com/mmkal/ts/compare/memorable-moniker@0.2.6...memorable-moniker@0.2.7) (2020-04-11)
 
 **Note:** Version bump only for package memorable-moniker
