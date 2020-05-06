@@ -71,8 +71,18 @@ const fn: any = () => true
  * form of a reference or generic type parameter.
  *
  * @example
- * expectTypeOf({a: 1}).toMatchTypeOf({a: 2})
- * expectTypeOf({a: 1}).toHaveProperty('a').toBeNumber()
+ * import {foo, bar} from '../foo'
+ * import {expectTypeOf} from 'expect-type'
+ *
+ * test('foo types', () => {
+ *   // make sure `foo` has type {a: number}
+ *   expectTypeOf(foo).toMatchTypeOf({a: 1})
+ *   expectTypeOf(foo).toHaveProperty('a').toBeNumber()
+ *
+ *   // make sure `bar` is a function taking a string:
+ *   expectTypeOf(bar).parameter(0).toBeString()
+ *   expectTypeOf(bar).returns.not.toBeAny()
+ * })
  *
  * @description
  * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.

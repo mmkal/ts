@@ -58,12 +58,29 @@ The `expectTypeOf` method takes a single argument, or a generic parameter. Neith
 ### Features
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
-Type-check object references:
+Check that two objects have equivalent types to `.toEqualTypeOf`:
 
 ```typescript
 expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
-expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+```
+
+`.toEqualTypeOf` succeeds for objects with different values, but the same type:
+
+```typescript
 expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
+```
+
+`.toMatchTypeOf` checks that an object "matches" a type - that is, it has all the expected properties with correct types. This is similar to jest's `.toMatchObject`:
+
+```typescript
+expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+```
+
+When there's no instance/runtime variable for the expected type, you can use generics:
+
+```typescript
+expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+expectTypeOf({a: 1, b: 1}).toMatchTypeOf<{a: number}>()
 ```
 
 Assertions can be inverted:
@@ -109,7 +126,7 @@ expectTypeOf<1 | null>().toBeNullable()
 expectTypeOf<1 | undefined | null>().toBeNullable()
 ```
 
-Assertions can be inverted with `.not`:
+Most assertions can be inverted with `.not`:
 
 ```typescript
 expectTypeOf(1).not.toBeUnknown()

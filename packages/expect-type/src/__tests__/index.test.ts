@@ -1,9 +1,20 @@
 import {expectTypeOf} from '..'
 
-test('Type-check object references', () => {
+test('Check that two objects have equivalent types to `.toEqualTypeOf`', () => {
   expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
-  expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+})
+
+test('`.toEqualTypeOf` succeeds for objects with different values, but the same type', () => {
   expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
+})
+
+test('`.toMatchTypeOf` checks that an object "matches" a type - that is, it has all the expected properties with correct types. This is similar to jest\'s `.toMatchObject`', () => {
+  expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+})
+
+test("When there's no instance/runtime variable for the expected type, you can use generics", () => {
+  expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+  expectTypeOf({a: 1, b: 1}).toMatchTypeOf<{a: number}>()
 })
 
 test('Assertions can be inverted', () => {
@@ -41,7 +52,7 @@ test('Nullable types', () => {
   expectTypeOf<1 | undefined | null>().toBeNullable()
 })
 
-test('Assertions can be inverted with `.not`', () => {
+test('Most assertions can be inverted with `.not`', () => {
   expectTypeOf(1).not.toBeUnknown()
   expectTypeOf(1).not.toBeAny()
   expectTypeOf(1).not.toBeNever()
