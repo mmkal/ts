@@ -1,6 +1,6 @@
 import {expectTypeOf} from '..'
 
-test('Check that two objects have equivalent types to `.toEqualTypeOf`', () => {
+test('Check that two objects have equivalent types with `.toEqualTypeOf`', () => {
   expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
 })
 

@@ -58,7 +58,7 @@ The `expectTypeOf` method takes a single argument, or a generic parameter. Neith
 ### Features
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
-Check that two objects have equivalent types to `.toEqualTypeOf`:
+Check that two objects have equivalent types with `.toEqualTypeOf`:
 
 ```typescript
 expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
