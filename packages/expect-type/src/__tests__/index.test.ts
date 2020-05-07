@@ -8,13 +8,27 @@ test('`.toEqualTypeOf` succeeds for objects with different values, but the same 
   expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
 })
 
-test('`.toMatchTypeOf` checks that an object "matches" a type - that is, it has all the expected properties with correct types. This is similar to jest\'s `.toMatchObject`', () => {
+test("When there's no instance/runtime variable for the expected type, you can use generics", () => {
+  expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+})
+
+test('`.toEqualTypeOf` fails on extra properties', () => {
+  // @ts-expect-error
+  expectTypeOf({a: 1, b: 1}).toEqualTypeOf({a: 1})
+})
+
+test('To allow for extra properties, use `.toMatchTypeOf`. This checks that an object "matches" a type. This is similar to jest\'s `.toMatchObject`', () => {
   expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
 })
 
-test("When there's no instance/runtime variable for the expected type, you can use generics", () => {
-  expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
-  expectTypeOf({a: 1, b: 1}).toMatchTypeOf<{a: number}>()
+test('Another example of the difference between `.toMatchTypeOf` and `.toEqualTypeOf`, using generics. `.toMatchTypeOf` can be used for "is-a" relationships', () => {
+  type Fruit = {type: 'Fruit'; edible: boolean}
+  type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
+
+  expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
+
+  // @ts-expect-error
+  expectTypeOf<Apple>().toEqualTypeOf<Fruit>()
 })
 
 test('Assertions can be inverted', () => {
