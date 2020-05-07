@@ -58,7 +58,7 @@ The `expectTypeOf` method takes a single argument, or a generic parameter. Neith
 ### Features
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
-Check that two objects have equivalent types to `.toEqualTypeOf`:
+Check that two objects have equivalent types with `.toEqualTypeOf`:
 
 ```typescript
 expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
@@ -70,23 +70,56 @@ expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
 expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
 ```
 
-`.toMatchTypeOf` checks that an object "matches" a type - that is, it has all the expected properties with correct types. This is similar to jest's `.toMatchObject`:
+When there's no instance/runtime variable for the expected type, you can use generics:
+
+```typescript
+expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+```
+
+`.toEqualTypeOf` fails on extra properties:
+
+```typescript
+// @ts-expect-error
+expectTypeOf({a: 1, b: 1}).toEqualTypeOf({a: 1})
+```
+
+To allow for extra properties, use `.toMatchTypeOf`. This checks that an object "matches" a type. This is similar to jest's `.toMatchObject`:
 
 ```typescript
 expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
 ```
 
-When there's no instance/runtime variable for the expected type, you can use generics:
+Another example of the difference between `.toMatchTypeOf` and `.toEqualTypeOf`, using generics. `.toMatchTypeOf` can be used for "is-a" relationships:
 
 ```typescript
-expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
-expectTypeOf({a: 1, b: 1}).toMatchTypeOf<{a: number}>()
+type Fruit = {type: 'Fruit'; edible: boolean}
+type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
+
+expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
+
+// @ts-expect-error
+expectTypeOf<Fruit>().toMatchTypeOf<Apple>()
+
+// @ts-expect-error
+expectTypeOf<Apple>().toEqualTypeOf<Fruit>()
 ```
 
-Assertions can be inverted:
+Assertions can be inverted with `.not`:
 
 ```typescript
 expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
+```
+
+`.not` can be easier than relying on `// @ts-expect-error`:
+
+```typescript
+type Fruit = {type: 'Fruit'; edible: boolean}
+type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
+
+expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
+
+expectTypeOf<Fruit>().not.toMatchTypeOf<Apple>()
+expectTypeOf<Apple>().not.toEqualTypeOf<Fruit>()
 ```
 
 Catch any/unknown/never types:
@@ -126,7 +159,7 @@ expectTypeOf<1 | null>().toBeNullable()
 expectTypeOf<1 | undefined | null>().toBeNullable()
 ```
 
-Most assertions can be inverted with `.not`:
+More `.not` examples:
 
 ```typescript
 expectTypeOf(1).not.toBeUnknown()
