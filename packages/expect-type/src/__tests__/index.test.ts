@@ -28,11 +28,24 @@ test('Another example of the difference between `.toMatchTypeOf` and `.toEqualTy
   expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
 
   // @ts-expect-error
+  expectTypeOf<Fruit>().toMatchTypeOf<Apple>()
+
+  // @ts-expect-error
   expectTypeOf<Apple>().toEqualTypeOf<Fruit>()
 })
 
-test('Assertions can be inverted', () => {
+test('Assertions can be inverted with `.not`', () => {
   expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
+})
+
+test('`.not` can be easier than relying on `// @ts-expect-error`', () => {
+  type Fruit = {type: 'Fruit'; edible: boolean}
+  type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
+
+  expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
+
+  expectTypeOf<Fruit>().not.toMatchTypeOf<Apple>()
+  expectTypeOf<Apple>().not.toEqualTypeOf<Fruit>()
 })
 
 test('Catch any/unknown/never types', () => {
@@ -66,7 +79,7 @@ test('Nullable types', () => {
   expectTypeOf<1 | undefined | null>().toBeNullable()
 })
 
-test('Most assertions can be inverted with `.not`', () => {
+test('More `.not` examples', () => {
   expectTypeOf(1).not.toBeUnknown()
   expectTypeOf(1).not.toBeAny()
   expectTypeOf(1).not.toBeNever()

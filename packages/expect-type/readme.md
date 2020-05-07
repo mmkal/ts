@@ -98,13 +98,28 @@ type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
 expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
 
 // @ts-expect-error
+expectTypeOf<Fruit>().toMatchTypeOf<Apple>()
+
+// @ts-expect-error
 expectTypeOf<Apple>().toEqualTypeOf<Fruit>()
 ```
 
-Assertions can be inverted:
+Assertions can be inverted with `.not`:
 
 ```typescript
 expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
+```
+
+`.not` can be easier than relying on `// @ts-expect-error`:
+
+```typescript
+type Fruit = {type: 'Fruit'; edible: boolean}
+type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
+
+expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
+
+expectTypeOf<Fruit>().not.toMatchTypeOf<Apple>()
+expectTypeOf<Apple>().not.toEqualTypeOf<Fruit>()
 ```
 
 Catch any/unknown/never types:
@@ -144,7 +159,7 @@ expectTypeOf<1 | null>().toBeNullable()
 expectTypeOf<1 | undefined | null>().toBeNullable()
 ```
 
-Most assertions can be inverted with `.not`:
+More `.not` examples:
 
 ```typescript
 expectTypeOf(1).not.toBeUnknown()
