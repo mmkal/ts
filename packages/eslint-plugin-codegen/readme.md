@@ -24,7 +24,6 @@ Here's an example of it being used along with VSCode's eslint plugin, with auto-
 - [Motivation](#motivation)
 - [Contents](#contents)
 - [How to use](#how-to-use)
-   - [Caveat](#caveat)
    - [Setup](#setup)
    - [Presets](#presets)
       - [monorepoTOC](#monorepotoc)
@@ -38,13 +37,16 @@ Here's an example of it being used along with VSCode's eslint plugin, with auto-
 
 ## How to use
 
-### Caveat
+<details>
+<summary>Caveat</summary>
 
 Before you use this, note that it's still in v0. That means:
 
 1. Breaking changes might happen. Presets might be renamed, or have their options changed. The documentation should stay up to date though, since that's partly the point of the project.
-1. There are missing features, or incompletely-implemented ones. For example, `markdownFromJsdoc` only works with `export const ...` style exports. Currently the features implemented are ones that are specifically needed for this git repo.
-1. There might be bugs.
+1. There are missing features, or incompletely-implemented ones. For example, `markdownFromJsdoc` only works with `export const ...` style exports. Currently most of the features implemented are ones that are specifically needed for this git repo.
+1. There might be bugs. The project is in active development - [raise an issue](https://github.com/mmkal/ts/issues) if you find one!
+
+</details>
 
 ### Setup
 
