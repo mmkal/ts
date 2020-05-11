@@ -10,7 +10,7 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 
 Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
 
-It can be used in your existing test files - or anywhere other type-checked file you'd like.
+It can be used in your existing test files - or any other type-checked file you'd like.
 
 ##### Example
 
