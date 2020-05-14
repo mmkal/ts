@@ -13,13 +13,19 @@ export type IsAny<T> = [T] extends [Secret] ? Not<IsNever<T>> : false
 export type IsUnknown<T> = [unknown] extends [T] ? Not<IsAny<T>> : false
 export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
 
+type DeepBrandAny<T> = IsAny<T> extends true // avoid `any` matching `unknown`
+  ? Secret
+  : {[K in keyof T]: DeepBrandAny<T[K]>}
+
 export type Extends<L, R> = L extends R ? true : false
+export type StrictExtends<L, R> = Extends<DeepBrandAny<L>, DeepBrandAny<R>>
+
 export type Equal<Left, Right> = And<
   [
-    Extends<Left, Right>, // prettier-break
-    Extends<Right, Left>,
-    Extends<keyof Left, keyof Right>,
-    Extends<keyof Right, keyof Left>
+    StrictExtends<Left, Right>,
+    StrictExtends<Right, Left>,
+    StrictExtends<keyof Left, keyof Right>,
+    StrictExtends<keyof Right, keyof Left>
   ]
 >
 

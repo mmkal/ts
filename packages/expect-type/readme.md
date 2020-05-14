@@ -130,6 +130,12 @@ expectTypeOf<any>().toBeAny()
 expectTypeOf<never>().toBeNever()
 ```
 
+`.toEqualTypeOf` distinguishes between deeply-nested `any` and `unknown` properties:
+
+```typescript
+expectTypeOf<{deeply: {nested: any}}>().not.toEqualTypeOf<{deeply: {nested: unknown}}>()
+```
+
 Test for basic javascript types:
 
 ```typescript
