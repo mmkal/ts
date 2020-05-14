@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.4](https://github.com/mmkal/ts/compare/expect-type@0.7.3...expect-type@0.7.4) (2020-05-14)
+
+
+### Bug Fixes
+
+* stricter equal ([#33](https://github.com/mmkal/ts/issues/33)) ([1f9a8c7](https://github.com/mmkal/ts/commit/1f9a8c7fe7ce962e9d6e2d8ddffeee81bce1ca31))
+
+
+
+
+
 ## [0.7.3](https://github.com/mmkal/ts/compare/expect-type@0.7.2...expect-type@0.7.3) (2020-05-13)
 
 **Note:** Version bump only for package expect-type
