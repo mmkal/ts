@@ -54,6 +54,10 @@ test('Catch any/unknown/never types', () => {
   expectTypeOf<never>().toBeNever()
 })
 
+test('`.toEqualTypeOf` distinguishes between deeply-nested `any` and `unknown` properties', () => {
+  expectTypeOf<{deeply: {nested: any}}>().not.toEqualTypeOf<{deeply: {nested: unknown}}>()
+})
+
 test('Test for basic javascript types', () => {
   expectTypeOf(() => 1).toBeFunction()
   expectTypeOf({}).toBeObject()
