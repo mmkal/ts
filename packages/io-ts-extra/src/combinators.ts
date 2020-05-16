@@ -101,3 +101,39 @@ export const regex = (pattern: string | RegExp, name?: string) => {
   const regexInstance = new RegExp(pattern)
   return t.refinement(t.string, value => regexInstance.test(value), name || `RegExp<${pattern}>`)
 }
+
+/**
+ * Like `t.type`, but fails when any properties not specified in `props` are defined.
+ *
+ * @example
+ * const Person = strict({name: t.string, age: t.number})
+ *
+ * expectRight(Person.decode({name: 'Alice', age: 30}))
+ * expectLeft(Person.decode({name: 'Bob', age: 30, unexpectedProp: 'abc'}))
+ * expectRight(Person.decode({name: 'Bob', age: 30, unexpectedProp: undefined}))
+ *
+ * @param props dictionary of properties, same as the input to `t.type`
+ * @param name optional type name
+ *
+ * note:
+ * - additional properties explicitly set to `undefined` _are_ permitted.
+ * - internally, `sparseType` is used, so optional properties are supported.
+ */
+export const strict = <P extends Props>(props: P, name?: string) => {
+  const codec = sparseType(props)
+  return new t.Type<typeof codec._A, typeof codec._O>(
+    name || `Strict<${codec.name}`,
+    (val): val is typeof codec._A => codec.is(val) && Object.keys(val).every(k => k in props),
+    (val, ctx) => {
+      if (typeof val !== 'object' || !val) {
+        return codec.validate(val, ctx)
+      }
+      const stricterProps = Object.keys(val).reduce<Props>(
+        (acc, next) => ({...acc, [next]: props[next] || t.undefined}),
+        {}
+      )
+      return sparseType(stricterProps as typeof props).validate(val, ctx)
+    },
+    codec.encode
+  )
+}

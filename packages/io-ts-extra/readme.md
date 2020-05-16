@@ -32,6 +32,7 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
       - [optional](#optional)
       - [mapper](#mapper)
       - [parser](#parser)
+      - [strict](#strict)
       - [narrow](#narrow)
       - [validationErrors](#validationerrors)
       - [regex](#regex)
@@ -139,7 +140,7 @@ const contents = allMessages.map(getContent);
 ### Codecs/Combinators
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: sparseType} -->
-#### [sparseType](./src/combinators.ts#L38)
+#### [sparseType](./src/combinators.ts#L39)
 
 Can be used much like `t.type` from io-ts, but any property types wrapped with `optional` from this package need not be supplied. Roughly equivalent to using `t.intersection` with `t.type` and `t.partial`.
 
@@ -168,7 +169,7 @@ a type with `props` field, so the result can be introspected similarly to a type
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: optional} -->
-#### [optional](./src/combinators.ts#L12)
+#### [optional](./src/combinators.ts#L13)
 
 unions the passed-in type with `null` and `undefined`.
 <!-- codegen:end -->
@@ -225,6 +226,33 @@ IntFromString.decode(123)            // left(...)
 |encode|transform the target type back into a string|
 <!-- codegen:end -->
 
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: strict} -->
+#### [strict](./src/combinators.ts#L123)
+
+Like `t.type`, but fails when any properties not specified in `props` are defined.
+
+##### Example
+
+```typescript
+const Person = strict({name: t.string, age: t.number})
+
+expectRight(Person.decode({name: 'Alice', age: 30}))
+expectLeft(Person.decode({name: 'Bob', age: 30, unexpectedProp: 'abc'}))
+expectRight(Person.decode({name: 'Bob', age: 30, unexpectedProp: undefined}))
+```
+
+##### Params
+
+|name|description|
+|-|-|
+|props|dictionary of properties, same as the input to `t.type`|
+|name|optional type name
+
+note:
+- additional properties explicitly set to `undefined` _are_ permitted.
+- internally, `sparseType` is used, so optional properties are supported.|
+<!-- codegen:end -->
+
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/narrow.ts, export: narrow} -->
 #### [narrow](./src/narrow.ts#L35)
@@ -275,7 +303,7 @@ Similar to io-ts's PathReporter, but gives slightly less verbose output.
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regex} -->
-#### [regex](./src/combinators.ts#L100)
+#### [regex](./src/combinators.ts#L101)
 
 A refinement of `t.string` which validates that the input matches a regular expression.
 
@@ -290,7 +318,7 @@ AllCaps.decode(123)      // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: instanceOf} -->
-#### [instanceOf](./src/combinators.ts#L83)
+#### [instanceOf](./src/combinators.ts#L84)
 
 Validates that a value is an instance of a class using the `instanceof` operator
 
