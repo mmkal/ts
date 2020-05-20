@@ -1,0 +1,138 @@
+# jest-inline-snapshots
+
+A backwards-compatible shim for jest's `expect(...).toMatchInlineSnapshot()` which uses javascript values for snapshots rather than ugly templated strings.
+
+<!-- codegen:start {preset: badges} -->
+123
+<!-- codegen:end -->
+
+Example usage:
+
+```typescript
+import {getAdminUser} from '../some-module'
+
+test('admin user', () => {
+  expect(getAdminUser()).toMatchInlineSnapshot()
+})
+```
+
+When running tests with `jest`, this will turn into:
+
+```typescript
+const getAdminUser = () => ({id: 'alice123', name: 'Alice McAlice', age: 40})
+
+test('admin user', () => {
+  expect(getAdminUser()).toMatchInlineSnapshot({
+    id: 'alice123',
+    name: 'Alice McAlice',
+    age: 40,
+  })
+})
+```
+
+Contrast this to using regular jest inline snapshots, which use templated strings:
+
+```typescript
+const getAdminUser = () => ({id: 'alice123', name: 'Alice McAlice', age: 40})
+
+test('get user', () => {
+  expect(getAdminUser()).toMatchInlineSnapshot(`
+    Object {
+      "age": 40,
+      "id": "alice123",
+      "name": "Alice McAlice",
+    }
+  `)
+})
+```
+
+## Usage
+
+Install via npm or yarn:
+
+```bash
+npm install --save-dev jest-inline-snapshots
+```
+
+or
+
+```bash
+yarn add --dev jest-inline-snapshots
+```
+
+Then register the shim by adding its `register` script to your jest config, e.g. in `jest.config.js`:
+
+```js
+module.exports = {
+  testMatch: [...],
+  setupTestFrameworkScriptFile: ['<rootDir>/node_modules/jest-inline-snapshots/register'],
+  ...
+}
+```
+
+If you already have a `setupTestFrameworkScriptFile`, you can register by adding `require('jest-inline-snapshots/register')` or `import 'jest-inline-snapshots/register'` to the top of the file. The `register` module could also be required/imported at the top of an individual test file, if you don't want to use it for an entire codebase.
+
+You can also use the shim directly without modifying the global `expect` function:
+
+```typescript
+import {getAdminUser} from '../some-module'
+import {expectShim} from 'jest-inline-snapshots'
+
+test('admin user', () => {
+  expectShim(getAdminUser()).toMatchInlineSnapshot()
+})
+```
+
+### Property matchers
+
+Built-in jest snapshot allow use of ["asymmetric matchers"](https://jestjs.io/docs/en/snapshot-testing#property-matchers) to allow snapshotting objects with fields that change frequently. This library also supports them - they can be defined inline alongside the generated snapshot properties:
+
+```typescript
+test('property matchers', () => {
+  const user = {
+    createdAt: new Date(),
+    id: Math.floor(Math.random() * 20),
+    name: 'LeBron James',
+  }
+
+  expect(user).toMatchInlineSnapshot({
+    createdAt: expect.any(Date),
+    id: expect.any(Number)
+  })
+})
+```
+
+### Formatting
+
+By default, when snapshots are updated, the library will try to "fix" the generated code according to your project's style rules by running `eslint` on the generated code. If you don't have eslint installed or set up, the snapshots will try to detect indentation and quote style in the file they're in, and stick to that. So they should normally look ok. You can use a different linting/formatting tool by overriding the format function in a setup script. This example uses [prettier](https://prettier.io/docs/en/api.html#prettierformatsource--options):
+
+```typescript
+import {formatter} from 'jest-inline-snapshots'
+import * as prettier from 'prettier'
+
+formatter.format = (code, file) => {
+  if (file.match(/should-use-semicolons/)) {
+    return prettier.format(code, {semi: true})
+  } else {
+    return prettier.format(code, {semi: false})
+  }
+}
+```
+
+(Personally, I would recommend setting prettier via eslint with `eslint-plugin-prettier` rather than doing this, but the above approach should work with other tools like tslint, standardjs, xo, your-company's-in-house-custom-formatter, etc.)
+
+### Migrating
+
+Just run jest with `-u` to migrate old style template snapshots to objects.
+
+### Limitations
+
+- If you don't have babel 7 installed, you won't be able to use asymmetric matchers.
+- Comments within snapshots will get wiped out when the snapshot updates.
+- Comments with unbalanced parentheses could cause the snapshot to fail to write, or screw up your file. They do some not-very-sophisticated code-parsing that assumes you're not doing anything too weird. So don't put comments inside snapshots!
+- [JSON5](https://github.com/json5/json5) is used to format the inline snapshots. This means values can be serialised based on their `.toJSON()` methods, but if they don't have one, and aren't simple objects, they might end up as `{}`
+- If you don't have eslint installed or configured, the snapshots may have slightly strang
+- [Interactive snapshots don't work](https://jestjs.io/docs/en/snapshot-testing#interactive-snapshot-mode)
+- Snapshots being written/udpated are logged to the jest console slightly differently - you won't get a handy summary at the end of the run about how many were updated overall, you will be told how many snapshots were updated for each file.
+- Asymmetric matchers won't be updated even when you run with `-u`. If values matched by property matchers change, you'll have to remove/updated the asymmetric matcher manually. This is for parity with the in-built inline snapshot feature, where property matchers aren't affected by `-u`.
+- React/JSX snapshots haven't been tested. They might not work very well.
