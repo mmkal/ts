@@ -11,9 +11,10 @@ import traverse from '@babel/traverse'
 import generate from '@babel/generator'
 import * as bt from '@babel/types'
 import {deepKeys, get, set} from './deep-keys'
+import {defaultFormatter, guessFormatting, getClosingParen} from './formatting'
 
 // stolen from https://github.com/errwischt/stacktrace-parser/blob/3dec2937958f1c867e22bea7ae287d6085cf5266/src/stack-trace-parser.js#L121
-const nodeRe = /^\s*at (?:((?:\[object object\])?[^\\/]+(?: \[as \S+\])?) )?\(?(.*?):(\d+)(?::(\d+))?\)?\s*$/i
+const nodeRe = /^\s*at (?:((?:\[object object])?[^/\\]+(?: \[as \S+])?) )?\(?(.*?):(\d+)(?::(\d+))?\)?\s*$/i
 
 type StackLine = ReturnType<typeof parseStackLine>
 const parseStackLine = (line: string) => {
@@ -28,8 +29,8 @@ const parseStackLine = (line: string) => {
     file: parts[2],
     methodName: parts[1] || 'UNKNOWN_FUNCTION',
     arguments: [],
-    lineNumber: +parts[3],
-    column: parts[4] ? +parts[4] : null,
+    lineNumber: Number(parts[3]),
+    column: parts[4] ? Number(parts[4]) : null,
   }
 }
 
@@ -47,50 +48,13 @@ const filterStack = (stack: string | undefined, fn: (line: StackLine, index: num
 const getCallSite = () =>
   parseStack(Error().stack).find(s => s?.file && path.resolve(s.file) !== path.resolve(__filename)) || undefined
 
-export const getClosingParen = (code: string, from: number, style = '()'): number => {
-  const [open, close] = style.split('')
-  if (code[from] !== open) {
-    throw Error(`must start with a ${open} character`)
-  }
-  const recurse = (code: string, from: number): number => {
-    if (from >= code.length) throw Error(`Expected to find ${close} but reached end of text`)
-    if (code[from] === close) return from
-    const next = from + 1
-    if (code[next] === open) {
-      const innerClose = recurse(code, next)
-      return recurse(code, innerClose + 1)
-    }
-    return recurse(code, next)
-  }
-  return recurse(code, from)
-}
-
-export type Format = (code: string, filePath: string) => string | Promise<string>
-export const defaultFormatter = ((): Format => {
-  const ESLint = (() => {
-    try {
-      return require('eslint').ESLint
-    } catch (e) {
-      return null
-    }
-  })()
-  if (!ESLint) {
-    return code => code
-  }
-  const eslint = new ESLint({fix: true})
-  return async (code, filePath) => {
-    const [linted] = await eslint.lintText(code, {filePath})
-    return linted.output || code
-  }
-})()
-
 export const formatter = {
   format: defaultFormatter,
 }
 
 type Replacement = {start: number; end: number; text: string; file: string}
 const replacements: Record<string, Replacement[]> = {}
-afterAll(() =>
+afterAll(async () =>
   Promise.all(
     Object.entries(replacements).map(async ([file, reps]) => {
       const unformattedCode = reps.reduceRight(
@@ -102,19 +66,6 @@ afterAll(() =>
     })
   )
 )
-
-const guessFormatting = (code: string) => {
-  const lines = code.split(/\r?\n/)
-  const withIndent = lines.map(s => s.match(/^\s+/)!).filter(Boolean)
-  const minIndent = withIndent.sort((left, right) => left[0].length - right[0].length)[0]
-  const quote = [`'`, `"`]
-    .map(type => ({type, count: code.split(type).length}))
-    .sort((left, right) => right.count - left.count)[0].type
-  return {
-    indent: minIndent?.[0] || '  ',
-    quote,
-  }
-}
 
 const REPLACEMENT_MARKER =
   'a_marker_to_allow_json5_to_parse_and_stringify_snapshot_objects_that_include_asymmetric_matchers_but_which_is_extremely_unlikely_to_be_found_in_any_real_snapshots_also_contains_no_special_characters_only_letters_and_underscores'
@@ -134,7 +85,7 @@ export const expectShim = Object.assign(
           if (process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
             return undefined
           }
-          if (args.length == 0) {
+          if (args.length === 0) {
             return (
               process.env.CI &&
               [
@@ -238,22 +189,10 @@ export const expectShim = Object.assign(
     }
     return {toMatchInlineSnapshot}
   },
-  {
-    register: () => {
-      const _global: {expect: typeof expect} = global as any
-      const jestExpect = _global.expect
-
-      _global.expect = Object.assign((...args: Parameters<typeof expect>) => {
-        const expecter = jestExpect(...args)
-        expecter.toMatchInlineSnapshot = (...snapshotArgs: any[]) =>
-          expectShim(...args).toMatchInlineSnapshot(...snapshotArgs)
-        return expecter
-      }, jestExpect)
-    },
-  }
+  {register: () => require('./register').register()}
 )
 
-function replaceAsymmetricMatchers(snapObjVar: string) {
+const replaceAsymmetricMatchers = (snapObjVar: string) => {
   const snapObjCode = `(${snapObjVar || '{}'})` // turns a literal into valid standalone javascript, even if there are two function args
   // limitations: only basic data expressions are allowed
   // no awaits, no casts like `as any`, no typescript- or flow-specific syntax of any kind
@@ -266,6 +205,9 @@ function replaceAsymmetricMatchers(snapObjVar: string) {
         path.replaceWith(bt.stringLiteral(`${REPLACEMENT_MARKER}__${b64}`))
       }
     },
+    // for a template-style snapshot with property matchers, there will be two arguments found between the opening and closing parens
+    // e.g. `.toMatchInlineSnapshot({foo: expect.anything()}, `...`)`. This means the ast will be a sequence expression looking like
+    // `({foo: expect.anything()}, `...`)`. We don't care about the second argument, so replace it with `({foo: expect.anything()})`
     SequenceExpression: path => {
       path.replaceWith(path.node.expressions[0])
     },
