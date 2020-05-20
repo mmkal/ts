@@ -46,7 +46,7 @@ export const expectShim = Object.assign(
         expect(actual).toEqual(args[0])
       } catch (assertError) {
         const errorPrefix = (() => {
-          if (true || process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
+          if (process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
             return undefined
           }
           if (args.length === 0) {
@@ -117,8 +117,11 @@ export const expectShim = Object.assign(
             space: formatting.indent,
             quote: formatting.quote,
             replacer: (_key, val) =>
-              typeof val === 'function'
-                ? replacementToken('Object.assign(expect.any(Function), {generated: true})')
+              val?.toJSON
+                ? val.toJSON()
+                : typeof val === 'function'
+                ? // todo: uncomment
+                  undefined // replacementToken('Object.assign(expect.any(Function), {generated: true})')
                 : val,
           })
           .replace(/(\r?\n)/g, `$1${lineIndent}`)
@@ -174,8 +177,7 @@ const replaceAsymmetricMatchers = (snapObjVar: string) => {
   traverse(ast, {
     CallExpression: path => {
       if (typeof path.node.start === 'number' && typeof path.node.end === 'number') {
-        const b64 = Buffer.from(snapObjCode.slice(path.node.start, path.node.end)).toString('base64')
-        path.replaceWith(bt.stringLiteral(`${REPLACEMENT_MARKER}__${b64}`))
+        path.replaceWith(bt.stringLiteral(replacementToken(snapObjCode.slice(path.node.start, path.node.end))))
       }
     },
     SequenceExpression: path => {
