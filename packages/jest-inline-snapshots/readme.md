@@ -153,7 +153,7 @@ One advantage of the snapshots being plain javascript objects, rather than templ
 - Comments within snapshots will get wiped out when the snapshot updates.
 - Comments with unbalanced parentheses could cause the snapshot to fail to write, or screw up your file. They do some not-very-sophisticated code-parsing that assumes you're not doing anything too weird. So don't put comments inside snapshots!
 - [JSON5](https://github.com/json5/json5) is used to format the inline snapshots. This means values can be serialised based on their `.toJSON()` methods, but if they don't have one, and aren't simple objects, they might end up as `{}`
-- If you don't have eslint installed or configured, the snapshots may have slightly strang
+- If you don't have eslint installed or configured, the snapshots generated might not match the formatting for your project.
 - [Interactive snapshots don't work](https://jestjs.io/docs/en/snapshot-testing#interactive-snapshot-mode)
 - Snapshots being written/udpated are logged to the jest console slightly differently - you won't get a handy summary at the end of the run about how many were updated overall, you will be told how many snapshots were updated for each file.
 - Asymmetric matchers won't be updated even when you run with `-u`. If values matched by property matchers change, you'll have to remove/updated the asymmetric matcher manually. This is for parity with the in-built inline snapshot feature, where property matchers aren't affected by `-u`.

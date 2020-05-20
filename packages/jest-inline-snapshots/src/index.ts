@@ -1,10 +1,7 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import * as os from 'os'
 
 import * as json5 from 'json5'
-
-import {AsymmetricMatcher} from 'expect/build/asymmetricMatchers'
 
 import * as parser from '@babel/parser'
 import traverse from '@babel/traverse'
@@ -12,43 +9,10 @@ import generate from '@babel/generator'
 import * as bt from '@babel/types'
 import {deepKeys, get, set} from './deep-keys'
 import {defaultFormatter, guessFormatting, getClosingParen} from './formatting'
-
-// stolen from https://github.com/errwischt/stacktrace-parser/blob/3dec2937958f1c867e22bea7ae287d6085cf5266/src/stack-trace-parser.js#L121
-const nodeRe = /^\s*at (?:((?:\[object object])?[^/\\]+(?: \[as \S+])?) )?\(?(.*?):(\d+)(?::(\d+))?\)?\s*$/i
-
-type StackLine = ReturnType<typeof parseStackLine>
-const parseStackLine = (line: string) => {
-  const parts = nodeRe.exec(line)
-
-  if (!parts) {
-    return null
-  }
-
-  return {
-    line,
-    file: parts[2],
-    methodName: parts[1] || 'UNKNOWN_FUNCTION',
-    arguments: [],
-    lineNumber: Number(parts[3]),
-    column: parts[4] ? Number(parts[4]) : null,
-  }
-}
-
-const parseStack = (stack: string | undefined) => (stack || '').split(/\r?\n/).slice(1).map(parseStackLine)
-
-const filterStack = (stack: string | undefined, fn: (line: StackLine, index: number, array: StackLine[]) => unknown) =>
-  stack &&
-  parseStack(stack)
-    .filter(fn)
-    .map(line => line?.line)
-    .join(os.EOL)
-    .replace(/\r?\n\s+\n/g, os.EOL)
-
-/** returns the parsed stack frame for the external call site. */
-const getCallSite = () =>
-  parseStack(Error().stack).find(s => s?.file && path.resolve(s.file) !== path.resolve(__filename)) || undefined
+import {filterStack, getCallSite} from './stack-helpers'
 
 export const formatter = {
+  /** A format function. Can be overriden to use a custom formatter */
   format: defaultFormatter,
 }
 
@@ -137,11 +101,12 @@ export const expectShim = Object.assign(
           set(asymmetricMatchers, path, get(actual, path))
         })
 
-        const isAsymmetricMatcher = (value: unknown) => value instanceof AsymmetricMatcher
+        const isAsymmetricMatcher = (value: unknown) =>
+          get(value, ['$$typeof']) === Symbol.for('jest.asymmetricMatcher')
         let asymmetricMatchersUsed = false
         deepKeys(args[0], isAsymmetricMatcher).forEach(path => {
           const value = get(args[0], path)
-          if (isAsymmetricMatcher(value)) {
+          if (isAsymmetricMatcher(value) && !value.generated) {
             asymmetricMatchersUsed = true
             set(asymmetricMatchers, path, value)
           }
@@ -151,9 +116,14 @@ export const expectShim = Object.assign(
           .stringify(clonedActualValue, {
             space: formatting.indent,
             quote: formatting.quote,
-            replacer: (_key, val) => (typeof val === 'function' ? replacementToken('expect.any(Function)') : val),
+            replacer: (_key, val) =>
+              typeof val === 'function'
+                ? replacementToken('Object.assign(expect.any(Function), {generated: true})')
+                : val,
           })
           .replace(/(\r?\n)/g, `$1${lineIndent}`)
+          // todo: use babel to replace multiline strings?
+          .replace(/["'](.*\\n.*)["']/g, (_match, content) => '`' + content.replace(/\\n/g, '\n') + '`')
 
         const jsonWithPlaceholders =
           multiline.length >= 40 || snapObjVar?.includes('\n')
@@ -210,6 +180,9 @@ const replaceAsymmetricMatchers = (snapObjVar: string) => {
     // `({foo: expect.anything()}, `...`)`. We don't care about the second argument, so replace it with `({foo: expect.anything()})`
     SequenceExpression: path => {
       path.replaceWith(path.node.expressions[0])
+    },
+    TemplateLiteral: path => {
+      path.replaceWith(bt.stringLiteral(path.node.quasis[0].value.raw))
     },
   })
   const withStringPlaceholders = json5.parse(
