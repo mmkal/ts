@@ -3,7 +3,9 @@
 A backwards-compatible shim for jest's `expect(...).toMatchInlineSnapshot()` which uses javascript values for snapshots rather than ugly templated strings.
 
 <!-- codegen:start {preset: badges} -->
-123
+[![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/master/packages/jest-inline-snapshots)
+[![npm version](https://badge.fury.io/js/jest-inline-snapshots.svg)](https://npmjs.com/package/jest-inline-snapshots)
 <!-- codegen:end -->
 
 Example usage:
@@ -85,7 +87,7 @@ test('admin user', () => {
 
 ### Property matchers
 
-Built-in jest snapshot allow use of ["asymmetric matchers"](https://jestjs.io/docs/en/snapshot-testing#property-matchers) to allow snapshotting objects with fields that change frequently. This library also supports them - they can be defined inline alongside the generated snapshot properties:
+Built-in jest snapshot allow use of ["asymmetric matchers"](https://jestjs.io/docs/en/snapshot-testing#property-matchers) for snapshotting objects with fields that aren't consistent. This library also supports them - they can be defined inline alongside the generated snapshot properties:
 
 ```typescript
 test('property matchers', () => {
@@ -98,6 +100,24 @@ test('property matchers', () => {
   expect(user).toMatchInlineSnapshot({
     createdAt: expect.any(Date),
     id: expect.any(Number)
+  })
+})
+```
+
+becomes:
+
+```typescript
+test('property matchers', () => {
+  const user = {
+    createdAt: new Date(),
+    id: Math.floor(Math.random() * 20),
+    name: 'LeBron James',
+  }
+
+  expect(user).toMatchInlineSnapshot({
+    createdAt: expect.any(Date),
+    id: expect.any(Number),
+    name: 'LeBron James',
   })
 })
 ```
@@ -124,6 +144,8 @@ formatter.format = (code, file) => {
 ### Migrating
 
 Just run jest with `-u` to migrate old style template snapshots to objects.
+
+One advantage of the snapshots being plain javascript objects, rather than templates, is that you can very easily switch between `.toEqual(...)`, `.toMatchObject(...)` and `.toMatchInlineSnapshot(...)`, since the signatures are identical. For all of the examples above, you can simply change `toMatchInlineSnapshot` to `toEqual` at any point, if you no longer expect the "snapshot" to need to be updated. Similarly, for any existing usages of `toEqual`, a quick and easy way to update the assertion would be to change it to `toMatchInlineSnapshot`, run `yarn test -u`, then change it back.
 
 ### Limitations
 
