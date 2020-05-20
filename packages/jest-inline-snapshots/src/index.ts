@@ -175,13 +175,14 @@ const replaceAsymmetricMatchers = (snapObjVar: string) => {
         path.replaceWith(bt.stringLiteral(`${REPLACEMENT_MARKER}__${b64}`))
       }
     },
-    // for a template-style snapshot with property matchers, there will be two arguments found between the opening and closing parens
-    // e.g. `.toMatchInlineSnapshot({foo: expect.anything()}, `...`)`. This means the ast will be a sequence expression looking like
-    // `({foo: expect.anything()}, `...`)`. We don't care about the second argument, so replace it with `({foo: expect.anything()})`
     SequenceExpression: path => {
+      // for a template-style snapshot with property matchers, there will be two arguments found between the opening and closing parens
+      // e.g. `.toMatchInlineSnapshot({foo: expect.anything()}, `...`)`. This means the ast will be a sequence expression looking like
+      // `({foo: expect.anything()}, `...`)`. We don't care about the second argument, so replace it with `({foo: expect.anything()})`
       path.replaceWith(path.node.expressions[0])
     },
     TemplateLiteral: path => {
+      // json5 can't handle backticked template literals, so convert to a regular string
       path.replaceWith(bt.stringLiteral(path.node.quasis[0].value.raw))
     },
   })
