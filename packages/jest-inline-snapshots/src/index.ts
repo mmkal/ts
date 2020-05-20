@@ -46,7 +46,7 @@ export const expectShim = Object.assign(
         expect(actual).toEqual(args[0])
       } catch (assertError) {
         const errorPrefix = (() => {
-          if (process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
+          if (true || process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
             return undefined
           }
           if (args.length === 0) {
