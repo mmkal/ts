@@ -123,7 +123,10 @@ export const expectShim = Object.assign(
           })
           .replace(/(\r?\n)/g, `$1${lineIndent}`)
           // todo: use babel to replace multiline strings?
-          .replace(/["'](.*\\n.*)["']/g, (_match, content) => '`' + content.replace(/\\n/g, '\n') + '`')
+          .replace(
+            /["'](.*\\n.*)["']/g,
+            (_match, content: string) => '`' + content.split('`').join('\\`').replace(/\\n/g, '\n') + '`'
+          )
 
         const jsonWithPlaceholders =
           multiline.length >= 40 || snapObjVar?.includes('\n')
