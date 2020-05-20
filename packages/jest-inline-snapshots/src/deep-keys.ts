@@ -3,15 +3,23 @@ export type Route = string[]
 export const get = (obj: any, path: Route) => path.reduce((val, key) => val?.[key], obj)
 
 export const set = (obj: any, path: Route, value: any) => {
-  path.reduce((val, key, i) => {
-    const child = val[key]
+  const setOrPush = (parent: any, key: any, child: any) => {
+    if (Array.isArray(parent) && key === parent.length) {
+      parent.push(child)
+    } else {
+      parent[key] = child
+    }
+  }
+  path.reduce((parent, key, i) => {
+    const child = parent[key]
     if (!child || (typeof child !== 'object' && typeof child !== 'function')) {
-      val[key] = {}
+      parent[key] = {}
     }
     if (i === path.length - 1) {
-      val[key] = value
+      setOrPush(parent, key, value)
+      // val[key] = value
     }
-    return val[key]
+    return parent[key]
   }, obj)
   return value
 }
