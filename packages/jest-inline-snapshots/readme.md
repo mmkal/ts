@@ -158,3 +158,19 @@ One advantage of the snapshots being plain javascript objects, rather than templ
 - Snapshots being written/udpated are logged to the jest console slightly differently - you won't get a handy summary at the end of the run about how many were updated overall, you will be told how many snapshots were updated for each file.
 - Asymmetric matchers won't be updated even when you run with `-u`. If values matched by property matchers change, you'll have to remove/updated the asymmetric matcher manually. This is for parity with the in-built inline snapshot feature, where property matchers aren't affected by `-u`.
 - React/JSX snapshots haven't been tested. They might not work very well.
+
+### Under the hood
+
+So that you know what's actually happening when using this library:
+
+- When the library is imported, it adds an `afterAll` hook to your test suite responsible for writing snapshots to disk
+- When `expect(...).toMatchInlineSnapshot()` is called:
+   - If running in CI (as determined by the `CI` environment variable), the test will fail.
+   - Otherwise, a snapshot will created. It isn't written to disk immediately - it's saved in an in-memory array, so that multiple changes to a single file can be written in one shot.
+- When `expect(...).toMatchInlineSnapshot(...)` is called (i.e. with one or more parameters, whether they're strings or objects):
+   - First, a standard `expect(...).toEqual(...)` call will be made. If that fails:
+     - If the `-u` cli arg has been passed:
+        - If there are any asymmetric matchers defined, they will be validated.
+        - If that succeeds, a snapshot update will be saved which replaces the `.toMatchInlineSnapshot` params with the updated code.
+     - Otherwise, the test fails with the assertion message from the `.toEqual(...)` call.
+- When the `afterAll` hook runs, it iterates through all snapshots, grouped by file. It modifies the original code, then runs the formatter on the modified code before writing to disk.
