@@ -20,7 +20,7 @@ module.exports = {
     'xo',
     'xo-typescript',
   ],
-  ignorePatterns: ['dist', 'node_modules', 'coverage'],
+  ignorePatterns: ['dist', 'node_modules', 'coverage', '.eslintrc.js'],
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc')],
     'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
