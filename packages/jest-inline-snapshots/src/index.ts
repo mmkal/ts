@@ -10,6 +10,8 @@ import * as bt from '@babel/types'
 import {deepKeys, get, set} from './deep-keys'
 import {defaultFormatter, guessFormatting, getClosingParen} from './formatting'
 import {filterStack, getCallSite} from './stack-helpers'
+import dedent from 'dedent'
+import {EOL} from 'os'
 
 export const formatter = {
   /** A format function. Can be overriden to use a custom formatter */
@@ -36,6 +38,21 @@ const REPLACEMENT_MARKER =
 
 const replacementToken = (text: string) => `${REPLACEMENT_MARKER}__${Buffer.from(text).toString('base64')}`
 
+const isAsymmetricMatcher = (value: unknown) => get(value, ['$$typeof']) === Symbol.for('jest.asymmetricMatcher')
+
+const dedentDeep = (val: unknown): unknown => {
+  if (typeof val === 'string') {
+    return dedent(val).replace(/\r?\n/g, EOL)
+  }
+  if (Array.isArray(val)) {
+    return val.map(dedentDeep)
+  }
+  if (typeof val === 'object' && val && !isAsymmetricMatcher(val)) {
+    return Object.entries(val).reduce((acc, [key, child]) => ({...acc, [key]: dedentDeep(child)}), {})
+  }
+  return val
+}
+
 export const expectShim = Object.assign(
   <T>(actual: T) => {
     const toMatchInlineSnapshot = (...args: unknown[]) => {
@@ -43,10 +60,12 @@ export const expectShim = Object.assign(
         if (args.length > 1) {
           throw Error(`String snapshot format is being used - updating will automatically migrate to object snapshots.`)
         }
-        expect(actual).toEqual(args[0])
+
+        // todo have to serialize actual and expected
+        expect(actual).toEqual(dedentDeep(args[0]))
       } catch (assertError) {
         const errorPrefix = (() => {
-          if (process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
+          if (true || process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
             return undefined
           }
           if (args.length === 0) {
@@ -101,8 +120,6 @@ export const expectShim = Object.assign(
           set(asymmetricMatchers, path, get(actual, path))
         })
 
-        const isAsymmetricMatcher = (value: unknown) =>
-          get(value, ['$$typeof']) === Symbol.for('jest.asymmetricMatcher')
         let asymmetricMatchersUsed = false
         deepKeys(args[0], isAsymmetricMatcher).forEach(path => {
           const value = get(args[0], path)
@@ -115,7 +132,7 @@ export const expectShim = Object.assign(
         const multiline = json5
           .stringify(clonedActualValue, {
             space: formatting.indent,
-            quote: formatting.quote,
+            quote: `'`,
             replacer: (_key, val) =>
               val?.toJSON
                 ? val.toJSON()
@@ -128,7 +145,20 @@ export const expectShim = Object.assign(
           // todo: use babel to replace multiline strings?
           .replace(
             /["'](.*\\n.*)["']/g,
-            (_match, content: string) => '`' + content.split('`').join('\\`').replace(/\\n/g, '\n') + '`'
+            (_match, content: string) =>
+              '`' +
+              EOL +
+              content
+                .replace(/`/g, '\\`') // escape backticks
+                .replace(/\\'/g, `'`) // un-escape single quotes
+                .replace(/(\\r)?\\n/g, '\n') // replace newline characters with actual newline
+                .split(/\n/g)
+                .map(line => (line ? lineIndent + formatting.indent + line : line)) // give non-empty lines a margin
+                .join(EOL)
+                .replace(/(\r?\n)[\t +](\r?\n)/g, '$1$2') +
+              EOL +
+              lineIndent +
+              '`'
           )
 
         const jsonWithPlaceholders =
@@ -188,7 +218,7 @@ const replaceAsymmetricMatchers = (snapObjVar: string) => {
     },
     TemplateLiteral: path => {
       // json5 can't handle backticked template literals, so convert to a regular string
-      path.replaceWith(bt.stringLiteral(path.node.quasis[0].value.raw))
+      path.replaceWith(bt.stringLiteral(dedentDeep(path.node.quasis[0].value.raw) as string))
     },
   })
   const withStringPlaceholders = json5.parse(
