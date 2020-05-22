@@ -10,14 +10,17 @@ export const set = (obj: any, path: Route, value: any) => {
       parent[key] = child
     }
   }
-  path.reduce((parent, key, i) => {
+  path.reduce((parent, key, i, arr) => {
     const child = parent[key]
     if (!child || (typeof child !== 'object' && typeof child !== 'function')) {
-      parent[key] = {}
+      if (arr[i + 1]?.match(/^\d+$/)) {
+        parent[key] = []
+      } else {
+        parent[key] = {}
+      }
     }
     if (i === path.length - 1) {
       setOrPush(parent, key, value)
-      // val[key] = value
     }
     return parent[key]
   }, obj)
