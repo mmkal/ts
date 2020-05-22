@@ -1,4 +1,5 @@
 import {expectShim} from '..'
+import dedent from 'dedent'
 
 expectShim.register()
 
@@ -13,7 +14,7 @@ test('replaces', () => {
 test('multiline string', () => {
   expect({
     a: 1,
-    b: `
+    b: dedent`
       c
       d
       e
@@ -21,10 +22,10 @@ test('multiline string', () => {
   }).toMatchInlineSnapshot({
     a: 1,
     b: `
-      c
-      d
-      e
-    `,
+    c
+    d
+    e
+  `,
   })
 })
 
