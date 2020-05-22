@@ -40,7 +40,7 @@ const replacementToken = (text: string) => `${REPLACEMENT_MARKER}__${Buffer.from
 
 const isAsymmetricMatcher = (value: unknown) => get(value, ['$$typeof']) === Symbol.for('jest.asymmetricMatcher')
 
-const dedentDeep = (val: unknown): unknown => {
+let dedentDeep = (val: unknown): unknown => {
   if (typeof val === 'string') {
     return dedent(val).replace(/\r?\n/g, EOL)
   }
@@ -52,6 +52,41 @@ const dedentDeep = (val: unknown): unknown => {
   }
   return val
 }
+
+type Serializer = {
+  test: (val: unknown) => Boolean
+  print: (val: any) => unknown
+}
+
+const preprocess = (serializers: Serializer[]) => {
+  const clone = (val: unknown): unknown => {
+    const serializer = serializers.find(s => s.test(val))
+    if (serializer) {
+      return serializer.print(val)
+    }
+    if (Array.isArray(val)) {
+      return val.map(clone)
+    }
+    if (typeof val === 'object' && val) {
+      return Object.entries(val).reduce((acc, [key, child]) => ({...acc, [key]: clone(child)}), {})
+    }
+    return val
+  }
+  return Object.assign(clone, {serializers})
+}
+
+const dedentDeep2 = preprocess([
+  {
+    test: val => typeof val === 'string',
+    print: val => dedent(val).replace(/\r?\n/g, EOL),
+  },
+  {
+    test: isAsymmetricMatcher,
+    print: val => val,
+  },
+])
+
+dedentDeep = dedentDeep2
 
 export const expectShim = Object.assign(
   <T>(actual: T) => {
@@ -144,8 +179,11 @@ export const expectShim = Object.assign(
           .replace(/(\r?\n)/g, `$1${lineIndent}`)
           // todo: use babel to replace multiline strings?
           .replace(
-            /["'](.*\\n.*)["']/g,
-            (_match, content: string) =>
+            /\n(\s+)(.*)["'](.*\\n.*)["']/g,
+            (_match, margin: string, prefix: string, content: string) =>
+              '\n' +
+              // margin +
+              prefix +
               '`' +
               EOL +
               content
@@ -153,13 +191,14 @@ export const expectShim = Object.assign(
                 .replace(/\\'/g, `'`) // un-escape single quotes
                 .replace(/(\\r)?\\n/g, '\n') // replace newline characters with actual newline
                 .split(/\n/g)
-                .map(line => (line ? lineIndent + formatting.indent + line : line)) // give non-empty lines a margin
+                .map(line => (line ? lineIndent + margin + line : line)) // give non-empty lines a margin
                 .join(EOL)
                 .replace(/(\r?\n)[\t +](\r?\n)/g, '$1$2') +
               EOL +
-              lineIndent +
+              margin +
               '`'
           )
+        console.log({lineIndent, formatting})
 
         const jsonWithPlaceholders =
           multiline.length >= 40 || snapObjVar?.includes('\n')
