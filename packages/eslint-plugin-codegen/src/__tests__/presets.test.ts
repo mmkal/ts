@@ -21,6 +21,7 @@ jest.mock('fs', () => {
     return actual[orig](...args)
   }
   return {
+    ...actual,
     readFileSync: reader('readFileSync'),
     existsSync: reader('existsSync'),
     readdirSync: (path: string) => Object.keys(mockFs).filter(k => k.startsWith(path.replace(/^\.\/?/, ''))),
