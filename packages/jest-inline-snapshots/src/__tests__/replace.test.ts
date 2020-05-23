@@ -12,20 +12,21 @@ test('replaces', () => {
 })
 
 test('multiline string', () => {
-  expect({
+  const x = {
     a: 1,
     b: dedent`
       c
       d
-      e
+      ef
     `,
-  }).toMatchInlineSnapshot({
+  }
+  expect(x).toMatchInlineSnapshot({
     a: 1,
     b: `
-    c
-    d
-    e
-  `,
+      c
+      d
+      ef
+    `,
   })
 })
 

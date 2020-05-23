@@ -28,7 +28,7 @@ afterAll(async () =>
         fs.readFileSync(file).toString()
       )
       fs.writeFileSync(file, await formatter.format(unformattedCode, file), 'utf8')
-      console.log(`Updated ${reps.length} snapshot(s) in ${file}`)
+      logger.info(`Updated ${reps.length} snapshot(s) in ${file}`)
     })
   )
 )
@@ -40,25 +40,16 @@ const replacementToken = (text: string) => `${REPLACEMENT_MARKER}__${Buffer.from
 
 const isAsymmetricMatcher = (value: unknown) => get(value, ['$$typeof']) === Symbol.for('jest.asymmetricMatcher')
 
-let dedentDeep = (val: unknown): unknown => {
-  if (typeof val === 'string') {
-    return dedent(val).replace(/\r?\n/g, EOL)
-  }
-  if (Array.isArray(val)) {
-    return val.map(dedentDeep)
-  }
-  if (typeof val === 'object' && val && !isAsymmetricMatcher(val)) {
-    return Object.entries(val).reduce((acc, [key, child]) => ({...acc, [key]: dedentDeep(child)}), {})
-  }
-  return val
-}
-
 type Serializer = {
-  test: (val: unknown) => Boolean
-  print: (val: any) => unknown
+  test: (val: any) => Boolean
+  print: (val: any) => any
 }
 
-const preprocess = (serializers: Serializer[]) => {
+const logger = {
+  info: (message: string) => process.stdout.write(message + '\n'),
+}
+
+const getPreprocessor = (serializers: Serializer[]) => {
   const clone = (val: unknown): unknown => {
     const serializer = serializers.find(s => s.test(val))
     if (serializer) {
@@ -75,10 +66,19 @@ const preprocess = (serializers: Serializer[]) => {
   return Object.assign(clone, {serializers})
 }
 
-const dedentDeep2 = preprocess([
+const fixLineEndings = (s: string) => s.replace(/\r?\n/g, EOL)
+
+const fixLineEndingsDeep = getPreprocessor([
+  {
+    test: x => typeof x === 'string',
+    print: fixLineEndings,
+  },
+])
+
+const dedentDeep = getPreprocessor([
   {
     test: val => typeof val === 'string',
-    print: val => dedent(val).replace(/\r?\n/g, EOL),
+    print: val => fixLineEndings(dedent(val)),
   },
   {
     test: isAsymmetricMatcher,
@@ -86,21 +86,19 @@ const dedentDeep2 = preprocess([
   },
 ])
 
-dedentDeep = dedentDeep2
-
 export const expectShim = Object.assign(
   <T>(actual: T) => {
     const toMatchInlineSnapshot = (...args: unknown[]) => {
+      const preprocess = getPreprocessor(expectShim.snapshotSerializiers)
       try {
         if (args.length > 1) {
           throw Error(`String snapshot format is being used - updating will automatically migrate to object snapshots.`)
         }
 
-        // todo have to serialize actual and expected
-        expect(actual).toEqual(dedentDeep(args[0]))
+        expect(fixLineEndingsDeep(preprocess(actual))).toEqual(dedentDeep(args[0]))
       } catch (assertError) {
         const errorPrefix = (() => {
-          if (true || process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
+          if (process.env.UPDATE || process.argv.includes('-u') || process.argv.includes('--updateSnapshot')) {
             return undefined
           }
           if (args.length === 0) {
@@ -164,41 +162,52 @@ export const expectShim = Object.assign(
           }
         })
 
-        const multiline = json5
-          .stringify(clonedActualValue, {
-            space: formatting.indent,
-            quote: `'`,
-            replacer: (_key, val) =>
-              val?.toJSON
-                ? val.toJSON()
-                : typeof val === 'function'
-                ? // todo: uncomment
-                  undefined // replacementToken('Object.assign(expect.any(Function), {generated: true})')
-                : val,
-          })
-          .replace(/(\r?\n)/g, `$1${lineIndent}`)
-          // todo: use babel to replace multiline strings?
-          .replace(
-            /\n(\s+)(.*)["'](.*\\n.*)["']/g,
-            (_match, margin: string, prefix: string, content: string) =>
-              '\n' +
-              // margin +
-              prefix +
-              '`' +
-              EOL +
-              content
-                .replace(/`/g, '\\`') // escape backticks
-                .replace(/\\'/g, `'`) // un-escape single quotes
-                .replace(/(\\r)?\\n/g, '\n') // replace newline characters with actual newline
-                .split(/\n/g)
-                .map(line => (line ? lineIndent + margin + line : line)) // give non-empty lines a margin
-                .join(EOL)
-                .replace(/(\r?\n)[\t +](\r?\n)/g, '$1$2') +
-              EOL +
-              margin +
-              '`'
-          )
-        console.log({lineIndent, formatting})
+        const preprocessed = preprocess(clonedActualValue)
+
+        // todo: see if this can be consolidated with similar section below
+        const indentBlock = (margin: string, content: string) =>
+          content
+            .replace(/`/g, '\\`')
+            .split(/\n/)
+            .map(line => (line ? lineIndent + margin + line : line))
+            .join('\n')
+
+        const multiline =
+          typeof preprocessed === 'string'
+            ? `\`\n${indentBlock(formatting.indent, preprocessed)}\n${lineIndent}\``
+            : json5
+                .stringify(preprocessed, {
+                  space: formatting.indent,
+                  quote: `'`,
+                  replacer: (_key, val) =>
+                    val?.toJSON
+                      ? val.toJSON()
+                      : typeof val === 'function'
+                      ? replacementToken('Object.assign(expect.any(Function), {generated: true})')
+                      : val,
+                })
+                .replace(/(\r?\n)/g, `$1${lineIndent}`)
+                // todo: use babel to replace multiline strings?
+                .replace(
+                  /\n(\s+)(.*)["'](.*\\n.*)["']/g,
+                  (_match, margin: string, prefix: string, content: string) =>
+                    '\n' +
+                    // margin +
+                    prefix +
+                    '`' +
+                    EOL +
+                    content
+                      .replace(/`/g, '\\`') // escape backticks
+                      .replace(/\\'/g, `'`) // un-escape single quotes
+                      .replace(/(\\r)?\\n/g, '\n') // replace newline characters with actual newline
+                      .split(/\n/g)
+                      .map(line => (line ? lineIndent + margin + line : line)) // give non-empty lines a margin
+                      .join(EOL)
+                      .replace(/(\r?\n)[\t +](\r?\n)/g, '$1$2') +
+                    EOL +
+                    margin +
+                    '`'
+                )
 
         const jsonWithPlaceholders =
           multiline.length >= 40 || snapObjVar?.includes('\n')
@@ -226,7 +235,7 @@ export const expectShim = Object.assign(
           return {line: lines.length, column: lines[lines.length - 1].length}
         }
         const pos = lineAndColumn(replacement.start + 1)
-        console.log(`Found snapshot to update at ${replacement.file}:${pos.line}:${pos.column}`)
+        logger.info(`Found snapshot to update at ${replacement.file}:${pos.line}:${pos.column}`)
 
         replacements[callSite.file] = replacements[callSite.file] || []
         replacements[callSite.file].push(replacement)
@@ -234,7 +243,11 @@ export const expectShim = Object.assign(
     }
     return {toMatchInlineSnapshot}
   },
-  {register: () => require('./register').register()}
+  {
+    snapshotSerializiers: [] as Serializer[],
+    register: () => require('./register').register(),
+    addSnapshotSerializer: (serializer: Serializer) => expectShim.snapshotSerializiers.push(serializer),
+  }
 )
 
 const replaceAsymmetricMatchers = (snapObjVar: string) => {
