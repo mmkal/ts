@@ -32,7 +32,7 @@ export const filterStack = (
   stack &&
   parseStack(stack)
     .filter(fn)
-    .map(line => line?.line)
+    .map(frame => frame?.line)
     .join(os.EOL)
     .replace(/\r?\n\s+\n/g, os.EOL)
 
