@@ -194,7 +194,6 @@ export const expectShim = Object.assign(
                   /\n(\s+)(.*)["'](.*\\n.*)["']/g,
                   (_match, margin: string, prefix: string, content: string) =>
                     '\n' +
-                    // margin +
                     prefix +
                     '`' +
                     EOL +
