@@ -176,7 +176,9 @@ export const expectShim = Object.assign(
 
         const multiline =
           typeof preprocessed === 'string'
-            ? `\`\n${indentBlock(formatting.indent, preprocessed)}\n${lineIndent}\``
+            ? preprocessed.includes('\n')
+              ? `\`\n${indentBlock(formatting.indent, preprocessed)}\n${lineIndent}\``
+              : json5.stringify(preprocessed)
             : json5
                 .stringify(preprocessed, {
                   space: formatting.indent,
