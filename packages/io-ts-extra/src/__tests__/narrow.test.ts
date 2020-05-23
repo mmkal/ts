@@ -74,20 +74,16 @@ it('can refine with another codec', () => {
   const badResourcesValidation = CloudResources.decode(badResources)
   expectLeft(badResourcesValidation)
   expect(CloudResources.is(badResources)).toBe(false)
-  expect(validationErrors(badResourcesValidation, 'CloudResources')).toMatchInlineSnapshot(`
-    Array [
-      "Invalid value {undefined} supplied to CloudResources.database.password. Expected string.",
-    ]
-  `)
+  expect(validationErrors(badResourcesValidation, 'CloudResources')).toMatchInlineSnapshot([
+    'Invalid value {undefined} supplied to CloudResources.database.password. Expected string.',
+  ])
 
   const invalidConnectionString = CloudResources.decode({
     database: {username: 'user', password: 'pass'},
     service: {dbConnectionString: 'user:typo'},
   } as typeof CloudResources._A)
   expectLeft(invalidConnectionString)
-  expect(validationErrors(invalidConnectionString, 'CloudResources')).toMatchInlineSnapshot(`
-    Array [
-      "Invalid value {'user:typo'} supplied to CloudResources.service.dbConnectionString. Expected \\"user:pass\\".",
-    ]
-  `)
+  expect(validationErrors(invalidConnectionString, 'CloudResources')).toMatchInlineSnapshot([
+    'Invalid value {\'user:typo\'} supplied to CloudResources.service.dbConnectionString. Expected "user:pass".',
+  ])
 })

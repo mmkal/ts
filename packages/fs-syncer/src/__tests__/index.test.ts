@@ -17,17 +17,15 @@ test('sync', () => {
 
   syncer.sync()
 
-  expect(syncer.read()).toMatchInlineSnapshot(`
-    Object {
-      "a.txt": "a",
-      "b.txt": "bee",
-      "c": Object {
-        "d.txt": "dee",
-        "e.txt": "ee",
-        "f.txt": "ef",
-      },
-    }
-  `)
+  expect(syncer.read()).toMatchInlineSnapshot({
+    'a.txt': 'a',
+    'b.txt': 'bee',
+    c: {
+      'd.txt': 'dee',
+      'e.txt': 'ee',
+      'f.txt': 'ef',
+    },
+  })
 
   fs.writeFileSync(path.join(syncer.baseDir, 'unexpected.txt'), `shouldn't be here`, 'utf8')
 

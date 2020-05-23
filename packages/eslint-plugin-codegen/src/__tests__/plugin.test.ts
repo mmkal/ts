@@ -20,21 +20,21 @@ describe('markdown processor', () => {
 
     const preprocessed = markdownProcessor.preprocess!(markdown)
 
-    expect(preprocessed).toMatchInlineSnapshot(`
-      Array [
-        "/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove
-      // eslint-plugin-codegen:trim# Title
-      // eslint-plugin-codegen:trim
-      // eslint-plugin-codegen:trim<!-- comment -->
-      // eslint-plugin-codegen:trim
-      // eslint-plugin-codegen:trim<div>html</div>
-      // eslint-plugin-codegen:trim
-      // eslint-plugin-codegen:trim\`\`\`js
-      // eslint-plugin-codegen:trim// some javascript
-      // eslint-plugin-codegen:trimconst x = 1
-      // eslint-plugin-codegen:trim\`\`\`",
-      ]
-    `)
+    expect(preprocessed).toMatchInlineSnapshot([
+      `
+          /* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove
+          // eslint-plugin-codegen:trim# Title
+          // eslint-plugin-codegen:trim
+          // eslint-plugin-codegen:trim<!-- comment -->
+          // eslint-plugin-codegen:trim
+          // eslint-plugin-codegen:trim<div>html</div>
+          // eslint-plugin-codegen:trim
+          // eslint-plugin-codegen:trim\`\`\`js
+          // eslint-plugin-codegen:trim// some javascript
+          // eslint-plugin-codegen:trimconst x = 1
+          // eslint-plugin-codegen:trim\`\`\`
+      `,
+    ])
   })
 
   test('postprocessor flattens message lists', () => {

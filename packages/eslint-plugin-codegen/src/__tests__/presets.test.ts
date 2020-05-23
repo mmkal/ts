@@ -73,7 +73,7 @@ describe('markdownTOC', () => {
         options: {},
       })
     ).toMatchInlineSnapshot(`
-      "- [H1](#h1)
+      - [H1](#h1)
          - [H2](#h2)
             - [H3](#h3)
             - [Another H3](#another-h3)
@@ -81,7 +81,7 @@ describe('markdownTOC', () => {
                   - [H5](#h5)
                   - [H5](#h5-1)
                - [H4 duplicate](#h4-duplicate-1)
-         - [Another H2](#another-h2)"
+         - [Another H2](#another-h2)
     `)
 
     expect(
@@ -93,8 +93,8 @@ describe('markdownTOC', () => {
         },
       })
     ).toMatchInlineSnapshot(`
-      "- [H2](#h2)
-      - [Another H2](#another-h2)"
+      - [H2](#h2)
+      - [Another H2](#another-h2)
     `)
   })
 
@@ -115,11 +115,11 @@ describe('markdownTOC', () => {
         options: {},
       })
     ).toMatchInlineSnapshot(`
-      "- [H3](#h3)
+      - [H3](#h3)
       - [Another H3](#another-h3)
          - [H4 duplicate](#h4-duplicate)
             - [H5](#h5)
-            - [H5](#h5-1)"
+            - [H5](#h5-1)
     `)
 
     expect(
@@ -130,7 +130,7 @@ describe('markdownTOC', () => {
           maxDepth: 3,
         },
       })
-    ).toMatchInlineSnapshot(`""`)
+    ).toMatchInlineSnapshot('')
   })
 })
 
@@ -178,10 +178,10 @@ describe('monorepoTOC', () => {
         options: {},
       })
     ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+      - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2
       - [package3](./packages/package3) - Readme for package 3
-      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
+      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
     `)
 
     expect(
@@ -190,8 +190,8 @@ describe('monorepoTOC', () => {
         options: {filter: {'package.name': 'package1|package3'}},
       })
     ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package3](./packages/package3) - Readme for package 3"
+      - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+      - [package3](./packages/package3) - Readme for package 3
     `)
 
     expect(
@@ -200,10 +200,10 @@ describe('monorepoTOC', () => {
         options: {sort: '-readme.length'},
       })
     ).toMatchInlineSnapshot(`
-      "- [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
+      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
       - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2
-      - [package3](./packages/package3) - Readme for package 3"
+      - [package3](./packages/package3) - Readme for package 3
     `)
 
     expect(
@@ -212,8 +212,8 @@ describe('monorepoTOC', () => {
         options: {workspaces: 'lerna'},
       })
     ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package2](./packages/package2) - Readme for package 2"
+      - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+      - [package2](./packages/package2) - Readme for package 2
     `)
 
     expect(
@@ -222,8 +222,8 @@ describe('monorepoTOC', () => {
         options: {workspaces: ['packages/package1', 'packages/package3']},
       })
     ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package3](./packages/package3) - Readme for package 3"
+      - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+      - [package3](./packages/package3) - Readme for package 3
     `)
 
     expect(() =>
@@ -239,10 +239,10 @@ describe('monorepoTOC', () => {
         options: {repoRoot: '..'},
       })
     ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+      - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2
       - [package3](./packages/package3) - Readme for package 3
-      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
+      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
     `)
   })
 
@@ -306,7 +306,7 @@ describe('markdownFromTests', () => {
       options: {source: 'test.ts', headerLevel: 4},
     })
     expect(withHeaders).toMatchInlineSnapshot(`
-      "#### addition:
+      #### addition:
 
       \`\`\`typescript
       expect(calculator.add(1, 1)).toEqual(2)
@@ -322,7 +322,7 @@ describe('markdownFromTests', () => {
 
       \`\`\`typescript
       expect(calculator.multiply(2, 3)).toEqual(6)
-      \`\`\`"
+      \`\`\`
     `)
     const withoutHeaders = presets.markdownFromTests({
       meta: emptyReadme,
@@ -351,12 +351,12 @@ describe('barrel', () => {
         options: {},
       })
     ).toMatchInlineSnapshot(`
-      "export * from './a'
+      export * from './a'
       export * from './b'
       export * from './c'
       export * from './a-util'
       export * from './b-util'
-      export * from './util'"
+      export * from './util'
     `)
 
     expect(
@@ -365,10 +365,10 @@ describe('barrel', () => {
         options: {include: 'a|b'},
       })
     ).toMatchInlineSnapshot(`
-      "export * from './a'
+      export * from './a'
       export * from './b'
       export * from './a-util'
-      export * from './b-util'"
+      export * from './b-util'
     `)
 
     expect(
@@ -377,9 +377,9 @@ describe('barrel', () => {
         options: {exclude: 'util'},
       })
     ).toMatchInlineSnapshot(`
-      "export * from './a'
+      export * from './a'
       export * from './b'
-      export * from './c'"
+      export * from './c'
     `)
 
     expect(
@@ -388,8 +388,8 @@ describe('barrel', () => {
         options: {include: 'a|b', exclude: 'util'},
       })
     ).toMatchInlineSnapshot(`
-      "export * from './a'
-      export * from './b'"
+      export * from './a'
+      export * from './b'
     `)
   })
 
@@ -461,7 +461,7 @@ describe('markdownFromJsdoc', () => {
         options: {source: 'index.ts', export: 'add'},
       })
     ).toMatchInlineSnapshot(`
-      "#### [add](./index.ts#L17)
+      #### [add](./index.ts#L17)
 
       Adds two numbers
 
@@ -488,7 +488,7 @@ describe('markdownFromJsdoc', () => {
       |name|description|
       |-|-|
       |a|{number} the first number|
-      |b|{number} the second number|"
+      |b|{number} the second number|
     `)
   })
 
@@ -523,14 +523,14 @@ describe('custom', () => {
         meta: {filename: __filename, existingContent: ''},
         options: {source: './custom-preset.js', export: 'getText', input: 'abc'},
       })
-    ).toMatchInlineSnapshot(`"Named export with input: abc"`)
+    ).toMatchInlineSnapshot('Named export with input: abc')
 
     expect(
       presets.custom({
         meta: {filename: __filename, existingContent: ''},
         options: {source: './custom-preset.js', input: 'def'},
       })
-    ).toMatchInlineSnapshot(`"Whole module export with input: def"`)
+    ).toMatchInlineSnapshot('Whole module export with input: def')
 
     expect(() =>
       presets.custom({

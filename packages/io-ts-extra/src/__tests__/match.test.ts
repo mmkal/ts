@@ -120,12 +120,7 @@ describe('case matching', () => {
         .case(Email, e => e.body)
         .case(SMS, s => s.content).tryGet
     )
-    expect(petSounds).toMatchInlineSnapshot(`
-      Array [
-        "email body",
-        "sms content",
-      ]
-    `)
+    expect(petSounds).toMatchInlineSnapshot(['email body', 'sms content'])
   })
 })
 

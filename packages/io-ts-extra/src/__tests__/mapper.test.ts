@@ -133,7 +133,7 @@ describe('parser', () => {
     expect(DateFromString.decode(null as any)).toMatchObject({_tag: 'Left'})
     expect(DateFromString.decode(123 as any)).toMatchObject({_tag: 'Left'})
 
-    expect(DateFromString.encode(new Date('2001'))).toMatchInlineSnapshot(`"2001-01-01T00:00:00.000Z"`)
+    expect(DateFromString.encode(new Date('2001'))).toMatchInlineSnapshot('2001-01-01T00:00:00.000Z')
   })
 
   it('catches failures', () => {

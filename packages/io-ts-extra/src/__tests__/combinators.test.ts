@@ -101,21 +101,19 @@ test('strict', () => {
       expectLeft(decoded)
       return validationErrors(decoded)
     })
-  ).toMatchInlineSnapshot(`
-    Object {
-      "null": Array [
-        "Invalid value {null} supplied to Strict<{ name: string, age: number }. Expected Strict<{ name: string, age: number }.",
-      ],
-      "undefined": Array [
-        "Invalid value {undefined} supplied to Strict<{ name: string, age: number }. Expected Strict<{ name: string, age: number }.",
-      ],
-      "withExtraProp": Array [
-        "Invalid value {'abc'} supplied to Strict<{ name: string, age: number }.unexpectedProp. Expected undefined.",
-      ],
-      "withInvalidAndExtraProp": Array [
-        "Invalid value {123} supplied to Strict<{ name: string, age: number }.name. Expected string.",
-        "Invalid value {'abc'} supplied to Strict<{ name: string, age: number }.unexpectedProp. Expected undefined.",
-      ],
-    }
-  `)
+  ).toMatchInlineSnapshot({
+    null: [
+      'Invalid value {null} supplied to Strict<{ name: string, age: number }. Expected Strict<{ name: string, age: number }.',
+    ],
+    undefined: [
+      'Invalid value {undefined} supplied to Strict<{ name: string, age: number }. Expected Strict<{ name: string, age: number }.',
+    ],
+    withExtraProp: [
+      "Invalid value {'abc'} supplied to Strict<{ name: string, age: number }.unexpectedProp. Expected undefined.",
+    ],
+    withInvalidAndExtraProp: [
+      'Invalid value {123} supplied to Strict<{ name: string, age: number }.name. Expected string.',
+      "Invalid value {'abc'} supplied to Strict<{ name: string, age: number }.unexpectedProp. Expected undefined.",
+    ],
+  })
 })
