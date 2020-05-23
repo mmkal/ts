@@ -168,9 +168,9 @@ export const expectShim = Object.assign(
         const indentBlock = (margin: string, content: string) =>
           content
             .replace(/`/g, '\\`')
-            .split(/\n/)
+            .split(/\r?\n/)
             .map(line => (line ? lineIndent + margin + line : line))
-            .join('\n')
+            .join(EOL)
 
         const multiline =
           typeof preprocessed === 'string'
