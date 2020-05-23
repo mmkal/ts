@@ -19,4 +19,6 @@ export const register = () => {
       },
     }
   )
+
+  return jestExpect
 }
