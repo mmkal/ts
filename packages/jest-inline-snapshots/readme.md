@@ -66,13 +66,13 @@ Then register the shim by adding its `register` script to your jest config, e.g.
 
 ```js
 module.exports = {
-  testMatch: [...],
-  setupTestFrameworkScriptFile: ['<rootDir>/node_modules/jest-inline-snapshots/register'],
+  ...,
+  setupFilesAfterEnv: ['jest-inline-snapshots/register'],
   ...
 }
 ```
 
-If you already have a `setupTestFrameworkScriptFile`, you can register by adding `require('jest-inline-snapshots/register')` or `import 'jest-inline-snapshots/register'` to the top of the file. The `register` module could also be required/imported at the top of an individual test file, if you don't want to use it for an entire codebase.
+You can also register by adding `require('jest-inline-snapshots/register')` or `import 'jest-inline-snapshots/register'` to the top of an individual test file, if you don't want to use it for an entire codebase.
 
 You can also use the shim directly without modifying the global `expect` function:
 

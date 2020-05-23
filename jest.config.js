@@ -1,7 +1,7 @@
 module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/*/*.test.ts'],
-  setupFilesAfterEnv: ['<rootDir>/node_modules/jest-inline-snapshots/register.js'],
+  setupFilesAfterEnv: ['jest-inline-snapshots/register'],
   collectCoverageFrom: [
     '**/*.{ts,js}',
     '!**/node_modules/**',
