@@ -68,14 +68,16 @@ const getPreprocessor = (serializers: Serializer[]) => {
 
 const fixLineEndings = (s: string) => s.replace(/\r?\n/g, EOL)
 
-const fixLineEndingsDeep = getPreprocessor([
+/** recursively replaces deeply-nested strings in an object with OS-default line-endings */
+export const fixLineEndingsDeep = getPreprocessor([
   {
     test: x => typeof x === 'string',
     print: fixLineEndings,
   },
 ])
 
-const dedentDeep = getPreprocessor([
+/** recursively dedents deeply-nested strings in an object */
+export const dedentDeep = getPreprocessor([
   {
     test: val => typeof val === 'string',
     print: val => fixLineEndings(dedent(val)),
