@@ -158,6 +158,11 @@ One advantage of the snapshots being plain javascript objects, rather than templ
 - Snapshots being written/udpated are logged to the jest console slightly differently - you won't get a handy summary at the end of the run about how many were updated overall, you will be told how many snapshots were updated for each file.
 - Asymmetric matchers won't be updated even when you run with `-u`. If values matched by property matchers change, you'll have to remove/updated the asymmetric matcher manually. This is for parity with the in-built inline snapshot feature, where property matchers aren't affected by `-u`.
 - React/JSX snapshots haven't been tested. They might not work very well.
+- Performance:
+  - When updating, there are several stages of parsing/stringifying, so updating snapshots might be slower than when using jest.
+  - When not updating, assertions will be slightly slower than when using `expect(...).toEqual(...)` because of a round of preprocessing.
+- Newlines are normalised to the OS default, so this library shouldn't be used for assertions that distinguish between `\r\n` and `\n`.
+- Strings are automatically "dedented" so the output is readable. There could side-effects for text with unusual formatting.
 
 ### Under the hood
 
