@@ -68,13 +68,16 @@ Then register the shim by adding its `register` script to your jest config, e.g.
 module.exports = {
   ...,
   setupFilesAfterEnv: ['jest-inline-snapshots/register'],
+  reporters: ['default', 'jest-inline-snapshots/reporter'],
   ...
 }
 ```
 
+Note: the `jest-inline-snapshots/reporter` is a workaround for [jest not passing CLI args to tests](https://github.com/facebook/jest/issues/5089#issuecomment-352170845)
+
 You can also register by adding `require('jest-inline-snapshots/register')` or `import 'jest-inline-snapshots/register'` to the top of an individual test file, if you don't want to use it for an entire codebase.
 
-You can also use the shim directly without modifying the global `expect` function:
+Or, you can use the shim directly without modifying the global `expect` function:
 
 ```typescript
 import {getAdminUser} from '../some-module'
