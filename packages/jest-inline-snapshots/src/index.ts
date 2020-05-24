@@ -88,7 +88,7 @@ export const dedentDeep = getPreprocessor([
   },
 ])
 
-export const getSnapshotUpdateState = (proc: NodeJS.Process) => {
+export const getSnapshotUpdateMode = (proc: NodeJS.Process) => {
   let argv = proc.argv
   if (proc.env.ARGV) {
     try {
@@ -115,14 +115,14 @@ export const expectShim = Object.assign(
 
         expect(fixLineEndingsDeep(preprocess(actual))).toEqual(dedentDeep(args[0]))
       } catch (assertError) {
-        const updateState = getSnapshotUpdateState(process)
+        const updateMode = getSnapshotUpdateMode(process)
         const errorPrefix = (() => {
-          if (updateState === 'all') {
+          if (updateMode === 'all') {
             return undefined
           }
           if (args.length === 0) {
             return (
-              updateState === 'none' &&
+              updateMode === 'none' &&
               [
                 'New snapshot was not written. The update flag must be explicitly passed to write a new snapshot.',
                 'This is likely because this test is run in a continuous integration (CI) environment in which snapshots are not written by default.',
