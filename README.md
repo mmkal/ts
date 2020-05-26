@@ -12,6 +12,7 @@ Monorepo of assorted typescript projects.
 - [expect-type](https://github.com/mmkal/ts/tree/master/packages/expect-type#readme) - Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 - [fs-syncer](./packages/fs-syncer) - A helper to recursively read and write text files to a specified directory.
 - [io-ts-extra](https://github.com/mmkal/ts/tree/master/packages/io-ts-extra#readme) - Some codecs and combinators not provided by io-ts or io-ts-types.
+- [jest-inline-snapshots](./packages/jest-inline-snapshots) - A backwards-compatible shim for jest's `expect(...).toMatchInlineSnapshot()` which uses javascript values for snapshots rather than ugly templated strings.
 - [memorable-moniker](https://github.com/mmkal/ts/tree/master/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
 <!-- codegen:end -->
 
