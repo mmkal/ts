@@ -29,7 +29,24 @@ export type Equal<Left, Right> = And<
   ]
 >
 
-export type Params<Actual> = Actual extends (...args: infer P) => any ? P : never
+// prettier-ignore
+export type Params<Actual> =
+Actual extends {(...args: infer P1): any; (...args: infer P2): any; (...args: infer P3): any; (...args: infer P4): any; (...args: infer P5): any; (...args: infer P6): any; (...args: infer P7): any}
+? P1 | P2 | P3 | P4 | P5 | P6 | P7
+: Actual extends {(...args: infer P1): any; (...args: infer P2): any; (...args: infer P3): any; (...args: infer P4): any; (...args: infer P5): any; (...args: infer P6): any}
+? P1 | P2 | P3 | P4 | P5 | P6
+: Actual extends {(...args: infer P1): any; (...args: infer P2): any; (...args: infer P3): any; (...args: infer P4): any; (...args: infer P5): any}
+? P1 | P2 | P3 | P4 | P5
+: Actual extends {(...args: infer P1): any; (...args: infer P2): any; (...args: infer P3): any; (...args: infer P4): any}
+? P1 | P2 | P3 | P4
+: Actual extends {(...args: infer P1): any; (...args: infer P2): any; (...args: infer P3): any}
+? P1 | P2 | P3
+: Actual extends {(...args: infer P1): any; (...args: infer P2): any}
+? P1 | P2
+: Actual extends (...args: infer P) => any
+? P
+: never
+
 export type ConstructorParams<Actual> = Actual extends new (...args: infer P) => any
   ? Actual extends new () => any
     ? P | []
@@ -133,3 +150,26 @@ export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true
 
   return obj as any
 }
+
+interface X {
+  (a: 1): 1
+  (a: 2): 1
+  (a: 3): 1
+  (a: 4): 1
+  (a: 5): 1
+}
+
+declare const x: X
+expectTypeOf(x).toBeCallableWith(2)
+
+interface Y {
+  // eslint-disable-next-line @typescript-eslint/method-signature-style
+  f(a: 1): 1
+}
+
+type Geohash = (key: string, ...members: string[]) => Promise<string[]>
+
+expectTypeOf<Geohash>().parameters.toEqualTypeOf<[string, ...string[]]>()
+
+declare const y: Y
+expectTypeOf(y.f).parameters.toEqualTypeOf<[1]>()
