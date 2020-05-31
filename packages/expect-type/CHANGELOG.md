@@ -3,6 +3,69 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.4](https://github.com/mmkal/ts/compare/expect-type@0.7.3...expect-type@0.7.4) (2020-05-14)
+
+
+### Bug Fixes
+
+* stricter equal ([#33](https://github.com/mmkal/ts/issues/33)) ([1f9a8c7](https://github.com/mmkal/ts/commit/1f9a8c7fe7ce962e9d6e2d8ddffeee81bce1ca31))
+
+
+
+
+
+## [0.7.3](https://github.com/mmkal/ts/compare/expect-type@0.7.2...expect-type@0.7.3) (2020-05-13)
+
+**Note:** Version bump only for package expect-type
+
+
+
+
+
+## [0.7.2](https://github.com/mmkal/ts/compare/expect-type@0.7.1...expect-type@0.7.2) (2020-05-08)
+
+**Note:** Version bump only for package expect-type
+
+
+
+
+
+## [0.7.1](https://github.com/mmkal/ts/compare/expect-type@0.7.0...expect-type@0.7.1) (2020-05-06)
+
+**Note:** Version bump only for package expect-type
+
+
+
+
+
+# [0.7.0](https://github.com/mmkal/ts/compare/expect-type@0.6.0...expect-type@0.7.0) (2020-05-04)
+
+
+### Features
+
+* instance ([07b8621](https://github.com/mmkal/ts/commit/07b8621276a02f2ed1ff4d9446d0b8d6ba82ed5f))
+
+
+
+
+
+# [0.6.0](https://github.com/mmkal/ts/compare/expect-type@0.5.5...expect-type@0.6.0) (2020-05-04)
+
+
+### Bug Fixes
+
+* keywords ([15fb566](https://github.com/mmkal/ts/commit/15fb566468a9f258c6126d24931d59bafa7cfb6f))
+
+
+### Features
+
+* toBeConstructibleWith, constructorParameters ([5a9d7fd](https://github.com/mmkal/ts/commit/5a9d7fd2c45f9eee7bffc6e6ed75e51712397b35))
+
+
+
+
+
+
 ## [0.5.5](https://github.com/mmkal/ts/compare/expect-type@0.5.4...expect-type@0.5.5) (2020-04-26)
 
 **Note:** Version bump only for package expect-type

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.6.1...io-ts-extra@0.7.0) (2020-05-04)
+
+
+### Bug Fixes
+
+* **parser:** allow mapping to branded types ([#28](https://github.com/mmkal/ts/issues/28)) ([1808143](https://github.com/mmkal/ts/commit/180814329681f1164fac559c86b9173d615077e3))
+
+
+### Features
+
+* **matcher:** type narrowing ([#25](https://github.com/mmkal/ts/issues/25)) ([54d0f9b](https://github.com/mmkal/ts/commit/54d0f9b8c5f394d649e5d173c1560b89dd81fe4e))
+
+
+
+
+
+
 ## [0.6.1](https://github.com/mmkal/ts/compare/io-ts-extra@0.6.0...io-ts-extra@0.6.1) (2020-04-11)
 
 **Note:** Version bump only for package io-ts-extra

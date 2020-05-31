@@ -1,6 +1,26 @@
 import {RuleTester} from 'eslint'
 import * as codegen from '..'
-import dedent from 'dedent'
+import baseDedent from 'dedent'
+import * as os from 'os'
+
+jest.mock('fs', () => {
+  const realFs: typeof import('fs') = require.requireActual('fs')
+  return {
+    ...realFs,
+    readdirSync: (path: string) => {
+      if (path.endsWith('__tests__')) {
+        return ['foo.ts', 'bar.ts']
+      }
+      return realFs.readdirSync(path)
+    },
+  }
+})
+
+/** wrapper for dedent which respects os.EOL */
+const dedent = (...args: Parameters<typeof baseDedent>) => {
+  const result = baseDedent(...args)
+  return result.replace(/\r?\n/g, os.EOL)
+}
 
 Object.assign(RuleTester, {
   // eslint-disable-next-line jest/expect-expect
@@ -25,8 +45,14 @@ tester.run('codegen', codegen.rules.codegen, {
   invalid: [
     {
       filename: 'index.ts',
-      code: '// codegen:start {preset: barrel}',
+      code: dedent`
+        // codegen:start {preset: barrel}
+      `,
       errors: [{message: `couldn't find end marker (expected regex /\\/\\/ codegen:end/g)`}],
+      output: dedent`
+        // codegen:start {preset: barrel}
+        // codegen:end
+      `,
     },
     {
       filename: __filename,
@@ -60,6 +86,12 @@ tester.run('codegen', codegen.rules.codegen, {
         // codegen:end
       `,
       errors: [{message: /couldn't find end marker/}],
+      output: dedent`
+        // codegen:start {preset: empty}
+        // codegen:end
+        // codegen:start {preset: empty}
+        // codegen:end
+      `,
     },
     {
       filename: __filename,
@@ -69,6 +101,12 @@ tester.run('codegen', codegen.rules.codegen, {
         // codegen:end
       `,
       errors: [{message: /content doesn't match/}],
+      output: dedent`
+        // codegen:start {preset: barrel}
+        export * from './foo'
+        export * from './bar'
+        // codegen:end
+      `,
     },
     {
       filename: __filename,

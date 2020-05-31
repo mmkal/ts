@@ -28,7 +28,11 @@ readmes.forEach(file => {
     ) {
       return match
     }
-    const permalinkedHref = `${repo}/tree/${encodeURIComponent(tag)}/${packageDir}/` + href.replace(/^\.\//, '')
+
+    const isImage = href.endsWith('.jpg') || href.endsWith('.png') || href.endsWith('.gif')
+    const baseURL = isImage ? repo.replace('github.com', 'raw.githubusercontent.com') : `${repo}/tree`
+    const permalinkedHref = `${baseURL}/${encodeURIComponent(tag)}/${packageDir}/` + href.replace(/^\.\//, '')
+
     return `[${text}](${permalinkedHref})`
   })
   fs.writeFileSync(file, withPermaLinks, 'utf8')

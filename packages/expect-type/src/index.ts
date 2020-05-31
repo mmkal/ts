@@ -13,17 +13,28 @@ export type IsAny<T> = [T] extends [Secret] ? Not<IsNever<T>> : false
 export type IsUnknown<T> = [unknown] extends [T] ? Not<IsAny<T>> : false
 export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
 
+type DeepBrandAny<T> = IsAny<T> extends true // avoid `any` matching `unknown`
+  ? Secret
+  : {[K in keyof T]: DeepBrandAny<T[K]>}
+
 export type Extends<L, R> = L extends R ? true : false
+export type StrictExtends<L, R> = Extends<DeepBrandAny<L>, DeepBrandAny<R>>
+
 export type Equal<Left, Right> = And<
   [
-    Extends<Left, Right>, // prettier-break
-    Extends<Right, Left>,
-    Extends<keyof Left, keyof Right>,
-    Extends<keyof Right, keyof Left>
+    StrictExtends<Left, Right>,
+    StrictExtends<Right, Left>,
+    StrictExtends<keyof Left, keyof Right>,
+    StrictExtends<keyof Right, keyof Left>
   ]
 >
 
-export type Params<Actual> = Actual extends (...args: infer P) => any ? P : [never]
+export type Params<Actual> = Actual extends (...args: infer P) => any ? P : never
+export type ConstructorParams<Actual> = Actual extends new (...args: infer P) => any
+  ? Actual extends new () => any
+    ? P | []
+    : P
+  : never
 
 type MismatchArgs<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never]
 
@@ -44,12 +55,15 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
   toEqualTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>) => true
   toBeCallableWith: B extends true ? (...args: Params<Actual>) => true : never
+  toBeConstructibleWith: B extends true ? (...args: ConstructorParams<Actual>) => true : never
   toHaveProperty: <K extends string>(
     key: K,
     ...MISMATCH: MismatchArgs<Extends<K, keyof Actual>, B>
   ) => K extends keyof Actual ? ExpectTypeOf<Actual[K], B> : true
   parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
+  constructorParameters: ExpectTypeOf<ConstructorParams<Actual>, B>
+  instance: Actual extends new (...args: any[]) => infer I ? ExpectTypeOf<I, B> : never
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : never
@@ -63,14 +77,32 @@ const fn: any = () => true
  * form of a reference or generic type parameter.
  *
  * @example
- * expectTypeOf({a: 1}).toMatchTypeOf({a: 2})
- * expectTypeOf({a: 1}).toHaveProperty('a').toBeNumber()
+ * import {foo, bar} from '../foo'
+ * import {expectTypeOf} from 'expect-type'
+ *
+ * test('foo types', () => {
+ *   // make sure `foo` has type {a: number}
+ *   expectTypeOf(foo).toMatchTypeOf({a: 1})
+ *   expectTypeOf(foo).toHaveProperty('a').toBeNumber()
+ *
+ *   // make sure `bar` is a function taking a string:
+ *   expectTypeOf(bar).parameter(0).toBeString()
+ *   expectTypeOf(bar).returns.not.toBeAny()
+ * })
  *
  * @description
  * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
  */
 export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
-  const nonFunctionProperties = ['parameters', 'returns', 'resolves', 'not', 'items'] as const
+  const nonFunctionProperties = [
+    'parameters',
+    'returns',
+    'resolves',
+    'not',
+    'items',
+    'constructorParameters',
+    'instance',
+  ] as const
   type Keys = keyof ExpectTypeOf<any, any>
 
   type FunctionsDict = Record<Exclude<Keys, typeof nonFunctionProperties[number]>, any>
@@ -91,6 +123,7 @@ export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true
     toMatchTypeOf: fn,
     toEqualTypeOf: fn,
     toBeCallableWith: fn,
+    toBeConstructibleWith: fn,
     toHaveProperty: expectTypeOf,
     parameter: expectTypeOf,
   }

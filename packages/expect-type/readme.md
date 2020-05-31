@@ -10,7 +10,7 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 
 Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
 
-It can be used in your existing test files - or anywhere other type-checked file you'd like.
+It can be used in your existing test files - or any other type-checked file you'd like - it's built into existing tooling with no dependencies. No extra build step, cli tool, IDE extension, or lint plugin is needed. Just import the function and start writing tests. Failures will be at compile time - they'll appear in your IDE and when you run `tsc`.
 
 ##### Example
 
@@ -58,18 +58,68 @@ The `expectTypeOf` method takes a single argument, or a generic parameter. Neith
 ### Features
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
-Type-check object references:
+Check that two objects have equivalent types with `.toEqualTypeOf`:
 
 ```typescript
 expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
-expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+```
+
+`.toEqualTypeOf` succeeds for objects with different values, but the same type:
+
+```typescript
 expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
 ```
 
-Assertions can be inverted:
+When there's no instance/runtime variable for the expected type, you can use generics:
+
+```typescript
+expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+```
+
+`.toEqualTypeOf` fails on extra properties:
+
+```typescript
+// @ts-expect-error
+expectTypeOf({a: 1, b: 1}).toEqualTypeOf({a: 1})
+```
+
+To allow for extra properties, use `.toMatchTypeOf`. This checks that an object "matches" a type. This is similar to jest's `.toMatchObject`:
+
+```typescript
+expectTypeOf({a: 1, b: 1}).toMatchTypeOf({a: 1})
+```
+
+Another example of the difference between `.toMatchTypeOf` and `.toEqualTypeOf`, using generics. `.toMatchTypeOf` can be used for "is-a" relationships:
+
+```typescript
+type Fruit = {type: 'Fruit'; edible: boolean}
+type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
+
+expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
+
+// @ts-expect-error
+expectTypeOf<Fruit>().toMatchTypeOf<Apple>()
+
+// @ts-expect-error
+expectTypeOf<Apple>().toEqualTypeOf<Fruit>()
+```
+
+Assertions can be inverted with `.not`:
 
 ```typescript
 expectTypeOf({a: 1}).not.toMatchTypeOf({b: 1})
+```
+
+`.not` can be easier than relying on `// @ts-expect-error`:
+
+```typescript
+type Fruit = {type: 'Fruit'; edible: boolean}
+type Apple = {type: 'Fruit'; name: 'Apple'; edible: true}
+
+expectTypeOf<Apple>().toMatchTypeOf<Fruit>()
+
+expectTypeOf<Fruit>().not.toMatchTypeOf<Apple>()
+expectTypeOf<Apple>().not.toEqualTypeOf<Fruit>()
 ```
 
 Catch any/unknown/never types:
@@ -78,6 +128,12 @@ Catch any/unknown/never types:
 expectTypeOf<unknown>().toBeUnknown()
 expectTypeOf<any>().toBeAny()
 expectTypeOf<never>().toBeNever()
+```
+
+`.toEqualTypeOf` distinguishes between deeply-nested `any` and `unknown` properties:
+
+```typescript
+expectTypeOf<{deeply: {nested: any}}>().not.toEqualTypeOf<{deeply: {nested: unknown}}>()
 ```
 
 Test for basic javascript types:
@@ -109,7 +165,7 @@ expectTypeOf<1 | null>().toBeNullable()
 expectTypeOf<1 | undefined | null>().toBeNullable()
 ```
 
-Assertions can be inverted with `.not`:
+More `.not` examples:
 
 ```typescript
 expectTypeOf(1).not.toBeUnknown()
@@ -154,6 +210,23 @@ expectTypeOf(1).parameter(0).toBeNever()
 const twoArgFunc = (a: number, b: string) => ({a, b})
 
 expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
+```
+
+Assert on constructor parameters:
+
+```typescript
+expectTypeOf(Date).toBeConstructibleWith('1970')
+expectTypeOf(Date).toBeConstructibleWith(0)
+expectTypeOf(Date).toBeConstructibleWith(new Date())
+expectTypeOf(Date).toBeConstructibleWith()
+
+expectTypeOf(Date).constructorParameters.toEqualTypeOf<[] | [string | number | Date]>()
+```
+
+Class instance types:
+
+```typescript
+expectTypeOf(Date).instance.toHaveProperty('toISOString')
 ```
 
 Promise resolution types can be checked with `.resolves`:
@@ -212,7 +285,10 @@ The key differences in this project are:
   - object properties
   - function parameters
   - function return values
+  - constructor parameters
+  - class instances
   - array item values
-  - nullable
+  - nullable types
 - assertions on types "matching" rather than exact type equality, for "is-a" relationships e.g. `expectTypeOf(square).toMatchTypeOf<Shape>()`
-- built into existing tooling with no dependencies. No extra build step, cli tool, or lint plugin is needed. Just import the function and start writing tests.
+- built into existing tooling. No extra build step, cli tool, IDE extension, or lint plugin is needed. Just import the function and start writing tests. Failures will be at compile time - they'll appear in your IDE and when you run `tsc`.
+- simple implementation with no dependencies. ~100 lines of code - [take a look!](./src/index.ts)

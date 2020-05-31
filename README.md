@@ -15,18 +15,27 @@ Monorepo of assorted typescript projects.
 - [memorable-moniker](https://github.com/mmkal/ts/tree/master/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
 <!-- codegen:end -->
 
-## Publishing
+<details>
+<summary>Publishing - for maintainers</summary>
+
+The below instructions only apply to maintainers of this repo - i.e. people with write permissions to npm and github for these packages. If you're not one of those people, feel free to ignore!
 
 ### Canary releases
 
-Every commit to master triggers a canary/prerelease publish, for each package, to this repo's private github registry, via Github Actions. The name is based on the commit date and hash, and the "dist-tag" is the branch name (i.e. always master, but theoretically publishing could happen from another branch, and the dist-tag would be different).
+GitHub Actions does a canary/prerelease publish for each package when commit messages include `/publish-canary`. The version is based on the commit date and hash, and the "dist-tag" is the branch name.
 
 ### Non-canary releases
 
-These are done manually, via `yarn publish-packages`. To have permissions to run that, `~/.npmrc` needs to be configured for your github account to interact with github's npm package registry, meaning it needs a line like this:
+These are done manually, via `yarn publish-packages`. To have permissions to run that, `~/.npmrc` needs to be configured for the npm package registry, meaning it needs a line like this:
 
 ```
-//npm.pkg.github.com/:_authToken=TOKEN
+//registry.npmjs.org/:_authToken=TOKEN
 ```
 
-Where `TOKEN` is created from https://github.com/settings/tokens. See [this guide](https://dev.to/jgierer12/how-to-publish-packages-to-the-github-package-repository-4bai) for more details, or the [docs for Github Packages](https://help.github.com/en/github/managing-packages-with-github-packages/configuring-npm-for-use-with-github-packages).
+Where `TOKEN` is created from https://www.npmjs.com/settings/YOUR_USERNAME/tokens. For GitHub releases, a `GH_TOKEN` environment variables is needed - you can create one here: https://github.com/settings/tokens
+
+### Previously - GitHub Packages
+
+The old instructions for publishing to GitHub Packages' npm registry can be found here: https://github.com/mmkal/ts/tree/56bed6ba6c3fa7eca06c9f73adf104438e9b0f8a
+
+</details>

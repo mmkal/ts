@@ -6,6 +6,9 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x, 10.x]
+        include:
+        - node-version: 12.x
+          main: true
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
@@ -22,11 +25,11 @@ jobs:
         CI: true
     - name: Coverage
       uses: codecov/codecov-action@v1
-      if: matrix.node-version == '12.x'
+      if: matrix.main
     - name: setup npm registry login
       run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
     - name: publish
-      if: contains(github.event.head_commit.message, '/publish-canary') && matrix.node-version == '12.x'
+      if: contains(github.event.head_commit.message, '/publish-canary') && matrix.main
       env:
         CURRENT_BRANCH: ${{ github.ref }}
       run: yarn publish-canary --yes

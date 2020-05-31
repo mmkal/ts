@@ -3,7 +3,9 @@ import * as t from 'io-ts'
 import {expectRight, expectLeft} from './either-serializer'
 import {expectTypeOf} from 'expect-type'
 import {inspect} from 'util'
-import {instanceOf, regex} from '../combinators'
+import {instanceOf, regex, strict} from '../combinators'
+import {validationErrors} from '../reporters'
+import {mapValues} from 'lodash'
 
 describe('sparseType', () => {
   it('handles mixed props', () => {
@@ -74,4 +76,46 @@ test('regex', () => {
   expectRight(AllCaps.decode('HELLO'))
   expectLeft(AllCaps.decode('hello'))
   expectLeft(AllCaps.decode(123))
+})
+
+test('strict', () => {
+  const Person = strict({name: t.string, age: t.number})
+
+  expectRight(Person.decode({name: 'Alice', age: 30}))
+  expectLeft(Person.decode({name: 'Bob', age: 30, unexpectedProp: 'abc'}))
+  expectRight(Person.decode({name: 'Bob', age: 30, unexpectedProp: undefined}))
+
+  expect(Person.is({name: 'Alice', age: 30})).toBe(true)
+  expect(Person.is({name: 'Bob', age: 30, unexpectedProp: 'abc'})).toBe(false)
+  expect(Person.is({name: 'Bob', age: 30, unexpectedProp: undefined})).toBe(false)
+
+  const errorCases = {
+    null: null,
+    undefined: undefined,
+    withExtraProp: {name: 'Bob', age: 30, unexpectedProp: 'abc'},
+    withInvalidAndExtraProp: {name: 123, age: 30, unexpectedProp: 'abc'},
+  }
+  expect(
+    mapValues(errorCases, val => {
+      const decoded = Person.decode(val)
+      expectLeft(decoded)
+      return validationErrors(decoded)
+    })
+  ).toMatchInlineSnapshot(`
+    Object {
+      "null": Array [
+        "Invalid value {null} supplied to Strict<{ name: string, age: number }. Expected Strict<{ name: string, age: number }.",
+      ],
+      "undefined": Array [
+        "Invalid value {undefined} supplied to Strict<{ name: string, age: number }. Expected Strict<{ name: string, age: number }.",
+      ],
+      "withExtraProp": Array [
+        "Invalid value {'abc'} supplied to Strict<{ name: string, age: number }.unexpectedProp. Expected undefined.",
+      ],
+      "withInvalidAndExtraProp": Array [
+        "Invalid value {123} supplied to Strict<{ name: string, age: number }.name. Expected string.",
+        "Invalid value {'abc'} supplied to Strict<{ name: string, age: number }.unexpectedProp. Expected undefined.",
+      ],
+    }
+  `)
 })

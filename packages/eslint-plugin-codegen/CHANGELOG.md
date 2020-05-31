@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.8](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.8.7...eslint-plugin-codegen@0.8.8) (2020-05-13)
+
+**Note:** Version bump only for package eslint-plugin-codegen
+
+
+
+
+
+## [0.8.7](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.8.6...eslint-plugin-codegen@0.8.7) (2020-05-05)
+
+**Note:** Version bump only for package eslint-plugin-codegen
+
+
+
+
+
+## [0.8.6](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.8.5...eslint-plugin-codegen@0.8.6) (2020-05-04)
+
+
+### Bug Fixes
+
+* **parser:** allow mapping to branded types ([#28](https://github.com/mmkal/ts/issues/28)) ([1808143](https://github.com/mmkal/ts/commit/180814329681f1164fac559c86b9173d615077e3))
+
+
+
+
+
+
 ## [0.8.5](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.8.4...eslint-plugin-codegen@0.8.5) (2020-04-11)
 
 **Note:** Version bump only for package eslint-plugin-codegen
