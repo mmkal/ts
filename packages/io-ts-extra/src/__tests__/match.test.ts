@@ -69,7 +69,6 @@ describe('case matching', () => {
     `)
   })
 
-  // eslint-disable-next-line jest/expect-expect
   it('can use shorthand with matcher + narrowing', () => {
     type PersonAttributes = {name: string; age: number}
     type Employee = PersonAttributes & {type: 'Employee'; employeeId: string}
@@ -77,9 +76,8 @@ describe('case matching', () => {
     type Person = Employee | Customer
 
     matcher<Person>()
-    // todo: enable these tests with typescript 3.9
-    // .case({type: 'Employee'} as const, e => expectTypeOf(e.employeeId).toBeString())
-    // .case({type: 'Customer'} as const, e => expectTypeOf(e.orders).toEqualTypeOf<string[]>())
+      .case({type: 'Employee'} as const, e => expectTypeOf(e.employeeId).toBeString())
+      .case({type: 'Customer'} as const, e => expectTypeOf(e.orders).toEqualTypeOf<string[]>())
   })
 
   it('can use default', () => {
