@@ -166,7 +166,7 @@ const contents = allMessages.map(getContent);
 ### Codecs/Combinators
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: sparseType} -->
-#### [sparseType](./src/combinators.ts#L39)
+#### [sparseType](./src/combinators.ts#L38)
 
 Can be used much like `t.type` from io-ts, but any property types wrapped with `optional` from this package need not be supplied. Roughly equivalent to using `t.intersection` with `t.type` and `t.partial`.
 
@@ -195,7 +195,7 @@ a type with `props` field, so the result can be introspected similarly to a type
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: optional} -->
-#### [optional](./src/combinators.ts#L13)
+#### [optional](./src/combinators.ts#L12)
 
 unions the passed-in type with `null` and `undefined`.
 <!-- codegen:end -->
@@ -253,7 +253,7 @@ IntFromString.decode(123)            // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: strict} -->
-#### [strict](./src/combinators.ts#L123)
+#### [strict](./src/combinators.ts#L122)
 
 Like `t.type`, but fails when any properties not specified in `props` are defined.
 
@@ -329,7 +329,7 @@ Similar to io-ts's PathReporter, but gives slightly less verbose output.
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regex} -->
-#### [regex](./src/combinators.ts#L101)
+#### [regex](./src/combinators.ts#L100)
 
 A refinement of `t.string` which validates that the input matches a regular expression.
 
@@ -344,7 +344,7 @@ AllCaps.decode(123)      // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: instanceOf} -->
-#### [instanceOf](./src/combinators.ts#L84)
+#### [instanceOf](./src/combinators.ts#L83)
 
 Validates that a value is an instance of a class using the `instanceof` operator
 
