@@ -240,18 +240,22 @@ export const monorepoTOC: Preset<{
   sort?: string
 }> = ({meta, options}) => {
   const contextDir = match(options.repoRoot)
-    .case(t.string, s => path.join(path.dirname(meta.filename), s))
+    .case(String, s => path.join(path.dirname(meta.filename), s))
     .default(() => path.dirname(meta.filename))
     .get()
+
   const readJsonFile = (f: string) => JSON.parse(fs.readFileSync(path.join(contextDir, f)).toString())
+  const parseLernaDotJson = () => readJsonFile('lerna.json').packages
+
   const packageGlobs = match(options.workspaces)
-    .case(t.array(t.string), arr => arr)
-    .case(t.literal('lerna'), () => readJsonFile('lerna.json').packages)
+    .case([String], arr => arr)
+    .case('lerna', parseLernaDotJson)
     .default(() => {
       const pkg = readJsonFile('package.json')
-      return (pkg.workspaces && pkg.workspaces.packages) || pkg.workspaces
+      return (pkg.workspaces && pkg.workspaces.packages) || pkg.workspaces || parseLernaDotJson()
     })
     .get()
+
   if (!Array.isArray(packageGlobs)) {
     throw Error(`Expected to find workspaces array, got ${inspect(packageGlobs)}`)
   }
