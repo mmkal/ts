@@ -69,9 +69,9 @@ module.exports = {
 
     'no-else-return': ['warn', {allowElseIf: true}],
 
-    // '@typescript-eslint/naming-convention': ['warn', {
-    //   selector: 'variableLike'
-    // }],
+    '@typescript-eslint/naming-convention': ['warn', {
+      selector: 'variableLike', format: ['camelCase', 'PascalCase'], leadingUnderscore: 'allow',
+    }],
 
     // maybe turn on later?
     'padding-line-between-statements': 'off',
