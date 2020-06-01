@@ -137,7 +137,6 @@ describe('parser', () => {
   })
 
   it('catches failures', () => {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     const StringFromBool_WithDecoderBug = mapper(t.boolean, t.string, b => (b ? RichError.throw({b}) : 'nope'))
     expect(StringFromBool_WithDecoderBug.decode(false)).toEqual(right('nope'))
     expect(StringFromBool_WithDecoderBug.decode(true)).toMatchInlineSnapshot(`

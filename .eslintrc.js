@@ -41,6 +41,9 @@ module.exports = {
       args: 'after-used',
     }],
 
+    '@typescript-eslint/ban-ts-comment': ['error', {'ts-expect-error': false}],
+    '@typescript-eslint/no-invalid-void-type': 'off',
+
     // xo defaults that overlap with prettier
     'comma-dangle': 'off',
     'object-curly-spacing': 'off',
@@ -61,16 +64,14 @@ module.exports = {
 
     'jest/expect-expect': [
       'error',
-      {assertFunctionNames: ['expect', 'expectTypeOf', 'expectLeft', 'expectRigh']}
+      {assertFunctionNames: ['expect', 'expectTypeOf', 'expectLeft', 'expectRight']}
     ],
 
     'no-else-return': ['warn', {allowElseIf: true}],
 
-    '@typescript-eslint/camelcase': ['warn', {
-      properties: 'never',
-      ignoreDestructuring: true,
-      ignoreImports: true,
-    }],
+    // '@typescript-eslint/naming-convention': ['warn', {
+    //   selector: 'variableLike'
+    // }],
 
     // maybe turn on later?
     'padding-line-between-statements': 'off',
@@ -89,11 +90,13 @@ module.exports = {
     'no-warning-comments': 'off',
     'no-dupe-class-members': 'off',
 
-    // Sindre Sorwho?
+    // Sindre Sorwho? (defaults from unicorn/xo that feel a bit restrictive, for now)
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/no-fn-reference-in-iterator': 'off',
     'unicorn/no-nested-ternary': 'off',
+    'unicorn/no-reduce': 'off',
+    'unicorn/no-useless-undefined': 'off',
     'unicorn/new-for-builtins': 'off',
     'unicorn/throw-new-error': 'off',
     'unicorn/catch-error-name': 'off',
@@ -106,12 +109,14 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.js'],
+      parserOptions: {sourceType: 'script'},
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       }
     },
     {
       files: ['**/*.md'],
+      // parserOptions: {sourceType: 'script', extraFileExtensions: ['.md']},
       rules: {
         'unicorn/filename-case': 'off',
       }

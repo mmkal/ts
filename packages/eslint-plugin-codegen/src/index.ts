@@ -25,13 +25,13 @@ export const processors: Record<string, eslint.Linter.LintOptions> = {
           .join(os.EOL),
     ],
     postprocess: messageLists => ([] as eslint.Linter.LintMessage[]).concat(...messageLists),
-    // @ts-ignore
+    // @ts-expect-error
     supportsAutofix: true,
   },
 }
 
 const codegen: eslint.Rule.RuleModule = {
-  // @ts-ignore
+  // @ts-expect-error
   meta: {fixable: true},
   create: (context: eslint.Rule.RuleContext) => {
     const validate = () => {
