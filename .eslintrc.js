@@ -31,6 +31,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 'off',	
     '@typescript-eslint/no-unsafe-call': 'off',	
     '@typescript-eslint/unified-signatures': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     '@typescript-eslint/no-unused-vars': ['error', {
       varsIgnorePattern: '^_',
@@ -39,6 +40,9 @@ module.exports = {
       ignoreRestSiblings: true,
       args: 'after-used',
     }],
+
+    '@typescript-eslint/ban-ts-comment': ['error', {'ts-expect-error': false}],
+    '@typescript-eslint/no-invalid-void-type': 'off',
 
     // xo defaults that overlap with prettier
     'comma-dangle': 'off',
@@ -60,15 +64,13 @@ module.exports = {
 
     'jest/expect-expect': [
       'error',
-      {assertFunctionNames: ['expect', 'expectTypeOf', 'expectLeft', 'expectRigh']}
+      {assertFunctionNames: ['expect', 'expectTypeOf', 'expectLeft', 'expectRight']}
     ],
 
     'no-else-return': ['warn', {allowElseIf: true}],
 
-    '@typescript-eslint/camelcase': ['warn', {
-      properties: 'never',
-      ignoreDestructuring: true,
-      ignoreImports: true,
+    '@typescript-eslint/naming-convention': ['warn', {
+      selector: 'variableLike', format: ['camelCase', 'PascalCase'], leadingUnderscore: 'allow',
     }],
 
     // maybe turn on later?
@@ -88,11 +90,13 @@ module.exports = {
     'no-warning-comments': 'off',
     'no-dupe-class-members': 'off',
 
-    // Sindre Sorwho?
+    // Sindre Sorwho? (defaults from unicorn/xo that feel a bit restrictive, for now)
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/no-fn-reference-in-iterator': 'off',
     'unicorn/no-nested-ternary': 'off',
+    'unicorn/no-reduce': 'off',
+    'unicorn/no-useless-undefined': 'off',
     'unicorn/new-for-builtins': 'off',
     'unicorn/throw-new-error': 'off',
     'unicorn/catch-error-name': 'off',
@@ -105,6 +109,7 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.js'],
+      parserOptions: {sourceType: 'script'},
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       }

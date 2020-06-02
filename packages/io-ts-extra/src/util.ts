@@ -10,12 +10,13 @@ export class RichError extends Error {
   private constructor(public details: unknown) {
     super(JSON.stringify(details, null, 2))
   }
+
   public static thrower(context: string) {
     return <T>(info?: T): never => RichError.throw({context, details: info})
   }
+
   public static throw<T>(details?: T): never {
     const resolvedDetails = details || {details: 'none!'}
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw Object.assign(new RichError(resolvedDetails), {details: resolvedDetails})
   }
 }
