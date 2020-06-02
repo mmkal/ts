@@ -116,7 +116,6 @@ module.exports = {
     },
     {
       files: ['**/*.md'],
-      // parserOptions: {sourceType: 'script', extraFileExtensions: ['.md']},
       rules: {
         'unicorn/filename-case': 'off',
       }
