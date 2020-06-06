@@ -25,7 +25,7 @@
     "glob": "7.1.4",
     "io-ts": "2.0.1",
     "io-ts-extra": "0.7.0",
-    "js-yaml": "3.13.1",
+    "js-yaml": "3.14.0",
     "lodash": "4.17.15",
     "string.prototype.matchall": "^4.0.2"
   },
