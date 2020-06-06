@@ -52,7 +52,7 @@ test('literals', () => {
   expectTypeOf(shorthand(1)).toEqualTypeOf(t.literal(1))
 })
 
-test('arrays and tuples', () => {
+test('arrays', () => {
   expectTypeOf(shorthand([])).toEqualTypeOf(t.array(t.unknown))
 
   expectTypeOf(shorthand([String])).toEqualTypeOf(t.array(t.string))
@@ -65,10 +65,19 @@ test('arrays and tuples', () => {
       })
     )
   )
-
   expectTypeOf(shorthand([[String]])).toEqualTypeOf(t.array(t.array(t.string)))
+})
+
+test('tuples', () => {
+  expectTypeOf(shorthand([1, [String]])).toEqualTypeOf(t.tuple([t.string]))
 
   expectTypeOf(shorthand([2, [String, Number]])).toEqualTypeOf(t.tuple([t.string, t.number]))
+
+  expectTypeOf(shorthand([3, [String, Number, String]])).toEqualTypeOf(t.tuple([t.string, t.number, t.string]))
+
+  expectTypeOf(shorthand([4, [String, Number, String, Number]])).toEqualTypeOf(
+    t.tuple([t.string, t.number, t.string, t.number])
+  )
 
   expectTypeOf(shorthand([2, [{foo: [String]}, Number]])).toEqualTypeOf(
     t.tuple([t.type({foo: t.array(t.string)}), t.number])

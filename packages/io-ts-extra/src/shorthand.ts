@@ -1,54 +1,16 @@
 import * as t from 'io-ts'
 
 export type ShorthandPrimitive = string | number | boolean | null | undefined | typeof String | typeof Number
-export type ShorthandComplex1 =
+export type ShorthandComplex =
   | ShorthandPrimitive
   | []
-  | [ShorthandComplex1]
-  | [1, [ShorthandComplex1]]
-  | [2, [ShorthandComplex1, ShorthandComplex1]]
-  | [3, [ShorthandComplex1, ShorthandComplex1, ShorthandComplex1]]
-  // | TuplePair<Size, ShorthandComplex>
-  | {[K in string]: ShorthandComplex1}
+  | [ShorthandComplex]
+  | [1, [ShorthandComplex]]
+  | [2, [ShorthandComplex, ShorthandComplex]]
+  | [3, [ShorthandComplex, ShorthandComplex, ShorthandComplex]]
+  | [4, [ShorthandComplex, ShorthandComplex, ShorthandComplex, ShorthandComplex]]
+  | {[K in string]: ShorthandComplex}
   | t.Type<any, any, any>
-
-export type ShorthandComplex2 =
-  | ShorthandPrimitive
-  | []
-  | [ShorthandComplex1]
-  | {tuples: {[S in Size]: TuplePair<S, ShorthandComplex2>}}
-  | {[K in string]: ShorthandComplex2}
-  | t.Type<any, any, any>
-
-export type ShorthandComplex3 =
-  | Exclude<ShorthandComplex2, {tuples: any}>
-  | Extract<ShorthandComplex2, {tuples: any}>['tuples'][Size]
-
-export type ShorthandComplex = ShorthandComplex3
-
-type TupleCounter<T> = {
-  1: [T]
-  2: [T, T]
-  3: [T, T, T]
-}
-
-type Size = keyof TupleCounter<unknown>
-
-type TuplePair<S extends Size, T> = [S, TupleCounter<T>[S]]
-
-type TCS2 = TupleCounter<string>[2]
-type X = {
-  [K in keyof TCS2]: {hello: TCS2[K]}
-}
-type ToTuple<M extends {0: any}> = M extends {0: any; 1: any; 2: any; 3: any}
-  ? [M[0], M[1], M[2], M[3]]
-  : M extends {0: any; 1: any; 2: any}
-  ? [M[0], M[1], M[2]]
-  : M extends {0: any; 1: any}
-  ? [M[0], M[1]]
-  : M extends {0: any}
-  ? [M[0]]
-  : never
 
 export type Shorthand2<V extends ShorthandComplex> = V extends string | number | boolean
   ? t.LiteralC<V>
@@ -66,15 +28,14 @@ export type Shorthand2<V extends ShorthandComplex> = V extends string | number |
   ? t.ArrayC<t.UnknownC>
   : V extends [ShorthandComplex]
   ? t.ArrayC<Shorthand2<V[0]>>
-  : V extends TuplePair<infer S, ShorthandComplex>
-  ? t.TupleC<
-      ToTuple<{[K in keyof V[1]]: Shorthand2<V[1][K]>}>
-    > /*
-  // : V extends [1, [ShorthandComplex]]
-  // ? t.TupleC<[Shorthand2<V[1][0]>]>
-  // : V extends [2, [ShorthandComplex, ShorthandComplex]]
-  // ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>]>
-  */
+  : V extends [1, [ShorthandComplex]]
+  ? t.TupleC<[Shorthand2<V[1][0]>]>
+  : V extends [2, [ShorthandComplex, ShorthandComplex]]
+  ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>]>
+  : V extends [3, [ShorthandComplex, ShorthandComplex, ShorthandComplex]]
+  ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>, Shorthand2<V[1][2]>]>
+  : V extends [4, [ShorthandComplex, ShorthandComplex, ShorthandComplex, ShorthandComplex]]
+  ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>, Shorthand2<V[1][2]>, Shorthand2<V[1][3]>]>
   : V extends t.Type<any, any, any>
   ? V
   : V extends {[K: string]: any}
