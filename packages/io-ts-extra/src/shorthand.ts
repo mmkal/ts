@@ -1,5 +1,91 @@
 import * as t from 'io-ts'
 
+export type ShorthandPrimitive = string | number | boolean | null | undefined | typeof String | typeof Number
+export type ShorthandComplex1 =
+  | ShorthandPrimitive
+  | []
+  | [ShorthandComplex1]
+  | [1, [ShorthandComplex1]]
+  | [2, [ShorthandComplex1, ShorthandComplex1]]
+  | [3, [ShorthandComplex1, ShorthandComplex1, ShorthandComplex1]]
+  // | TuplePair<Size, ShorthandComplex>
+  | {[K in string]: ShorthandComplex1}
+  | t.Type<any, any, any>
+
+export type ShorthandComplex2 =
+  | ShorthandPrimitive
+  | []
+  | [ShorthandComplex1]
+  | {tuples: {[S in Size]: TuplePair<S, ShorthandComplex2>}}
+  | {[K in string]: ShorthandComplex2}
+  | t.Type<any, any, any>
+
+export type ShorthandComplex3 =
+  | Exclude<ShorthandComplex2, {tuples: any}>
+  | Extract<ShorthandComplex2, {tuples: any}>['tuples'][Size]
+
+export type ShorthandComplex = ShorthandComplex3
+
+type TupleCounter<T> = {
+  1: [T]
+  2: [T, T]
+  3: [T, T, T]
+}
+
+type Size = keyof TupleCounter<unknown>
+
+type TuplePair<S extends Size, T> = [S, TupleCounter<T>[S]]
+
+type TCS2 = TupleCounter<string>[2]
+type X = {
+  [K in keyof TCS2]: {hello: TCS2[K]}
+}
+type ToTuple<M extends {0: any}> = M extends {0: any; 1: any; 2: any; 3: any}
+  ? [M[0], M[1], M[2], M[3]]
+  : M extends {0: any; 1: any; 2: any}
+  ? [M[0], M[1], M[2]]
+  : M extends {0: any; 1: any}
+  ? [M[0], M[1]]
+  : M extends {0: any}
+  ? [M[0]]
+  : never
+
+export type Shorthand2<V extends ShorthandComplex> = V extends string | number | boolean
+  ? t.LiteralC<V>
+  : V extends null
+  ? t.NullC
+  : V extends undefined
+  ? t.UndefinedC
+  : V extends typeof String
+  ? t.StringC
+  : V extends typeof Number
+  ? t.NumberC
+  : V extends typeof Boolean
+  ? t.BooleanC
+  : V extends []
+  ? t.ArrayC<t.UnknownC>
+  : V extends [ShorthandComplex]
+  ? t.ArrayC<Shorthand2<V[0]>>
+  : V extends TuplePair<infer S, ShorthandComplex>
+  ? t.TupleC<
+      ToTuple<{[K in keyof V[1]]: Shorthand2<V[1][K]>}>
+    > /*
+  // : V extends [1, [ShorthandComplex]]
+  // ? t.TupleC<[Shorthand2<V[1][0]>]>
+  // : V extends [2, [ShorthandComplex, ShorthandComplex]]
+  // ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>]>
+  */
+  : V extends t.Type<any, any, any>
+  ? V
+  : V extends {[K: string]: any}
+  ? t.TypeC<{[K in keyof V]: Shorthand<V[K]>}>
+  : never
+
+export type CodecFromShortHand2 = {
+  (): t.UnknownC
+  <V extends ShorthandComplex>(v: V): Shorthand2<V>
+}
+
 export type UnknownTuple =
   | []
   | [unknown]
@@ -60,7 +146,7 @@ export type CodecFromShortHand = {
  * |io-ts codecs|unchanged|
  * |Unions, intersections, partials, one-element tuples and other complex types|not supported, except by passing in an io-ts codec|
  */
-export const codecFromShorthand: CodecFromShortHand = (...args: unknown[]): any => {
+export const codecFromShorthand: CodecFromShortHand2 = (...args: unknown[]): any => {
   if (args.length === 0) {
     return t.unknown
   }
