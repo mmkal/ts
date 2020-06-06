@@ -24,6 +24,14 @@
   "workspaces": [
     "packages/*"
   ],
+  "renovate": {
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+      "config:base",
+      ":semanticCommits"
+    ],
+    "prConcurrentLimit": 3
+  },
   "resolutions": {
     "minimist": "^1.2.5",
     "kind-of": ">=6.0.3"
