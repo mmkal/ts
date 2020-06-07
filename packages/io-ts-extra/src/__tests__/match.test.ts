@@ -33,7 +33,7 @@ describe('case matching', () => {
         })
         .case({message: {}}, m => `invalid message type: ${typeof m.message}`)
         .case(Number, n => `number: ${n}`)
-        .case([Number, Number], ns => `two numbers: ${ns}`)
+        .case([2, [Number, Number]], ns => `two numbers: ${ns}`)
         .get()
     )
 
