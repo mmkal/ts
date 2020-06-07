@@ -140,6 +140,11 @@ describe('monorepoTOC', () => {
 
       'withBadWorkspaces/package.json': '{ "workspaces": "not an array!" }',
 
+      'lernaOnly/package.json': '{ "workspaces": null }',
+      'lernaOnly/lerna.json': '{ "packages": ["packages/package1", "packages/package2"] }',
+      'lernaOnly/packages/package1/package.json': '{ "name": "lernaOnlyPackage1" }',
+      'lernaOnly/packages/package2/package.json': '{ "name": "lernaOnlyPackage2" }',
+
       'lerna.json': '{ "packages": ["packages/package1", "packages/package2"] }',
 
       'packages/package1/package.json':
@@ -181,6 +186,16 @@ describe('monorepoTOC', () => {
       - [package2](./packages/package2) - Readme for package 2
       - [package3](./packages/package3) - Readme for package 3
       - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
+    `)
+
+    expect(
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {repoRoot: './lernaOnly'},
+      })
+    ).toMatchInlineSnapshot(`
+      "- [lernaOnlyPackage1](./packages/package1)
+      - [lernaOnlyPackage2](./packages/package2)"
     `)
 
     expect(
