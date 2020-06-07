@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.7.0...io-ts-extra@0.8.0) (2020-06-07)
+
+
+### Features
+
+* strict combinator ([3e8069c](https://github.com/mmkal/ts/commit/3e8069ca1365d5dfafe61f437edf08ca3c9ef280))
+
+
+
+
+
+
 # [0.7.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.6.1...io-ts-extra@0.7.0) (2020-05-04)
 
 
