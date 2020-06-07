@@ -56,7 +56,7 @@ describe('case matching', () => {
     const content = inputs.map(
       matcher<typeof inputs[number]>()
         .case(String, fp.startsWith('h'), s => `greeting: ${s}`)
-        .case(/\?$/, s => `question: ${s}`)
+        .case(/\?$/, s => `question: ${s.input}`)
         .case(String, s => `custom message: ${s}`)
         .case(Number, n => `number: ${n}`).get
     )

@@ -15,6 +15,15 @@ export type ShortHandInput =
   | {[K in string]: ShortHandInput}
   | t.Type<any, any, any>
 
+// TODO [>=1.0.0] Consolidate RegExp functionality here with ./combinators
+export const RegExpMatchArrayStructure = t.intersection([
+  t.array(t.string),
+  t.type({
+    index: t.number,
+    input: t.string,
+  }),
+])
+
 export type Shorthand<V extends ShortHandInput> = V extends string | number | boolean
   ? t.LiteralC<V>
   : V extends null
@@ -28,7 +37,7 @@ export type Shorthand<V extends ShortHandInput> = V extends string | number | bo
   : V extends typeof Boolean
   ? t.BooleanC
   : V extends RegExp
-  ? t.RefinementC<t.StringC>
+  ? t.Type<typeof RegExpMatchArrayStructure._A, string>
   : V extends []
   ? t.ArrayC<t.UnknownC>
   : V extends [ShortHandInput]
@@ -61,7 +70,7 @@ export type CodecFromShorthand = {
  * |-|-|
  * |`String`, `Number`, `Boolean`|`t.string`, `t.number`, `t.boolean`|
  * |Literal raw strings, numbers and booleans e.g. `7` or `'foo'`|`t.literal(7)`, `t.literal('foo')` etc.|
- * |Regexes e.g. `/^foo/`|A refinement of `t.string` that matches the regex|
+ * |Regexes e.g. `/^foo/`|A custom type which validates its input as a string, then decodes with `string.match`|
  * |`null` and `undefined`|`t.null` and `t.undefined`|
  * |No input (_not_ the same as explicitly passing `undefined`)|`t.unknown`|
  * |Objects e.g. `{ foo: String, bar: { baz: Number } }`|`t.type(...)` e.g. `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
@@ -95,7 +104,13 @@ export const codecFromShorthand: CodecFromShorthand = (...args: unknown[]): any 
     return t.literal(v)
   }
   if (v instanceof RegExp) {
-    return t.refinement(t.string, v.test.bind(v), `RegExp<${v.source}>`)
+    const RegExpMatchArrayDecoder = new t.Type<typeof RegExpMatchArrayStructure._A, string, string>(
+      `RegExp<${v.source}>`,
+      RegExpMatchArrayStructure.is,
+      (s, c) => RegExpMatchArrayStructure.validate(s.match(v), c),
+      val => val.input
+    )
+    return t.string.pipe(RegExpMatchArrayDecoder)
   }
   if (Array.isArray(v) && v.length === 0) {
     return t.array(t.unknown)
