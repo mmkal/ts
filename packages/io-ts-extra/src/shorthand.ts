@@ -121,6 +121,11 @@ export const codecFromShorthand: CodecFromShorthand = (...args: unknown[]): any 
   if (Array.isArray(v) && v.length === 2 && typeof v[0] === 'number' && Array.isArray(v[1])) {
     return t.tuple(v[1].map(codecFromShorthand) as any)
   }
+  if (Array.isArray(v)) {
+    throw new TypeError(
+      `Invalid type. Arrays should be in the form \`[shorthand]\`, and tuples should be in the form \`[3, [shorthand1, shorthand2, shorthand3]]\``
+    )
+  }
   if (v instanceof t.Type) {
     return v
   }

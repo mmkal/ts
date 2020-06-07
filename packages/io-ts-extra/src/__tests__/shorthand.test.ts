@@ -96,3 +96,12 @@ test(`functions aren't supported`, () => {
   // @ts-expect-error
   expectTypeOf(shorthand(() => 1)).toEqualTypeOf(t.unknown)
 })
+
+test(`non-tuple arrays with length greater than one aren't supported`, () => {
+  expect(() => {
+    // @ts-expect-error
+    expectTypeOf(shorthand([1, 2])).toEqualTypeOf(t.never)
+  }).toThrowErrorMatchingInlineSnapshot(
+    `"Invalid type. Arrays should be in the form \`[shorthand]\`, and tuples should be in the form \`[3, [shorthand1, shorthand2, shorthand3]]\`"`
+  )
+})
