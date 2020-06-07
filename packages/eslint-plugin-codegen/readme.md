@@ -32,7 +32,6 @@ Here's an example of it being used along with VSCode's eslint plugin, with auto-
       - [markdownTOC](#markdowntoc)
       - [markdownFromTests](#markdownfromtests)
       - [custom](#custom)
-      - [custom](#custom-1)
    - [Customisation](#customisation)
 <!-- codegen:end -->
 
@@ -224,7 +223,7 @@ Use a test file to generate library usage documentation. Note: this has been tes
 ![](./gifs/markdownFromTests.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: custom} -->
-#### [custom](./src/presets.ts#L337)
+#### [custom](./src/presets.ts#L326)
 
 Define your own codegen function, which will receive all options specified. Import the `Preset` type from this library to define a strongly-typed preset function:
 

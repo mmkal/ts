@@ -170,7 +170,7 @@ const contents = allMessages.map(getContent);
 The "shorthand" format for type specifications maps to io-ts types as follows:
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/shorthand.ts, export: codecFromShorthand} -->
-#### [codecFromShorthand](./src/shorthand.ts#L83)
+#### [codecFromShorthand](./src/shorthand.ts#L97)
 
 Gets an io-ts codec from a shorthand input:
 
