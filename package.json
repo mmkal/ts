@@ -30,7 +30,13 @@
       "config:base",
       ":semanticCommits"
     ],
-    "prConcurrentLimit": 3
+    "prConcurrentLimit": 3,
+    "packageRules": [
+      {
+        "depTypeList": ["devDependencies"],
+        "automerge": true
+      }
+    ]
   },
   "resolutions": {
     "minimist": "^1.2.5",
