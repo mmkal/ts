@@ -1,5 +1,5 @@
 import * as t from 'io-ts'
-import {codecFromShorthand as shorthand, regexp} from '../shorthand'
+import {codecFromShorthand as shorthand} from '../shorthand'
 import {expectTypeOf as e} from 'expect-type'
 import {expectLeft, expectRight} from './either-serializer'
 
@@ -98,19 +98,4 @@ test(`non-tuple arrays with length greater than one aren't supported`, () => {
   }).toThrowErrorMatchingInlineSnapshot(
     `"Invalid type. Arrays should be in the form \`[shorthand]\`, and tuples should be in the form \`[3, [shorthand1, shorthand2, shorthand3]]\`"`
   )
-})
-
-test('regex can encode and decode', () => {
-  const s = 'foo bar baz'
-  const R = regexp(/b(a)(r)/)
-
-  const success = R.decode(s)
-  expectRight(success)
-  if (success._tag === 'Right') {
-    expectTypeOf(success.right).toEqualTypeOf(Object.assign(['bar', 'a', 'r'], {index: 4, input: s}))
-    expect(R.encode(success.right)).toEqual(s)
-  }
-
-  expectLeft(R.decode('abc'))
-  expectLeft(R.decode(null))
 })

@@ -3,7 +3,7 @@ import * as t from 'io-ts'
 import {expectRight, expectLeft} from './either-serializer'
 import {expectTypeOf} from 'expect-type'
 import {inspect} from 'util'
-import {instanceOf, regex, strict} from '../combinators'
+import {instanceOf, regexp, strict} from '../combinators'
 import {validationErrors} from '../reporters'
 import {mapValues} from 'lodash'
 
@@ -72,10 +72,26 @@ test('instanceOf names anonymous functions appropriately', () => {
 })
 
 test('regex', () => {
-  const AllCaps = regex(/^[A-Z]*$/)
+  const AllCaps = regexp(/^[A-Z]*$/)
   expectRight(AllCaps.decode('HELLO'))
   expectLeft(AllCaps.decode('hello'))
   expectLeft(AllCaps.decode(123))
+})
+
+test('regex can encode and decode', () => {
+  const s = 'foo bar baz'
+  const R = regexp(/b(a)(r)/)
+
+  const success = R.decode(s)
+  expectRight(success)
+  if (success._tag === 'Right') {
+    expectTypeOf(success.right).toEqualTypeOf(Object.assign(['bar', 'a', 'r'], {index: 4, input: s}))
+    expect(success.right).toEqual(Object.assign(['bar', 'a', 'r'], {index: 4, input: s}))
+    expect(R.encode(success.right)).toEqual(s)
+  }
+
+  expectLeft(R.decode('abc'))
+  expectLeft(R.decode(null))
 })
 
 test('strict', () => {

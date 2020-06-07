@@ -37,7 +37,7 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
       - [strict](#strict)
       - [narrow](#narrow)
       - [validationErrors](#validationerrors)
-      - [regex](#regex)
+      - [regexp](#regexp)
       - [instanceOf](#instanceof)
 <!-- codegen:end -->
 
@@ -170,7 +170,7 @@ const contents = allMessages.map(getContent);
 The "shorthand" format for type specifications maps to io-ts types as follows:
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/shorthand.ts, export: codecFromShorthand} -->
-#### [codecFromShorthand](./src/shorthand.ts#L97)
+#### [codecFromShorthand](./src/shorthand.ts#L75)
 
 Gets an io-ts codec from a shorthand input:
 
@@ -178,7 +178,7 @@ Gets an io-ts codec from a shorthand input:
 |-|-|
 |`String`, `Number`, `Boolean`|`t.string`, `t.number`, `t.boolean`|
 |Literal raw strings, numbers and booleans e.g. `7` or `'foo'`|`t.literal(7)`, `t.literal('foo')` etc.|
-|Regexes e.g. `/^foo/`|A custom type which validates its input as a string, then decodes with `string.match`|
+|Regexes e.g. `/^foo/`|see [regexp](#regexp)|
 |`null` and `undefined`|`t.null` and `t.undefined`|
 |No input (_not_ the same as explicitly passing `undefined`)|`t.unknown`|
 |Objects e.g. `{ foo: String, bar: { baz: Number } }`|`t.type(...)` e.g. `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
@@ -279,7 +279,7 @@ IntFromString.decode(123)            // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: strict} -->
-#### [strict](./src/combinators.ts#L122)
+#### [strict](./src/combinators.ts#L140)
 
 Like `t.type`, but fails when any properties not specified in `props` are defined.
 
@@ -354,16 +354,16 @@ Similar to io-ts's PathReporter, but gives slightly less verbose output.
 |typeAlias|io-ts type names can be very verbose. If the type you're using doesn't have a name, you can use this to keep error messages shorter.|
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regex} -->
-#### [regex](./src/combinators.ts#L100)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regexp} -->
+#### [regexp](./src/combinators.ts#L101)
 
-A refinement of `t.string` which validates that the input matches a regular expression.
+A type which validates its input as a string, then decodes with `String.prototype.match`, succeeding with the RegExpMatchArray result if a match is found, and failing if no match is found.
 
 ##### Example
 
 ```typescript
-const AllCaps = regex(/^[A-Z]*$/)
-AllCaps.decode('HELLO')  // right('HELLO')
+const AllCaps = regexp(/\b([A-Z]+)\b/)
+AllCaps.decode('HELLO')  // right([ 'HELLO', index: 0, input: 'HELLO' ])
 AllCaps.decode('hello')  // left(...)
 AllCaps.decode(123)      // left(...)
 ```

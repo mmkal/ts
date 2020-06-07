@@ -1,4 +1,5 @@
 import * as t from 'io-ts'
+import {RegExpCodec, regexp} from './combinators'
 
 export type ShorthandPrimitive = typeof String | typeof Number | typeof Boolean
 export type ShorthandLiteral = string | number | boolean | null | undefined
@@ -14,29 +15,6 @@ export type ShorthandInput =
   | [4, [ShorthandInput, ShorthandInput, ShorthandInput, ShorthandInput]]
   | {[K in string]: ShorthandInput}
   | t.Type<any, any, any>
-
-// TODO [2020-06-07] Consolidate RegExp functionality here with ./combinators
-export const regexp = (() => {
-  const RegExpMatchArrayStructure = t.intersection([
-    t.array(t.string),
-    t.type({
-      index: t.number,
-      input: t.string,
-    }),
-  ])
-
-  return (v: RegExp) => {
-    const RegExpMatchArrayDecoder = new t.Type<typeof RegExpMatchArrayStructure._A, string, string>(
-      `RegExp<${v.source}>`,
-      RegExpMatchArrayStructure.is,
-      (s, c) => RegExpMatchArrayStructure.validate(s.match(v), c),
-      val => val.input
-    )
-
-    return t.string.pipe(RegExpMatchArrayDecoder)
-  }
-})()
-export type RegExpCodec = ReturnType<typeof regexp>
 
 export type Shorthand<V extends ShorthandInput> = V extends string | number | boolean
   ? t.LiteralC<V>
@@ -84,7 +62,7 @@ export type CodecFromShorthand = {
  * |-|-|
  * |`String`, `Number`, `Boolean`|`t.string`, `t.number`, `t.boolean`|
  * |Literal raw strings, numbers and booleans e.g. `7` or `'foo'`|`t.literal(7)`, `t.literal('foo')` etc.|
- * |Regexes e.g. `/^foo/`|A custom type which validates its input as a string, then decodes with `string.match`|
+ * |Regexes e.g. `/^foo/`|see [regexp](#regexp)|
  * |`null` and `undefined`|`t.null` and `t.undefined`|
  * |No input (_not_ the same as explicitly passing `undefined`)|`t.unknown`|
  * |Objects e.g. `{ foo: String, bar: { baz: Number } }`|`t.type(...)` e.g. `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
