@@ -47,7 +47,7 @@ export type Shorthand<V extends ShortHandInput> = V extends string | number | bo
   ? t.TypeC<{[K in keyof V]: Shorthand<V[K]>}>
   : never
 
-export type CodecFromShortHand2 = {
+export type CodecFromShorthand = {
   (): t.UnknownC
   <V extends ShortHandInput>(v: V): Shorthand<V>
 }
@@ -71,7 +71,7 @@ export type CodecFromShortHand2 = {
  * |io-ts codecs|unchanged|
  * |Unions, intersections, partials, tuples with more than 3 elements, and other complex types|not supported, except by passing in an io-ts codec|
  */
-export const codecFromShorthand: CodecFromShortHand2 = (...args: unknown[]): any => {
+export const codecFromShorthand: CodecFromShorthand = (...args: unknown[]): any => {
   if (args.length === 0) {
     return t.unknown
   }
