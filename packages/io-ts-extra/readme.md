@@ -27,6 +27,8 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
    - [Pattern matching](#pattern-matching)
       - [match](#match)
       - [matcher](#matcher)
+      - [Shorthand](#shorthand)
+      - [codecFromShorthand](#codecfromshorthand)
    - [Codecs/Combinators](#codecscombinators)
       - [sparseType](#sparsetype)
       - [optional](#optional)
@@ -161,6 +163,29 @@ const getContent = matcher<Message>()
 const allMessages: Message[] = getAllMessages();
 const contents = allMessages.map(getContent);
 ```
+<!-- codegen:end -->
+
+#### Shorthand
+
+The "shorthand" format for type specifications maps to io-ts types as follows:
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/shorthand.ts, export: codecFromShorthand} -->
+#### [codecFromShorthand](./src/shorthand.ts#L70)
+
+Gets an io-ts codec from a shorthand input:
+
+|shorthand|io-ts type|
+|-|-|
+|`String`, `Number`, `Boolean`|`t.string`, `t.number`, `t.boolean`|
+|Literal raw strings, numbers and booleans e.g. `7` or `'foo'`|`t.literal(7)`, `t.literal('foo')` etc.|
+|`null` and `undefined`|`t.null` and `t.undefined`|
+|No input (_not_ the same as explicitly passing `undefined`)|`t.unknown`|
+|Objects e.g. `{ foo: String, bar: { baz: Number } }`|`t.type(...)` e.g. `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
+|Empty arrays|`t.array(t.unknown)`|
+|One-element arrays e.g. `[String]`|`t.array(...)` e.g. `t.array(t.string)`|
+|Tuples with explicit length e.g. `[2, [String, Number]]`|`t.tuple` e.g. `t.tuple([t.string, t.number])`|
+|io-ts codecs|unchanged|
+|Unions, intersections, partials, tuples with more than 3 elements, and other complex types|not supported, except by passing in an io-ts codec|
 <!-- codegen:end -->
 
 ### Codecs/Combinators
