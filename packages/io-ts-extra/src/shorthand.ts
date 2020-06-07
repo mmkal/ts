@@ -2,19 +2,19 @@ import * as t from 'io-ts'
 
 export type ShorthandPrimitive = typeof String | typeof Number | typeof Boolean
 export type ShorthandLiteral = string | number | boolean | null | undefined
-export type ShorthandComplex =
+export type ShortHandInput =
   | ShorthandPrimitive
   | ShorthandLiteral
   | []
-  | [ShorthandComplex]
-  | [1, [ShorthandComplex]]
-  | [2, [ShorthandComplex, ShorthandComplex]]
-  | [3, [ShorthandComplex, ShorthandComplex, ShorthandComplex]]
-  | [4, [ShorthandComplex, ShorthandComplex, ShorthandComplex, ShorthandComplex]]
-  | {[K in string]: ShorthandComplex}
+  | [ShortHandInput]
+  | [1, [ShortHandInput]]
+  | [2, [ShortHandInput, ShortHandInput]]
+  | [3, [ShortHandInput, ShortHandInput, ShortHandInput]]
+  | [4, [ShortHandInput, ShortHandInput, ShortHandInput, ShortHandInput]]
+  | {[K in string]: ShortHandInput}
   | t.Type<any, any, any>
 
-export type Shorthand2<V extends ShorthandComplex> = V extends string | number | boolean
+export type Shorthand<V extends ShortHandInput> = V extends string | number | boolean
   ? t.LiteralC<V>
   : V extends null
   ? t.NullC
@@ -28,16 +28,16 @@ export type Shorthand2<V extends ShorthandComplex> = V extends string | number |
   ? t.BooleanC
   : V extends []
   ? t.ArrayC<t.UnknownC>
-  : V extends [ShorthandComplex]
-  ? t.ArrayC<Shorthand2<V[0]>>
-  : V extends [1, [ShorthandComplex]]
-  ? t.TupleC<[Shorthand2<V[1][0]>]>
-  : V extends [2, [ShorthandComplex, ShorthandComplex]]
-  ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>]>
-  : V extends [3, [ShorthandComplex, ShorthandComplex, ShorthandComplex]]
-  ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>, Shorthand2<V[1][2]>]>
-  : V extends [4, [ShorthandComplex, ShorthandComplex, ShorthandComplex, ShorthandComplex]]
-  ? t.TupleC<[Shorthand2<V[1][0]>, Shorthand2<V[1][1]>, Shorthand2<V[1][2]>, Shorthand2<V[1][3]>]>
+  : V extends [ShortHandInput]
+  ? t.ArrayC<Shorthand<V[0]>>
+  : V extends [1, [ShortHandInput]]
+  ? t.TupleC<[Shorthand<V[1][0]>]>
+  : V extends [2, [ShortHandInput, ShortHandInput]]
+  ? t.TupleC<[Shorthand<V[1][0]>, Shorthand<V[1][1]>]>
+  : V extends [3, [ShortHandInput, ShortHandInput, ShortHandInput]]
+  ? t.TupleC<[Shorthand<V[1][0]>, Shorthand<V[1][1]>, Shorthand<V[1][2]>]>
+  : V extends [4, [ShortHandInput, ShortHandInput, ShortHandInput, ShortHandInput]]
+  ? t.TupleC<[Shorthand<V[1][0]>, Shorthand<V[1][1]>, Shorthand<V[1][2]>, Shorthand<V[1][3]>]>
   : V extends t.Type<any, any, any>
   ? V
   : V extends {[K: string]: any}
@@ -46,51 +46,7 @@ export type Shorthand2<V extends ShorthandComplex> = V extends string | number |
 
 export type CodecFromShortHand2 = {
   (): t.UnknownC
-  <V extends ShorthandComplex>(v: V): Shorthand2<V>
-}
-
-export type UnknownTuple =
-  | []
-  | [unknown]
-  | [unknown, unknown]
-  | [unknown, unknown, unknown]
-  | [unknown, unknown, unknown, unknown]
-  | [unknown, unknown, unknown, unknown, unknown]
-
-export type ShorthandInput = string | number | boolean | null | undefined | UnknownTuple | object
-export type Shorthand<V extends ShorthandInput> = V extends string | number | boolean
-  ? t.LiteralC<V>
-  : V extends null
-  ? t.NullC
-  : V extends undefined
-  ? t.UndefinedC
-  : V extends typeof String
-  ? t.StringC
-  : V extends typeof Number
-  ? t.NumberC
-  : V extends typeof Boolean
-  ? t.BooleanC
-  : V extends []
-  ? t.ArrayC<t.UnknownC>
-  : V extends [ShorthandInput]
-  ? t.ArrayC<Shorthand<V[0]>>
-  : V extends [ShorthandInput, ShorthandInput]
-  ? t.TupleC<[Shorthand<V[0]>, Shorthand<V[1]>]>
-  : V extends [ShorthandInput, ShorthandInput, ShorthandInput]
-  ? t.TupleC<[Shorthand<V[0]>, Shorthand<V[1]>, Shorthand<V[2]>]>
-  : V extends [ShorthandInput, ShorthandInput, ShorthandInput, ShorthandInput]
-  ? t.TupleC<[Shorthand<V[0]>, Shorthand<V[1]>, Shorthand<V[2]>, Shorthand<V[3]>]>
-  : V extends [ShorthandInput, ShorthandInput, ShorthandInput, ShorthandInput, ShorthandInput]
-  ? t.TupleC<[Shorthand<V[0]>, Shorthand<V[1]>, Shorthand<V[2]>, Shorthand<V[3]>, Shorthand<V[4]>]>
-  : V extends t.Type<any, any, any>
-  ? V
-  : V extends {[K: string]: any}
-  ? t.TypeC<{[K in keyof V]: Shorthand<V[K]>}>
-  : never
-
-export type CodecFromShortHand = {
-  (): t.UnknownC
-  <V extends ShorthandInput>(v: V): Shorthand<V>
+  <V extends ShortHandInput>(v: V): Shorthand<V>
 }
 
 /**
