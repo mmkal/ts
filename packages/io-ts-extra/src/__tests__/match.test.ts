@@ -51,10 +51,12 @@ describe('case matching', () => {
   })
 
   it('can use shorthand with matcher', () => {
-    const inputs = ['hi', 'hello', `what's going on`, 37]
+    const inputs = ['hi', 'hello', 'how are you?', `what's going on?`, 'abcdef', 37]
+
     const content = inputs.map(
       matcher<typeof inputs[number]>()
         .case(String, fp.startsWith('h'), s => `greeting: ${s}`)
+        .case(/\?$/, s => `question: ${s}`)
         .case(String, s => `custom message: ${s}`)
         .case(Number, n => `number: ${n}`).get
     )
@@ -63,7 +65,9 @@ describe('case matching', () => {
       Array [
         "greeting: hi",
         "greeting: hello",
-        "custom message: what's going on",
+        "greeting: how are you?",
+        "question: what's going on?",
+        "custom message: abcdef",
         "number: 37",
       ]
     `)

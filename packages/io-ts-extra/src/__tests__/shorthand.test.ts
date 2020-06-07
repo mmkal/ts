@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
-import {codecFromShorthand as shorthand} from '../shorthand'
+import {codecFromShorthand as shorthand, codecFromShorthand} from '../shorthand'
 import {expectTypeOf as e} from 'expect-type'
+import {expectLeft, expectRight} from './either-serializer'
 
 const expectTypeRuntimeBehaviour = (inverted = false): typeof e => (actual: any): any => {
   if (typeof actual === 'undefined') {
@@ -46,6 +47,12 @@ test('primitives', () => {
   expectTypeOf(shorthand(Number)).toEqualTypeOf(t.number)
   expectTypeOf(shorthand(Boolean)).toEqualTypeOf(t.boolean)
   expectTypeOf(shorthand(t.string)).toEqualTypeOf(t.string)
+})
+
+test('regex', () => {
+  const type = codecFromShorthand(/^abc/)
+  expectRight(type.decode('abcdef'))
+  expectLeft(type.decode('xyz123'))
 })
 
 test('literals', () => {
