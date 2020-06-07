@@ -89,18 +89,36 @@ export const instanceOf = <T>(cns: new (...args: any[]) => T) =>
   )
 
 /**
- * A refinement of `t.string` which validates that the input matches a regular expression.
+ * A type which validates its input as a string, then decodes with `String.prototype.match`,
+ * succeeding with the RegExpMatchArray result if a match is found, and failing if no match is found.
  *
  * @example
- * const AllCaps = regex(/^[A-Z]*$/)
- * AllCaps.decode('HELLO')  // right('HELLO')
+ * const AllCaps = regexp(/\b([A-Z]+)\b/)
+ * AllCaps.decode('HELLO')  // right([ 'HELLO', index: 0, input: 'HELLO' ])
  * AllCaps.decode('hello')  // left(...)
  * AllCaps.decode(123)      // left(...)
  */
-export const regex = (pattern: string | RegExp, name?: string) => {
-  const regexInstance = new RegExp(pattern)
-  return t.refinement(t.string, value => regexInstance.test(value), name || `RegExp<${pattern}>`)
-}
+export const regexp = (() => {
+  const RegExpMatchArrayStructure = t.intersection([
+    t.array(t.string),
+    t.type({
+      index: t.number,
+      input: t.string,
+    }),
+  ])
+
+  return (v: RegExp) => {
+    const RegExpMatchArrayDecoder = new t.Type<typeof RegExpMatchArrayStructure._A, string, string>(
+      `RegExp<${v.source}>`,
+      RegExpMatchArrayStructure.is,
+      (s, c) => RegExpMatchArrayStructure.validate(s.match(v), c),
+      val => val.input
+    )
+
+    return t.string.pipe(RegExpMatchArrayDecoder)
+  }
+})()
+export type RegExpCodec = ReturnType<typeof regexp>
 
 /**
  * Like `t.type`, but fails when any properties not specified in `props` are defined.

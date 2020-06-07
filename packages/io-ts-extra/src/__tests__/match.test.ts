@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
 import {collect, match, matcher} from '../match'
 import {expectTypeOf} from 'expect-type'
+import * as fp from 'lodash/fp'
 
 import './either-serializer'
 
@@ -17,6 +18,70 @@ describe('case matching', () => {
       .get()
 
     expect(content).toEqual('hello')
+  })
+
+  it('can use shorthand', () => {
+    const inputs = ['hi', {message: 'how are you'}, 'hello', 'bonjour', 37, [1, 2] as [number, number]]
+    const content = inputs.map(i =>
+      match(i)
+        .case('hi', () => 'you just said hi')
+        .case(String, fp.startsWith('h'), s => `greeting: ${s}`)
+        .case(String, s => `custom greeting: ${s}`)
+        .case({message: String}, m => {
+          expectTypeOf(m).toEqualTypeOf<{message: string}>()
+          return `you left a message: ${m.message}`
+        })
+        .case({message: {}}, m => `invalid message type: ${typeof m.message}`)
+        .case(Number, n => `number: ${n}`)
+        .case([2, [Number, Number]], ns => `two numbers: ${ns}`)
+        .get()
+    )
+
+    expectTypeOf(content).items.toBeString()
+    expect(content).toMatchInlineSnapshot(`
+      Array [
+        "you just said hi",
+        "you left a message: how are you",
+        "greeting: hello",
+        "custom greeting: bonjour",
+        "number: 37",
+        "two numbers: 1,2",
+      ]
+    `)
+  })
+
+  it('can use shorthand with matcher', () => {
+    const inputs = ['hi', 'hello', 'how are you?', `what's going on?`, 'abcdef', 37]
+
+    const content = inputs.map(
+      matcher<typeof inputs[number]>()
+        .case(String, fp.startsWith('h'), s => `greeting: ${s}`)
+        .case(/\?$/, s => `question: ${s.input}`)
+        .case(String, s => `custom message: ${s}`)
+        .case(Number, n => `number: ${n}`).get
+    )
+
+    expect(content).toMatchInlineSnapshot(`
+      Array [
+        "greeting: hi",
+        "greeting: hello",
+        "greeting: how are you?",
+        "question: what's going on?",
+        "custom message: abcdef",
+        "number: 37",
+      ]
+    `)
+  })
+
+  it('can use shorthand with matcher + narrowing', () => {
+    type PersonAttributes = {name: string; age: number}
+    type Employee = PersonAttributes & {type: 'Employee'; employeeId: string}
+    type Customer = PersonAttributes & {type: 'Customer'; orders: string[]}
+    type Person = Employee | Customer
+
+    matcher<Person>()
+      .case({type: 'Employee'} as const, e => expectTypeOf(e.employeeId).toBeString())
+      .case({type: 'Customer'} as const, e => expectTypeOf(e.orders).toEqualTypeOf<string[]>())
   })
 
   it('can use default', () => {

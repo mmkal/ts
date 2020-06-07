@@ -27,6 +27,8 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
    - [Pattern matching](#pattern-matching)
       - [match](#match)
       - [matcher](#matcher)
+      - [Shorthand](#shorthand)
+      - [codecFromShorthand](#codecfromshorthand)
    - [Codecs/Combinators](#codecscombinators)
       - [sparseType](#sparsetype)
       - [optional](#optional)
@@ -35,7 +37,7 @@ Some codecs and combinators not provided by io-ts or io-ts-types.
       - [strict](#strict)
       - [narrow](#narrow)
       - [validationErrors](#validationerrors)
-      - [regex](#regex)
+      - [regexp](#regexp)
       - [instanceOf](#instanceof)
 <!-- codegen:end -->
 
@@ -63,9 +65,23 @@ This package is also less mature. It's currently in v0, so will have a different
 ### Pattern matching
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: match} -->
-#### [match](./src/match.ts#L117)
+#### [match](./src/match.ts#L153)
 
 Match an object against a number of cases. Loosely based on Scala's pattern matching.
+
+##### Example
+
+```typescript
+// get a value which could be a string or a number:
+const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+const stringified = match(value)
+ .case(String, s => `the message is ${s}`)
+ .case(7, () => 'exactly seven')
+ .case(Number, n => `the number is ${n}`)
+ .get()
+```
+
+Under the hood, io-ts is used for validation. The first argument can be a "shorthand" for a type, but you can also pass in io-ts codecs directly for more complex types:
 
 ##### Example
 
@@ -78,7 +94,19 @@ const stringified = match(value)
  .get()
 ```
 
-you can use `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
+you can use a predicate function or `t.refinement` for the equivalent of scala's `case x: Int if x > 2`:
+
+##### Example
+
+```typescript
+// value which could be a string, or a real number in [0, 10):
+const value = Math.random() < 0.5 ? 'foo' : Math.random() * 10
+const stringified = match(value)
+ .case(Number, n => n > 2, n => `big number: ${n}`)
+ .case(Number, n => `small number: ${n}`)
+ .default(x => `not a number: ${x}`)
+ .get()
+```
 
 ##### Example
 
@@ -92,7 +120,7 @@ const stringified = match(value)
  .get()
 ```
 
-note: when using `t.refinement`, the type being refined is not considered as exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`)
+note: when using predicates or `t.refinement`, the type being refined is not considered exhaustively matched, so you'll usually need to add a non-refined option, or you can also use `.default` as a fallback case (the equivalent of `.case(t.any, ...)`)
 
 ##### Params
 
@@ -102,7 +130,7 @@ note: when using `t.refinement`, the type being refined is not considered as exh
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: matcher} -->
-#### [matcher](./src/match.ts#L147)
+#### [matcher](./src/match.ts#L185)
 
 Like @see match but no object is passed in when constructing the case statements. Instead `.get` is a function into which a value should be passed.
 
@@ -135,6 +163,30 @@ const getContent = matcher<Message>()
 const allMessages: Message[] = getAllMessages();
 const contents = allMessages.map(getContent);
 ```
+<!-- codegen:end -->
+
+#### Shorthand
+
+The "shorthand" format for type specifications maps to io-ts types as follows:
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/shorthand.ts, export: codecFromShorthand} -->
+#### [codecFromShorthand](./src/shorthand.ts#L75)
+
+Gets an io-ts codec from a shorthand input:
+
+|shorthand|io-ts type|
+|-|-|
+|`String`, `Number`, `Boolean`|`t.string`, `t.number`, `t.boolean`|
+|Literal raw strings, numbers and booleans e.g. `7` or `'foo'`|`t.literal(7)`, `t.literal('foo')` etc.|
+|Regexes e.g. `/^foo/`|see [regexp](#regexp)|
+|`null` and `undefined`|`t.null` and `t.undefined`|
+|No input (_not_ the same as explicitly passing `undefined`)|`t.unknown`|
+|Objects e.g. `{ foo: String, bar: { baz: Number } }`|`t.type(...)` e.g. `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
+|Empty arrays|`t.array(t.unknown)`|
+|One-element arrays e.g. `[String]`|`t.array(...)` e.g. `t.array(t.string)`|
+|Tuples with explicit length e.g. `[2, [String, Number]]`|`t.tuple` e.g. `t.tuple([t.string, t.number])`|
+|io-ts codecs|unchanged|
+|Unions, intersections, partials, tuples with more than 3 elements, and other complex types|not supported, except by passing in an io-ts codec|
 <!-- codegen:end -->
 
 ### Codecs/Combinators
@@ -227,7 +279,7 @@ IntFromString.decode(123)            // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: strict} -->
-#### [strict](./src/combinators.ts#L122)
+#### [strict](./src/combinators.ts#L140)
 
 Like `t.type`, but fails when any properties not specified in `props` are defined.
 
@@ -302,16 +354,16 @@ Similar to io-ts's PathReporter, but gives slightly less verbose output.
 |typeAlias|io-ts type names can be very verbose. If the type you're using doesn't have a name, you can use this to keep error messages shorter.|
 <!-- codegen:end -->
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regex} -->
-#### [regex](./src/combinators.ts#L100)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regexp} -->
+#### [regexp](./src/combinators.ts#L101)
 
-A refinement of `t.string` which validates that the input matches a regular expression.
+A type which validates its input as a string, then decodes with `String.prototype.match`, succeeding with the RegExpMatchArray result if a match is found, and failing if no match is found.
 
 ##### Example
 
 ```typescript
-const AllCaps = regex(/^[A-Z]*$/)
-AllCaps.decode('HELLO')  // right('HELLO')
+const AllCaps = regexp(/\b([A-Z]+)\b/)
+AllCaps.decode('HELLO')  // right([ 'HELLO', index: 0, input: 'HELLO' ])
 AllCaps.decode('hello')  // left(...)
 AllCaps.decode(123)      // left(...)
 ```
