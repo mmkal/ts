@@ -1,35 +1,51 @@
-name: Node CI
+name: ci
 on: [push]
+
+anchors:
+  checkout_and_cache_deps: &checkout_and_cache_deps
+  - uses: actions/checkout@v2
+  - name: node_modules cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          node_modules
+          */*/node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
 jobs:
+  install:
+    steps:
+    - *checkout_and_cache_deps
+    - run: yarn
   build:
-    runs-on: ubuntu-latest
+    needs: [install]
+    steps:
+    - *checkout_and_cache_deps
+    - run: yarn build
+  test:
+    needs: [install]
     strategy:
       matrix:
         node-version: [12.x, 10.x]
-        include:
-        - node-version: 12.x
-          main: true
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: run ci
-      run: |
-        yarn
-        yarn build
-        yarn lint
-        yarn test --coverage
-      env:
-        CI: true
+    - *checkout_and_cache_deps
+    - run: yarn test --coverage
     - name: Coverage
       uses: codecov/codecov-action@v1
-      if: matrix.main
+  lint:
+    needs: [install]
+    steps:
+    - *checkout_and_cache_deps
+    - run: yarn lint
+  publish:
+    needs: [install]
+    env:
+      CURRENT_BRANCH: ${{ github.ref }}
+    steps:
     - name: setup npm registry login
       run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
     - name: publish
-      if: contains(github.event.head_commit.message, '/publish-canary') && matrix.main
-      env:
-        CURRENT_BRANCH: ${{ github.ref }}
+      if: contains(github.event.head_commit.message, '/publish-canary')
       run: yarn publish-canary --yes
