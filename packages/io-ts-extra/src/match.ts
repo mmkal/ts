@@ -191,7 +191,6 @@ const matcherRecursive = <In = any, InSoFar = never, Out = never>(cases: Cases):
       const refined = fns.length > 1 ? t.refinement(codec, fns[0] as any) : codec
       return matcherRecursive(cases.concat([[refined, fns[fns.length - 1]]]))
     },
-    // case: (type: t.Any, map: UnknownFn) => matcherRecursive(cases.concat([[type, map]])),
     default: (map: UnknownFn) => matcherRecursive(cases.concat([[t.any, map]])),
     get: (obj: unknown) => matchObject(obj, cases),
     tryGet: (obj: unknown) => maybeMatchObject(obj, cases),
