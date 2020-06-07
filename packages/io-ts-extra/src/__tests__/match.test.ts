@@ -50,10 +50,6 @@ describe('case matching', () => {
     `)
   })
 
-  it('can use shorthand with a few different array formats', () => {
-    const inputs: any[][] = []
-  })
-
   it('can use shorthand with matcher', () => {
     const inputs = ['hi', 'hello', `what's going on`, 37]
     const content = inputs.map(

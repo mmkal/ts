@@ -44,6 +44,7 @@ test('nullish types', () => {
 test('primitives', () => {
   expectTypeOf(shorthand(String)).toEqualTypeOf(t.string)
   expectTypeOf(shorthand(Number)).toEqualTypeOf(t.number)
+  expectTypeOf(shorthand(Boolean)).toEqualTypeOf(t.boolean)
   expectTypeOf(shorthand(t.string)).toEqualTypeOf(t.string)
 })
 
@@ -58,13 +59,7 @@ test('arrays', () => {
   expectTypeOf(shorthand([String])).toEqualTypeOf(t.array(t.string))
   expectTypeOf(shorthand([[String]])).toEqualTypeOf(t.array(t.array(t.string)))
 
-  expectTypeOf(shorthand([{foo: String}])).toEqualTypeOf(
-    t.array(
-      t.type({
-        foo: t.string,
-      })
-    )
-  )
+  expectTypeOf(shorthand([{foo: String}])).toEqualTypeOf(t.array(t.type({foo: t.string})))
   expectTypeOf(shorthand([[String]])).toEqualTypeOf(t.array(t.array(t.string)))
 })
 

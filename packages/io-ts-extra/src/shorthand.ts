@@ -1,8 +1,10 @@
 import * as t from 'io-ts'
 
-export type ShorthandPrimitive = string | number | boolean | null | undefined | typeof String | typeof Number
+export type ShorthandPrimitive = typeof String | typeof Number | typeof Boolean
+export type ShorthandLiteral = string | number | boolean | null | undefined
 export type ShorthandComplex =
   | ShorthandPrimitive
+  | ShorthandLiteral
   | []
   | [ShorthandComplex]
   | [1, [ShorthandComplex]]
@@ -103,10 +105,11 @@ export type CodecFromShortHand = {
  * |Objects e.g. `{ foo: String, bar: { baz: Number } }`|`t.type(...)` e.g. `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
  * |Empty arrays|`t.array(t.unknown)`|
  * |One-element arrays e.g. `[String]`|`t.array(...)` e.g. `t.array(t.string)`|
- * |Tuples e.g. `[String, Number]`|`t.tuple` e.g. `t.tuple([t.string, t.number])`|
+ * |Tuples with explicit length e.g. `[2, [String, Number]]`|`t.tuple` e.g. `t.tuple([t.string, t.number])`|
  * |io-ts codecs|unchanged|
  * |Unions, intersections, partials, one-element tuples and other complex types|not supported, except by passing in an io-ts codec|
  */
+// eslint-disable-next-line complexity
 export const codecFromShorthand: CodecFromShortHand2 = (...args: unknown[]): any => {
   if (args.length === 0) {
     return t.unknown
@@ -136,8 +139,8 @@ export const codecFromShorthand: CodecFromShortHand2 = (...args: unknown[]): any
   if (Array.isArray(v) && v.length === 1) {
     return t.array(codecFromShorthand(v[0]))
   }
-  if (Array.isArray(v)) {
-    return t.tuple(v.map(codecFromShorthand) as any)
+  if (Array.isArray(v) && v.length === 2 && typeof v[0] === 'number' && Array.isArray(v[1])) {
+    return t.tuple(v[1].map(codecFromShorthand) as any)
   }
   if (v instanceof t.Type) {
     return v
