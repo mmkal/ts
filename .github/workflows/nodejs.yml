@@ -5,14 +5,14 @@ anchors:
   checkout_and_cache_deps: &checkout_and_cache_deps
   - uses: actions/checkout@v2
   - name: node_modules cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+    uses: actions/cache@v2
+    with:
+      path: |
+        node_modules
+        */*/node_modules
+      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      restore-keys: |
+        ${{ runner.os }}-yarn-
 
 jobs:
   install:
