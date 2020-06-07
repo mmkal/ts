@@ -244,14 +244,13 @@ export const monorepoTOC: Preset<{
     .get()
 
   const readJsonFile = (f: string) => JSON.parse(fs.readFileSync(path.join(contextDir, f)).toString())
-  const parseLernaDotJson = () => readJsonFile('lerna.json').packages
-
+  const parseLernaJson = () => readJsonFile('lerna.json').packages
   const packageGlobs = match(options.workspaces)
     .case([String], arr => arr)
-    .case('lerna', parseLernaDotJson)
+    .case('lerna', parseLernaJson)
     .default(() => {
       const pkg = readJsonFile('package.json')
-      return (pkg.workspaces && pkg.workspaces.packages) || pkg.workspaces || parseLernaDotJson()
+      return (pkg.workspaces && pkg.workspaces.packages) || pkg.workspaces || parseLernaJson()
     })
     .get()
 

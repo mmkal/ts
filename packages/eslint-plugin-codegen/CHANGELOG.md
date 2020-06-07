@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.8.8...eslint-plugin-codegen@0.9.0) (2020-06-07)
+
+
+### Features
+
+* parse lerna.json if yarn workspaces aren't found ([67f0597](https://github.com/mmkal/ts/commit/67f0597203a15720f6a4a4c5668dd21d01716dab))
+
+
+
+
+
+
 ## [0.8.8](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.8.7...eslint-plugin-codegen@0.8.8) (2020-05-13)
 
 **Note:** Version bump only for package eslint-plugin-codegen
