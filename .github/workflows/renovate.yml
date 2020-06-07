@@ -1,8 +1,7 @@
 name: renovate
-on: [push]
-# todo: enable
-# schedule:
-# - cron: "*/10 * * * *"
+on: 
+  schedule:
+  - cron: "57 23 * * *"
 
 jobs:
   renovate:
