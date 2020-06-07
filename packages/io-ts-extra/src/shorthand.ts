@@ -15,14 +15,28 @@ export type ShorthandInput =
   | {[K in string]: ShorthandInput}
   | t.Type<any, any, any>
 
-// TODO [>=1.0.0] Consolidate RegExp functionality here with ./combinators
-export const RegExpMatchArrayStructure = t.intersection([
-  t.array(t.string),
-  t.type({
-    index: t.number,
-    input: t.string,
-  }),
-])
+// TODO [2020-06-07] Consolidate RegExp functionality here with ./combinators
+export const regexp = (() => {
+  const RegExpMatchArrayStructure = t.intersection([
+    t.array(t.string),
+    t.type({
+      index: t.number,
+      input: t.string,
+    }),
+  ])
+
+  return (v: RegExp) => {
+    const RegExpMatchArrayDecoder = new t.Type<typeof RegExpMatchArrayStructure._A, string, string>(
+      `RegExp<${v.source}>`,
+      RegExpMatchArrayStructure.is,
+      (s, c) => RegExpMatchArrayStructure.validate(s.match(v), c),
+      val => val.input
+    )
+
+    return t.string.pipe(RegExpMatchArrayDecoder)
+  }
+})()
+export type RegExpCodec = ReturnType<typeof regexp>
 
 export type Shorthand<V extends ShorthandInput> = V extends string | number | boolean
   ? t.LiteralC<V>
@@ -37,7 +51,7 @@ export type Shorthand<V extends ShorthandInput> = V extends string | number | bo
   : V extends typeof Boolean
   ? t.BooleanC
   : V extends RegExp
-  ? t.Type<typeof RegExpMatchArrayStructure._A, string>
+  ? RegExpCodec
   : V extends []
   ? t.ArrayC<t.UnknownC>
   : V extends [ShorthandInput]
@@ -104,13 +118,7 @@ export const codecFromShorthand: CodecFromShorthand = (...args: unknown[]): any 
     return t.literal(v)
   }
   if (v instanceof RegExp) {
-    const RegExpMatchArrayDecoder = new t.Type<typeof RegExpMatchArrayStructure._A, string, string>(
-      `RegExp<${v.source}>`,
-      RegExpMatchArrayStructure.is,
-      (s, c) => RegExpMatchArrayStructure.validate(s.match(v), c),
-      val => val.input
-    )
-    return t.string.pipe(RegExpMatchArrayDecoder)
+    return regexp(v)
   }
   if (Array.isArray(v) && v.length === 0) {
     return t.array(t.unknown)
