@@ -1,7 +1,6 @@
 import * as path from 'path'
 import * as fs from 'fs'
 import * as os from 'os'
-import * as t from 'io-ts'
 import * as lodash from 'lodash'
 import * as glob from 'glob'
 import {match} from 'io-ts-extra'

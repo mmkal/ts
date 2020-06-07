@@ -2,17 +2,17 @@ import * as t from 'io-ts'
 
 export type ShorthandPrimitive = typeof String | typeof Number | typeof Boolean
 export type ShorthandLiteral = string | number | boolean | null | undefined
-export type ShortHandInput =
+export type ShorthandInput =
   | ShorthandPrimitive
   | ShorthandLiteral
   | RegExp
   | []
-  | [ShortHandInput]
-  | [1, [ShortHandInput]]
-  | [2, [ShortHandInput, ShortHandInput]]
-  | [3, [ShortHandInput, ShortHandInput, ShortHandInput]]
-  | [4, [ShortHandInput, ShortHandInput, ShortHandInput, ShortHandInput]]
-  | {[K in string]: ShortHandInput}
+  | [ShorthandInput]
+  | [1, [ShorthandInput]]
+  | [2, [ShorthandInput, ShorthandInput]]
+  | [3, [ShorthandInput, ShorthandInput, ShorthandInput]]
+  | [4, [ShorthandInput, ShorthandInput, ShorthandInput, ShorthandInput]]
+  | {[K in string]: ShorthandInput}
   | t.Type<any, any, any>
 
 // TODO [>=1.0.0] Consolidate RegExp functionality here with ./combinators
@@ -24,7 +24,7 @@ export const RegExpMatchArrayStructure = t.intersection([
   }),
 ])
 
-export type Shorthand<V extends ShortHandInput> = V extends string | number | boolean
+export type Shorthand<V extends ShorthandInput> = V extends string | number | boolean
   ? t.LiteralC<V>
   : V extends null
   ? t.NullC
@@ -40,15 +40,15 @@ export type Shorthand<V extends ShortHandInput> = V extends string | number | bo
   ? t.Type<typeof RegExpMatchArrayStructure._A, string>
   : V extends []
   ? t.ArrayC<t.UnknownC>
-  : V extends [ShortHandInput]
+  : V extends [ShorthandInput]
   ? t.ArrayC<Shorthand<V[0]>>
-  : V extends [1, [ShortHandInput]]
+  : V extends [1, [ShorthandInput]]
   ? t.TupleC<[Shorthand<V[1][0]>]>
-  : V extends [2, [ShortHandInput, ShortHandInput]]
+  : V extends [2, [ShorthandInput, ShorthandInput]]
   ? t.TupleC<[Shorthand<V[1][0]>, Shorthand<V[1][1]>]>
-  : V extends [3, [ShortHandInput, ShortHandInput, ShortHandInput]]
+  : V extends [3, [ShorthandInput, ShorthandInput, ShorthandInput]]
   ? t.TupleC<[Shorthand<V[1][0]>, Shorthand<V[1][1]>, Shorthand<V[1][2]>]>
-  : V extends [4, [ShortHandInput, ShortHandInput, ShortHandInput, ShortHandInput]]
+  : V extends [4, [ShorthandInput, ShorthandInput, ShorthandInput, ShorthandInput]]
   ? t.TupleC<[Shorthand<V[1][0]>, Shorthand<V[1][1]>, Shorthand<V[1][2]>, Shorthand<V[1][3]>]>
   : V extends t.Type<any, any, any>
   ? V
@@ -58,7 +58,7 @@ export type Shorthand<V extends ShortHandInput> = V extends string | number | bo
 
 export type CodecFromShorthand = {
   (): t.UnknownC
-  <V extends ShortHandInput>(v: V): Shorthand<V>
+  <V extends ShorthandInput>(v: V): Shorthand<V>
 }
 
 /* eslint-disable complexity */
