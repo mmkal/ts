@@ -91,3 +91,8 @@ test('complex interfaces', () => {
     t.type({foo: t.string, bar: t.type({baz: t.number})})
   )
 })
+
+test(`functions aren't supported`, () => {
+  // @ts-expect-error
+  expectTypeOf(shorthand(() => 1)).toEqualTypeOf(t.unknown)
+})

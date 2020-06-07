@@ -116,5 +116,5 @@ export const codecFromShorthand: CodecFromShortHand2 = (...args: unknown[]): any
       }, {})
     )
   }
-  return t.never
+  return t.unknown
 }
