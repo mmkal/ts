@@ -1,28 +1,27 @@
 name: ci
 on: [push]
 
-anchors:
-  checkout_and_cache_deps: &checkout_and_cache_deps
-  - uses: actions/checkout@v2
-  - name: node_modules cache
-    uses: actions/cache@v2
-    with:
-      path: |
-        node_modules
-        */*/node_modules
-      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      restore-keys: |
-        ${{ runner.os }}-yarn-
-
 jobs:
   install:
     steps:
-    - *checkout_and_cache_deps
+    - &checkout
+      uses: actions/checkout@v2
+    - &cache_deps
+      name: node_modules cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          node_modules
+          */*/node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
     - run: yarn
   build:
     needs: [install]
     steps:
-    - *checkout_and_cache_deps
+    - *checkout
+    - *cache_deps
     - run: yarn build
   test:
     needs: [install]
@@ -30,20 +29,25 @@ jobs:
       matrix:
         node-version: [12.x, 10.x]
     steps:
-    - *checkout_and_cache_deps
+    - *checkout
+    - *cache_deps
     - run: yarn test --coverage
     - name: Coverage
       uses: codecov/codecov-action@v1
   lint:
     needs: [install]
     steps:
-    - *checkout_and_cache_deps
+    - *checkout
+    - *cache_deps
     - run: yarn lint
   publish:
     needs: [install]
     env:
       CURRENT_BRANCH: ${{ github.ref }}
     steps:
+    - *checkout
+    - *cache_deps
+    - run: yarn build
     - name: setup npm registry login
       run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
     - name: publish
