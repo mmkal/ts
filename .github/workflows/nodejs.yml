@@ -10,6 +10,7 @@ jobs:
         - node-version: 12.x
           main: true
     steps:
+    - run: echo notsecret --secret=${{ secrets.NOT_REALLY_SECRET }}
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
