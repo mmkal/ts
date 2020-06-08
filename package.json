@@ -35,6 +35,12 @@
       {
         "depTypeList": ["devDependencies"],
         "automerge": true
+      },
+      {
+        "depTypeList": ["devDependencies"],
+        "packagePatterns": [".*eslint.*"],
+        "groupName": "eslint packages",
+        "labels": ["linting"]
       }
     ]
   },
