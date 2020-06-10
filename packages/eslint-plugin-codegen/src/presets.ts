@@ -250,7 +250,7 @@ export const monorepoTOC: Preset<{
     .case('lerna', parseLernaJson)
     .default(() => {
       const pkg = readJsonFile('package.json')
-      return (pkg.workspaces && pkg.workspaces.packages) || pkg.workspaces || parseLernaJson()
+      return pkg.workspaces?.packages || pkg.workspaces || parseLernaJson()
     })
     .get()
 
