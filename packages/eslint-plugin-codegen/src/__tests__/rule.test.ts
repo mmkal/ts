@@ -4,7 +4,7 @@ import baseDedent from 'dedent'
 import * as os from 'os'
 
 jest.mock('fs', () => {
-  const realFs: typeof import('fs') = require.requireActual('fs')
+  const realFs: typeof import('fs') = jest.requireActual('fs')
   return {
     ...realFs,
     readdirSync: (path: string) => {

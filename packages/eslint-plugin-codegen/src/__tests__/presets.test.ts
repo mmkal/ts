@@ -11,7 +11,7 @@ beforeEach(() => {
 })
 
 jest.mock('fs', () => {
-  const actual = require.requireActual('fs')
+  const actual = jest.requireActual('fs')
   const reader = (orig: string) => (...args: any[]) => {
     const path = args[0].replace(/\\/g, '/')
     // const fn = path in mockFs ? mockImpl : actual[orig]
