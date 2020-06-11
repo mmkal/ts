@@ -21,7 +21,7 @@
     "@babel/parser": "^7.9.4",
     "@babel/traverse": "^7.9.0",
     "expect": "^25.1.0",
-    "fp-ts": "2.1.0",
+    "fp-ts": "2.6.5",
     "glob": "7.1.4",
     "io-ts": "2.0.1",
     "io-ts-extra": "0.8.0",
