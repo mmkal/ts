@@ -21,12 +21,12 @@
     "@babel/parser": "^7.9.4",
     "@babel/traverse": "^7.9.0",
     "expect": "^25.1.0",
-    "fp-ts": "2.1.0",
-    "glob": "7.1.4",
-    "io-ts": "2.2.4",
-    "io-ts-extra": "0.8.0",
-    "js-yaml": "3.14.0",
-    "lodash": "4.17.15",
+    "fp-ts": "^2.1.0",
+    "glob": "^7.1.4",
+    "io-ts": "^2.2.4",
+    "io-ts-extra": "^0.8.0",
+    "js-yaml": "^3.14.0",
+    "lodash": "^4.17.15",
     "string.prototype.matchall": "^4.0.2"
   },
   "keywords": [
