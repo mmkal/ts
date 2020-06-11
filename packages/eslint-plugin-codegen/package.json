@@ -22,7 +22,7 @@
     "@babel/traverse": "^7.9.0",
     "expect": "^25.1.0",
     "fp-ts": "2.1.0",
-    "glob": "7.1.4",
+    "glob": "7.1.6",
     "io-ts": "2.0.1",
     "io-ts-extra": "0.8.0",
     "js-yaml": "3.14.0",
