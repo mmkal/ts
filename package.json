@@ -49,9 +49,9 @@
     "kind-of": ">=6.0.3"
   },
   "devDependencies": {
-    "@babel/core": "7.10.2",
-    "@babel/plugin-proposal-optional-chaining": "7.10.1",
-    "@babel/preset-env": "7.10.2",
+    "@babel/core": "7.10.3",
+    "@babel/plugin-proposal-optional-chaining": "7.10.3",
+    "@babel/preset-env": "7.10.3",
     "@babel/preset-typescript": "7.10.1",
     "@types/dedent": "0.7.0",
     "@types/eslint": "7.2.0",
