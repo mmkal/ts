@@ -1,6 +1,6 @@
 # io-ts-extra
 
-Some codecs and combinators not provided by io-ts or io-ts-types.
+Adds pattern matching, optional properties, and several other helpers and types, to io-ts.
 
 <!-- codegen:start {preset: badges} -->
 [![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
