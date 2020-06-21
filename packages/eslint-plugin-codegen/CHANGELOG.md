@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.9.0...eslint-plugin-codegen@0.10.0) (2020-06-21)
+
+
+### Bug Fixes
+
+* **deps:** unpin codegen dependencies ([e951b13](https://github.com/mmkal/ts/commit/e951b13aa05bc0fcfd85543d584790038da611ab))
+* **deps:** update dependency io-ts to v2.2.4 ([#54](https://github.com/mmkal/ts/issues/54)) ([d5a4805](https://github.com/mmkal/ts/commit/d5a48054fc2a3982a8a3c7b9b96c49d2eab0692d))
+
+
+### Features
+
+* **matcher:** shorthand ([#27](https://github.com/mmkal/ts/issues/27)) ([ff3cabb](https://github.com/mmkal/ts/commit/ff3cabb176f4f420311308830e958136d2777ddb))
+
+
+
+
+
+
 # [0.9.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.8.8...eslint-plugin-codegen@0.9.0) (2020-06-07)
 
 

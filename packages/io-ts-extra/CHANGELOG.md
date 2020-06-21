@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.8.0...io-ts-extra@0.9.0) (2020-06-21)
+
+
+### Features
+
+* **matcher:** shorthand ([#27](https://github.com/mmkal/ts/issues/27)) ([ff3cabb](https://github.com/mmkal/ts/commit/ff3cabb176f4f420311308830e958136d2777ddb))
+
+
+
+
+
+
 # [0.8.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.7.0...io-ts-extra@0.8.0) (2020-06-07)
 
 
