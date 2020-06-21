@@ -11,7 +11,7 @@ beforeEach(() => {
 })
 
 jest.mock('fs', () => {
-  const actual = require.requireActual('fs')
+  const actual = jest.requireActual('fs')
   const reader = (orig: string) => (...args: any[]) => {
     const path = args[0].replace(/\\/g, '/')
     // const fn = path in mockFs ? mockImpl : actual[orig]
@@ -135,7 +135,7 @@ describe('markdownTOC', () => {
 })
 
 describe('monorepoTOC', () => {
-  test('generate markdown', () => {
+  beforeEach(() => {
     Object.assign(mockFs, {
       'package.json': '{ "workspaces": ["packages/*"] }',
 
@@ -171,7 +171,9 @@ describe('monorepoTOC', () => {
         Here's another section, with more markdown content in it.
       `,
     })
+  })
 
+  test('generate markdown', () => {
     expect(
       presets.monorepoTOC({
         meta: emptyReadme,
@@ -183,7 +185,9 @@ describe('monorepoTOC', () => {
       - [package3](./packages/package3) - Readme for package 3
       - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
     `)
+  })
 
+  test('generate markdown with filter', () => {
     expect(
       presets.monorepoTOC({
         meta: emptyReadme,
@@ -193,7 +197,9 @@ describe('monorepoTOC', () => {
       - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package3](./packages/package3) - Readme for package 3
     `)
+  })
 
+  test('generate markdown with sorting', () => {
     expect(
       presets.monorepoTOC({
         meta: emptyReadme,
@@ -205,7 +211,9 @@ describe('monorepoTOC', () => {
       - [package2](./packages/package2) - Readme for package 2
       - [package3](./packages/package3) - Readme for package 3
     `)
+  })
 
+  test('generate markdown using lerna to find packages', () => {
     expect(
       presets.monorepoTOC({
         meta: emptyReadme,
@@ -215,7 +223,22 @@ describe('monorepoTOC', () => {
       - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package2](./packages/package2) - Readme for package 2
     `)
+  })
 
+  test('generate markdown default to lerna to find packages', () => {
+    mockFs['package.json'] = '{}'
+    expect(
+      presets.monorepoTOC({
+        meta: emptyReadme,
+        options: {},
+      })
+    ).toMatchInlineSnapshot(`
+      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+      - [package2](./packages/package2) - Readme for package 2"
+    `)
+  })
+
+  test('generate markdown with explicit workspaces', () => {
     expect(
       presets.monorepoTOC({
         meta: emptyReadme,
@@ -225,14 +248,18 @@ describe('monorepoTOC', () => {
       - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
       - [package3](./packages/package3) - Readme for package 3
     `)
+  })
 
+  test('generate markdown fails when no package.json exists', () => {
     expect(() =>
       presets.monorepoTOC({
         meta: {filename: 'subdir/test.md', existingContent: ''},
         options: {},
       })
     ).toThrowError(/ENOENT: no such file or directory, open 'subdir.*package.json'/)
+  })
 
+  test('generate markdown with separate rootDir', () => {
     expect(
       presets.monorepoTOC({
         meta: {filename: 'subdir/test.md', existingContent: ''},

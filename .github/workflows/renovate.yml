@@ -1,0 +1,13 @@
+name: renovate
+on: 
+  schedule:
+  - cron: "57 23 * * *"
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+    - run: yarn add renovate@20.16.1
+    - run: yarn renovate ${{github.repository}}
+      env:
+        RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
