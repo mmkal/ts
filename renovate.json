@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":semanticCommits"
+  ],
+  "prConcurrentLimit": 3,
+  "packageRules": [
+    {
+      "depTypeList": ["devDependencies"],
+      "automerge": true
+    },
+    {
+      "depTypeList": ["devDependencies"],
+      "packagePatterns": [".*eslint.*"],
+      "groupName": "eslint packages",
+      "labels": ["linting"]
+    }
+  ]
+}
