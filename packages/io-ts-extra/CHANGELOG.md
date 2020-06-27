@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.9.0...io-ts-extra@0.10.0) (2020-06-27)
+
+
+### Features
+
+* **shorthand:** support `Array` and `Object` ([58b1d9d](https://github.com/mmkal/ts/commit/58b1d9dba14b3870b5d2b6b223bb11794d00616a))
+
+
+
+
+
 # [0.9.0](https://github.com/mmkal/ts/compare/io-ts-extra@0.8.0...io-ts-extra@0.9.0) (2020-06-21)
 
 

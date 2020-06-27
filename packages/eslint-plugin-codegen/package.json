@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-codegen",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/mmkal/ts",
@@ -24,7 +24,7 @@
     "fp-ts": "^2.1.0",
     "glob": "^7.1.4",
     "io-ts": "^2.2.4",
-    "io-ts-extra": "0.9.0",
+    "io-ts-extra": "0.10.0",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15",
     "string.prototype.matchall": "^4.0.2"

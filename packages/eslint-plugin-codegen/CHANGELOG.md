@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.10.0...eslint-plugin-codegen@0.11.0) (2020-06-27)
+
+
+### Features
+
+* **barrel:** support globbing and customised exports ([#65](https://github.com/mmkal/ts/issues/65)) ([3a4582a](https://github.com/mmkal/ts/commit/3a4582a1913d6b38b27dd6ca6634432ddd8dfd1c))
+
+
+
+
+
 # [0.10.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.9.0...eslint-plugin-codegen@0.10.0) (2020-06-21)
 
 
