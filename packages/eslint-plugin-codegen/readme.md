@@ -111,8 +111,8 @@ See below for documentation. This repo also has [lots of usage examples](https:/
 
 ### Presets
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: monorepoTOC} -->
-#### [monorepoTOC](./src/presets.ts#L235)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/monorepo-toc.ts, export: monorepoTOC} -->
+#### [monorepoTOC](./src/presets/monorepo-toc.ts#L27)
 
 Generate a table of contents for a monorepo.
 
@@ -138,29 +138,37 @@ Generate a table of contents for a monorepo.
 
 ![](./gifs/monorepoTOC.gif)
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: barrel} -->
-#### [barrel](./src/presets.ts#L23)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/barrel.ts, export: barrel} -->
+#### [barrel](./src/presets/barrel.ts#L25)
 
-Rollup exports from several modules into a single convenient module, typically named `index.ts`
+Bundle several modules into a single convenient one.
 
 ##### Example
 
-`// codegen:start {preset: barrel, include: foo, exclude: bar}`
+```typescript
+// codegen:start {preset: barrel, include: some/path/*.ts, exclude: some/path/*util.ts}
+export * from './some/path/module-a'
+export * from './some/path/module-b'
+export * from './some/path/module-c'
+// codegen:end
+```
 
 ##### Params
 
 |name|description|
 |-|-|
-|include|[optional] If specified, the barrel will only include filenames that match this regex|
-|exclude|[optional] If specified, the barrel will only include filenames that don't match this regex|
+|include|[optional] If specified, the barrel will only include file paths that match this glob pattern|
+|exclude|[optional] If specified, the barrel will exclude file paths that match these glob patterns|
+|import|[optional] If specified, matching files will be imported and re-exported rather than directly exported with `export * from './xyz'`. Use `import: star` for `import * as xyz from './xyz'` style imports. Use `import: default` for `import xyz from './xyz'` style imports.|
+|export|[optional] Only valid if the import style has been specified (either `import: star` or `import: default`). If specified, matching modules will be bundled into a const or default export based on this name. If set to `{name: someName, keys: path}` the relative file paths will be used as keys. Otherwise the file paths will be camel-cased to make them valid js identifiers.|
 <!-- codegen:end -->
 
 ##### Demo
 
 ![](./gifs/barrel.gif)
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromJsdoc} -->
-#### [markdownFromJsdoc](./src/presets.ts#L56)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/markdown-from-jsdoc.ts, export: markdownFromJsdoc} -->
+#### [markdownFromJsdoc](./src/presets/markdown-from-jsdoc.ts#L18)
 
 Convert jsdoc for an es export from a javascript/typescript file to markdown.
 
@@ -180,8 +188,8 @@ Convert jsdoc for an es export from a javascript/typescript file to markdown.
 
 ![](./gifs/markdownFromJsdoc.gif)
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownTOC} -->
-#### [markdownTOC](./src/presets.ts#L134)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/markdown-toc.ts, export: markdownTOC} -->
+#### [markdownTOC](./src/presets/markdown-toc.ts#L17)
 
 Generate a table of contents from the current markdown file, based on markdown headers (e.g. `### My section title`)
 
@@ -201,8 +209,8 @@ Generate a table of contents from the current markdown file, based on markdown h
 
 ![](./gifs/markdownTOC.gif)
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: markdownFromTests} -->
-#### [markdownFromTests](./src/presets.ts#L179)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/markdown-from-tests.ts, export: markdownFromTests} -->
+#### [markdownFromTests](./src/presets/markdown-from-tests.ts#L22)
 
 Use a test file to generate library usage documentation. Note: this has been tested with jest. It _might_ also work fine with mocha, and maybe ava, but those haven't been tested.
 
@@ -222,8 +230,8 @@ Use a test file to generate library usage documentation. Note: this has been tes
 
 ![](./gifs/markdownFromTests.gif)
 
-<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets.ts, export: custom} -->
-#### [custom](./src/presets.ts#L326)
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/custom.ts, export: custom} -->
+#### [custom](./src/presets/custom.ts#L26)
 
 Define your own codegen function, which will receive all options specified. Import the `Preset` type from this library to define a strongly-typed preset function:
 

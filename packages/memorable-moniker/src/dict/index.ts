@@ -1,4 +1,4 @@
-// codegen:start {preset: barrel, exclude: util}
+// codegen:start {preset: barrel, exclude: util.ts}
 export * from './animal'
 export * from './femaleName'
 export * from './lastName'

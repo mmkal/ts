@@ -170,7 +170,7 @@ const contents = allMessages.map(getContent);
 The "shorthand" format for type specifications maps to io-ts types as follows:
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/shorthand.ts, export: codecFromShorthand} -->
-#### [codecFromShorthand](./src/shorthand.ts#L75)
+#### [codecFromShorthand](./src/shorthand.ts#L80)
 
 Gets an io-ts codec from a shorthand input:
 
@@ -182,7 +182,8 @@ Gets an io-ts codec from a shorthand input:
 |`null` and `undefined`|`t.null` and `t.undefined`|
 |No input (_not_ the same as explicitly passing `undefined`)|`t.unknown`|
 |Objects e.g. `{ foo: String, bar: { baz: Number } }`|`t.type(...)` e.g. `t.type({foo: t.string, bar: t.type({ baz: t.number }) })`
-|Empty arrays|`t.array(t.unknown)`|
+|`Array`|`t.unknownArray`|
+|`Object`|`t.object`|
 |One-element arrays e.g. `[String]`|`t.array(...)` e.g. `t.array(t.string)`|
 |Tuples with explicit length e.g. `[2, [String, Number]]`|`t.tuple` e.g. `t.tuple([t.string, t.number])`|
 |io-ts codecs|unchanged|

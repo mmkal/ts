@@ -3,18 +3,9 @@ import * as codegen from '..'
 import baseDedent from 'dedent'
 import * as os from 'os'
 
-jest.mock('fs', () => {
-  const realFs: typeof import('fs') = jest.requireActual('fs')
-  return {
-    ...realFs,
-    readdirSync: (path: string) => {
-      if (path.endsWith('__tests__')) {
-        return ['foo.ts', 'bar.ts']
-      }
-      return realFs.readdirSync(path)
-    },
-  }
-})
+jest.mock('glob', () => ({
+  sync: () => ['foo.ts', 'bar.ts'],
+}))
 
 /** wrapper for dedent which respects os.EOL */
 const dedent = (...args: Parameters<typeof baseDedent>) => {
@@ -111,7 +102,7 @@ tester.run('codegen', codegen.rules.codegen, {
     {
       filename: __filename,
       code: dedent`
-        // codegen:start {preset: custom, source: custom-preset.js, export: thrower}
+        // codegen:start {preset: custom, source: ../presets/__tests__/custom-preset.js, export: thrower}
         // codegen:end
       `,
       errors: [{message: /Error: test error!/}],
