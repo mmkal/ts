@@ -21,13 +21,13 @@ export type Preset<Options> = (params: {meta: {filename: string; existingContent
  * export * from './some/path/module-c'
  * // codegen:end
  *
- * @param glob [optional] If specified, the barrel will only include file paths that match this glob pattern
+ * @param include [optional] If specified, the barrel will only include file paths that match this glob pattern
  * @param exclude [optional] If specified, the barrel will exclude file paths that match these glob patterns
  * @param import [optional] If specified, matching files will be imported and re-exported rather than directly exported with `export * from './xyz'`. Use `import: star` for `import * as xyz from './xyz'` style imports. Use `import: default` for `import xyz from './xyz'` style imports.
  * @param export [optional] Only valid if the import style has been specified (either `import: star` or `import: default`). If specified, matching modules will be bundled into a const or default export based on this name. If set to `{name: someName, keys: path}` the relative file paths will be used as keys. Otherwise the file paths will be camel-cased to make them valid js identifiers.
  */
 export const barrel: Preset<{
-  glob?: string
+  include?: string
   exclude?: string | string[]
   import?: 'default' | 'star'
   export?: string | {name: string; keys: 'path' | 'camelCase'}
@@ -35,7 +35,7 @@ export const barrel: Preset<{
   const cwd = path.dirname(meta.filename)
 
   const ext = meta.filename.split('.').slice(-1)[0]
-  const pattern = opts.glob || `*.${ext}`
+  const pattern = opts.include || `*.${ext}`
 
   const relativeFiles = glob
     .sync(pattern, {cwd, ignore: opts.exclude})

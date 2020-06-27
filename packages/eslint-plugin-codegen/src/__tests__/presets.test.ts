@@ -392,7 +392,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}*'},
+        options: {include: '{a,b}*'},
       })
     ).toMatchInlineSnapshot(`
       "export * from './a'
@@ -411,7 +411,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}*', exclude: ['*util*']},
+        options: {include: '{a,b}*', exclude: ['*util*']},
       })
     ).toMatchInlineSnapshot(`
       "export * from './a'
@@ -421,7 +421,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}.ts', import: 'star'},
+        options: {include: '{a,b}.ts', import: 'star'},
       })
     ).toMatchInlineSnapshot(`
       "import * as a from './a'
@@ -437,7 +437,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}.ts', import: 'default'},
+        options: {include: '{a,b}.ts', import: 'default'},
       })
     ).toMatchInlineSnapshot(`
       "import a from './a'
@@ -453,7 +453,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}.ts', import: 'star', export: 'default'},
+        options: {include: '{a,b}.ts', import: 'star', export: 'default'},
       })
     ).toMatchInlineSnapshot(`
       "import * as a from './a'
@@ -469,7 +469,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}.ts', import: 'star', export: 'foo'},
+        options: {include: '{a,b}.ts', import: 'star', export: 'foo'},
       })
     ).toMatchInlineSnapshot(`
       "import * as a from './a'
@@ -485,7 +485,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}.ts', import: 'star', export: {name: 'foo', keys: 'path'}},
+        options: {include: '{a,b}.ts', import: 'star', export: {name: 'foo', keys: 'path'}},
       })
     ).toMatchInlineSnapshot(`
       "import * as a from './a'
@@ -501,7 +501,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}.ts', import: 'star', export: {name: 'foo', keys: 'camelCase'}},
+        options: {include: '{a,b}.ts', import: 'star', export: {name: 'foo', keys: 'camelCase'}},
       })
     ).toMatchInlineSnapshot(`
       "import * as a from './a'
@@ -517,7 +517,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {glob: '{a,b}.ts', import: 'star', export: {name: 'default', keys: 'path'}},
+        options: {include: '{a,b}.ts', import: 'star', export: {name: 'default', keys: 'path'}},
       })
     ).toMatchInlineSnapshot(`
       "import * as a from './a'
