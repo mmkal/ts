@@ -53,6 +53,10 @@ test('literals', () => {
   expectTypeOf(shorthand(1)).toEqualTypeOf(t.literal(1))
 })
 
+test('objects', () => {
+  expectTypeOf(shorthand(Object)).toEqualTypeOf(t.object)
+})
+
 test('complex interfaces', () => {
   expectTypeOf(shorthand({foo: String, bar: {baz: Number}})).toEqualTypeOf(
     t.type({foo: t.string, bar: t.type({baz: t.number})})
@@ -60,6 +64,8 @@ test('complex interfaces', () => {
 })
 
 test('arrays', () => {
+  expectTypeOf(shorthand(Array)).toEqualTypeOf(t.UnknownArray)
+  // @ts-expect-error
   expectTypeOf(shorthand([])).toEqualTypeOf(t.array(t.unknown))
 
   expectTypeOf(shorthand([String])).toEqualTypeOf(t.array(t.string))
