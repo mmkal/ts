@@ -5,40 +5,99 @@ import * as lodash from 'lodash'
 import * as glob from 'glob'
 import {match} from 'io-ts-extra'
 import {parse} from '@babel/parser'
+import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import {inspect} from 'util'
 
 export type Preset<Options> = (params: {meta: {filename: string; existingContent: string}; options: Options}) => string
 
 /**
- * Rollup exports from several modules into a single convenient module, typically named `index.ts`
+ * Bundle several modules into a single convenient one.
  *
  * ##### Example
  *
- * `// codegen:start {preset: barrel, include: foo, exclude: bar}`
+ * ```
+ * // codegen:start {preset: barrel, include: some/path/*.ts, exclude: some/path/*util.ts}
+ * export * from './some/path/module-a'
+ * export * from './some/path/module-b'
+ * export * from './some/path/module-c'
+ * // codegen:end
+ * ```
  *
- * @param include [optional] If specified, the barrel will only include filenames that match this regex
- * @param exclude [optional] If specified, the barrel will only include filenames that don't match this regex
+ * @param glob [optional]
+ * If specified, the barrel will only include file paths that match this glob pattern
+ * @param exclude [optional]
+ * If specified, the barrel will exclude file paths that match these glob patterns
+ * @param import [optional]
+ * If specified, matching files will be imported and re-exported rather than directly exported with
+ * `export * from './xyz'`. Set to `default` to use default import instead of `import * as`.
+ * @param export [optional]
+ * If specified, matching modules will be bundled into a const or default export based on this name.
+ * If set to `{name: someName, keys: path}` the relative file paths will be used as keys. Otherwise
+ * the file paths will be camel-cased to make them valid js identifiers.
  */
-export const barrel: Preset<{include?: string; exclude?: string}> = ({meta, options: {include, exclude}}) => {
-  const barrelDir = path.dirname(meta.filename)
-  const filesToBarrel = fs
-    .readdirSync(barrelDir)
-    .filter(file => path.resolve(barrelDir, file) !== path.resolve(meta.filename))
-    .filter(file => !exclude || !file.match(exclude))
-    .filter(file => file.match(include || /.*/))
+export const barrel: Preset<{
+  glob?: string
+  exclude?: string | string[]
+  import?: 'default' | 'star'
+  export?: string | {name: string; keys: 'path' | 'camelCase'}
+}> = ({meta, options: opts}) => {
+  const cwd = path.dirname(meta.filename)
+
+  const ext = meta.filename.split('.').slice(-1)[0]
+  const pattern = opts.glob || `*.${ext}`
+
+  const relativeFiles = glob
+    .sync(pattern, {cwd, ignore: opts.exclude})
+    .filter(f => path.resolve(cwd, f) !== path.resolve(meta.filename))
+    .map(f => `./${f}`.replace(/(\.\/)+\./g, '.'))
     .filter(file => ['.js', '.ts', '.tsx'].includes(path.extname(file)))
-    .map(file => file.replace(/\.\w+$/, ''))
+    .map(f => f.replace(/\.\w+$/, ''))
 
-  const expectedBarrelLines = filesToBarrel.map(f => `export * from './${f}'`)
-  const expectedContent = expectedBarrelLines.join(os.EOL)
+  const expectedContent = match(opts.import)
+    .case(undefined, () => {
+      return relativeFiles.map(f => `export * from '${f}'`).join('\n')
+    })
+    .case(String, s => {
+      const importPrefix = s === 'default' ? '' : '* as '
+      const withIdentifiers = relativeFiles.map(f => ({
+        file: f,
+        identifier: lodash.camelCase(f),
+      }))
 
-  // ignore differences that are just semicolons and quotemarks
-  // prettier-ignore
-  const normalise = (s: string) => s.replace(/["'`]/g, `'`).replace(/;/g, '').replace(/\r?\n/g, '\n').trim()
-  if (normalise(expectedContent) === normalise(meta.existingContent)) {
-    return meta.existingContent
-  }
+      const imports = withIdentifiers.map(i => `import ${importPrefix}${i.identifier} from '${i.file}'`).join('\n')
+      const exportProps = match(opts.export)
+        .case({name: String, keys: 'path'}, () =>
+          withIdentifiers.map(i => `${JSON.stringify(i.file)}: ${i.identifier}`)
+        )
+        .default(() => withIdentifiers.map(i => i.identifier))
+        .get()
+
+      const exportPrefix = match(opts.export)
+        .case(undefined, () => 'export')
+        .case('default', () => 'export default')
+        .case({name: 'default'}, () => 'export default')
+        .case(String, name => `export const ${name} =`)
+        .case({name: String}, ({name}) => `export const ${name} =`)
+        .get()
+
+      const exports = exportProps.join(',\n ')
+
+      return `${imports}\n\n${exportPrefix} {\n ${exports}\n}\n`
+    })
+    .get()
+
+  // ignore stylistic differences. babel generate deals with most
+  const normalise = (str: string) =>
+    generate(parse(str, {sourceType: 'module', plugins: ['typescript']}) as any)
+      .code.replace(/'/g, `"`)
+      .replace(/\/index/g, '')
+
+  try {
+    if (normalise(expectedContent) === normalise(meta.existingContent)) {
+      return meta.existingContent
+    }
+  } catch {}
 
   return expectedContent
 }

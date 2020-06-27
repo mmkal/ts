@@ -30,7 +30,11 @@ jest.mock('fs', () => {
 
 jest.mock('glob')
 
-jest.spyOn(glob, 'sync').mockImplementation(pattern => Object.keys(mockFs).filter(k => minimatch(k, pattern)))
+jest.spyOn(glob, 'sync').mockImplementation((pattern, opts) => {
+  const found = Object.keys(mockFs).filter(k => minimatch(k, pattern))
+  const ignores = typeof opts?.ignore === 'string' ? [opts?.ignore] : opts?.ignore || []
+  return found.filter(f => ignores.every(i => !minimatch(f, i)))
+})
 
 const emptyReadme = {filename: 'readme.md', existingContent: ''}
 
@@ -160,7 +164,7 @@ describe('monorepoTOC', () => {
       'packages/package4/package.json': '{ "name": "package4", "description": "fourth package" }',
       'packages/package4/README.md': dedent`
         # Package 4
-        
+
         ## Subheading
 
         More details about package 4. Package 4 has a detailed readme, with multiple sections
@@ -388,7 +392,7 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {include: 'a|b'},
+        options: {glob: '{a,b}*'},
       })
     ).toMatchInlineSnapshot(`
       "export * from './a'
@@ -400,22 +404,130 @@ describe('barrel', () => {
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {exclude: 'util'},
+        options: {exclude: '*'},
+      })
+    ).toMatchInlineSnapshot(`""`)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {glob: '{a,b}*', exclude: ['*util*']},
       })
     ).toMatchInlineSnapshot(`
       "export * from './a'
-      export * from './b'
-      export * from './c'"
+      export * from './b'"
     `)
 
     expect(
       presets.barrel({
         meta: {filename: 'index.ts', existingContent: ''},
-        options: {include: 'a|b', exclude: 'util'},
+        options: {glob: '{a,b}.ts', import: 'star'},
       })
     ).toMatchInlineSnapshot(`
-      "export * from './a'
-      export * from './b'"
+      "import * as a from './a'
+      import * as b from './b'
+
+      export {
+       a,
+       b
+      }
+      "
+    `)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {glob: '{a,b}.ts', import: 'default'},
+      })
+    ).toMatchInlineSnapshot(`
+      "import a from './a'
+      import b from './b'
+
+      export {
+       a,
+       b
+      }
+      "
+    `)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {glob: '{a,b}.ts', import: 'star', export: 'default'},
+      })
+    ).toMatchInlineSnapshot(`
+      "import * as a from './a'
+      import * as b from './b'
+
+      export default {
+       a,
+       b
+      }
+      "
+    `)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {glob: '{a,b}.ts', import: 'star', export: 'foo'},
+      })
+    ).toMatchInlineSnapshot(`
+      "import * as a from './a'
+      import * as b from './b'
+
+      export const foo = {
+       a,
+       b
+      }
+      "
+    `)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {glob: '{a,b}.ts', import: 'star', export: {name: 'foo', keys: 'path'}},
+      })
+    ).toMatchInlineSnapshot(`
+      "import * as a from './a'
+      import * as b from './b'
+
+      export const foo = {
+       \\"./a\\": a,
+       \\"./b\\": b
+      }
+      "
+    `)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {glob: '{a,b}.ts', import: 'star', export: {name: 'foo', keys: 'camelCase'}},
+      })
+    ).toMatchInlineSnapshot(`
+      "import * as a from './a'
+      import * as b from './b'
+
+      export const foo = {
+       a,
+       b
+      }
+      "
+    `)
+
+    expect(
+      presets.barrel({
+        meta: {filename: 'index.ts', existingContent: ''},
+        options: {glob: '{a,b}.ts', import: 'star', export: {name: 'default', keys: 'path'}},
+      })
+    ).toMatchInlineSnapshot(`
+      "import * as a from './a'
+      import * as b from './b'
+
+      export default {
+       \\"./a\\": a,
+       \\"./b\\": b
+      }
+      "
     `)
   })
 
@@ -451,15 +563,15 @@ describe('markdownFromJsdoc', () => {
       'index.ts': dedent`
         /**
          * Adds two numbers
-         * 
+         *
          * @example const example1 = fn(1, 2) // returns 3
-         * 
+         *
          * @description Uses js \`+\` operator
-         * 
+         *
          * @example const example1 = fn(1, 20) // returns 21
-         * 
+         *
          * @see subtract for the converse
-         * 
+         *
          * @link http://google.com has a calculator in it too
          *
          * @param a {number} the first number
@@ -469,9 +581,9 @@ describe('markdownFromJsdoc', () => {
 
         /**
          * Subtracts two numbers
-         * 
+         *
          * @example const example1 = subtract(5, 3) // returns 2
-         * 
+         *
          * @description Uses js \`-\` operator
          *
          * @param a {number} the first number
