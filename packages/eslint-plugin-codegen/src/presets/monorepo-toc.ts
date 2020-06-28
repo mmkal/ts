@@ -19,10 +19,17 @@ import type {Preset} from '.'
  *
  * `<!-- codegen:start {preset: monorepoTOC, repoRoot: .., workspaces: lerna, filter: {package.name: foo}, sort: -readme.length} -->`
  *
- * @param repoRoot [optional] the relative path to the root of the git repository. Defaults to the current md file directory.
- * @param workspaces [optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key in package.json. Set to `lerna` to parse `lerna.json`.
- * @param filter [optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys, e.g. `filter: { package.name: someRegex, path: some/relative/path }`
- * @param sort [optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending. e.g. `sort: -readme.length`
+ * @param repoRoot
+ * [optional] the relative path to the root of the git repository. Defaults to the current md file directory.
+ * @param workspaces
+ * [optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key
+ * in package.json. Set to `lerna` to parse `lerna.json`.
+ * @param filter
+ * [optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,
+ * e.g. `filter: { package.name: someRegex, path: some/relative/path }`
+ * @param sort
+ * [optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending.
+ * e.g. `sort: -readme.length`
  */
 export const monorepoTOC: Preset<{
   repoRoot?: string

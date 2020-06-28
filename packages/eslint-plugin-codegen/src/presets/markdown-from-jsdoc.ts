@@ -41,12 +41,14 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
     .join(os.EOL)
   const sections = `\n@description ${jsdoc}`
     .split(/\n@/)
-    .map(section => section.trim())
+    .map(section => section.trim() + ' ')
     .filter(Boolean)
     .map((section, index) => {
       const firstSpace = section.search(/\s/)
       return {type: section.slice(0, firstSpace), index, content: section.slice(firstSpace).trim()}
     })
+    .filter(s => s.content)
+
   const formatted = sections.map((sec, i, arr) => {
     if (sec.type === 'example') {
       return ['##### Example', '', '```typescript', sec.content, '```'].join(os.EOL)
@@ -56,17 +58,31 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
       if (sec !== allParams[0]) {
         return null
       }
+
+      const rows = allParams.map((p): [string, string] => {
+        const whitespaceMatch = p.content.match(/\s/)
+        const firstSpace = whitespaceMatch ? whitespaceMatch.index! : p.content.length
+        const name = p.content.slice(0, firstSpace)
+        const description = p.content
+          .slice(firstSpace + 1)
+          .trim()
+          .replace(/\r?\n/g, '<br />')
+        return [name, description]
+      })
+
+      const headers: [string, string] = ['name', 'description']
+
+      const nameSize = lodash.max([headers, ...rows].map(r => r[0].length)) || 0
+      const descSize = lodash.max([headers, ...rows].map(r => r[1].length)) || 0
+      const pad = (tuple: [string, string], padding = ' ') =>
+        `|${tuple[0].padEnd(nameSize, padding)}|${tuple[1].padEnd(descSize, padding)}|`
+
       return [
-        '##### Params',
+        '##### Params', // breakme
         '',
-        '|name|description|',
-        '|-|-|',
-        ...allParams.map(p => {
-          const firstSpace = p.content.indexOf(' ')
-          const name = p.content.slice(0, firstSpace)
-          const description = p.content.slice(firstSpace + 1)
-          return `|${name}|${description}|`
-        }),
+        pad(headers),
+        pad(['', ''], '-'),
+        ...rows.map(tuple => pad(tuple)),
       ].join(os.EOL)
     }
     if (sec.type === 'description') {
