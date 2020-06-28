@@ -112,7 +112,7 @@ See below for documentation. This repo also has [lots of usage examples](https:/
 ### Presets
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/monorepo-toc.ts, export: monorepoTOC} -->
-#### [monorepoTOC](./src/presets/monorepo-toc.ts#L27)
+#### [monorepoTOC](./src/presets/monorepo-toc.ts#L34)
 
 Generate a table of contents for a monorepo.
 
@@ -126,12 +126,12 @@ Generate a table of contents for a monorepo.
 
 ##### Params
 
-|name|description|
-|-|-|
-|repoRoot|[optional] the relative path to the root of the git repository. Defaults to the current md file directory.|
-|workspaces|[optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key in package.json. Set to `lerna` to parse `lerna.json`.|
-|filter|[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys, e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
-|sort|[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending. e.g. `sort: -readme.length`|
+|name      |description                                                                                                                                                                                |
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|repoRoot  |[optional] the relative path to the root of the git repository. Defaults to the current md file directory.                                                                                 |
+|workspaces|[optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key<br />in package.json. Set to `lerna` to parse `lerna.json`.                   |
+|filter    |[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,<br />e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
+|sort      |[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending.<br />e.g. `sort: -readme.length`                                     |
 <!-- codegen:end -->
 
 ##### Demo
@@ -139,7 +139,7 @@ Generate a table of contents for a monorepo.
 ![](./gifs/monorepoTOC.gif)
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/barrel.ts, export: barrel} -->
-#### [barrel](./src/presets/barrel.ts#L25)
+#### [barrel](./src/presets/barrel.ts#L34)
 
 Bundle several modules into a single convenient one.
 
@@ -155,12 +155,12 @@ export * from './some/path/module-c'
 
 ##### Params
 
-|name|description|
-|-|-|
-|include|[optional] If specified, the barrel will only include file paths that match this glob pattern|
-|exclude|[optional] If specified, the barrel will exclude file paths that match these glob patterns|
-|import|[optional] If specified, matching files will be imported and re-exported rather than directly exported with `export * from './xyz'`. Use `import: star` for `import * as xyz from './xyz'` style imports. Use `import: default` for `import xyz from './xyz'` style imports.|
-|export|[optional] Only valid if the import style has been specified (either `import: star` or `import: default`). If specified, matching modules will be bundled into a const or default export based on this name. If set to `{name: someName, keys: path}` the relative file paths will be used as keys. Otherwise the file paths will be camel-cased to make them valid js identifiers.|
+|name   |description                                                                                                                                                                                                                                                                                                                                                                                       |
+|-------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|include|[optional] If specified, the barrel will only include file paths that match this glob pattern                                                                                                                                                                                                                                                                                                     |
+|exclude|[optional] If specified, the barrel will exclude file paths that match these glob patterns                                                                                                                                                                                                                                                                                                        |
+|import |[optional] If specified, matching files will be imported and re-exported rather than directly exported<br />with `export * from './xyz'`. Use `import: star` for `import * as xyz from './xyz'` style imports.<br />Use `import: default` for `import xyz from './xyz'` style imports.                                                                                                            |
+|export |[optional] Only valid if the import style has been specified (either `import: star` or `import: default`).<br />If specified, matching modules will be bundled into a const or default export based on this name. If set<br />to `{name: someName, keys: path}` the relative file paths will be used as keys. Otherwise the file paths<br />will be camel-cased to make them valid js identifiers.|
 <!-- codegen:end -->
 
 ##### Demo
@@ -178,10 +178,10 @@ Convert jsdoc for an es export from a javascript/typescript file to markdown.
 
 ##### Params
 
-|name|description|
-|-|-|
+|name  |description                                                                                   |
+|------|----------------------------------------------------------------------------------------------|
 |source|{string} relative file path containing the export with jsdoc that should be copied to markdown|
-|export|{string} the name of the export|
+|export|{string} the name of the export                                                               |
 <!-- codegen:end -->
 
 ##### Demo
@@ -199,9 +199,9 @@ Generate a table of contents from the current markdown file, based on markdown h
 
 ##### Params
 
-|name|description|
-|-|-|
-|minDepth|exclude headers with lower "depth". e.g. if set to 2, `# H1` would be excluded but `## H2` would be included.|
+|name    |description                                                                                                       |
+|--------|------------------------------------------------------------------------------------------------------------------|
+|minDepth|exclude headers with lower "depth". e.g. if set to 2, `# H1` would be excluded but `## H2` would be included.     |
 |maxDepth|exclude headers with higher "depth". e.g. if set to 3, `#### H4` would be excluded but `### H3` would be included.|
 <!-- codegen:end -->
 
@@ -220,9 +220,9 @@ Use a test file to generate library usage documentation. Note: this has been tes
 
 ##### Params
 
-|name|description|
-|-|-|
-|source|the jest test file|
+|name       |description                                           |
+|-----------|------------------------------------------------------|
+|source     |the jest test file                                    |
 |headerLevel|The number of `#` characters to prefix each title with|
 <!-- codegen:end -->
 
@@ -251,9 +251,9 @@ This can be used with:
 
 ##### Params
 
-|name|description|
-|-|-|
-|source|Relative path to the module containing the custom preset|
+|name  |description                                                                       |
+|------|----------------------------------------------------------------------------------|
+|source|Relative path to the module containing the custom preset                          |
 |export|The name of the export. If omitted, the module itself should be a preset function.|
 <!-- codegen:end -->
 

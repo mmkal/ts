@@ -59,6 +59,14 @@ test('generate markdown', () => {
          * @param b {number} the second number
          */
         export const add = (a: number, b: number) => a - b
+
+        /**
+         * @param a
+         * @param b
+         * multi-line description
+         * for 'b'
+         */
+        export const multiply = (a: number, b: number) => a * b
       `,
   })
 
@@ -68,35 +76,51 @@ test('generate markdown', () => {
       options: {source: 'index.ts', export: 'add'},
     })
   ).toMatchInlineSnapshot(`
-      "#### [add](./index.ts#L17)
+    "#### [add](./index.ts#L17)
 
-      Adds two numbers
+    Adds two numbers
 
-      ##### Example
+    ##### Example
 
-      \`\`\`typescript
-      const example1 = fn(1, 2) // returns 3
-      \`\`\`
+    \`\`\`typescript
+    const example1 = fn(1, 2) // returns 3
+    \`\`\`
 
-      Uses js \`+\` operator
+    Uses js \`+\` operator
 
-      ##### Example
+    ##### Example
 
-      \`\`\`typescript
-      const example1 = fn(1, 20) // returns 21
-      \`\`\`
+    \`\`\`typescript
+    const example1 = fn(1, 20) // returns 21
+    \`\`\`
 
-      ##### Link
+    ##### Link
 
-      http://google.com has a calculator in it too
+    http://google.com has a calculator in it too
 
-      ##### Params
+    ##### Params
 
-      |name|description|
-      |-|-|
-      |a|{number} the first number|
-      |b|{number} the second number|"
-    `)
+    |name|description               |
+    |----|--------------------------|
+    |a   |{number} the first number |
+    |b   |{number} the second number|"
+  `)
+
+  expect(
+    preset.markdownFromJsdoc({
+      meta: emptyReadme,
+      options: {source: 'index.ts', export: 'multiply'},
+    })
+  ).toMatchInlineSnapshot(`
+    "#### [multiply](./index.ts#L37)
+
+    ##### Params
+
+    |name|description                        |
+    |----|-----------------------------------|
+    |a   |                                   |
+    |b   |multi-line description<br />for 'b'|"
+  `)
 })
 
 test('not found export', () => {
