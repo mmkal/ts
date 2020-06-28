@@ -124,9 +124,9 @@ note: when using predicates or `t.refinement`, the type being refined is not con
 
 ##### Params
 
-|name|description|
-|-|-|
-|obj|the object to be pattern-matched|
+|name|description                     |
+|----|--------------------------------|
+|obj |the object to be pattern-matched|
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/match.ts, export: matcher} -->
@@ -164,6 +164,7 @@ const allMessages: Message[] = getAllMessages();
 const contents = allMessages.map(getContent);
 ```
 <!-- codegen:end -->
+
 
 #### Shorthand
 
@@ -211,8 +212,8 @@ const bob: typeof Person._A = { name: 'bob' }
 
 ##### Params
 
-|name|description|
-|-|-|
+|name |description                                   |
+|-----|----------------------------------------------|
 |props|equivalent to the `props` passed into `t.type`|
 
 ##### Returns
@@ -246,12 +247,12 @@ StringsFromMixedArray.decode('not an array')   // left(...)
 
 ##### Params
 
-|name|description|
-|-|-|
-|from|the expected type of input value|
-|to|the expected type of the decoded value|
-|map|transform (decode) a `from` type to a `to` type|
-|unmap|transfrom a `to` type back to a `from` type|
+|name |description                                    |
+|-----|-----------------------------------------------|
+|from |the expected type of input value               |
+|to   |the expected type of the decoded value         |
+|map  |transform (decode) a `from` type to a `to` type|
+|unmap|transfrom a `to` type back to a `from` type    |
 <!-- codegen:end -->
 
 
@@ -272,15 +273,15 @@ IntFromString.decode(123)            // left(...)
 
 ##### Params
 
-|name|description|
-|-|-|
-|type|the target type|
-|decode|transform a string into the target type|
+|name  |description                                 |
+|------|--------------------------------------------|
+|type  |the target type                             |
+|decode|transform a string into the target type     |
 |encode|transform the target type back into a string|
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: strict} -->
-#### [strict](./src/combinators.ts#L140)
+#### [strict](./src/combinators.ts#L141)
 
 Like `t.type`, but fails when any properties not specified in `props` are defined.
 
@@ -296,14 +297,14 @@ expectRight(Person.decode({name: 'Bob', age: 30, unexpectedProp: undefined}))
 
 ##### Params
 
-|name|description|
-|-|-|
+|name |description                                            |
+|-----|-------------------------------------------------------|
 |props|dictionary of properties, same as the input to `t.type`|
-|name|optional type name
+|name |optional type name                                     |
 
 note:
 - additional properties explicitly set to `undefined` _are_ permitted.
-- internally, `sparseType` is used, so optional properties are supported.|
+- internally, `sparseType` is used, so optional properties are supported.
 <!-- codegen:end -->
 
 
@@ -343,16 +344,16 @@ const invalid = CloudResources.decode({
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/reporters.ts, export: validationErrors} -->
-#### [validationErrors](./src/reporters.ts#L10)
+#### [validationErrors](./src/reporters.ts#L11)
 
 Similar to io-ts's PathReporter, but gives slightly less verbose output.
 
 ##### Params
 
-|name|description|
-|-|-|
-|validation|Usually the result of calling `.decode` with an io-ts codec.|
-|typeAlias|io-ts type names can be very verbose. If the type you're using doesn't have a name, you can use this to keep error messages shorter.|
+|name      |description                                                                                                                         |
+|----------|------------------------------------------------------------------------------------------------------------------------------------|
+|validation|Usually the result of calling `.decode` with an io-ts codec.                                                                        |
+|typeAlias |io-ts type names can be verbose. If the type you're using doesn't have a name,<br />you can use this to keep error messages shorter.|
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regexp} -->

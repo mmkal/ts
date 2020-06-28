@@ -5,7 +5,8 @@ import {EOL} from 'os'
 /**
  * Similar to io-ts's PathReporter, but gives slightly less verbose output.
  * @param validation Usually the result of calling `.decode` with an io-ts codec.
- * @param typeAlias io-ts type names can be very verbose. If the type you're using doesn't have a name, you can use this to keep error messages shorter.
+ * @param typeAlias io-ts type names can be verbose. If the type you're using doesn't have a name,
+ * you can use this to keep error messages shorter.
  */
 export const validationErrors = (validation: t.Validation<unknown>, typeAlias?: string) => {
   if (validation._tag === 'Right') {

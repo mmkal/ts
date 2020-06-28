@@ -133,6 +133,7 @@ export type RegExpCodec = ReturnType<typeof regexp>
  * @param props dictionary of properties, same as the input to `t.type`
  * @param name optional type name
  *
+ * @description
  * note:
  * - additional properties explicitly set to `undefined` _are_ permitted.
  * - internally, `sparseType` is used, so optional properties are supported.
