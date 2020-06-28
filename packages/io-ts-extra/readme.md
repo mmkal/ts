@@ -4,7 +4,7 @@ Adds pattern matching, optional properties, and several other helpers and types,
 
 <!-- codegen:start {preset: badges} -->
 [![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
-[![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/master/packages/io-ts-extra)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/main/packages/io-ts-extra)
 [![npm version](https://badge.fury.io/js/io-ts-extra.svg)](https://npmjs.com/package/io-ts-extra)
 <!-- codegen:end -->
 

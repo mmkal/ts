@@ -4,7 +4,7 @@ An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown
 
 <!-- codegen:start {preset: badges} -->
 [![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
-[![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/master/packages/eslint-plugin-codegen)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/main/packages/eslint-plugin-codegen)
 [![npm version](https://badge.fury.io/js/eslint-plugin-codegen.svg)](https://npmjs.com/package/eslint-plugin-codegen)
 <!-- codegen:end -->
 

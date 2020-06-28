@@ -2,7 +2,7 @@
   "name": "expect-type",
   "version": "0.7.4",
   "repository": "https://github.com/mmkal/ts",
-  "homepage": "https://github.com/mmkal/ts/tree/master/packages/expect-type#readme",
+  "homepage": "https://github.com/mmkal/ts/tree/main/packages/expect-type#readme",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
