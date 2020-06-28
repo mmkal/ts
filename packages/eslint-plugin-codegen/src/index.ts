@@ -88,7 +88,7 @@ const codegen: eslint.Rule.RuleModule = {
           })
         }
         const maybeOptions = tryCatch(
-          () => jsYaml.safeLoad(startMatch[1]),
+          () => jsYaml.safeLoad(startMatch[1]) as Record<string, unknown>,
           err => err
         )
         if (maybeOptions._tag === 'Left') {
@@ -99,7 +99,7 @@ const codegen: eslint.Rule.RuleModule = {
           ...presetsModule,
           ...context.options?.[0]?.presets,
         }
-        const preset = presets[opts.preset]
+        const preset = typeof opts?.preset === 'string' && presets[opts.preset]
         if (typeof preset !== 'function') {
           return context.report({
             message: `unknown preset ${opts.preset}. Available presets: ${Object.keys(presets).join(', ')}`,
