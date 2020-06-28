@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/mmkal/ts",
-  "homepage": "https://github.com/mmkal/ts/tree/master/packages/eslint-plugin-codegen#readme",
+  "homepage": "https://github.com/mmkal/ts/tree/main/packages/eslint-plugin-codegen#readme",
   "license": "Apache-2.0",
   "files": [
     "src",

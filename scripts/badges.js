@@ -12,7 +12,7 @@ module.exports = params => {
 
   return dedent`
     [![Node CI](${repo}/workflows/Node%20CI/badge.svg)](${repo}/actions?query=workflow%3A%22Node+CI%22)
-    [![codecov](https://codecov.io/gh/mmkal/ts/branch/master/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/master/${relativePath})
+    [![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/main/${relativePath})
     [![npm version](https://badge.fury.io/js/${leafPkg.name}.svg)](https://npmjs.com/package/${leafPkg.name})
   `
 }

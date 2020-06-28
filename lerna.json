@@ -6,7 +6,7 @@
   "command": {
     "publish": {
       "conventionalCommits": true,
-      "allowBranch": ["master"],
+      "allowBranch": ["main"],
       "exact": true,
       "createRelease": "github"
     }
