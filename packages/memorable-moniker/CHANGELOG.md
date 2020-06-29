@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.11](https://github.com/mmkal/ts/compare/memorable-moniker@0.2.10...memorable-moniker@0.2.11) (2020-06-29)
+
+**Note:** Version bump only for package memorable-moniker
+
+
+
+
+
 ## [0.2.10](https://github.com/mmkal/ts/compare/memorable-moniker@0.2.9...memorable-moniker@0.2.10) (2020-06-27)
 
 **Note:** Version bump only for package memorable-moniker
