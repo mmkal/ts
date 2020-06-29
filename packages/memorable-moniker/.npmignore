@@ -1,0 +1,4 @@
+node_modules
+**/__tests__
+dist/buildinfo.json
+CHANGELOG.md

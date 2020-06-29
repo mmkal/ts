@@ -18,7 +18,8 @@
     "publish-canary": "lerna publish --canary --preid $(yarn --silent canary-preid) --dist-tag $(yarn --silent current-branch)",
     "prepublish-packages": "node scripts/prepublish && yarn clean && yarn build",
     "prepack": "node scripts/permalink",
-    "postpack": "git checkout -- .",
+    "check-entrypoints": "lerna exec -- node -e 'require.resolve(`.`)'",
+    "postpack": "yarn check-entrypoints && git checkout -- .",
     "publish-packages": "lerna publish"
   },
   "workspaces": [

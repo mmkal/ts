@@ -3,12 +3,6 @@
   "version": "0.2.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist/*.js",
-    "dist/*.ts",
-    "dist/*.map",
-    "src/*.ts"
-  ],
   "scripts": {
     "build": "tsc -p ."
   },

@@ -6,10 +6,6 @@
   "repository": "https://github.com/mmkal/ts",
   "homepage": "https://github.com/mmkal/ts/tree/main/packages/eslint-plugin-codegen#readme",
   "license": "Apache-2.0",
-  "files": [
-    "src",
-    "dist"
-  ],
   "scripts": {
     "build": "tsc -p ."
   },
