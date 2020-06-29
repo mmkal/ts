@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.2](https://github.com/mmkal/ts/compare/io-ts-extra@0.10.1...io-ts-extra@0.10.2) (2020-06-29)
+
+
+### Bug Fixes
+
+* use leaf .npmignore files ([4f095cf](https://github.com/mmkal/ts/commit/4f095cf1f358dc7352e62187b1391aabfdbc6683))
+
+
+
+
+
 ## [0.10.1](https://github.com/mmkal/ts/compare/io-ts-extra@0.10.0...io-ts-extra@0.10.1) (2020-06-29)
 
 **Note:** Version bump only for package io-ts-extra

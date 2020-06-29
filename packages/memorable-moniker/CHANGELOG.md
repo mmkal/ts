@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.12](https://github.com/mmkal/ts/compare/memorable-moniker@0.2.11...memorable-moniker@0.2.12) (2020-06-29)
+
+
+### Bug Fixes
+
+* use leaf .npmignore files ([4f095cf](https://github.com/mmkal/ts/commit/4f095cf1f358dc7352e62187b1391aabfdbc6683))
+
+
+
+
+
 ## [0.2.11](https://github.com/mmkal/ts/compare/memorable-moniker@0.2.10...memorable-moniker@0.2.11) (2020-06-29)
 
 **Note:** Version bump only for package memorable-moniker

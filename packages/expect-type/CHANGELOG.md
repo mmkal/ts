@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.6](https://github.com/mmkal/ts/compare/expect-type@0.7.5...expect-type@0.7.6) (2020-06-29)
+
+
+### Bug Fixes
+
+* use leaf .npmignore files ([4f095cf](https://github.com/mmkal/ts/commit/4f095cf1f358dc7352e62187b1391aabfdbc6683))
+
+
+
+
+
 ## [0.7.5](https://github.com/mmkal/ts/compare/expect-type@0.7.4...expect-type@0.7.5) (2020-06-29)
 
 **Note:** Version bump only for package expect-type

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/mmkal/ts/compare/fs-syncer@0.2.1...fs-syncer@0.2.2) (2020-06-29)
+
+
+### Bug Fixes
+
+* use leaf .npmignore files ([4f095cf](https://github.com/mmkal/ts/commit/4f095cf1f358dc7352e62187b1391aabfdbc6683))
+
+
+
+
+
 ## [0.2.1](https://github.com/mmkal/ts/compare/fs-syncer@0.2.0...fs-syncer@0.2.1) (2020-06-29)
 
 **Note:** Version bump only for package fs-syncer
