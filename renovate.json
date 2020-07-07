@@ -4,6 +4,7 @@
     "config:base",
     ":semanticCommits"
   ],
+  "gitAuthor": "bot@renovateapp.com",
   "prConcurrentLimit": 3,
   "packageRules": [
     {
