@@ -13,7 +13,10 @@ beforeEach(() => {
 jest.mock('fs', () => {
   const actual = jest.requireActual('fs')
   const reader = (orig: string) => (...args: any[]) => {
-    const path = args[0].replace(process.cwd() + '\\', '').replace(/\\/g, '/')
+    const path = args[0]
+      .replace(process.cwd() + '\\', '')
+      .replace(process.cwd() + '/', '')
+      .replace(/\\/g, '/')
     // const fn = path in mockFs ? mockImpl : actual[orig]
     if (path in mockFs) {
       return mockFs[path]
