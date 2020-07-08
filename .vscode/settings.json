@@ -12,7 +12,7 @@
     "**/node_modules/**": true
   },
   "javascript.implicitProjectConfig.checkJs": true,
-  "eslint.validate": ["markdown", "javascript", "typescript"],
+  "eslint.validate": ["markdown", "javascript", "typescript", "yaml"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }

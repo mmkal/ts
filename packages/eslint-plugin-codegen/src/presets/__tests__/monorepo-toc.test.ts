@@ -13,7 +13,7 @@ beforeEach(() => {
 jest.mock('fs', () => {
   const actual = jest.requireActual('fs')
   const reader = (orig: string) => (...args: any[]) => {
-    const path = args[0].replace(/\\/g, '/')
+    const path = args[0].replace(process.cwd() + '\\', '').replace(/\\/g, '/')
     // const fn = path in mockFs ? mockImpl : actual[orig]
     if (path in mockFs) {
       return mockFs[path]
@@ -21,6 +21,7 @@ jest.mock('fs', () => {
     return actual[orig](...args)
   }
   return {
+    ...actual,
     readFileSync: reader('readFileSync'),
     existsSync: reader('existsSync'),
     readdirSync: (path: string) => Object.keys(mockFs).filter(k => k.startsWith(path.replace(/^\.\/?/, ''))),
@@ -83,11 +84,11 @@ test('generate markdown', () => {
       options: {},
     })
   ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package2](./packages/package2) - Readme for package 2
-      - [package3](./packages/package3) - Readme for package 3
-      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
-    `)
+    "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+    - [package2](./packages/package2) - Readme for package 2
+    - [package3](./packages/package3) - Readme for package 3
+    - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
+  `)
 })
 
 test('generate markdown with filter', () => {
@@ -97,9 +98,9 @@ test('generate markdown with filter', () => {
       options: {filter: {'package.name': 'package1|package3'}},
     })
   ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package3](./packages/package3) - Readme for package 3"
-    `)
+    "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+    - [package3](./packages/package3) - Readme for package 3"
+  `)
 })
 
 test('generate markdown with sorting', () => {
@@ -109,23 +110,11 @@ test('generate markdown with sorting', () => {
       options: {sort: '-readme.length'},
     })
   ).toMatchInlineSnapshot(`
-      "- [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
-      - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package2](./packages/package2) - Readme for package 2
-      - [package3](./packages/package3) - Readme for package 3"
-    `)
-})
-
-test('generate markdown using lerna to find packages', () => {
-  expect(
-    preset.monorepoTOC({
-      meta: emptyReadme,
-      options: {workspaces: 'lerna'},
-    })
-  ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package2](./packages/package2) - Readme for package 2"
-    `)
+    "- [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections
+    - [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+    - [package2](./packages/package2) - Readme for package 2
+    - [package3](./packages/package3) - Readme for package 3"
+  `)
 })
 
 test('generate markdown default to lerna to find packages', () => {
@@ -136,21 +125,9 @@ test('generate markdown default to lerna to find packages', () => {
       options: {},
     })
   ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package2](./packages/package2) - Readme for package 2"
-    `)
-})
-
-test('generate markdown with explicit workspaces', () => {
-  expect(
-    preset.monorepoTOC({
-      meta: emptyReadme,
-      options: {workspaces: ['packages/package1', 'packages/package3']},
-    })
-  ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package3](./packages/package3) - Readme for package 3"
-    `)
+    "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+    - [package2](./packages/package2) - Readme for package 2"
+  `)
 })
 
 test('generate markdown fails when no package.json exists', () => {
@@ -159,7 +136,7 @@ test('generate markdown fails when no package.json exists', () => {
       meta: {filename: 'subdir/test.md', existingContent: ''},
       options: {},
     })
-  ).toThrowError(/ENOENT: no such file or directory, open 'subdir.*package.json'/)
+  ).toThrowError(/ENOENT: no such file or directory, open '.*subdir.*package.json'/)
 })
 
 test('generate markdown with separate rootDir', () => {
@@ -169,11 +146,11 @@ test('generate markdown with separate rootDir', () => {
       options: {repoRoot: '..'},
     })
   ).toMatchInlineSnapshot(`
-      "- [package1](./packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
-      - [package2](./packages/package2) - Readme for package 2
-      - [package3](./packages/package3) - Readme for package 3
-      - [package4](./packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
-    `)
+    "- [package1](../packages/package1) - first package with an inline package.json description. Quite a long inline description, in fact.
+    - [package2](../packages/package2) - Readme for package 2
+    - [package3](../packages/package3) - Readme for package 3
+    - [package4](../packages/package4) - More details about package 4. Package 4 has a detailed readme, with multiple sections"
+  `)
 })
 
 test('invalid workspaces', () => {
@@ -188,11 +165,4 @@ test('invalid workspaces', () => {
       options: {},
     })
   ).toThrowError(/Expected to find workspaces array, got 'package.json - not an array'/)
-
-  expect(() =>
-    preset.monorepoTOC({
-      meta: emptyReadme,
-      options: {workspaces: 'lerna'},
-    })
-  ).toThrowError(/Expected to find workspaces array, got 'lerna.json - not an array'/)
 })

@@ -10,7 +10,7 @@
     "build": "lerna run build --scope expect-type && lerna run build --ignore expect-type",
     "clean": "lerna exec -- 'rm -rf dist'",
     "test": "jest",
-    "eslint": "eslint --ext .ts,.js,.md",
+    "eslint": "eslint --ext .ts,.js,.md,.yml",
     "lint": "yarn eslint .",
     "commit-date": "git log -n 1 --date=format:'%Y-%m-%d-%H-%M-%S' --pretty=format:'%ad'",
     "current-branch": "echo \"${CURRENT_BRANCH-$(git rev-parse --abbrev-ref HEAD)}\" | sed -E 's/refs\\/heads\\///' | sed -E 's/\\W|_/-/g'",
