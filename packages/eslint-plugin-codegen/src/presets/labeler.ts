@@ -15,7 +15,7 @@ import * as lodash from 'lodash'
  * # codegen:start {preset: labeler}
  * ```
  *
- * *Note*: eslint and related tools make it quite difficult to github action yaml files. To get it working, you'll need to:
+ * *Note*: eslint and related tools make it quite difficult to lint github action yaml files. To get it working, you'll need to:
  * - add `'!.github'` to your `.eslintignore` file, or the `ignorePatterns` property in your lint config.
  * - {vscode} add `"yaml"` to the `"eslint.validate"` list in `vscode/settings.json`.
  * - {@typescript/eslint} add `'.yml'` (and/or `'.yaml'`) to the `parserOptions.extraFileExtensions` list in your lint config.
