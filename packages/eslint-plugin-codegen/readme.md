@@ -113,7 +113,7 @@ See below for documentation. This repo also has [lots of usage examples](https:/
 ### Presets
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/monorepo-toc.ts, export: monorepoTOC} -->
-#### [monorepoTOC](./src/presets/monorepo-toc.ts#L33)
+#### [monorepoTOC](./src/presets/monorepo-toc.ts#L30)
 
 Generate a table of contents for a monorepo.
 
@@ -127,12 +127,11 @@ Generate a table of contents for a monorepo.
 
 ##### Params
 
-|name      |description                                                                                                                                                                                |
-|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|repoRoot  |[optional] the relative path to the root of the git repository. Defaults to the current md file directory.                                                                                 |
-|workspaces|[optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key<br />in package.json. Set to `lerna` to parse `lerna.json`.                   |
-|filter    |[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,<br />e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
-|sort      |[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending.<br />e.g. `sort: -readme.length`                                     |
+|name    |description                                                                                                                                                                                |
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|repoRoot|[optional] the relative path to the root of the git repository. Defaults to the current md file directory.                                                                                 |
+|filter  |[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,<br />e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
+|sort    |[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending.<br />e.g. `sort: -readme.length`                                     |
 <!-- codegen:end -->
 
 ##### Demo

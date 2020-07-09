@@ -20,9 +20,6 @@ import {relative} from './util/path'
  *
  * @param repoRoot
  * [optional] the relative path to the root of the git repository. Defaults to the current md file directory.
- * @param workspaces
- * [optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key
- * in package.json. Set to `lerna` to parse `lerna.json`.
  * @param filter
  * [optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,
  * e.g. `filter: { package.name: someRegex, path: some/relative/path }`
