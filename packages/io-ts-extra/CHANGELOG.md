@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.4](https://github.com/mmkal/ts/compare/io-ts-extra@0.10.3...io-ts-extra@0.10.4) (2020-07-09)
+
+
+### Bug Fixes
+
+* add .git suffix ([6953f58](https://github.com/mmkal/ts/commit/6953f58e018c0cb91f61a1166506a7c30c273681))
+
+
+
+
+
+
 ## [0.10.3](https://github.com/mmkal/ts/compare/io-ts-extra@0.10.2...io-ts-extra@0.10.3) (2020-07-09)
 
 
