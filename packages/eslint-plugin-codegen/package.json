@@ -1,9 +1,13 @@
 {
   "name": "eslint-plugin-codegen",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/mmkal/ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmkal/ts",
+    "directory": "packages/eslint-plugin-codegen"
+  },
   "homepage": "https://github.com/mmkal/ts/tree/main/packages/eslint-plugin-codegen#readme",
   "license": "Apache-2.0",
   "scripts": {
@@ -20,7 +24,7 @@
     "fp-ts": "^2.1.0",
     "glob": "^7.1.4",
     "io-ts": "^2.2.4",
-    "io-ts-extra": "0.10.2",
+    "io-ts-extra": "0.10.3",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15",
     "string.prototype.matchall": "^4.0.2"

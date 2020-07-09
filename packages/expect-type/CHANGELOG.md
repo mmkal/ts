@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.7](https://github.com/mmkal/ts/compare/expect-type@0.7.6...expect-type@0.7.7) (2020-07-09)
+
+
+### Bug Fixes
+
+* specify respoitory url + directory ([a8fa28c](https://github.com/mmkal/ts/commit/a8fa28cbee184ea43e90cc75192a406adc398da0)), closes [/github.com/renovatebot/renovate/issues/6709#issuecomment-655533425](https://github.com//github.com/renovatebot/renovate/issues/6709/issues/issuecomment-655533425)
+
+
+
+
+
 ## [0.7.6](https://github.com/mmkal/ts/compare/expect-type@0.7.5...expect-type@0.7.6) (2020-06-29)
 
 
