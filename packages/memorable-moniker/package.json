@@ -3,7 +3,7 @@
   "version": "0.2.13",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmkal/ts",
+    "url": "https://github.com/mmkal/ts.git",
     "directory": "packages/memorable-moniker"
   },
   "homepage": "https://github.com/mmkal/ts/tree/main/packages/memorable-moniker#readme",

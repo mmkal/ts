@@ -3,7 +3,7 @@
   "version": "0.10.3",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmkal/ts",
+    "url": "https://github.com/mmkal/ts.git",
     "directory": "packages/io-ts-extra"
   },
   "homepage": "https://github.com/mmkal/ts/tree/main/packages/io-ts-extra#readme",

@@ -5,7 +5,7 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmkal/ts",
+    "url": "https://github.com/mmkal/ts.git",
     "directory": "packages/eslint-plugin-codegen"
   },
   "homepage": "https://github.com/mmkal/ts/tree/main/packages/eslint-plugin-codegen#readme",
