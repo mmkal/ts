@@ -1,9 +1,9 @@
 {
   "name": "fs-syncer",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmkal/ts",
+    "url": "https://github.com/mmkal/ts.git",
     "directory": "packages/fs-syncer"
   },
   "main": "dist/index.js",

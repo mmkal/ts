@@ -1,9 +1,9 @@
 {
   "name": "expect-type",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmkal/ts",
+    "url": "https://github.com/mmkal/ts.git",
     "directory": "packages/expect-type"
   },
   "homepage": "https://github.com/mmkal/ts/tree/main/packages/expect-type#readme",
