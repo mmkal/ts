@@ -4,7 +4,6 @@
     "config:base",
     ":semanticCommits"
   ],
-  "dependencyDashboard": true,
   "prConcurrentLimit": 3,
   "packageRules": [
     {
