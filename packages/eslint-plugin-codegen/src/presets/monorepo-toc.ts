@@ -19,7 +19,7 @@ import {relative} from './util/path'
  * `<!-- codegen:start {preset: monorepoTOC, repoRoot: .., workspaces: lerna, filter: {package.name: foo}, sort: -readme.length} -->`
  *
  * @param repoRoot
- * [optional] the relative path to the root of the git repository. Defaults to the current md file directory.
+ * [optional] the relative path to the root of the git repository. By default, searches parent directories for a package.json to find the "root".
  * @param filter
  * [optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,
  * e.g. `filter: { package.name: someRegex, path: some/relative/path }`

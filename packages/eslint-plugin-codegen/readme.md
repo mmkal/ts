@@ -129,7 +129,7 @@ Generate a table of contents for a monorepo.
 
 |name    |description                                                                                                                                                                                |
 |--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|repoRoot|[optional] the relative path to the root of the git repository. Defaults to the current md file directory.                                                                                 |
+|repoRoot|[optional] the relative path to the root of the git repository. By default, searches parent directories for a package.json to find the "root".                                             |
 |filter  |[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,<br />e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
 |sort    |[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending.<br />e.g. `sort: -readme.length`                                     |
 <!-- codegen:end -->
