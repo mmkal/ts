@@ -8,6 +8,10 @@
   "prConcurrentLimit": 3,
   "packageRules": [
     {
+      "depTypeList": ["dependencies"],
+      "rangeStrategy": "update-lockfile"
+    },
+    {
       "depTypeList": ["devDependencies"],
       "automerge": true
     },
