@@ -4,7 +4,7 @@
     "config:base",
     ":semanticCommits"
   ],
-  "gitAuthor": "bot@renovateapp.com",
+  "dependencyDashboard": true,
   "prConcurrentLimit": 3,
   "packageRules": [
     {
@@ -12,12 +12,17 @@
       "rangeStrategy": "update-lockfile"
     },
     {
+      "depTypeList": ["dependencies"],
+      "updateTypes": ["lockFileMaintenance"],
+      "automerge": true
+    },
+    {
       "depTypeList": ["devDependencies"],
       "automerge": true
     },
     {
       "depTypeList": ["devDependencies"],
-      "packagePatterns": [".*eslint.*"],
+      "packagePatterns": ["eslint"],
       "groupName": "eslint packages",
       "labels": ["linting"]
     }
