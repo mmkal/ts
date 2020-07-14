@@ -126,8 +126,12 @@ export const codecFromShorthand: CodecFromShorthand = (...args: unknown[]): any 
     return v
   }
   if (typeof v === 'object' && v) {
+    const entries = Object.entries(v)
+    if (entries.length === 0) {
+      return t.refinement(t.unknown, Boolean)
+    }
     return t.type(
-      Object.entries(v).reduce((acc, [prop, val]) => {
+      entries.reduce((acc, [prop, val]) => {
         return {...acc, [prop]: codecFromShorthand(val)}
       }, {})
     )

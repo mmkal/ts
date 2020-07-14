@@ -136,16 +136,16 @@ describe('case matching', () => {
     const doubleNumber = matcher().case(t.number, n => n * 2).get
 
     expect(() => doubleNumber('hello' as any)).toThrowErrorMatchingInlineSnapshot(`
-"{
-  \\"noMatchFoundFor\\": \\"hello\\",
-  \\"types\\": [
-    {
-      \\"name\\": \\"number\\",
-      \\"_tag\\": \\"NumberType\\"
-    }
-  ]
-}"
-`)
+      "{
+        \\"noMatchFoundFor\\": \\"hello\\",
+        \\"types\\": [
+          {
+            \\"name\\": \\"number\\",
+            \\"_tag\\": \\"NumberType\\"
+          }
+        ]
+      }"
+    `)
   })
 
   it('try get gives a left when no match found', () => {
