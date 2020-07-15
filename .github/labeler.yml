@@ -1,0 +1,12 @@
+# codegen:start {preset: labeler}
+eslint-plugin-codegen:
+  - packages/eslint-plugin-codegen/**/*
+expect-type:
+  - packages/expect-type/**/*
+fs-syncer:
+  - packages/fs-syncer/**/*
+io-ts-extra:
+  - packages/io-ts-extra/**/*
+memorable-moniker:
+  - packages/memorable-moniker/**/*
+# codegen:end

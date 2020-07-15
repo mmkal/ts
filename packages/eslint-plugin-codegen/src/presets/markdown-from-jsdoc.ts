@@ -72,8 +72,8 @@ export const markdownFromJsdoc: Preset<{source: string; export?: string}> = ({
 
       const headers: [string, string] = ['name', 'description']
 
-      const nameSize = lodash.max([headers, ...rows].map(r => r[0].length)) || 0
-      const descSize = lodash.max([headers, ...rows].map(r => r[1].length)) || 0
+      const nameSize = lodash.max([headers, ...rows].map(r => r[0].length))!
+      const descSize = lodash.max([headers, ...rows].map(r => r[1].length))!
       const pad = (tuple: [string, string], padding = ' ') =>
         `|${tuple[0].padEnd(nameSize, padding)}|${tuple[1].padEnd(descSize, padding)}|`
 

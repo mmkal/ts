@@ -14,8 +14,8 @@ export {Preset} from './presets'
 
 export {presetsModule as presets}
 
-export const processors: Record<string, eslint.Linter.LintOptions> = {
-  '.md': {
+const getPreprocessor = (): eslint.Linter.LintOptions => {
+  return {
     preprocess: text => [
       '/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove' +
         os.EOL +
@@ -27,7 +27,12 @@ export const processors: Record<string, eslint.Linter.LintOptions> = {
     postprocess: messageLists => ([] as eslint.Linter.LintMessage[]).concat(...messageLists),
     // @ts-expect-error
     supportsAutofix: true,
-  },
+  }
+}
+export const processors: Record<string, eslint.Linter.LintOptions> = {
+  '.md': getPreprocessor(),
+  '.yml': getPreprocessor(),
+  '.yaml': getPreprocessor(),
 }
 
 const codegen: eslint.Rule.RuleModule = {
@@ -51,8 +56,13 @@ const codegen: eslint.Rule.RuleModule = {
           start: /\/\/ codegen:start ?(.*)/g,
           end: /\/\/ codegen:end/g,
         },
+        '.yml': {
+          start: /# codegen:start ?(.*)/g,
+          end: /# codegen:end/g,
+        },
       }
       markersByExtension['.js'] = markersByExtension['.ts']
+      markersByExtension['.yaml'] = markersByExtension['.yml']
 
       const markers = markersByExtension[path.extname(context.getFilename())]
       const position = (index: number) => {

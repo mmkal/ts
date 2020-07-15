@@ -31,6 +31,7 @@ Here's an example of it being used along with VSCode's eslint plugin, with auto-
       - [markdownFromJsdoc](#markdownfromjsdoc)
       - [markdownTOC](#markdowntoc)
       - [markdownFromTests](#markdownfromtests)
+      - [labeler](#labeler)
       - [custom](#custom)
    - [Customisation](#customisation)
 <!-- codegen:end -->
@@ -112,7 +113,7 @@ See below for documentation. This repo also has [lots of usage examples](https:/
 ### Presets
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/monorepo-toc.ts, export: monorepoTOC} -->
-#### [monorepoTOC](./src/presets/monorepo-toc.ts#L34)
+#### [monorepoTOC](./src/presets/monorepo-toc.ts#L30)
 
 Generate a table of contents for a monorepo.
 
@@ -126,12 +127,11 @@ Generate a table of contents for a monorepo.
 
 ##### Params
 
-|name      |description                                                                                                                                                                                |
-|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|repoRoot  |[optional] the relative path to the root of the git repository. Defaults to the current md file directory.                                                                                 |
-|workspaces|[optional] a string or array of globs matching monorepo workspace packages. Defaults to the `workspaces` key<br />in package.json. Set to `lerna` to parse `lerna.json`.                   |
-|filter    |[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,<br />e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
-|sort      |[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending.<br />e.g. `sort: -readme.length`                                     |
+|name    |description                                                                                                                                                                                |
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|repoRoot|[optional] the relative path to the root of the git repository. By default, searches parent directories for a package.json to find the "root".                                             |
+|filter  |[optional] a dictionary of filter rules to whitelist packages. Filters can be applied based on package.json keys,<br />e.g. `filter: { package.name: someRegex, path: some/relative/path }`|
+|sort    |[optional] sort based on package properties (see `filter`), or readme length. Use `-` as a prefix to sort descending.<br />e.g. `sort: -readme.length`                                     |
 <!-- codegen:end -->
 
 ##### Demo
@@ -229,6 +229,34 @@ Use a test file to generate library usage documentation. Note: this has been tes
 ##### Demo
 
 ![](./gifs/markdownFromTests.gif)
+
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/labeler.ts, export: labeler} -->
+#### [labeler](./src/presets/labeler.ts#L26)
+
+Generates a yaml config for the [GitHub Pull Request Labeler Action](https://github.com/actions/labeler). Creates a label per package name, which will be applied to any file modified under the leaf package path. When packages are added or removed from the repo, or renamed, the yaml config will stay in sync with them. Additional labels can be added outside of the generated code block. See https://github.com/mmkal/ts/tree/main/.github/labeler.yml for an example.
+
+##### Example
+```yaml
+# codegen:start {preset: labeler}
+```
+
+*Note*: eslint and related tools make it quite difficult to lint github action yaml files. To get it working, you'll need to:
+- add `'!.github'` to your `.eslintignore` file, or the `ignorePatterns` property in your lint config.
+- {vscode} add `"yaml"` to the `"eslint.validate"` list in `vscode/settings.json`.
+- {@typescript/eslint} add `'.yml'` (and/or `'.yaml'`) to the `parserOptions.extraFileExtensions` list in your lint config.
+- {@typescript/eslint} explicitly include 'hidden' files (with paths starting with `.`) in your tsconfig. See https://github.com/mmkal/ts/tree/main/tsconfig.eslint.json for an example.
+
+##### Params
+
+|name    |description                                                                                                                         |
+|--------|------------------------------------------------------------------------------------------------------------------------------------|
+|repoRoot|[optional] path to the repository root. If not specified, the rule will recursively search parent directories for package.json files|
+<!-- codegen:end -->
+
+##### Demo
+
+![](./gifs/labeler.gif)
+
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/custom.ts, export: custom} -->
 #### [custom](./src/presets/custom.ts#L26)
