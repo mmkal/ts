@@ -47,7 +47,7 @@
     "babel-jest": "26.1.0",
     "dedent": "0.7.0",
     "eslint": "7.5.0",
-    "eslint-config-xo": "0.32.0",
+    "eslint-config-xo": "0.32.1",
     "eslint-config-xo-typescript": "0.31.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jest": "23.18.0",
