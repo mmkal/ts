@@ -137,3 +137,10 @@ test('parity with IsExact from conditional-type-checks', () => {
   assert<IsExact<{prop: any} | {prop: string}, {prop: number} | {prop: string}>>(false)
   assert<IsExact<{prop: string | undefined}, {prop?: string}>>(false) // these are different
 })
+
+test('Equal works with functions', () => {
+  expectTypeOf<a.Equal<() => void, () => string>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Equal<() => void, (s: string) => void>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Equal<() => () => () => void, () => () => () => string>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Equal<() => () => () => void, () => (s: string) => () => void>>().toEqualTypeOf<false>()
+})
