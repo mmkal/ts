@@ -200,7 +200,7 @@ type HasParam = (s: string) => void
 expectTypeOf<NoParam>().not.toEqualTypeOf<HasParam>()
 ```
 
-But often it's preferable to use `.parameters` or `.returns` for more specific function assertion:
+But often it's preferable to use `.parameters` or `.returns` for more specific function assertions:
 
 ```typescript
 type NoParam = () => void

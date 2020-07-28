@@ -112,7 +112,7 @@ test('`.toEqualTypeOf` can be used to distinguish between functions', () => {
   expectTypeOf<NoParam>().not.toEqualTypeOf<HasParam>()
 })
 
-test("But often it's preferable to use `.parameters` or `.returns` for more specific function assertion", () => {
+test("But often it's preferable to use `.parameters` or `.returns` for more specific function assertions", () => {
   type NoParam = () => void
   type HasParam = (s: string) => void
 
