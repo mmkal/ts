@@ -191,7 +191,29 @@ expectTypeOf(obj).toHaveProperty('b').toBeString()
 expectTypeOf(obj).toHaveProperty('a').not.toBeString()
 ```
 
-Assert on function parameters (using `.parameter(n)` or `.parameters`) and return values (using `.returns`):
+`.toEqualTypeOf` can be used to distinguish between functions:
+
+```typescript
+type NoParam = () => void
+type HasParam = (s: string) => void
+
+expectTypeOf<NoParam>().not.toEqualTypeOf<HasParam>()
+```
+
+But often it's preferable to use `.parameters` or `.returns` for more specific function assertions:
+
+```typescript
+type NoParam = () => void
+type HasParam = (s: string) => void
+
+expectTypeOf<NoParam>().parameters.toEqualTypeOf<[]>()
+expectTypeOf<NoParam>().returns.toEqualTypeOf<void>()
+
+expectTypeOf<HasParam>().parameters.toEqualTypeOf<[string]>()
+expectTypeOf<HasParam>().returns.toEqualTypeOf<void>()
+```
+
+More examples of ways to work with functions - parameters using `.parameter(n)` or `.parameters`, and return values using `.returns`:
 
 ```typescript
 const f = (a: number) => [a, a]
