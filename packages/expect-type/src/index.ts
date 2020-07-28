@@ -13,12 +13,14 @@ export type IsAny<T> = [T] extends [Secret] ? Not<IsNever<T>> : false
 export type IsUnknown<T> = [unknown] extends [T] ? Not<IsAny<T>> : false
 export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
 
-type DeepBrandAny<T> = IsAny<T> extends true // avoid `any` matching `unknown`
+type DeepBrand<T> = IsAny<T> extends true // avoid `any` matching `unknown`
   ? Secret
-  : {[K in keyof T]: DeepBrandAny<T[K]>}
+  : T extends (...args: infer P) => infer R // avoid functions with different params/return values matching
+  ? {params: DeepBrand<P>; return: DeepBrand<R>; function: Secret}
+  : {[K in keyof T]: DeepBrand<T[K]>}
 
 export type Extends<L, R> = L extends R ? true : false
-export type StrictExtends<L, R> = Extends<DeepBrandAny<L>, DeepBrandAny<R>>
+export type StrictExtends<L, R> = Extends<DeepBrand<L>, DeepBrand<R>>
 
 export type Equal<Left, Right> = And<
   [
