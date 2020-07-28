@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.11.4...eslint-plugin-codegen@0.12.0) (2020-07-28)
+
+
+### Features
+
+* labeler ([#74](https://github.com/mmkal/ts/issues/74)) ([0b96e7a](https://github.com/mmkal/ts/commit/0b96e7abf2bee2a6f73bc200f31326aed2189894))
+
+
+
+
+
+
 ## [0.11.4](https://github.com/mmkal/ts/compare/eslint-plugin-codegen@0.11.3...eslint-plugin-codegen@0.11.4) (2020-07-09)
 
 

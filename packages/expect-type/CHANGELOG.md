@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.9](https://github.com/mmkal/ts/compare/expect-type@0.7.8...expect-type@0.7.9) (2020-07-28)
+
+
+### Bug Fixes
+
+* **toEqualTypeOf:** stop functions incorrectly matching ([#99](https://github.com/mmkal/ts/issues/99)) ([61a1bc3](https://github.com/mmkal/ts/commit/61a1bc37bc43ae2b737b588f3a40e584cf40e730))
+
+
+
+
+
+
 ## [0.7.8](https://github.com/mmkal/ts/compare/expect-type@0.7.7...expect-type@0.7.8) (2020-07-09)
 
 
