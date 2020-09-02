@@ -58,7 +58,7 @@
     "lerna": "3.22.1",
     "lodash": "4.17.20",
     "minimatch": "3.0.4",
-    "mock-fs": "4.12.0",
+    "mock-fs": "4.13.0",
     "prettier": "2.0.5",
     "read-pkg-up": "7.0.1",
     "typescript": "3.9.7"
