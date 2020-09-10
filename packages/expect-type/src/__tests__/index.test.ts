@@ -91,9 +91,9 @@ test('More `.not` examples', () => {
   expectTypeOf(1).not.toBeUndefined()
   expectTypeOf(1).not.toBeNullable()
 })
-
 test('Make assertions about object properties', () => {
   const obj = {a: 1, b: ''}
+
 
   // check that properties exist (or don't) with `.toHaveProperty`
   expectTypeOf(obj).toHaveProperty('a')
@@ -135,7 +135,9 @@ test('More examples of ways to work with functions - parameters using `.paramete
   expectTypeOf(f).returns.toEqualTypeOf([1, 2, 3])
   expectTypeOf(f).parameter(0).not.toEqualTypeOf('1')
   expectTypeOf(f).parameter(0).toEqualTypeOf(1)
-  expectTypeOf(1).parameter(0).toBeNever()
+
+  // @ts-expect-error
+  expectTypeOf(1).parameter(0)
 
   const twoArgFunc = (a: number, b: string) => ({a, b})
 

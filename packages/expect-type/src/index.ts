@@ -31,12 +31,12 @@ export type Equal<Left, Right> = And<
   ]
 >
 
-export type Params<Actual> = Actual extends (...args: infer P) => any ? P : never
+export type Params<Actual> = Actual extends (...args: infer P) => any ? P : throw `can't get parameters from ${typeof Actual}, it's not a function`
 export type ConstructorParams<Actual> = Actual extends new (...args: infer P) => any
   ? Actual extends new () => any
     ? P | []
     : P
-  : never
+  : throw `can't get constructor parameters from ${typeof Actual}, it's not constructible`
 
 type MismatchArgs<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never]
 
@@ -52,6 +52,9 @@ export interface Extendables {
   undefined: undefined
 }
 
+export type FailureMessage<B extends boolean, Relationship extends string, Expected, Actual> =
+  `expected type ${B extends true ? Relationship : `not ${Relationship}`} ${typeof Expected}, got ${typeof Actual}`
+
 export type SimpleChecks<Actual, B extends boolean> = {
   any: IsAny<Actual>
   unknown: IsUnknown<Actual>
@@ -62,20 +65,15 @@ export type SimpleChecks<Actual, B extends boolean> = {
 }
 
 export type ExpectTypeOf_SimpleChecks<Actual, B extends boolean> = {
-  [K in keyof SimpleChecks<Actual, B> as `toBe${capitalize K}`]: () => SimpleChecks<Actual, B>[K] extends B ? true : throw `expected ${B extends true ? K : `not ${K}`}, got ${typeof Actual}`
+  [K in keyof SimpleChecks<Actual, B> as `toBe${capitalize K}`]: () => SimpleChecks<Actual, B>[K] extends B ? true : throw FailureMessage<B, 'to have type', K, Actual>
 }
 
-type Expection<B extends boolean, Relationship extends string, Expected, Actual> = `expected type ${B extends true ? Relationship : `not ${Relationship}`} ${typeof Expected}, got ${typeof Actual}`
-
 export interface ExpectTypeOf<Actual, B extends boolean> extends ExpectTypeOf_SimpleChecks<Actual, B> {
-  toMatchTypeOf: <Expected>(e?: Expected) => Extends<Actual, Expected> extends B ? true : throw `expected type {B} extending {typeof Expected}, got {typeof Actual}` // todo format in types https://github.com/microsoft/TypeScript/pull/40402#issuecomment-689881024
-  toEqualTypeOf: <Expected>(e?: Expected) => Equal<Actual, Expected> extends B ? true : throw `expected type {B} equivalent to {typeof Expected}, got {typeof Actual}` // todo ditto
-  toBeCallableWith: B extends true ? ((...args: Params<Actual>) => true) : throw `don't use .not.toBeCallableWith. Use // @ts-expect-error. See github issues`
-  toBeConstructibleWith: B extends true ? (...args: ConstructorParams<Actual>) => true : throw `don't use .not.toBeConstructibleWith. Use // @ts-expect-error. See github issues`
-  toHaveProperty: <K extends string>(key: K) =>
-    Extends<K, keyof Actual> extends B
-      ? ExpectTypeOf<Actual[K & keyof Actual], B>
-      : throw `expected ${Exclude<keyof Actual, symbol>}, got ${K}`
+  toMatchTypeOf: <Expected>(e?: Expected) => Extends<Actual, Expected> extends B ? true : throw FailureMessage<B, 'extending', Expected, Actual>
+  toEqualTypeOf: <Expected>(e?: Expected) => Equal<Actual, Expected> extends B ? true : throw FailureMessage<B, 'equivalent to', Expected, Actual>
+  toBeCallableWith: B extends true ? ((...args: Extract<Params<Actual>, any[]>) => true) : throw `don't use .not.toBeCallableWith. Use // @ts-expect-error. See https://github.com/mmkal/ts/issues/142`
+  toBeConstructibleWith: B extends true ? (...args: Extract<ConstructorParams<Actual>, any[]>) => true : throw `don't use .not.toBeConstructibleWith. Use // @ts-expect-error. See https://github.com/mmkal/ts/issues/142`
+  toHaveProperty: <K extends string>(key: K) => Extends<K, keyof Actual> extends B ? ExpectTypeOf<Actual[K & keyof Actual], B> : throw FailureMessage<B, 'to have property', keyof Actual, K>
   parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   constructorParameters: ExpectTypeOf<ConstructorParams<Actual>, B>

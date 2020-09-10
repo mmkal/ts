@@ -8741,9 +8741,9 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-"typescript@https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/84651/artifacts?artifactName=tgz&fileId=F1E73F036BD00B0E703FB5AC26800759E4D8AAA8CB6B9FA6479472D55EF1703002&fileName=/typescript-4.1.0-insiders.20200909.tgz":
-  version "4.1.0-insiders.20200909"
-  resolved "https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/84651/artifacts?artifactName=tgz&fileId=F1E73F036BD00B0E703FB5AC26800759E4D8AAA8CB6B9FA6479472D55EF1703002&fileName=/typescript-4.1.0-insiders.20200909.tgz#836ca820cc28132f42c7d966eb802f1c7be66b2c"
+"typescript@https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/84753/artifacts?artifactName=tgz&fileId=458CBB664D3CE9EFA165B438F01414D55349C27455F3F7CE2CC288A173FC410B02&fileName=/typescript-4.1.0-insiders.20200910.tgz":
+  version "4.1.0-insiders.20200910"
+  resolved "https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/84753/artifacts?artifactName=tgz&fileId=458CBB664D3CE9EFA165B438F01414D55349C27455F3F7CE2CC288A173FC410B02&fileName=/typescript-4.1.0-insiders.20200910.tgz#f84217aaa7fb265b65c4e7440b3b42b7cfe606e2"
 
 uglify-js@^3.1.4:
   version "3.6.3"
