@@ -91,9 +91,9 @@ test('More `.not` examples', () => {
   expectTypeOf(1).not.toBeUndefined()
   expectTypeOf(1).not.toBeNullable()
 })
+
 test('Make assertions about object properties', () => {
   const obj = {a: 1, b: ''}
-
 
   // check that properties exist (or don't) with `.toHaveProperty`
   expectTypeOf(obj).toHaveProperty('a')
