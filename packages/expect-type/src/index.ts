@@ -40,35 +40,49 @@ export type ConstructorParams<Actual> = Actual extends new (...args: infer P) =>
 
 type MismatchArgs<B extends boolean, C extends boolean> = Eq<B, C> extends true ? [] : [never]
 
-export interface ExpectTypeOf<Actual, B extends boolean> {
-  toBeAny: (...MISMATCH: MismatchArgs<IsAny<Actual>, B>) => true
-  toBeUnknown: (...MISMATCH: MismatchArgs<IsUnknown<Actual>, B>) => true
-  toBeNever: (...MISMATCH: MismatchArgs<IsNever<Actual>, B>) => true
-  toBeFunction: (...MISMATCH: MismatchArgs<Extends<Actual, (...args: any[]) => any>, B>) => true
-  toBeObject: (...MISMATCH: MismatchArgs<Extends<Actual, object>, B>) => true
-  toBeArray: (...MISMATCH: MismatchArgs<Extends<Actual, any[]>, B>) => true
-  toBeNumber: (...MISMATCH: MismatchArgs<Extends<Actual, number>, B>) => true
-  toBeString: (...MISMATCH: MismatchArgs<Extends<Actual, string>, B>) => true
-  toBeBoolean: (...MISMATCH: MismatchArgs<Extends<Actual, boolean>, B>) => true
-  toBeSymbol: (...MISMATCH: MismatchArgs<Extends<Actual, symbol>, B>) => true
-  toBeNull: (...MISMATCH: MismatchArgs<Extends<Actual, null>, B>) => true
-  toBeUndefined: (...MISMATCH: MismatchArgs<Extends<Actual, undefined>, B>) => true
-  toBeNullable: (...MISMATCH: MismatchArgs<Not<Equal<Actual, NonNullable<Actual>>>, B>) => true
-  toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
-  toEqualTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>) => true
-  toBeCallableWith: B extends true ? (...args: Params<Actual>) => true : never
-  toBeConstructibleWith: B extends true ? (...args: ConstructorParams<Actual>) => true : never
-  toHaveProperty: <K extends string>(
-    key: K,
-    ...MISMATCH: MismatchArgs<Extends<K, keyof Actual>, B>
-  ) => K extends keyof Actual ? ExpectTypeOf<Actual[K], B> : true
+export interface Extendables {
+  function: (...args: any[]) => any
+  object: object
+  array: any[]
+  number: number
+  string: string
+  boolean: boolean
+  symbol: symbol
+  null: null
+  undefined: undefined
+}
+
+export type SimpleChecks<Actual, B extends boolean> = {
+  any: IsAny<Actual>
+  unknown: IsUnknown<Actual>
+  never: IsNever<Actual>
+  nullable: Not<Equal<Actual, NonNullable<Actual>>>
+} & {
+  [K in keyof Extendables]: Extends<Actual, Extendables[K]>
+}
+
+export type ExpectTypeOf_SimpleChecks<Actual, B extends boolean> = {
+  [K in keyof SimpleChecks<Actual, B> as `toBe${capitalize K}`]: () => SimpleChecks<Actual, B>[K] extends B ? true : throw `expected ${B extends true ? K : `not ${K}`}, got ${typeof Actual}`
+}
+
+type Expection<B extends boolean, Relationship extends string, Expected, Actual> = `expected type ${B extends true ? Relationship : `not ${Relationship}`} ${typeof Expected}, got ${typeof Actual}`
+
+export interface ExpectTypeOf<Actual, B extends boolean> extends ExpectTypeOf_SimpleChecks<Actual, B> {
+  toMatchTypeOf: <Expected>(e?: Expected) => Extends<Actual, Expected> extends B ? true : throw `expected type {B} extending {typeof Expected}, got {typeof Actual}` // todo format in types https://github.com/microsoft/TypeScript/pull/40402#issuecomment-689881024
+  toEqualTypeOf: <Expected>(e?: Expected) => Equal<Actual, Expected> extends B ? true : throw `expected type {B} equivalent to {typeof Expected}, got {typeof Actual}` // todo ditto
+  toBeCallableWith: B extends true ? ((...args: Params<Actual>) => true) : throw `don't use .not.toBeCallableWith. Use // @ts-expect-error. See github issues`
+  toBeConstructibleWith: B extends true ? (...args: ConstructorParams<Actual>) => true : throw `don't use .not.toBeConstructibleWith. Use // @ts-expect-error. See github issues`
+  toHaveProperty: <K extends string>(key: K) =>
+    Extends<K, keyof Actual> extends B
+      ? ExpectTypeOf<Actual[K & keyof Actual], B>
+      : throw `expected ${Exclude<keyof Actual, symbol>}, got ${K}`
   parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   constructorParameters: ExpectTypeOf<ConstructorParams<Actual>, B>
-  instance: Actual extends new (...args: any[]) => infer I ? ExpectTypeOf<I, B> : never
-  returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
-  resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
-  items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : never
+  instance: Actual extends new (...args: any[]) => infer I ? ExpectTypeOf<I, B> : throw `${typeof Actual} is not constructible`
+  returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : throw `${typeof Actual} is not a function`
+  resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : throw `${typeof Actual} is not a promise`
+  items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : throw `${typeof Actual} is not an array`
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true

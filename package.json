@@ -61,6 +61,6 @@
     "mock-fs": "4.13.0",
     "prettier": "2.1.1",
     "read-pkg-up": "7.0.1",
-    "typescript": "4.0.2"
+    "typescript": "https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/84651/artifacts?artifactName=tgz&fileId=F1E73F036BD00B0E703FB5AC26800759E4D8AAA8CB6B9FA6479472D55EF1703002&fileName=/typescript-4.1.0-insiders.20200909.tgz"
   }
 }
