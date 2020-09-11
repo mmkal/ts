@@ -83,7 +83,10 @@ test('regex can encode and decode', () => {
   const R = regexp(/b(a)(r)/)
 
   const success = R.decode(s)
-  expectRight(success).toEqual(Object.assign(['bar', 'a', 'r'], {index: 4, input: s}))
+  expectRight(success).toEqual({
+    _tag: 'Right',
+    right: Object.assign(['bar', 'a', 'r'], {index: 4, input: s}),
+  })
 
   if (success._tag === 'Right') {
     expectTypeOf(success.right).toEqualTypeOf(Object.assign(['bar', 'a', 'r'], {index: 4, input: s}))
