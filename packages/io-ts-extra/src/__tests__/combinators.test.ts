@@ -83,10 +83,14 @@ test('regex can encode and decode', () => {
   const R = regexp(/b(a)(r)/)
 
   const success = R.decode(s)
-  expectRight(success)
+  expectRight(success).toEqual({
+    _tag: 'Right',
+    right: Object.assign(['bar', 'a', 'r'], {index: 4, input: s}),
+  })
+
   if (success._tag === 'Right') {
     expectTypeOf(success.right).toEqualTypeOf(Object.assign(['bar', 'a', 'r'], {index: 4, input: s}))
-    expect(success.right).toEqual(Object.assign(['bar', 'a', 'r'], {index: 4, input: s}))
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(R.encode(success.right)).toEqual(s)
   }
 
