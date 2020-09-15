@@ -65,7 +65,7 @@ export type SimpleChecks<Actual, B extends boolean> = {
 }
 
 export type ExpectTypeOf_SimpleChecks<Actual, B extends boolean> = {
-  [K in keyof SimpleChecks<Actual, B> as `toBe${capitalize K}`]: () => SimpleChecks<Actual, B>[K] extends B ? true : throw FailureMessage<B, 'to have type', K, Actual>
+  [K in keyof SimpleChecks<Actual, B> as `toBe${capitalize K}`]: () => SimpleChecks<Actual, B>[K] extends B ? true : throw `expected ${B extends true ? K : `not ${K}`}, got ${typeof Actual}`
 }
 
 export interface ExpectTypeOf<Actual, B extends boolean> extends ExpectTypeOf_SimpleChecks<Actual, B> {
