@@ -17,6 +17,7 @@ jobs:
       run: |
         node common/scripts/install-run-rush.js install
 
+        # horrible workaround for https://github.com/microsoft/rushstack/issues/2203 - replace code inline
         FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.0-pr2172.0/node_modules/@microsoft/rush-lib/lib/cli/RushCommandLineParser.js"
         TO_BE_REPLACED='if (!process.exitCode || process.exitCode > 0) {'
         REPLACEMENT='if (process.exitCode > 0) { // patched_code'
