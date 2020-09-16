@@ -2,7 +2,7 @@
   "changes": [
     {
       "comment": "chore: bump io-ts version (#161)",
-      "type": "major",
+      "type": "patch",
       "packageName": "io-ts-extra"
     }
   ],
