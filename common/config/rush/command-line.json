@@ -23,8 +23,7 @@
       "name": "test",
       "summary": "Runs tests for each project",
       "enableParallelism": true,
-      "ignoreDependencyOrder": true,
-      "allowWarningsInSuccessfulBuild": true
+      "ignoreDependencyOrder": true
     }
     // {
     //   /**
