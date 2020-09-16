@@ -63,6 +63,26 @@ jobs:
 
           remote_repo="https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git push "${remote_repo}"
+
+          echo "::set-env name=GIT_STATUS::$GIT_STATUS"
         else
           echo "no changes made"
         fi
+    - uses: actions/github-script@v3
+      if: ${{ env.GIT_STATUS != null }}
+      with:
+        script: |
+          github.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.payload.pull_request.number,
+            body: [
+              `@${{ github.actor }} changes were pushed to your branch.\n\n`,
+              `To ensure GitHub Actions runs all checks, you can push changes as normal, `,
+              `or close and re-open the pull request, if no further changes are required.`,
+              '\n\n',
+              `This is necessary because GitHub actions currently don't allow workflows to trigger other workflows. `,
+              `See https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 `,
+              `for more info and updates on whether this limitation still applies.`,
+            ].join('')
+          })
