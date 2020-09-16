@@ -1,0 +1,68 @@
+name: create change files
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: create or update change files
+      env:
+        PR_BODY: ${{ github.event.pull_request.body }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        node common/scripts/install-run-rush.js install
+
+        # hack: workaround https://github.com/microsoft/rushstack/issues/2195 by replacing the suffix of
+        # the generated changefile with a suffix of pr_123 where 123 is the pull request number
+        # this makes sure only one change file is generated, and it gets updated when the pull request is
+        # updated
+        # e.g. if the pull request owner adds "BREAKING CHANGE" to the body, the change file will update
+        # to type 'major'
+        FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.0-pr2172.0/node_modules/@microsoft/rush-lib/lib/api/ChangeFile.js"
+        TO_BE_REPLACED='_getTimestamp(useSeconds = false) {'
+        REPLACEMENT="$TO_BE_REPLACED \n return 'pr_$PR_NUMBER' // patched_code'
+
+        echo "patching $TO_BE_REPLACED in $FILE_TO_BE_EDITED"
+        sed -i "s~$TO_BE_REPLACED~$REPLACEMENT~g" $FILE_TO_BE_EDITED
+
+        echo "grepping for patched code, this will fail if rush code changed recently, and the sed command didn't replace anything"
+        cat $FILE_TO_BE_EDITED | grep patched_code
+
+        # end code-replacement hack
+
+        # do basic pull request title/body parsing to figure out if it's a major, minor or patch change
+        # it'd probably be a good idea to use something like @commitlint for this, but it's an annoyingly
+        # big dependency, with multiple peers and required config files, for such a simple task
+        IS_MAJOR=$(echo "$PR_TITLE $PR_BODY" | grep 'BREAKING CHANGE' || echo '')
+        IS_PATCH=$((echo "$PR_TITLE" | grep '^fix') || (echo "$PR_TITLE" | grep '^chore') || echo '')
+        
+        BUMP_TYPE=minor
+        if [ -n "$IS_MAJOR" ]; then
+          BUMP_TYPE=major
+        elif [ -n "$IS_PATCH" ]; then
+          BUMP_TYPE=patch
+        fi
+
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ github.actor }}"
+        git checkout ${{ github.head_ref }}
+
+        node common/scripts/install-run-rush.js change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
+
+        GIT_STATUS=$(git status --porcelain)
+        if [ -n "$GIT_STATUS" ]; then
+          git add -A
+          git commit -m "chore: change files"
+
+          remote_repo="https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push "${remote_repo}"
+        else
+          echo "no changes made"
+        fi
