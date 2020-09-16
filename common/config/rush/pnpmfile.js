@@ -34,5 +34,13 @@ function readPackage(packageJson, context) {
   //  packageJson.dependencies['log4js'] = '0.6.38';
   // }
 
+  // for some reason I can't figure out, pnpm complains about a missing eslint dependency
+  // even though it's there.
+  const peers = packageJson.peerDependencies || {} 
+  if ('eslint' in peers) {
+    context.log(`Deleting peer dependency eslint from ${packageJson.name}`)
+    delete peers.eslint
+  }
+
   return packageJson;
 }
