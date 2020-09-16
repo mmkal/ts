@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "coverage": "./tools/node-pkg/node_modules/.bin/jest --coverage",
+    "fix-packages": "npx sort-package-json@1.46.0 'packages/*/package.json'",
     "build": "rush build",
     "clean": "lerna exec -- 'rm -rf dist'",
     "test": "jest",

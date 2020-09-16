@@ -1,12 +1,22 @@
 {
   "name": "io-ts-extra",
   "version": "0.10.5",
+  "keywords": [
+    "typescript",
+    "validation",
+    "inference",
+    "codecs",
+    "types",
+    "runtime",
+    "io-ts",
+    "pattern matching"
+  ],
+  "homepage": "https://github.com/mmkal/ts/tree/main/packages/io-ts-extra#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/mmkal/ts.git",
     "directory": "packages/io-ts-extra"
   },
-  "homepage": "https://github.com/mmkal/ts/tree/main/packages/io-ts-extra#readme",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,16 +29,6 @@
     "fp-ts": "^2.1.0",
     "io-ts": "^2.2.4"
   },
-  "keywords": [
-    "typescript",
-    "validation",
-    "inference",
-    "codecs",
-    "types",
-    "runtime",
-    "io-ts",
-    "pattern matching"
-  ],
   "devDependencies": {
     "@mmkal/node-pkg": "0.0.1",
     "@types/js-yaml": "~3.12.5",

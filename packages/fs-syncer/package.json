@@ -1,18 +1,6 @@
 {
   "name": "fs-syncer",
   "version": "0.2.4",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mmkal/ts.git",
-    "directory": "packages/fs-syncer"
-  },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "run tsc -p .",
-    "lint": "run eslint --cache .",
-    "test": "run jest"
-  },
   "keywords": [
     "fs",
     "file",
@@ -25,6 +13,18 @@
     "read",
     "write"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmkal/ts.git",
+    "directory": "packages/fs-syncer"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "run tsc -p .",
+    "lint": "run eslint --cache .",
+    "test": "run jest"
+  },
   "devDependencies": {
     "@mmkal/node-pkg": "0.0.1",
     "expect-type": "0.7.9"
