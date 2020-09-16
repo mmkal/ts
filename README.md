@@ -3,7 +3,7 @@
 [![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
 [![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts)
 
-Monorepo of assorted typescript projects.
+Monorepo of typescript projects.
 
 ## Packages
 
@@ -15,27 +15,57 @@ Monorepo of assorted typescript projects.
 - [memorable-moniker](https://github.com/mmkal/ts/tree/main/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
 <!-- codegen:end -->
 
+### Development
+
+Packages are managed using [rush](https://rushjs.io/pages/developer/new_developer/). Make sure rush is installed:
+
+```bash
+npm install --global @microsoft/rush
+```
+
+Then install, build, lint and test with:
+
+```bash
+rush update
+rush build
+rush lint
+rush test
+```
+
+`rush update` should be run when updating the main branch too.
+
+___
+
+Add a dependency to a package (for example, adding lodash to fictional package in this monorepo `some-pkg`):
+
+```bash
+cd packages/some-pkg
+rush add --package lodash
+rush add --package @types/lodash --dev
+```
+
+You can also manually edit package.json then run `rush update`.
+
+Create a new package:
+
+```bash
+cd packages
+mkdir new-pkg
+cd new-pkg
+node ../../tools/node-pkg/init # sets up package.json, .eslintrc.js, tsconfig.json, jest.config.js
+```
+
+<!-- todo: make this step unnecessary -->
+Then open `rush.json`, find the `projects` array, and adda new entry: `{ "packageName": "new-pkg", "projectFolder": "packages/new-pkg" }`
+
 <details>
 <summary>Publishing - for maintainers</summary>
 
-The below instructions only apply to maintainers of this repo - i.e. people with write permissions to npm and github for these packages. If you're not one of those people, feel free to ignore!
+### Previously
 
-### Canary releases
+Old instructions:
 
-GitHub Actions does a canary/prerelease publish for each package when commit messages include `/publish-canary`. The version is based on the commit date and hash, and the "dist-tag" is the branch name.
-
-### Non-canary releases
-
-These are done manually, via `yarn publish-packages`. To have permissions to run that, `~/.npmrc` needs to be configured for the npm package registry, meaning it needs a line like this:
-
-```
-//registry.npmjs.org/:_authToken=TOKEN
-```
-
-Where `TOKEN` is created from https://www.npmjs.com/settings/YOUR_USERNAME/tokens. For GitHub releases, a `GH_TOKEN` environment variables is needed - you can create one here: https://github.com/settings/tokens
-
-### Previously - GitHub Packages
-
-The old instructions for publishing to GitHub Packages' npm registry can be found here: https://github.com/mmkal/ts/tree/56bed6ba6c3fa7eca06c9f73adf104438e9b0f8a
+- For creating canary releases: https://github.com/mmkal/ts/tree/fc5f2dd50a04439573bcfb1f4b7bf0cad59c1c59
+- For publishing to GitHub Packages' npm registry: https://github.com/mmkal/ts/tree/56bed6ba6c3fa7eca06c9f73adf104438e9b0f8a
 
 </details>
