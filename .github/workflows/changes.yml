@@ -84,11 +84,12 @@ jobs:
             issue_number: context.payload.pull_request.number,
             body: [
               `@${{ github.actor }} - changes were pushed to your branch: ${process.env.CHANGE_HASH}.`,
+              '\n\n',
               `To ensure GitHub Actions runs all checks, you can push changes as normal, `,
               `or close and re-open the pull request, if no further changes are required.`,
               '\n\n',
               `This is necessary because GitHub actions currently don't allow workflows to trigger other workflows. `,
-              `See [https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2](this support post) `,
+              `See [this support post](https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2) `,
               `for more info and updates on whether this limitation still applies.`,
             ].join('')
           })
