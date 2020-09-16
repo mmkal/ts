@@ -5,15 +5,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 10.x]
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: ${{ matrix.node-version }}
     - name: run ci
       run: |
         node common/scripts/install-run-rush.js install
         node common/scripts/install-run-rush.js build
         node common/scripts/install-run-rush.js lint
         node common/scripts/install-run-rush.js test
-    # todo: code coverage
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: run tests
+      run: |
+        node common/scripts/install-run-rush.js install
+        node common/scripts/install-run-rush.js build
+        npm run coverage
+    - uses: codecov/codecov-action@v1
