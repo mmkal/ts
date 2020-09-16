@@ -62,6 +62,7 @@
      * The default value is false to avoid legacy compatibility issues.
      * It is strongly recommended to set strictPeerDependencies=true.
      */
+    // todo: enable!
     "strictPeerDependencies": false,
 
     /**
