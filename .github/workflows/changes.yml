@@ -27,7 +27,7 @@ jobs:
         # to type 'major'
         FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.0-pr2172.0/node_modules/@microsoft/rush-lib/lib/api/ChangeFile.js"
         TO_BE_REPLACED='_getTimestamp(useSeconds = false) {'
-        REPLACEMENT="$TO_BE_REPLACED \n return 'pr_$PR_NUMBER' // patched_code'
+        REPLACEMENT="$TO_BE_REPLACED \n return 'pr_$PR_NUMBER' // patched_code \n"
 
         echo "patching $TO_BE_REPLACED in $FILE_TO_BE_EDITED"
         sed -i "s~$TO_BE_REPLACED~$REPLACEMENT~g" $FILE_TO_BE_EDITED
