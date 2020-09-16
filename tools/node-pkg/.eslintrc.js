@@ -1,13 +1,16 @@
+require('@rushstack/eslint-config/patch/modern-module-resolution')
+
+patchModuleResolver()
+
 module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.eslint.json', // https://github.com/typescript-eslint/typescript-eslint/issues/967#issuecomment-530907956
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    extraFileExtensions: ['.md', '.yml'],
-  },
-  plugins: ['@typescript-eslint/eslint-plugin', 'prettier', 'codegen', 'unicorn', 'jest', 'import'],
-  env: {'jest/globals': true, node: true},
+  plugins: [
+    '@typescript-eslint/eslint-plugin',
+    'prettier',
+    'codegen',
+    'unicorn',
+    'jest',
+    'import',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -22,11 +25,26 @@ module.exports = {
     'dist',
     'node_modules',
     'coverage',
+    '.eslintrc.js', // getting Parsing error: "parserOptions.project" has been set for @typescript-eslint/parser. Can be handled with overrides but probably worth just waiting for https://github.com/eslint/rfcs/9 and ignoring js completely until then
     '!.github', // https://github.com/eslint/eslint/issues/8429#issuecomment-355967308
   ],
+  parserOptions: {
+    project: './tsconfig.json', // https://github.com/typescript-eslint/typescript-eslint/issues/967#issuecomment-530907956
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    extraFileExtensions: ['.md', '.yml'],
+  },
+  settings: {
+    jest: {
+      version: 26, // vscode extension can't find jest - "Error while loading rule 'jest/no-deprecated-functions': Unable to detect Jest version - please ensure jest package is installed, or otherwise set version explicitly"
+    },
+  },
+  // parserOptions: { tsconfigRootDir: __dirname }
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc')],
-    'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
+
+    // todo: enable
+    // 'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
 
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -37,7 +55,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     '@typescript-eslint/no-unused-vars': [
-      'error',
+      'off',
       {
         varsIgnorePattern: '^_',
         argsIgnorePattern: '^_',
@@ -101,7 +119,7 @@ module.exports = {
     'no-warning-comments': 'off',
     'no-dupe-class-members': 'off',
 
-    // Sindre Sorwho? (defaults from unicorn/xo that feel a bit restrictive, for now)
+    // defaults from unicorn/xo that feel a bit restrictive, for now
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/no-fn-reference-in-iterator': 'off',
@@ -132,4 +150,30 @@ module.exports = {
       },
     },
   ],
+}
+
+/** patch eslint's module resolver to abstract the need to use peer dependencies for every single plugin/config */
+function patchModuleResolver() {
+  // todo: when https://github.com/eslint/rfcs/pull/9 is implemented, none of this nonsense will be necessary.
+  // plugins/configs will be loadable as objects then.
+  const ModuleResolver = require('eslint/lib/shared/relative-module-resolver')
+  if (!ModuleResolver.originalResolve) {
+    ModuleResolver.originalResolve = ModuleResolver.resolve
+    ModuleResolver.resolve = (req, relTo) => {
+      try {
+        return ModuleResolver.originalResolve(req, relTo)
+      } catch (error) {
+        const plugins = new Set(module.exports.plugins)
+        const configs = new Set(module.exports.extends)
+        if (
+          plugins.has(req.replace('eslint-plugin-', ''))
+          || plugins.has(req)
+          || configs.has(req.replace('eslint-config-', ''))
+        ) {
+          return require.resolve(req)
+        }
+        throw error
+      }
+    }
+  }
 }

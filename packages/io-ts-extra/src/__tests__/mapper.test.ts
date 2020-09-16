@@ -27,7 +27,7 @@ describe('mapper', () => {
           context:
             - key: ''
               type:
-                name: 'boolean |> function (b) { ... } |> Array<string>'
+                name: boolean |> b => b.toString().split('') |> Array<string>
                 from:
                   name: boolean
                   _tag: BooleanType
@@ -146,7 +146,9 @@ describe('parser', () => {
           context:
             - key: ''
               type:
-                name: 'boolean |> function (b) { ... } |> string'
+                name: >-
+                  boolean |> b => (b ? util_1.RichError.throw({ b }) : 'nope') |>
+                  string
                 from:
                   name: boolean
                   _tag: BooleanType
@@ -154,8 +156,9 @@ describe('parser', () => {
                   name: string
                   _tag: StringType
               actual: true
-            - key: |-
-                decoder [function (b) { ... }]: error thrown decoding: [Error: {
+            - key: >-
+                decoder [b => (b ? util_1.RichError.throw({ b }) : 'nope')]: error
+                thrown decoding: [Error: {
                   "b": true
                 }]
               type: *ref_0
