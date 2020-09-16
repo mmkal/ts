@@ -39,6 +39,6 @@
     "@types/lodash": "~4.14.161",
     "@types/seedrandom": "2.4.28",
     "expect-type": "0.7.9",
-    "lodash": "~4.17.20"
+    "lodash": "^4.17.15"
   }
 }
