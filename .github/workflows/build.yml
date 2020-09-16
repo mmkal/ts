@@ -1,0 +1,47 @@
+name: build
+on:
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 10.x]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: run ci
+      run: |
+        node common/scripts/install-run-rush.js install
+
+        # horrible workaround for https://github.com/microsoft/rushstack/issues/2203 - replace code inline
+        FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.0-pr2172.0/node_modules/@microsoft/rush-lib/lib/cli/RushCommandLineParser.js"
+        TO_BE_REPLACED='if (!process.exitCode || process.exitCode > 0) {'
+        REPLACEMENT='if (process.exitCode > 0) { // patched_code'
+
+        echo "patching $TO_BE_REPLACED in $FILE_TO_BE_EDITED"
+        sed -i "s~$TO_BE_REPLACED~$REPLACEMENT~g" $FILE_TO_BE_EDITED
+
+        echo "grepping for patched code, this will fail if rush code changed recently, and the sed command didn't replace anything"
+        cat $FILE_TO_BE_EDITED | grep patched_code
+
+        node common/scripts/install-run-rush.js build
+        node common/scripts/install-run-rush.js lint
+        node common/scripts/install-run-rush.js test
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: run tests
+      run: |
+        node common/scripts/install-run-rush.js install
+        node common/scripts/install-run-rush.js build
+        npm run coverage
+    - uses: codecov/codecov-action@v1

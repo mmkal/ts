@@ -1,0 +1,36 @@
+{
+  "name": "@mmkal/node-pkg",
+  "version": "0.0.1",
+  "private": true,
+  "description": "All-in-one dev dependency - designed for packages within this repo, but in theory could be used externally too",
+  "bin": {
+    "run": "./run.js",
+    "init": "./init.js"
+  },
+  "scripts": {
+    "build": "node run tsc --version",
+    "lint": "echo pretend i am lint",
+    "test": "echo pretend i am tests"
+  },
+  "dependencies": {
+    "typescript": "^4.0.2",
+    "@types/jest": "~26.0.13",
+    "@types/node": "^14.10.1",
+    "eslint": "~7.9.0",
+    "eslint-plugin-prettier": "~3.1.4",
+    "eslint-plugin-unicorn": "~21.0.0",
+    "eslint-plugin-jest": "~24.0.1",
+    "eslint-plugin-codegen": "~0.12.0",
+    "prettier": "~2.1.1",
+    "eslint-config-xo": "~0.32.1",
+    "eslint-config-xo-typescript": "~0.32.0",
+    "eslint-plugin-import": "~2.22.0",
+    "@typescript-eslint/eslint-plugin": "~4.1.0",
+    "@typescript-eslint/parser": "~4.1.1",
+    "jest": "~26.4.2",
+    "ts-jest": "~26.3.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "~7.2.2"
+  }
+}

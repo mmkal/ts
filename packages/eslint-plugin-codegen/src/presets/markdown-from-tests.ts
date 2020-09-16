@@ -24,8 +24,7 @@ export const markdownFromTests: Preset<{source: string; headerLevel?: number}> =
   const sourceCode = fs.readFileSync(sourcePath).toString()
   const ast = parse(sourceCode, {sourceType: 'module', plugins: ['typescript']})
   const specs: any[] = []
-  // todo: fix types/babel package versions - shouldn't need any here
-  traverse(ast as any, {
+  traverse(ast, {
     CallExpression(ce) {
       const identifier: any = lodash.get(ce, 'node')
       const isSpec = identifier && ['it', 'test'].includes(lodash.get(identifier, 'callee.name'))

@@ -9,7 +9,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "run tsc -p .",
+    "lint": "run eslint --cache .",
+    "test": "run jest"
   },
   "keywords": [
     "fs",
@@ -22,5 +24,9 @@
     "recursive",
     "read",
     "write"
-  ]
+  ],
+  "devDependencies": {
+    "@mmkal/node-pkg": "0.0.1",
+    "expect-type": "0.7.9"
+  }
 }
