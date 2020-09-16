@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore: enable consistent versions (#163)",
+      "type": "patch",
+      "packageName": "memorable-moniker"
+    }
+  ],
+  "packageName": "memorable-moniker",
+  "email": "mmkal@users.noreply.github.com"
+}
