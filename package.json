@@ -36,7 +36,7 @@
     "@babel/preset-typescript": "7.10.4",
     "@types/dedent": "0.7.0",
     "@types/eslint": "7.2.2",
-    "@types/jest": "26.0.13",
+    "@types/jest": "26.0.14",
     "@types/js-yaml": "3.12.5",
     "@types/lodash": "4.14.161",
     "@types/minimatch": "3.0.3",
