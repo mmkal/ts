@@ -375,23 +375,28 @@
     },
     {
       "packageName": "fs-syncer",
-      "projectFolder": "packages/fs-syncer"
+      "projectFolder": "packages/fs-syncer",
+      "shouldPublish": true
     },
     {
       "packageName": "expect-type",
-      "projectFolder": "packages/expect-type"
+      "projectFolder": "packages/expect-type",
+      "shouldPublish": true
     },
     {
       "packageName": "eslint-plugin-codegen",
-      "projectFolder": "packages/eslint-plugin-codegen"
+      "projectFolder": "packages/eslint-plugin-codegen",
+      "shouldPublish": true
     },
     {
       "packageName": "io-ts-extra",
-      "projectFolder": "packages/io-ts-extra"
+      "projectFolder": "packages/io-ts-extra",
+      "shouldPublish": true
     },
     {
       "packageName": "memorable-moniker",
-      "projectFolder": "packages/memorable-moniker"
+      "projectFolder": "packages/memorable-moniker",
+      "shouldPublish": true
     }
     // {
     //   /**
