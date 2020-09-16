@@ -64,12 +64,18 @@ jobs:
           remote_repo="https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git push "${remote_repo}"
 
-          echo "::set-env name=GIT_STATUS::$GIT_STATUS"
+          echo "::set-env name=CHANGE_HASH::$(git rev-parse --short HEAD)"
         else
           echo "no changes made"
         fi
-    - uses: actions/github-script@v3
-      if: ${{ env.GIT_STATUS != null }}
+    
+    # If we pushed changes to the branch, they won't trigger the main CI build because GitHub doesn't trigger
+    # workflows from commits made using ${{ secrets.GITHUB_TOKEN }} (see github.community link below). To
+    # work around this, leave a comment on the PR letting the PR creator know they can close and reopen the
+    # PR to force the build to run.
+    - name: Comment on PR
+      uses: actions/github-script@v3
+      if: ${{ env.CHANGE_HASH != null }}
       with:
         script: |
           github.issues.createComment({
@@ -77,12 +83,12 @@ jobs:
             repo: context.repo.repo,
             issue_number: context.payload.pull_request.number,
             body: [
-              `@${{ github.actor }} changes were pushed to your branch.\n\n`,
+              `@${{ github.actor }} - changes were pushed to your branch: ${process.env.CHANGE_HASH}.`,
               `To ensure GitHub Actions runs all checks, you can push changes as normal, `,
               `or close and re-open the pull request, if no further changes are required.`,
               '\n\n',
               `This is necessary because GitHub actions currently don't allow workflows to trigger other workflows. `,
-              `See https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 `,
+              `See [https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2](this support post) `,
               `for more info and updates on whether this limitation still applies.`,
             ].join('')
           })
