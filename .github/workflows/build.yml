@@ -1,6 +1,8 @@
 name: build
 on:
-  - push
+  push: {}
+  pull_request:
+    types: [reopened]
 
 
 jobs:
