@@ -1,5 +1,5 @@
 {
-  "name": "@mmkal/node-pkg",
+  "name": "@mmkal/builder",
   "version": "0.0.1",
   "private": true,
   "description": "All-in-one dev dependency - designed for packages within this repo, but in theory could be used externally too",
@@ -9,8 +9,8 @@
   },
   "scripts": {
     "build": "node run tsc --version",
-    "lint": "echo pretend i am lint",
-    "test": "echo pretend i am tests"
+    "lint": "node run eslint --version",
+    "test": "node run jest --version"
   },
   "dependencies": {
     "typescript": "^4.0.2",

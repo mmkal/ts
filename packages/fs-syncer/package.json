@@ -26,7 +26,7 @@
     "test": "run jest"
   },
   "devDependencies": {
-    "@mmkal/node-pkg": "0.0.1",
+    "@mmkal/builder": "0.0.1",
     "expect-type": "0.7.9"
   }
 }

@@ -30,7 +30,7 @@
     "io-ts": "^2.2.4"
   },
   "devDependencies": {
-    "@mmkal/node-pkg": "0.0.1",
+    "@mmkal/builder": "0.0.1",
     "@types/js-yaml": "~3.12.5",
     "@types/lodash": "~4.14.161",
     "expect-type": "0.7.9",

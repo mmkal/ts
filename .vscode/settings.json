@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "tools/node-pkg/node_modules/typescript/lib",
+  "typescript.tsdk": "tools/builder/node_modules/typescript/lib",
   "files.exclude": {
     "**/.git": false
   },
@@ -14,7 +14,7 @@
   "javascript.implicitProjectConfig.checkJs": true,
   "eslint.validate": ["markdown", "javascript", "typescript", "yaml"],
   "eslint.packageManager": "pnpm",
-  "eslint.nodePath": "tools/node-pkg/node_modules",
+  "eslint.nodePath": "tools/builder/node_modules",
   "eslint.debug": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

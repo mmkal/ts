@@ -369,8 +369,8 @@
    */
   "projects": [
     {
-      "packageName": "@mmkal/node-pkg",
-      "projectFolder": "tools/node-pkg",
+      "packageName": "@mmkal/builder",
+      "projectFolder": "tools/builder",
       "cyclicDependencyProjects": ["eslint-plugin-codegen"]
     },
     {

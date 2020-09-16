@@ -1,1 +1,1 @@
-module.exports = require('@mmkal/node-pkg/jest.config')
+module.exports = require('@mmkal/builder/jest.config')

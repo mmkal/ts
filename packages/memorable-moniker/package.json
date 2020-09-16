@@ -35,7 +35,7 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "@mmkal/node-pkg": "0.0.1",
+    "@mmkal/builder": "0.0.1",
     "@types/lodash": "~4.14.161",
     "@types/seedrandom": "2.4.28",
     "expect-type": "0.7.9",

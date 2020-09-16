@@ -9,7 +9,7 @@ dependencies:
   '@rush-temp/fs-syncer': 'file:projects/fs-syncer.tgz'
   '@rush-temp/io-ts-extra': 'file:projects/io-ts-extra.tgz'
   '@rush-temp/memorable-moniker': 'file:projects/memorable-moniker.tgz'
-  '@rush-temp/node-pkg': 'file:projects/node-pkg.tgz'
+  '@rush-temp/builder': 'file:projects/builder.tgz'
   '@types/babel__generator': 7.6.1
   '@types/babel__traverse': 7.0.14
   '@types/dedent': 0.7.0
@@ -5522,7 +5522,7 @@ packages:
       integrity: sha512-BNatX8k56q6nSTO9fJqPYnd8jzEoS7JUS2rnWoDmNIDAqKCCAUqjK3/SZRiXYQMbmGD1ZND/Vl1+JhqQ96KNLw==
       tarball: 'file:projects/memorable-moniker.tgz'
     version: 0.0.0
-  'file:projects/node-pkg.tgz':
+  'file:projects/builder.tgz':
     dependencies:
       '@rushstack/eslint-config': 1.3.0_eslint@7.9.0+typescript@4.0.2
       '@types/eslint': 7.2.2
@@ -5545,10 +5545,10 @@ packages:
       ts-jest: 26.3.0_jest@26.4.2+typescript@4.0.2
       typescript: 4.0.2
     dev: false
-    name: '@rush-temp/node-pkg'
+    name: '@rush-temp/builder'
     resolution:
       integrity: sha512-97eQlXM/PoZXLzAQwFDFUASjx3OCU1Ww2pxfEDZF0SNppkTXoA+OvNhedjgxhPd72dBFtGDpw8TCErpNx4184Q==
-      tarball: 'file:projects/node-pkg.tgz'
+      tarball: 'file:projects/builder.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
@@ -5562,7 +5562,7 @@ specifiers:
   '@rush-temp/fs-syncer': 'file:./projects/fs-syncer.tgz'
   '@rush-temp/io-ts-extra': 'file:./projects/io-ts-extra.tgz'
   '@rush-temp/memorable-moniker': 'file:./projects/memorable-moniker.tgz'
-  '@rush-temp/node-pkg': 'file:./projects/node-pkg.tgz'
+  '@rush-temp/builder': 'file:./projects/builder.tgz'
   '@types/babel__generator': ~7.6.1
   '@types/babel__traverse': ~7.0.14
   '@types/dedent': ~0.7.0

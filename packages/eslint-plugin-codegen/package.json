@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@babel/types": "~7.11.5",
-    "@mmkal/node-pkg": "0.0.1",
+    "@mmkal/builder": "0.0.1",
     "@types/babel__generator": "~7.6.1",
     "@types/babel__traverse": "~7.0.14",
     "@types/dedent": "~0.7.0",
