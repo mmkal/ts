@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore: bump io-ts version (#161)",
+      "type": "patch",
+      "packageName": "io-ts-extra"
+    }
+  ],
+  "packageName": "io-ts-extra",
+  "email": "mmkal@users.noreply.github.com"
+}
