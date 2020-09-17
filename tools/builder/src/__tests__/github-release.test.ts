@@ -17,8 +17,6 @@ expect.addSnapshotSerializer({
 jest.mock('child_process')
 jest.mock('../rush')
 
-beforeEach(jest.clearAllMocks)
-
 type PartialMock<T> = {
   [K in keyof T]+?: T[K] extends (...args: infer A) => infer R
     ? jest.Mock<R, A>
@@ -47,10 +45,14 @@ const getMockReleaseParams = () =>
     },
   })
 
-jest.spyOn(rushMock, 'getChangeLog').mockReturnValue(changelogSamples().multipleChanges)
-jest.spyOn(rushMock, 'getRushJson').mockReturnValue({
-  directory: 'a/b/c',
-  rush: {projects: [{projectFolder: 'd/e/f'}]} as any,
+beforeEach(() => {
+  jest.spyOn(rushMock, 'getChangeLog').mockReturnValue(changelogSamples().multipleChanges)
+  jest.spyOn(rushMock, 'getRushJson').mockReturnValue({
+    directory: 'a/b/c',
+    rush: {projects: [{projectFolder: 'd/e/f'}]} as any,
+  })
+
+  jest.clearAllMocks()
 })
 
 test('local', async () => {
@@ -134,14 +136,6 @@ test('create release with header and footer', async () => {
             - chore: patch one.2 (@test-author) abc1234
             - chore: patch one.3 (@test-author)
             - chore: patch one.4 def9876
-
-            I am a footer
-      - - owner: test-owner
-          repo: test-repo
-          tag_name: other-pkg-v3
-          name: sample-pkg
-          body: |-
-            # I am a header
 
             I am a footer
   `)
