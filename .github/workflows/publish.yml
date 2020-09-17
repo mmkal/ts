@@ -12,11 +12,12 @@ jobs:
         node-version: 12.x
     - name: publish
       env:
+        # referenced in common/config/rush/.npmrc-publish 
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       run: |
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git config --global user.name "${{ github.actor }}"
-        git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+        git remote set-url origin "https://${{ github.actor }}:${{ secrets.GH_CI_TOKEN }}@github.com/${{ github.repository }}.git"
 
         node common/scripts/install-run-rush.js install
         node common/scripts/install-run-rush.js build
