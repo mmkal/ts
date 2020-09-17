@@ -18,14 +18,28 @@ jobs:
         # git config --global user.name "${{ github.actor }}"
         # git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
-        echo running whoami
-        npm whoami || echo failed
+        echo running whoami1
+        npm whoami || echo failed1
+
+        echo '//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}' > ~/.npmrc
+
+        echo running whoami2
+        npm whoami || echo failed2
+
+        echo '//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}' > .npmrc
+
+        echo running whoami3
+        npm whoami || echo failed3
 
         echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+
+        echo running whoami4
+        npm whoami || echo failed4
+
         echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
 
-        echo running whoami again
-        npm whoami || echo failedagain
+        echo running whoami5
+        npm whoami || echo failed5
 
         # node common/scripts/install-run-rush.js install
         # node common/scripts/install-run-rush.js build
