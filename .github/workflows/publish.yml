@@ -22,9 +22,10 @@ jobs:
         npm whoami || echo failed
 
         echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+        echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
 
         echo running whoami again
-        npm whoami || echo failed
+        npm whoami || echo failedagain
 
         # node common/scripts/install-run-rush.js install
         # node common/scripts/install-run-rush.js build
