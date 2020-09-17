@@ -12,18 +12,12 @@ jobs:
         node-version: 12.x
     - name: publish
       env:
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       run: |
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git config --global user.name "${{ github.actor }}"
         git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
-        npm whoami || echo failed
-
-        cp common/config/rush/.npmrc-publish ~/.npmrc
-
-        npm whoami
-
-        # node common/scripts/install-run-rush.js install
-        # node common/scripts/install-run-rush.js build
-        # node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
+        node common/scripts/install-run-rush.js install
+        node common/scripts/install-run-rush.js build
+        node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
