@@ -21,7 +21,7 @@ jobs:
         echo running whoami
         npm whoami || echo failed
 
-        cp common/config/rush/.npmrc-publish ~/.npmrc
+        echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" ~/.npmrc
 
         echo running whoami again
         npm whoami || echo failed
