@@ -4,7 +4,7 @@ Name generator with some in-built dictionaries and presets.
 
 <!-- codegen:start {preset: badges} -->
 [![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
-[![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/main/)
+[![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/main/packages/memorable-moniker)
 [![npm version](https://badge.fury.io/js/memorable-moniker.svg)](https://npmjs.com/package/memorable-moniker)
 <!-- codegen:end -->
 
@@ -65,13 +65,13 @@ const veryFormalAnimalGenerator = nicknames.modify({
 })
 ```
 
-**rng** -- A random-number generator. This is a function that should return a value between 0 and 1. The lower bound should be inclusive and the upper bound exclusive. As a convenience, the default random-number generator has a `rng.seed('...')` function to allow getting a seeded rng based on the original. Usage:
+**rng** -- A random-number generator. A function that should return a value between 0 and 1. The lower bound should be inclusive and the upper bound exclusive. As a convenience, the default random-number generator has an `rng.seed('...')` function to allow getting a seeded rng based on the original. Usage:
 
 ##### Example
 
 ```typescript
 const myNameGenerator = nicknames.modify(params => ({ rng: params.rng.seed('my-seed-value') }))
-console.log(myNameGenerator.next()) // always returns the same thing
+console.log(myNameGenerator.next()) // always returns the same value
 ```
 
 **format** -- A function which transforms dictionary words before returning them from the generator. For example, you could convert from kebab-case to snake_case with:
