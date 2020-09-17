@@ -53,18 +53,18 @@ jest.spyOn(rushMock, 'getRushJson').mockReturnValue({
   rush: {projects: [{projectFolder: 'd/e/f'}]} as any,
 })
 
-test.only('local', async () => {
+test('local', async () => {
   jest.spyOn(rushMock, 'getRushJson').mockImplementation(jest.requireActual('../rush').getRushJson)
   jest.spyOn(rushMock, 'getChangeLog').mockImplementation(jest.requireActual('../rush').getChangeLog)
   const params = getMockReleaseParams()
-  const withTags = lodash.merge(params, { 
+  const withTags = lodash.merge(params, {
     context: {
       payload: {
         inputs: {
-          tags: 'thistagdoesnotexist123454321', //'eslint-plugin-codegen_v0.12.2,io-ts-extra_v0.10.6,memorable-moniker_v0.2.15',
-          footer: 'test footer'
-        }
-      }
+          tags: 'thistagdoesnotexist123454321',
+          footer: 'test footer',
+        },
+      },
     },
   })
 

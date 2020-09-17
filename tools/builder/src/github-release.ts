@@ -35,17 +35,23 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
     .map(({project, tag}): Parameters<typeof github.repos.createRelease>[0] => {
       const changelog = getChangeLog(join(directory, project.projectFolder))
       const {name, body} = getReleaseContent(changelog, tag)
-      const inputs = context?.payload?.inputs
 
       return {
         owner: context.repo.owner,
         repo: context.repo.repo,
         tag_name: tag,
         name,
-        body: [inputs?.header, body, inputs?.footer].filter(Boolean).join('\n\n'),
+        body,
       }
     })
     .filter(p => Boolean(p?.name && p.body))
+    .map(p => {
+      const inputs = context?.payload?.inputs
+      return {
+        ...p,
+        body: [inputs?.header, p?.body, inputs?.footer].filter(Boolean).join('\n\n'),
+      }
+    })
     .value()
 
   logger.info('releasing', allReleaseParams)
@@ -61,7 +67,7 @@ export const getReleaseContent = (changelog: IChangelog, tag: string) => {
   const ordering: Record<string, number | undefined> = {
     major: 0,
     minor: 1,
-  } 
+  }
 
   const body = lodash
     .chain(relevantEntries)

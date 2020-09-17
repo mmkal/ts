@@ -9,7 +9,7 @@ export const getRushJson = (): {directory: string; rush: RushConfiguration} => {
   const rushJsonPath = findUp.sync('rush.json') as string
   return {
     directory: path.dirname(rushJsonPath),
-    rush: ESON.parse(fs.readFileSync(rushJsonPath).toString())
+    rush: ESON.parse(fs.readFileSync(rushJsonPath).toString()),
   }
 }
 

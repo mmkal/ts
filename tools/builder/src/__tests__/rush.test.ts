@@ -34,6 +34,6 @@ test('snapshot changelog.json', () => {
 test('non-existent changelog', () => {
   expect(getChangeLog('this/path/does/not/exist')).toEqual({
     name: '',
-    entries: []
+    entries: [],
   })
 })
