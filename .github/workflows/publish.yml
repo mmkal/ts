@@ -12,6 +12,4 @@ jobs:
     - run: |
         node common/scripts/install-run-rush.js install
         node common/scripts/install-run-rush.js build
-        node common/scripts/install-run-rush.js publish --target
-        echo "Log level: ${{ github.event.inputs.logLevel }}"
-        echo "Tags: ${{ github.event.inputs.tags }}"
+        node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
