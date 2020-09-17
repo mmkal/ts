@@ -1,34 +1,13 @@
 import {createGitHubRelease, getReleaseContent} from '../github-release'
-import * as jsYaml from 'js-yaml'
 import * as rushMock from '../rush'
 import * as childProcess from 'child_process'
 import * as lodash from 'lodash'
+import {addYamlSerializer, buildMockParams} from './util'
 
-expect.addSnapshotSerializer({
-  test: val => typeof val !== 'function',
-  print: val => jsYaml.safeDump(val).trim(),
-})
-
-expect.addSnapshotSerializer({
-  test: jest.isMockFunction,
-  print: (val: any) => jsYaml.safeDump({mock: true, calls: val.mock.calls}).trim(),
-})
+addYamlSerializer()
 
 jest.mock('child_process')
 jest.mock('../rush')
-
-type PartialMock<T> = {
-  [K in keyof T]+?: T[K] extends (...args: infer A) => infer R
-    ? jest.Mock<R, A>
-    : T[K] extends Array<infer X>
-    ? Array<PartialMock<X>>
-    : T[K] extends string | boolean | number | symbol | bigint
-    ? T[K]
-    : PartialMock<T[K]>
-}
-
-const buildMockParams = <Arg>(_fn: (...args: [Arg]) => unknown) => (partial: PartialMock<Arg>) =>
-  partial as Arg & typeof partial
 
 const getMockReleaseParams = () =>
   buildMockParams(createGitHubRelease)({
