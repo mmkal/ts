@@ -41,8 +41,8 @@ module.exports = {
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc')],
 
-    // todo: enable
-    // 'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
+    // todo: move ../../scripts somewhere that makes more sense
+    'codegen/codegen': ['warn', {presets: {badges: require('../../scripts/badges')}}],
 
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -158,6 +158,9 @@ function patchModuleResolver() {
   if (!ModuleResolver.originalResolve) {
     ModuleResolver.originalResolve = ModuleResolver.resolve
     ModuleResolver.resolve = (req, relTo) => {
+      if (req === 'codegen') {
+        return require('../../packages/eslint-plugin-codegen')
+      }
       try {
         return ModuleResolver.originalResolve(req, relTo)
       } catch (error) {

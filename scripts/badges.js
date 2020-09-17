@@ -1,8 +1,8 @@
-const dedent = require('dedent')
-const readPkgUp = require('read-pkg-up')
+const dedent = require('../packages/eslint-plugin-codegen/node_modules/dedent')
+const readPkgUp = require('../packages/eslint-plugin-codegen/node_modules/read-pkg-up')
 const path = require('path')
 
-/** @type {import('eslint-plugin-codegen').Preset<{}>} */
+/** @type {import('../packages/eslint-plugin-codegen').Preset<{}>} */
 module.exports = params => {
   const {path: rootPath} = readPkgUp.sync()
   const {path: leafPath, packageJson: leafPkg} = readPkgUp.sync({cwd: params.meta.filename})
