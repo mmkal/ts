@@ -48,13 +48,13 @@ const getMockReleaseParams = () =>
   })
 
 jest.spyOn(rushMock, 'getChangeLog').mockReturnValue(changelogSamples().multipleChanges)
-jest.spyOn(rushMock, 'getRushJson').mockReturnValue({projects: [{}]} as any)
+jest.spyOn(rushMock, 'getRushJson').mockReturnValue({
+  directory: 'a/b/c',
+  rush: {projects: [{projectFolder: 'd/e/f'}]} as any,
+})
 
 test('create release', async () => {
   jest.spyOn(childProcess, 'execSync').mockReturnValue(Buffer.from('some-pkg_v2\nother-pkg-v3'))
-
-  jest.spyOn(rushMock, 'getChangeLog').mockReturnValue(changelogSamples().multipleChanges)
-  jest.spyOn(rushMock, 'getRushJson').mockReturnValue({projects: [{}]} as any)
 
   const params = getMockReleaseParams()
   await createGitHubRelease(params)
@@ -83,9 +83,6 @@ test('create release', async () => {
 
 test('create release with header and footer', async () => {
   jest.spyOn(childProcess, 'execSync').mockReturnValue(Buffer.from('some-pkg_v2\nother-pkg-v3'))
-
-  jest.spyOn(rushMock, 'getChangeLog').mockReturnValue(changelogSamples().multipleChanges)
-  jest.spyOn(rushMock, 'getRushJson').mockReturnValue({projects: [{}]} as any)
 
   const params = getMockReleaseParams()
   const withHeaderAndFooter = lodash.merge(params, {

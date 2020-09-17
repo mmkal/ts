@@ -4,6 +4,7 @@ import * as lodash from 'lodash'
 import type {Context} from '@actions/github/lib/context'
 import type {GitHub} from '@actions/github/lib/utils'
 import type {IChangelog} from '@microsoft/rush-lib/lib/api/Changelog'
+import {join} from 'path'
 
 interface CreateReleaseParams {
   context: Context
@@ -26,13 +27,13 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
       .map(t => t.trim())
       .filter(Boolean)
 
-  const rushJson = getRushJson()
+  const {rush, directory} = getRushJson()
 
   const allReleaseParams = lodash
-    .chain(rushJson.projects)
+    .chain(rush.projects)
     .flatMap(project => tags.map(tag => ({tag, project})))
     .map(({project, tag}): Parameters<typeof github.repos.createRelease>[0] => {
-      const changelog = getChangeLog(project.projectFolder)
+      const changelog = getChangeLog(join(directory, project.projectFolder))
       const {name, body} = getReleaseContent(changelog, tag)
       const inputs = context?.payload?.inputs
 
