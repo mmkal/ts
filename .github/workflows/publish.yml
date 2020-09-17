@@ -29,7 +29,7 @@ jobs:
 
         node common/scripts/install-run-rush.js install
         node common/scripts/install-run-rush.js build
-        # node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
+        node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
     - name: create github release
       uses: actions/github-script@v3
       with:
