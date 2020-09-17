@@ -58,6 +58,11 @@ export const getReleaseContent = (changelog: IChangelog, tag: string) => {
   const versions = lodash.uniq(relevantEntries.map(e => 'v' + e.version))
   const name = `${changelog.name} ${versions.join(', ')}`.trim()
 
+  const ordering: Record<string, number | undefined> = {
+    major: 0,
+    minor: 1,
+  } 
+
   const body = lodash
     .chain(relevantEntries)
     .flatMap(({comments, ...e}) => Object.entries(comments).map(([type, comment]) => ({...e, type, comment})))
@@ -68,7 +73,7 @@ export const getReleaseContent = (changelog: IChangelog, tag: string) => {
     }))
     .groupBy(e => e.type)
     .entries()
-    .sortBy(([type]) => (type === 'major' ? 0 : type === 'minor' ? 1 : 2))
+    .sortBy(([type]) => ordering[type] ?? 2)
     .map(([type, group]) => [`## ${type} changes\n`, ...group.map(c => c.bullet)].join('\n'))
     .join('\n\n')
     .value()
