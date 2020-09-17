@@ -14,15 +14,17 @@ jobs:
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git config --global user.name "${{ github.actor }}"
-        git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+        # git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        # git config --global user.name "${{ github.actor }}"
+        # git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
+        echo running whoami
         npm whoami || echo failed
 
         cp common/config/rush/.npmrc-publish ~/.npmrc
 
-        npm whoami
+        echo running whoami again
+        npm whoami || echo failed
 
         # node common/scripts/install-run-rush.js install
         # node common/scripts/install-run-rush.js build
