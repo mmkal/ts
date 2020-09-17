@@ -23,12 +23,14 @@ const fakeValue = <T>(fake: T) => (real: T) => {
  * @param param an object consisting of `context` and `github` values, as supplied by the `github-script` action.
  */
 export const createGitHubRelease = async ({context, github}: {context: Context; github: GH}) => {
-  const tags = fakeValue(['io-ts-extra_v0.10.6'])(childProcess
-    .execSync('git tag --points-at HEAD')
-    .toString()
-    .split('\n')
-    .map(t => t.trim())
-    .filter(Boolean))
+  const tags = fakeValue(['io-ts-extra_v0.10.6', 'eslint-plugin-codegen_v0.12.2', 'memorable-moniker_v0.2.15'])(
+    childProcess
+      .execSync('git tag --points-at HEAD')
+      .toString()
+      .split('\n')
+      .map(t => t.trim())
+      .filter(Boolean)
+  )
 
   const rushJson = getRushJson()
 
@@ -44,7 +46,7 @@ export const createGitHubRelease = async ({context, github}: {context: Context; 
           repo: context.repo.repo,
           tag_name: tag,
           name,
-          body,
+          body: [context.payload?.inputs?.header, body, context.payload?.inputs?.footer].filter(Boolean).join('\n\n'),
         })
       }
     }
@@ -63,16 +65,11 @@ export const getReleaseContent = (changelog: IChangelog, tag: string) => {
     .flatMap(({comment, ...e}) => comment!.map(c => ({...e, ...c})))
     .map(e => ({
       ...e,
-      bullet: [
-        '-',
-        e.comment.replace(/\n/g, '\n  '),
-        e.author && `(@${e.author})`,
-        e.commit,
-      ].filter(Boolean).join(' ')
+      bullet: ['-', e.comment.replace(/\n/g, '\n  '), e.author && `(@${e.author})`, e.commit].filter(Boolean).join(' '),
     }))
     .groupBy(e => e.type)
     .entries()
-    .sortBy(([type]) => type === 'major' ? 0 : type === 'minor' ? 1 : 2)
+    .sortBy(([type]) => (type === 'major' ? 0 : type === 'minor' ? 1 : 2))
     .map(([type, group]) => [`## ${type} changes\n`, ...group.map(c => c.bullet)].join('\n'))
     .join('\n\n')
     .value()

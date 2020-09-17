@@ -2,6 +2,7 @@ import {createGitHubRelease, getReleaseContent} from '../github-release'
 import * as jsYaml from 'js-yaml'
 import * as rushMock from '../rush'
 import * as childProcess from 'child_process'
+import * as lodash from 'lodash'
 
 expect.addSnapshotSerializer({
   test: val => typeof val !== 'function',
@@ -72,6 +73,46 @@ test('create release', async () => {
             - chore: patch one.2 (@test-author) abc1234
             - chore: patch one.3 (@test-author)
             - chore: patch one.4 def9876
+  `)
+})
+
+test('create release with header and footer', async () => {
+  jest.spyOn(childProcess, 'execSync').mockReturnValue(Buffer.from('some-pkg_v2\nother-pkg-v3'))
+
+  jest.spyOn(rushMock, 'getChangeLog').mockReturnValue(changelogSamples().multipleChanges)
+  jest.spyOn(rushMock, 'getRushJson').mockReturnValue({projects: [{}]} as any)
+
+  const params = getMockReleaseParams()
+  const withHeaderAndFooter = lodash.merge(params, {
+    context: {
+      payload: {inputs: {header: '# I am a header', footer: 'I am a footer'}},
+    },
+  })
+  await createGitHubRelease(params)
+
+  expect(params.github?.repos?.createRelease).toMatchInlineSnapshot(`
+    mock: true
+    calls:
+      - - owner: test-owner
+          repo: test-repo
+          tag_name: some-pkg_v2
+          name: sample-pkg v2.0.0
+          body: |-
+            # I am a header
+
+            ## major changes
+
+            - feat(some-feature): change the api
+              this is a BREAKING CHANGE
+
+            ## patch changes
+
+            - chore: patch one.1
+            - chore: patch one.2 (@test-author) abc1234
+            - chore: patch one.3 (@test-author)
+            - chore: patch one.4 def9876
+
+            I am a footer
   `)
 })
 
