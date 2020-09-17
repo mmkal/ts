@@ -11,6 +11,13 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+    - name: create github release
+      uses: actions/github-script@v3
+      with:
+        script: |
+          console.log({ context, github })
+          console.log(111, context && context.payload)
+          console.log(112, JSON.stringify(context, null, 2))
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
