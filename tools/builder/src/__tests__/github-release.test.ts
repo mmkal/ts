@@ -53,6 +53,27 @@ jest.spyOn(rushMock, 'getRushJson').mockReturnValue({
   rush: {projects: [{projectFolder: 'd/e/f'}]} as any,
 })
 
+test.only('local', async () => {
+  jest.spyOn(rushMock, 'getRushJson').mockImplementation(jest.requireActual('../rush').getRushJson)
+  jest.spyOn(rushMock, 'getChangeLog').mockImplementation(jest.requireActual('../rush').getChangeLog)
+  const params = getMockReleaseParams()
+  const withTags = lodash.merge(params, { 
+    context: {
+      payload: {
+        inputs: {
+          tags: 'thistagdoesnotexist123454321', //'eslint-plugin-codegen_v0.12.2,io-ts-extra_v0.10.6,memorable-moniker_v0.2.15',
+          footer: 'test footer'
+        }
+      }
+    },
+  })
+
+  await createGitHubRelease(withTags)
+
+  expect(withTags.logger?.info).toHaveBeenCalledTimes(1)
+  expect(withTags.logger?.info).toHaveBeenCalledWith('releasing', [])
+})
+
 test('create release', async () => {
   jest.spyOn(childProcess, 'execSync').mockReturnValue(Buffer.from('some-pkg_v2\nother-pkg-v3'))
 
