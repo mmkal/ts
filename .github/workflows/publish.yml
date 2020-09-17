@@ -18,9 +18,11 @@ jobs:
         git config --global user.name "${{ github.actor }}"
         git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
+        npm whoami
+
         cp common/config/rush/.npmrc-publish ~/.npmrc
 
-        curl https://registry.npmjs.org/io-ts-extra
+        npm whoami
 
         # node common/scripts/install-run-rush.js install
         # node common/scripts/install-run-rush.js build
