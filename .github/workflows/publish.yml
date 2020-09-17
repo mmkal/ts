@@ -10,6 +10,12 @@ jobs:
       with:
         node-version: 12.x
     - run: |
-        node common/scripts/install-run-rush.js install
-        node common/scripts/install-run-rush.js build
-        node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ github.actor }}"
+        echo printing remote
+        git remote
+        echo finished
+
+        # node common/scripts/install-run-rush.js install
+        # node common/scripts/install-run-rush.js build
+        # node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
