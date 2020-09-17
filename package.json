@@ -7,7 +7,8 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "coverage": "./tools/builder/node_modules/.bin/jest --coverage",
+    "jest": "./tools/builder/node_modules/.bin/jest",
+    "coverage": "npm run jest -- --coverage",
     "fix-packages": "npx sort-package-json@1.46.0 'packages/*/package.json'",
     "build": "rush build",
     "lint": "rush lint",
