@@ -20,11 +20,13 @@ jest.mock('../rush')
 beforeEach(jest.clearAllMocks)
 
 type PartialMock<T> = {
-  [K in keyof T]?: T[K] extends (...args: infer A) => infer R
+  [K in keyof T]+?: T[K] extends (...args: infer A) => infer R
     ? jest.Mock<R, A>
-    : T[K] extends Record<string, any>
-    ? PartialMock<T[K]>
-    : T[K]
+    : T[K] extends Array<infer X>
+    ? Array<PartialMock<X>>
+    : T[K] extends string | boolean | number | symbol | bigint
+    ? T[K]
+    : PartialMock<T[K]>
 }
 
 const buildMockParams = <Arg>(_fn: (...args: [Arg]) => unknown) => (partial: PartialMock<Arg>) =>
@@ -39,6 +41,9 @@ const getMockReleaseParams = () =>
       repos: {
         createRelease: jest.fn(),
       },
+    },
+    logger: {
+      info: jest.fn(),
     },
   })
 
@@ -111,6 +116,14 @@ test('create release with header and footer', async () => {
             - chore: patch one.2 (@test-author) abc1234
             - chore: patch one.3 (@test-author)
             - chore: patch one.4 def9876
+
+            I am a footer
+      - - owner: test-owner
+          repo: test-repo
+          tag_name: other-pkg-v3
+          name: sample-pkg
+          body: |-
+            # I am a header
 
             I am a footer
   `)

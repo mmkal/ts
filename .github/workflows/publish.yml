@@ -32,7 +32,6 @@ jobs:
         # node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
     - name: create github release
       uses: actions/github-script@v3
-      if: ${{ github.event.inputs.skipGitHubRelease != 'true' }}
       with:
         script: |
           const release = require(`${process.env.GITHUB_WORKSPACE}/tools/builder/dist/github-release`)

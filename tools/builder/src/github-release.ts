@@ -5,14 +5,18 @@ import type {Context} from '@actions/github/lib/context'
 import type {GitHub} from '@actions/github/lib/utils'
 import type {IChangelog} from '@microsoft/rush-lib/lib/api/Changelog'
 
-export type GH = typeof GitHub extends new (...args: any[]) => infer G ? G : never
+interface CreateReleaseParams {
+  context: Context
+  github: InstanceType<typeof GitHub>
+  logger?: Console
+}
 
 /**
  * Reads tags pointing at the current git head, compares them with CHANGELOG.json files for each rush project,
  * and creates a GitHub release accordingly. This assumes that the git head is a commit created by `rush publish`.
  * @param param an object consisting of `context` and `github` values, as supplied by the `github-script` action.
  */
-export const createGitHubRelease = async ({context, github}: {context: Context; github: GH}) => {
+export const createGitHubRelease = async ({context, github, logger = console}: CreateReleaseParams) => {
   const tags: string[] =
     context.payload?.inputs?.tags?.split(',') ||
     childProcess
@@ -43,8 +47,8 @@ export const createGitHubRelease = async ({context, github}: {context: Context; 
     .filter(p => Boolean(p?.name && p.body))
     .value()
 
-  console.log('releasing', allReleaseParams)
-  // await Promise.all(allReleaseParams.map(github.repos.createRelease))
+  logger.info('releasing', allReleaseParams)
+  await Promise.all(allReleaseParams.map(async c => github.repos.createRelease(c)))
 }
 
 export const getReleaseContent = (changelog: IChangelog, tag: string) => {
