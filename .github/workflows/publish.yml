@@ -20,6 +20,8 @@ jobs:
 
         cp common/config/rush/.npmrc-publish ~/.npmrc
 
-        node common/scripts/install-run-rush.js install
-        node common/scripts/install-run-rush.js build
-        node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
+        curl https://registry.npmjs.org/io-ts-extra
+
+        # node common/scripts/install-run-rush.js install
+        # node common/scripts/install-run-rush.js build
+        # node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
