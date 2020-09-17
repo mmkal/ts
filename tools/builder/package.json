@@ -7,6 +7,8 @@
     "run": "./run.js",
     "init": "./init.js"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "node run tsc -p .",
     "lint": "node run eslint --cache .",
