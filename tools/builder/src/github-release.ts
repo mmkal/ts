@@ -32,7 +32,7 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
   const allReleaseParams = lodash
     .chain(rush.projects)
     .flatMap(project => tags.map(tag => ({tag, project})))
-    .map(({project, tag}): Parameters<typeof github.repos.createRelease>[0] => {
+    .map(({project, tag}): NonNullable<Parameters<typeof github.repos.createRelease>[0]> => {
       const changelog = getChangeLog(join(directory, project.projectFolder))
       const {name, body} = getReleaseContent(changelog, tag)
 
@@ -44,8 +44,8 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
         body,
       }
     })
-    .filter(p => Boolean(p?.name && p.body))
-    .map(p => {
+    .filter(p => Boolean(p.name && p.body))
+    .map((p)=> {
       const inputs = context?.payload?.inputs
       return {
         ...p,
