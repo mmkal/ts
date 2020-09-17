@@ -27,7 +27,7 @@ type PartialMock<T> = {
     : T[K]
 }
 
-const buildMockParams = <Arg>(fn: (...args: [Arg]) => unknown) => (partial: PartialMock<Arg>) =>
+const buildMockParams = <Arg>(_fn: (...args: [Arg]) => unknown) => (partial: PartialMock<Arg>) =>
   partial as Arg & typeof partial
 
 const getMockReleaseParams = () =>
