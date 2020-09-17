@@ -2,6 +2,18 @@
   "name": "io-ts-extra",
   "entries": [
     {
+      "version": "0.10.6",
+      "tag": "io-ts-extra_v0.10.6",
+      "date": "Thu, 17 Sep 2020 10:13:20 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: enable consistent versions (#163)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.10.5",
       "tag": "io-ts-extra_v0.10.5",
       "date": "Wed, 16 Sep 2020 21:06:32 GMT",
