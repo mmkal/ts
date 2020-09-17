@@ -7,50 +7,44 @@ import type {IChangelog} from '@microsoft/rush-lib/lib/api/Changelog'
 
 export type GH = typeof GitHub extends new (...args: any[]) => infer G ? G : never
 
-/** for now, we want to test for real, but fake some things in github actions, which is a weird way round */
-const fakeValue = <T>(fake: T) => (real: T) => {
-  if (process.env.NODE_ENV === 'test') {
-    console.log('getting real value', real, 'not fake value', fake)
-    return real
-  }
-  console.log('getting fake value', fake, 'instead of real value', real)
-  return fake
-}
-
 /**
  * Reads tags pointing at the current git head, compares them with CHANGELOG.json files for each rush project,
  * and creates a GitHub release accordingly. This assumes that the git head is a commit created by `rush publish`.
  * @param param an object consisting of `context` and `github` values, as supplied by the `github-script` action.
  */
 export const createGitHubRelease = async ({context, github}: {context: Context; github: GH}) => {
-  const tags = fakeValue(['io-ts-extra_v0.10.6', 'eslint-plugin-codegen_v0.12.2', 'memorable-moniker_v0.2.15'])(
+  const tags: string[] =
+    context.payload?.inputs?.tags?.split(',') ||
     childProcess
       .execSync('git tag --points-at HEAD')
       .toString()
       .split('\n')
       .map(t => t.trim())
       .filter(Boolean)
-  )
 
   const rushJson = getRushJson()
 
-  for (const project of rushJson.projects) {
-    for (const tag of tags) {
+  const allReleaseParams = lodash
+    .chain(rushJson.projects)
+    .flatMap(project => tags.map(tag => ({tag, project})))
+    .map(({project, tag}): Parameters<typeof github.repos.createRelease>[0] => {
       const changelog = getChangeLog(project.projectFolder)
       const {name, body} = getReleaseContent(changelog, tag)
+      const inputs = context?.payload?.inputs
 
-      if (name && body) {
-        const createRelease = fakeValue(console.log)(github.repos.createRelease)
-        await createRelease({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          tag_name: tag,
-          name,
-          body: [context.payload?.inputs?.header, body, context.payload?.inputs?.footer].filter(Boolean).join('\n\n'),
-        })
+      return {
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        tag_name: tag,
+        name,
+        body: [inputs?.header, body, inputs?.footer].filter(Boolean).join('\n\n'),
       }
-    }
-  }
+    })
+    .filter(p => Boolean(p?.name && p.body))
+    .value()
+
+  console.log('releasing', allReleaseParams)
+  // await Promise.all(allReleaseParams.map(github.repos.createRelease))
 }
 
 export const getReleaseContent = (changelog: IChangelog, tag: string) => {

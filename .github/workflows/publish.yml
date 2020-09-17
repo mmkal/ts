@@ -6,6 +6,9 @@ on:
         description: Optional release notes header text
       footer:
         description: Optional release notes footer text
+      tags:
+        # This can be used either to publish releases for old tags, or to skip releasing (by setting the field to a non-existent tag)
+        description: Comma-separated list of tags. If not set, tags pointing at HEAD will be used.
 
 jobs:
   run:
@@ -29,6 +32,7 @@ jobs:
         # node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
     - name: create github release
       uses: actions/github-script@v3
+      if: ${{ github.event.inputs.skipGitHubRelease != 'true' }}
       with:
         script: |
           const release = require(`${process.env.GITHUB_WORKSPACE}/tools/builder/dist/github-release`)
