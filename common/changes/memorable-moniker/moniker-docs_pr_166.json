@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore: more detailed docs for memorable moniker (#166)",
+      "type": "patch",
+      "packageName": "memorable-moniker"
+    }
+  ],
+  "packageName": "memorable-moniker",
+  "email": "mmkal@users.noreply.github.com"
+}
