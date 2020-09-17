@@ -18,6 +18,8 @@ jobs:
         git config --global user.name "${{ github.actor }}"
         git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
+        cp common/config/rush/.npmrc-publish ~/.npmrc
+
         node common/scripts/install-run-rush.js install
         node common/scripts/install-run-rush.js build
         node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
