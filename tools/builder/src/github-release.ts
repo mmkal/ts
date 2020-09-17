@@ -7,18 +7,28 @@ import type {IChangelog} from '@microsoft/rush-lib/lib/api/Changelog'
 
 export type GH = typeof GitHub extends new (...args: any[]) => infer G ? G : never
 
+/** for now, we want to test for real, but fake some things in github actions, which is a weird way round */
+const fakeValue = <T>(fake: T) => (real: T) => {
+  if (process.env.NODE_ENV === 'test') {
+    console.log('getting real value', real, 'not fake value', fake)
+    return real
+  }
+  console.log('getting fake value', fake, 'instead of real value', real)
+  return fake
+}
+
 /**
  * Reads tags pointing at the current git head, compares them with CHANGELOG.json files for each rush project,
  * and creates a GitHub release accordingly. This assumes that the git head is a commit created by `rush publish`.
  * @param param an object consisting of `context` and `github` values, as supplied by the `github-script` action.
  */
 export const createGitHubRelease = async ({context, github}: {context: Context; github: GH}) => {
-  const tags = childProcess
+  const tags = fakeValue(['io-ts-extra_v0.10.6'])(childProcess
     .execSync('git tag --points-at HEAD')
     .toString()
     .split('\n')
     .map(t => t.trim())
-    .filter(Boolean)
+    .filter(Boolean))
 
   const rushJson = getRushJson()
 
@@ -28,7 +38,8 @@ export const createGitHubRelease = async ({context, github}: {context: Context; 
       const {name, body} = getReleaseContent(changelog, tag)
 
       if (name && body) {
-        await github.repos.createRelease({
+        const createRelease = fakeValue(console.log)(github.repos.createRelease)
+        await createRelease({
           owner: context.repo.owner,
           repo: context.repo.repo,
           tag_name: tag,
