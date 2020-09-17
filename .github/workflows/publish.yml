@@ -1,0 +1,17 @@
+on: 
+  workflow_dispatch: {}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: |
+        node common/scripts/install-run-rush.js install
+        node common/scripts/install-run-rush.js build
+        node common/scripts/install-run-rush.js publish --target
+        echo "Log level: ${{ github.event.inputs.logLevel }}"
+        echo "Tags: ${{ github.event.inputs.tags }}"
