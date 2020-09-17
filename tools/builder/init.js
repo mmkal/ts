@@ -15,9 +15,10 @@ exports.init = () => {
   pkgJson.main = pkgJson.main || 'dist/index.js'
   pkgJson.types = pkgJson.types || 'dist/index.d.ts'
   pkgJson.scripts = pkgJson.scripts || {}
-  pkgJson.scripts.build = pkgJson.scripts.build || 'run tsc -p .'
-  pkgJson.scripts.lint = pkgJson.scripts.lint || 'run eslint --cache .'
-  pkgJson.scripts.test = pkgJson.scripts.test || 'run jest'
+  pkgJson.scripts.build = 'run heft test --clean'
+  pkgJson.scripts.compile = 'run tsc -p .'
+  pkgJson.scripts.lint = 'run eslint --cache .'
+  pkgJson.scripts.test = 'run jest'
   pkgJson.devDependencies = pkgJson.devDependencies || {}
   pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version
 
@@ -28,32 +29,34 @@ exports.init = () => {
   }
 
   const eslintrcPath = path.join(process.cwd(), '.eslintrc.js')
-  if (!fs.existsSync(eslintrcPath)) {
-    fs.writeFileSync(eslintrcPath, `module.exports = require('${helperPkgJson.name}/.eslintrc')${os.EOL}`, 'utf8')
-  }
+  fs.writeFileSync(eslintrcPath, `module.exports = require('${helperPkgJson.name}/.eslintrc')${os.EOL}`, 'utf8')
 
-  const jestConfigPath = path.join(cwd, 'jest.config.js')
-  if (!fs.existsSync(jestConfigPath)) {
-    fs.writeFileSync(jestConfigPath, `module.exports = require('${helperPkgJson.name}/jest.config')${os.EOL}`, 'utf8')
-  }
+  const jestConfigPath = path.join(cwd, 'config/jest.config.json')
+  fs.mkdirSync(path.dirname(jestConfigPath), {recursive: true})
+  fs.writeFileSync(
+    jestConfigPath,
+    JSON.stringify({extends: `./node_modules/${helperPkgJson.name}/jest-shared.json`}, null, 2) + os.EOL,
+    'utf8'
+  )
+
+  const oldJestConfigPath = path.join(cwd, 'jest.config.js')
+  fs.unlinkSync(oldJestConfigPath)
 
   const tsconfigPath = path.join(cwd, 'tsconfig.json')
-  if (!fs.existsSync(tsconfigPath)) {
-    fs.writeFileSync(
-      tsconfigPath,
-      stringify({
-        extends: './node_modules/@mmkal/builder/tsconfig.json',
-        compilerOptions: {
-          rootDir: 'src',
-          outDir: 'dist',
-          tsBuildInfoFile: 'dist/buildinfo.json',
-          typeRoots: ['node_modules/@mmkal/builder/node_modules/@types'],
-        },
-        exclude: ['node_modules', 'dist'],
-      }),
-      'utf8'
-    )
-  }
+  fs.writeFileSync(
+    tsconfigPath,
+    stringify({
+      extends: './node_modules/@mmkal/builder/tsconfig.json',
+      compilerOptions: {
+        rootDir: 'src',
+        outDir: 'dist',
+        tsBuildInfoFile: 'dist/buildinfo.json',
+        typeRoots: ['node_modules/@mmkal/builder/node_modules/@types'],
+      },
+      exclude: ['node_modules', 'dist'],
+    }),
+    'utf8'
+  )
 
   const npmIgnorePath = path.join(cwd, '.npmignore')
   if (!fs.existsSync(npmIgnorePath)) {

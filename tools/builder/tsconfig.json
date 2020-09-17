@@ -10,7 +10,8 @@
     "incremental": true,
     "tsBuildInfoFile": "dist/buildinfo.json",
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": ["jest", "node"]
   },
   "exclude": ["node_modules", "dist"]
 }

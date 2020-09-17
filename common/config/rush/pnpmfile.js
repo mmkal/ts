@@ -37,10 +37,11 @@ function readPackage(packageJson, context) {
   // for some reason I can't figure out, pnpm complains about a missing eslint dependency
   // even though it's there.
   const peers = packageJson.peerDependencies || {} 
-  if ('eslint' in peers) {
-    context.log(`Deleting peer dependency eslint from ${packageJson.name}`)
-    delete peers.eslint
-  }
+  const seeminglyBogusPeers = ['eslint', 'ajv']
+  seeminglyBogusPeers.filter(p => p in peers).forEach(p => {
+    context.log(`Deleting peer dependency ${p} from ${packageJson.name}`)
+    delete peers[p]
+  })
 
   return packageJson;
 }

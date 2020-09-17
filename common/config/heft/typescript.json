@@ -1,0 +1,4 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/heft/typescript.schema.json",
+  "emitFolderPathForJest": "dist"
+}

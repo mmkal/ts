@@ -1,0 +1,6 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/heft/clean.schema.json",
+  "pathsToDelete": [
+    "dist"
+  ]
+}

@@ -1,3 +1,6 @@
+jest.mock('child_process')
+jest.mock('../rush')
+
 import {createGitHubRelease, getReleaseContent} from '../github-release'
 import * as rushMock from '../rush'
 import * as childProcess from 'child_process'
@@ -5,9 +8,6 @@ import * as lodash from 'lodash'
 import {addYamlSerializer, buildMockParams} from './util'
 
 addYamlSerializer()
-
-jest.mock('child_process')
-jest.mock('../rush')
 
 const getMockReleaseParams = () =>
   buildMockParams(createGitHubRelease)({

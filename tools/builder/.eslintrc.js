@@ -21,6 +21,7 @@ module.exports = {
   ],
   ignorePatterns: [
     'dist',
+    'lib',
     'node_modules',
     'coverage',
     '.eslintrc.js', // getting Parsing error: "parserOptions.project" has been set for @typescript-eslint/parser. Can be handled with overrides but probably worth just waiting for https://github.com/eslint/rfcs/9 and ignoring js completely until then

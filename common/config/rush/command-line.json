@@ -166,6 +166,25 @@
    * For example, you might define a "--production" parameter for the "rush build" command.
    */
   "parameters": [
+    {
+      "parameterKind": "flag",
+      "longName": "--watch",
+      "shortName": "-w",
+      "description": "Run command in watch mode",
+      "associatedCommands": ["build", "rebuild"]
+    },
+    {
+      "parameterKind": "flag",
+      "longName": "--clean",
+      "description": "Clean before building",
+      "associatedCommands": ["build", "rebuild"]
+    },
+    {
+      "parameterKind": "flag",
+      "longName": "--fix",
+      "description": "Run command in fix mode",
+      "associatedCommands": ["lint"]
+    }
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.
