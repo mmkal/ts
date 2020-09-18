@@ -159,7 +159,12 @@ function patchModuleResolver() {
     ModuleResolver.originalResolve = ModuleResolver.resolve
     ModuleResolver.resolve = (req, relTo) => {
       if (req === 'codegen') {
-        return require('../../packages/eslint-plugin-codegen')
+        // to make it easier to work on the codegen package, try to resolve it locally
+        // if this fails, we'll fall back to the published version - which is fine for
+        // most cases
+        try {
+          return require('../../packages/eslint-plugin-codegen')
+        } catch {}
       }
       try {
         return ModuleResolver.originalResolve(req, relTo)
