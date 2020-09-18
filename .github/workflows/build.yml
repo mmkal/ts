@@ -33,7 +33,7 @@ jobs:
 
         node common/scripts/install-run-rush.js build
         node common/scripts/install-run-rush.js lint
-        node common/scripts/install-run-rush.js test
+        node common/scripts/install-run-rush.js test -v
 
   coverage:
     runs-on: ubuntu-latest
