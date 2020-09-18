@@ -2,6 +2,18 @@
   "name": "check-clean",
   "entries": [
     {
+      "version": "0.2.2",
+      "tag": "check-clean_v0.2.2",
+      "date": "Fri, 18 Sep 2020 16:56:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(npmignore): exclude rush files (#169)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.1",
       "tag": "check-clean_v0.2.1",
       "date": "Fri, 18 Sep 2020 15:09:11 GMT",

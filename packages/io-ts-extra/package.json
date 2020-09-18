@@ -1,6 +1,6 @@
 {
   "name": "io-ts-extra",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "keywords": [
     "typescript",
     "validation",
@@ -33,7 +33,7 @@
     "@mmkal/builder": "0.0.1",
     "@types/js-yaml": "~3.12.5",
     "@types/lodash": "~4.14.161",
-    "expect-type": "0.7.9",
+    "expect-type": "0.7.10",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15"
   }
