@@ -18,7 +18,7 @@ test('checks using git status', () => {
   execSync.mockReturnValue(Buffer.from('\n'))
   const exit: any = jest.fn()
 
-  checkClean({exit})
+  checkClean({exit, env: {}, argv: []})
 
   expect(execSync).toHaveBeenCalledTimes(1)
   expect(execSync).toHaveBeenCalledWith('git status --porcelain')
@@ -32,7 +32,7 @@ test('logs and exits with error code if there are changes', () => {
   execSync.mockReturnValue(Buffer.from('A some/file.txt'))
   const exit: any = jest.fn()
 
-  checkClean({exit, ci: false})
+  checkClean({exit, env: {CI: ''}, argv: []})
 
   expect(exit).toHaveBeenCalledTimes(1)
   expect(exit).toHaveBeenCalledWith(1)
@@ -60,7 +60,7 @@ test('logs and exits with error code if there are changes in CI', () => {
   execSync.mockReturnValue(Buffer.from('A some/file.txt'))
   const exit: any = jest.fn()
 
-  checkClean({exit, ci: true})
+  checkClean({exit, env: {CI: 'true'}, argv: []})
 
   expect(exit).toHaveBeenCalledTimes(1)
   expect(exit).toHaveBeenCalledWith(1)
