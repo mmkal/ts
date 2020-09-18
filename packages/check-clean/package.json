@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "check-clean": "dist/check-clean.js"
+    "check-clean": "dist/cli.js"
   },
   "scripts": {
     "build": "run tsc -p .",
