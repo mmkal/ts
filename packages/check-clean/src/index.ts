@@ -6,14 +6,14 @@ const colours = {
   reset: '\u001B[0m',
 }
 
-export const checkClean = ({exit = process.exit} = {}) => {
+export const checkClean = ({exit = process.exit, ci = !!process.env.CI} = {}) => {
   const gitStatus = childProcess.execSync('git status --porcelain').toString().trim()
   if (!gitStatus) {
     return
   }
   console.error(`${colours.red}error: git changes detected`)
   console.error(
-    process.env.CI
+    ci
       ? `${colours.yellow}this was run in a CI environment, you probably don't want changes to have been generated here. Try to reproduce this locally, and check the changes in before re-running in CI${colours.reset}`
       : `${colours.red}check them in before running again${colours.reset}`
   )

@@ -32,7 +32,7 @@ test('logs and exits with error code if there are changes', () => {
   execSync.mockReturnValue(Buffer.from('A some/file.txt'))
   const exit: any = jest.fn()
 
-  checkClean({exit})
+  checkClean({exit, ci: false})
 
   expect(exit).toHaveBeenCalledTimes(1)
   expect(exit).toHaveBeenCalledWith(1)
@@ -46,6 +46,34 @@ test('logs and exits with error code if there are changes', () => {
       Array [
         "error",
         "[31mcheck them in before running again[0m",
+      ],
+      Array [
+        "info",
+        "[0mchanges:
+    A some/file.txt",
+      ],
+    ]
+  `)
+})
+
+test('logs and exits with error code if there are changes in CI', () => {
+  execSync.mockReturnValue(Buffer.from('A some/file.txt'))
+  const exit: any = jest.fn()
+
+  checkClean({exit, ci: true})
+
+  expect(exit).toHaveBeenCalledTimes(1)
+  expect(exit).toHaveBeenCalledWith(1)
+
+  expect(logs).toMatchInlineSnapshot(`
+    Array [
+      Array [
+        "error",
+        "[31merror: git changes detected",
+      ],
+      Array [
+        "error",
+        "[33mthis was run in a CI environment, you probably don't want changes to have been generated here. Try to reproduce this locally, and check the changes in before re-running in CI[0m",
       ],
       Array [
         "info",
