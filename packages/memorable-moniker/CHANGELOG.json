@@ -2,6 +2,18 @@
   "name": "memorable-moniker",
   "entries": [
     {
+      "version": "0.2.16",
+      "tag": "memorable-moniker_v0.2.16",
+      "date": "Fri, 18 Sep 2020 00:05:29 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: more detailed docs for memorable moniker (#166)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.15",
       "tag": "memorable-moniker_v0.2.15",
       "date": "Thu, 17 Sep 2020 10:47:43 GMT",
