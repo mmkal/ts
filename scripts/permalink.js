@@ -1,7 +1,7 @@
 const glob = require('glob')
 const fs = require('fs')
 const path = require('path')
-const readPkgUp = require('read-pkg-up')
+const readPkgUp = require('../packages/eslint-plugin-codegen/node_modules/read-pkg-up')
 const childProcess = require('child_process')
 
 const readmes = glob.sync('**/*.md', {ignore: ['**/node_modules/**', '**/CHANGELOG.md']})
