@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix(npmignore): exclude rush files (#169)",
+      "type": "patch",
+      "packageName": "memorable-moniker"
+    }
+  ],
+  "packageName": "memorable-moniker",
+  "email": "mmkal@users.noreply.github.com"
+}
