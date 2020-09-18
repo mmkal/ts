@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix: exclude rush file with npmignore (#169)",
+      "type": "patch",
+      "packageName": "fs-syncer"
+    }
+  ],
+  "packageName": "fs-syncer",
+  "email": "mmkal@users.noreply.github.com"
+}
