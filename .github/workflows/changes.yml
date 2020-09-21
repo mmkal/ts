@@ -6,8 +6,6 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.GH_CI_TOKEN || secrets.GITHUB_TOKEN }}
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
