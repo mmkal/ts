@@ -38,6 +38,9 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
         return null
       }
       const {name, body} = getReleaseContent(changelog, tag)
+      if (!body) {
+        return null
+      }
 
       return {
         owner: context.repo.owner,
