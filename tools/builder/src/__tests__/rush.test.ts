@@ -20,8 +20,8 @@ test('snapshot rush.json keys', () => {
 })
 
 test('snapshot changelog.json', () => {
-  const {directory, rush} = getRushJson()
-  const exampleChangelog = getChangeLog(join(directory, 'packages/eslint-plugin-codegen'))
+  const {directory} = getRushJson()
+  const exampleChangelog = getChangeLog(join(directory, 'packages/eslint-plugin-codegen'))!
   expect(exampleChangelog).toMatchObject({name: 'eslint-plugin-codegen'})
   expect(Object.keys(exampleChangelog)).toMatchInlineSnapshot(`
     Array [
@@ -32,8 +32,5 @@ test('snapshot changelog.json', () => {
 })
 
 test('non-existent changelog', () => {
-  expect(getChangeLog('this/path/does/not/exist')).toEqual({
-    name: '',
-    entries: [],
-  })
+  expect(getChangeLog('this/path/does/not/exist')).toBeUndefined()
 })
