@@ -30,7 +30,7 @@ expect(someDirectory.read()).toEqual({
 Similarly, as part of test setup, you might want to write several files, e.g.:
 
 ```js
-write({
+someDirectory.write({
   migrations: {
     'migration1.sql': 'create table one(id text)',
     'migration2.sql': 'create table two(id text)',
