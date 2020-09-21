@@ -40,8 +40,9 @@ jobs:
         # do basic pull request title/body parsing to figure out if it's a major, minor or patch change
         # it'd probably be a good idea to use something like @commitlint for this, but it's an annoyingly
         # big dependency, with multiple peers and required config files, for such a simple task
+        # this gist has a list of the allowed types (technically `chore` isn't one) https://gist.github.com/brianclements/841ea7bffdb01346392c
         MAJOR_CHANGE_MATCH=$(echo "$PR_TITLE $PR_BODY" | grep 'BREAKING CHANGE' || echo '')
-        PATCH_CHANGE_MATCH=$((echo "$PR_TITLE" | grep '^fix') || (echo "$PR_TITLE" | grep '^chore') || echo '')
+        PATCH_CHANGE_MATCH=$(echo "$PR_TITLE" | grep -E '^(build|chore|ci|docs|fix|perf|refactor|style|test)[:\(]' || echo '')
         
         BUMP_TYPE=minor
         if [ -n "$MAJOR_CHANGE_MATCH" ]; then
