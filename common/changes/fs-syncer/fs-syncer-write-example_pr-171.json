@@ -1,8 +1,8 @@
 {
   "changes": [
     {
-      "comment": "docs: make write example consistent with read (#171)",
-      "type": "patch",
+      "comment": "feat: make write example consistent with read (#171)",
+      "type": "minor",
       "packageName": "fs-syncer"
     }
   ],
