@@ -1,4 +1,11 @@
 node_modules
 **/__tests__
 dist/buildinfo.json
-CHANGELOG.md
+.eslintcache
+.eslintrc.js
+.rush
+.heft
+*.log
+tsconfig.json
+config/jest.config.json
+jest.config.js

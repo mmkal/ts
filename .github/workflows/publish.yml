@@ -1,0 +1,38 @@
+name: publish
+on: 
+  workflow_dispatch:
+    inputs:
+      header:
+        description: Optional release notes header text
+      footer:
+        description: Optional release notes footer text
+      tags:
+        # This can be used either to publish releases for old tags, or to skip releasing (by setting the field to a non-existent tag)
+        description: Comma-separated list of tags. If not set, tags pointing at HEAD will be used.
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: publish
+      env:
+        # referenced in common/config/rush/.npmrc-publish 
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      run: |
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ github.actor }}"
+        git remote set-url origin "https://${{ github.actor }}:${{ secrets.GH_CI_TOKEN }}@github.com/${{ github.repository }}.git"
+
+        node common/scripts/install-run-rush.js install
+        node common/scripts/install-run-rush.js build
+        node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
+    - name: create github release
+      uses: actions/github-script@v3
+      with:
+        script: |
+          const builder = require(`${process.env.GITHUB_WORKSPACE}/tools/builder`)
+          return builder.createGitHubRelease({ context, github })

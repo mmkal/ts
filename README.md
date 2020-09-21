@@ -3,7 +3,7 @@
 [![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
 [![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts)
 
-Monorepo of assorted typescript projects.
+Monorepo of typescript projects.
 
 ## Packages
 
@@ -15,27 +15,78 @@ Monorepo of assorted typescript projects.
 - [memorable-moniker](https://github.com/mmkal/ts/tree/main/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
 <!-- codegen:end -->
 
+### Development
+
+Packages are managed using [rush](https://rushjs.io/pages/developer/new_developer/). Make sure rush is installed:
+
+```bash
+npm install --global @microsoft/rush
+```
+
+Then install, build, lint and test with:
+
+```bash
+rush update
+rush build
+rush lint
+rush test
+```
+
+`rush update` should be run when updating the main branch too.
+
+___
+
+Add a dependency to a package (for example, adding lodash to fictional package in this monorepo `some-pkg`):
+
+```bash
+cd packages/some-pkg
+rush add --package lodash
+rush add --package @types/lodash --dev
+```
+
+You can also manually edit package.json then run `rush update`.
+
+Create a new package:
+
+```bash
+cd packages
+mkdir new-pkg
+cd new-pkg
+node ../../tools/builder/init # sets up package.json, .eslintrc.js, tsconfig.json, jest.config.js
+```
+
+<!-- todo: make this step unnecessary -->
+Then open `rush.json`, find the `projects` array, and adda new entry: `{ "packageName": "new-pkg", "projectFolder": "packages/new-pkg" }`
+
+### Publishing 
+[![publish](https://github.com/mmkal/ts/workflows/publish/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3Apublish)
+
+Publishing is automated, but kicked off manually. The process is:
+
+- Changes to published packages in this repo should be proposed in a pull request
+- On every pull request, a [GitHub action](./.github/workflows/changes.yml) uses the `rush change` command to create a changefile:
+  - the change is based on the PR title and body:
+    - if the words "BREAKING CHANGE" appear anywhere, it's considered "major"
+    - if the PR title starts with "chore", or "fix", it's considered a "patch"
+    - otherwise, it's considered "minor"
+  - the created changefile is pushed to the PR's branch, and a comment is left on the PR (example [PR](https://github.com/mmkal/ts/pull/166), [comment](https://github.com/mmkal/ts/pull/166#issuecomment-694554963) and [change](https://github.com/mmkal/ts/commit/8d8c442fdd54dc6732bf56e9a074afea58dc8303))
+  - if the PR title or body is edited, or changes are pushed, the job will re-run and push a modification if necessary
+  - most of the time, no change is necessary and the job exits after no-oping
+  - if necessary, `rush change` can also be run locally to add additional messages - but ideally the PR title would be descriptive enough
+  - the changefile should be merged in along with the rest of the changes
+
+When a PR is merged, publishing is initiated by kicking off the [publish worfklow](https://github.com/mmkal/ts/actions?query=workflow%3Apublish):
+
+- Clicking "Run workflow" will start another [GitHub action](./.github/workflows/publish.yml):
+  - The workflow runs `rush publish`, which uses the changefiles merged with feature PRs, bumps versions and create git tags
+  - When the publish step succeeds, a custom script reads the generated `CHANGELOG.json` files to create a GitHub release
+
 <details>
-<summary>Publishing - for maintainers</summary>
+<summary>Old instructions</summary>
 
-The below instructions only apply to maintainers of this repo - i.e. people with write permissions to npm and github for these packages. If you're not one of those people, feel free to ignore!
+Links to trees with previous iteration of publish instructions:
 
-### Canary releases
-
-GitHub Actions does a canary/prerelease publish for each package when commit messages include `/publish-canary`. The version is based on the commit date and hash, and the "dist-tag" is the branch name.
-
-### Non-canary releases
-
-These are done manually, via `yarn publish-packages`. To have permissions to run that, `~/.npmrc` needs to be configured for the npm package registry, meaning it needs a line like this:
-
-```
-//registry.npmjs.org/:_authToken=TOKEN
-```
-
-Where `TOKEN` is created from https://www.npmjs.com/settings/YOUR_USERNAME/tokens. For GitHub releases, a `GH_TOKEN` environment variables is needed - you can create one here: https://github.com/settings/tokens
-
-### Previously - GitHub Packages
-
-The old instructions for publishing to GitHub Packages' npm registry can be found here: https://github.com/mmkal/ts/tree/56bed6ba6c3fa7eca06c9f73adf104438e9b0f8a
+- For creating canary releases: https://github.com/mmkal/ts/tree/fc5f2dd50a04439573bcfb1f4b7bf0cad59c1c59
+- For publishing to GitHub Packages' npm registry: https://github.com/mmkal/ts/tree/56bed6ba6c3fa7eca06c9f73adf104438e9b0f8a
 
 </details>

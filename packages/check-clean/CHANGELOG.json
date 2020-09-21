@@ -1,0 +1,41 @@
+{
+  "name": "check-clean",
+  "entries": [
+    {
+      "version": "0.2.2",
+      "tag": "check-clean_v0.2.2",
+      "date": "Fri, 18 Sep 2020 16:56:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(npmignore): exclude rush files (#169)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.1",
+      "tag": "check-clean_v0.2.1",
+      "date": "Fri, 18 Sep 2020 15:09:11 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: check clean cli path (#168)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.0",
+      "tag": "check-clean_v0.2.0",
+      "date": "Fri, 18 Sep 2020 03:17:48 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Port check-clean to typescript (#167)"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,18 +1,6 @@
 {
   "name": "expect-type",
-  "version": "0.7.9",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mmkal/ts.git",
-    "directory": "packages/expect-type"
-  },
-  "homepage": "https://github.com/mmkal/ts/tree/main/packages/expect-type#readme",
-  "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p ."
-  },
+  "version": "0.7.10",
   "keywords": [
     "typescript",
     "type-check",
@@ -21,5 +9,22 @@
     "typings",
     "test",
     "testing"
-  ]
+  ],
+  "homepage": "https://github.com/mmkal/ts/tree/main/packages/expect-type#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmkal/ts.git",
+    "directory": "packages/expect-type"
+  },
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "run tsc -p .",
+    "lint": "run eslint --cache .",
+    "test": "run jest"
+  },
+  "devDependencies": {
+    "@mmkal/builder": "0.0.1"
+  }
 }

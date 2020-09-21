@@ -1,0 +1,46 @@
+{
+  "name": "io-ts-extra",
+  "entries": [
+    {
+      "version": "0.10.7",
+      "tag": "io-ts-extra_v0.10.7",
+      "date": "Fri, 18 Sep 2020 16:56:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(npmignore): exclude rush files (#169)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" from `0.7.9` to `0.7.10`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.10.6",
+      "tag": "io-ts-extra_v0.10.6",
+      "date": "Thu, 17 Sep 2020 10:47:43 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: enable consistent versions (#163)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.10.5",
+      "tag": "io-ts-extra_v0.10.5",
+      "date": "Wed, 16 Sep 2020 21:06:32 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: bump io-ts version (#161)"
+          }
+        ]
+      }
+    }
+  ]
+}

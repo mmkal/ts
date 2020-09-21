@@ -1,22 +1,6 @@
 {
   "name": "io-ts-extra",
-  "version": "0.10.4",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mmkal/ts.git",
-    "directory": "packages/io-ts-extra"
-  },
-  "homepage": "https://github.com/mmkal/ts/tree/main/packages/io-ts-extra#readme",
-  "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p ."
-  },
-  "dependencies": {
-    "fp-ts": "^2.1.0",
-    "io-ts": "^2.0.1"
-  },
+  "version": "0.10.7",
   "keywords": [
     "typescript",
     "validation",
@@ -26,5 +10,31 @@
     "runtime",
     "io-ts",
     "pattern matching"
-  ]
+  ],
+  "homepage": "https://github.com/mmkal/ts/tree/main/packages/io-ts-extra#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmkal/ts.git",
+    "directory": "packages/io-ts-extra"
+  },
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "run tsc -p .",
+    "lint": "run eslint --cache .",
+    "test": "run jest"
+  },
+  "dependencies": {
+    "fp-ts": "^2.1.0",
+    "io-ts": "^2.2.4"
+  },
+  "devDependencies": {
+    "@mmkal/builder": "0.0.1",
+    "@types/js-yaml": "~3.12.5",
+    "@types/lodash": "~4.14.161",
+    "expect-type": "0.7.10",
+    "js-yaml": "^3.14.0",
+    "lodash": "^4.17.15"
+  }
 }

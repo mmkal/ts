@@ -1,0 +1,17 @@
+{
+  "name": "expect-type",
+  "entries": [
+    {
+      "version": "0.7.10",
+      "tag": "expect-type_v0.7.10",
+      "date": "Fri, 18 Sep 2020 16:56:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(npmignore): exclude rush files (#169)"
+          }
+        ]
+      }
+    }
+  ]
+}
