@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Use PAT in change-pusher (BREAKING CHANGE: not really. But this line should be included in the change file now.) (#170)",
+      "type": "major",
+      "packageName": "fs-syncer"
+    }
+  ],
+  "packageName": "fs-syncer",
+  "email": "mmkal@users.noreply.github.com"
+}
