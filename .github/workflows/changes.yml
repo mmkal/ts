@@ -25,7 +25,7 @@ jobs:
         #
         # e.g. if the pull request owner adds "BREAKING CHANGE" to the body, the change file will update
         # to type 'major'
-        FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.0-pr2172.0/node_modules/@microsoft/rush-lib/lib/api/ChangeFile.js"
+        FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.2/node_modules/@microsoft/rush-lib/lib/api/ChangeFile.js"
         TO_BE_REPLACED='_getTimestamp(useSeconds = false) {'
         REPLACEMENT="$TO_BE_REPLACED \n return 'pr-$PR_NUMBER' // patched_code \n"
 
