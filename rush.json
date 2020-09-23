@@ -123,7 +123,7 @@
    * Specify a SemVer range to ensure developers use a Node.js version that is appropriate
    * for your repo.
    */
-  "nodeSupportedVersionRange": "10.x || 12.x || 14.x",
+  "nodeSupportedVersionRange": "99.x",
 
   /**
    * Odd-numbered major versions of Node.js are experimental.  Even-numbered releases
