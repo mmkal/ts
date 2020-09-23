@@ -1,10 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "enabled": false,
+  "enabled": true,
   "extends": [
     "config:base",
     ":semanticCommits"
   ],
+  "postUpgradeTasks": {
+    "commands": [
+      "node common/scripts/install-run-rush.js install"
+    ],
+    "fileFilters": [
+      "common/config/rush/pnpm-lock.yaml"
+    ]
+  },
   "prConcurrentLimit": 3,
   "packageRules": [
     {
@@ -14,11 +22,11 @@
     {
       "depTypeList": ["dependencies"],
       "updateTypes": ["lockFileMaintenance"],
-      "automerge": true
+      "automerge": false
     },
     {
       "depTypeList": ["devDependencies"],
-      "automerge": true
+      "automerge": false
     },
     {
       "depTypeList": ["devDependencies"],
