@@ -97,7 +97,7 @@ jobs:
           echo "cd tmp"
           echo "git checkout ${{ github.head_ref }}"
           echo "$APPLY_PATCH_COMMAND"
-          echo "git commit -am "chore: changefile"
+          echo "git commit -am 'chore: changefile'"
           echo
           echo "alternatively, make the following changes manually:"
           git diff --cached
