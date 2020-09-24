@@ -25,9 +25,9 @@ jobs:
         
         git remote -v
         echo running git remote add upstream ${{ github.event.repository.clone_url }}
-        git remote add upstream ${{ github.event.repository.clone_url }}
         CLONE_URL_NO_SUFFIX=$(echo "${{ github.event.repository.clone_url }}" | sed -E "s/\.git$//")
-        git remote add suffixless $CLONE_URL_NO_SUFFIX
+        git remote add upstream $CLONE_URL_NO_SUFFIX
+        git fetch upstream
         git remote -v
     - name: patch rush to allow for overwriteable changefiles
       run: |
