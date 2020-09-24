@@ -1,6 +1,6 @@
 name: create change files
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened, edited]
 
 jobs:
@@ -52,15 +52,24 @@ jobs:
           BUMP_TYPE=patch
         fi
 
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git config --global user.name "${{ github.actor }}"
-        git checkout ${{ github.head_ref }}
-
         node common/scripts/install-run-rush.js change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
 
         GIT_STATUS=$(git status --porcelain)
-        if [ -n "$GIT_STATUS" ]; then
-          git add -A
+
+        git add -A
+        DIFF_BASE64=$(git diff --cached | base64 -w 0)
+        APPLY_PATCH_COMMAND="echo $DIFF_BASE64 | base64 --decode | git apply"
+
+        if [ -z "$GIT_STATUS" ]; then
+          echo "no changes made"
+        elif [ -n "${{ secrets.GH_CI_TOKEN }}" ]
+          echo "Attempting to push a commit to your branch. If this fails, try running the following command locally, committing the changes and pushing manually:"
+          echo "$APPLY_PATCH_COMMAND"
+
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          git checkout ${{ github.head_ref }}
+
           git commit -m "chore: change files"
 
           # todo: use GITHUB_TOKEN, if https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 is ever addressed
@@ -69,7 +78,10 @@ jobs:
 
           echo "::set-env name=CHANGE_HASH::$(git rev-parse --short HEAD)"
         else
-          echo "no changes made"
+          echo "changes were made, but can't push to the branch from this context"
+          echo "run the following command locally from a bash-like shell, the commit and push the changes it generates to your branch"
+          echo "$APPLY_PATCH_COMMAND"
+          exit 1
         fi
 
     - name: Comment on PR
