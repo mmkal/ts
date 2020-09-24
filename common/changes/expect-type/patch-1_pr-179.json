@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Update readme.md (#179)",
+      "type": "minor",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "mmkal-bot@users.noreply.github.com"
+}
