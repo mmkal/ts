@@ -1,6 +1,10 @@
 import * as a from '..'
 import {expectTypeOf} from '..'
 
+test('should fail', () => {
+  expect(1).toEqual(2)
+})
+
 test('boolean type logic', () => {
   expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
   expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
