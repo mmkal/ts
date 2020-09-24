@@ -1,0 +1,33 @@
+name: renovate post-upgrade
+
+on:
+  push:
+    branches:    
+      - 'renovate/**'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: |
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          git remote set-url origin "https://${{ github.actor }}:${{ secrets.GH_CI_TOKEN }}@github.com/${{ github.repository }}.git"
+          
+          node common/scripts/install-run-rush update
+          
+          LOCKFILE=common/config/rush/pnpm-lock.yaml
+          GIT_STATUS=$(git status --porcelain | grep "M $LOCKFILE")
+          
+          if [ -z "$GIT_STATUS" ]; then
+            echo "no changes made"
+          else
+            git add $LOCKFILE
+            git commit -m "build: rush update result"
+            remote_repo="https://${{ github.actor }}:${{ secrets.GH_CI_TOKEN }}@github.com/${{ github.repository }}.git"
+            git push "${remote_repo}"
+          fi
