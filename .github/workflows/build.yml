@@ -5,6 +5,9 @@ on:
 
 jobs:
   build:
+    # CI runs on push and pull_request. For PRs from forks, only pull_request will run.
+    # This condition skips the pull request job for internal PRs - push kicks off faster
+    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
     runs-on: ubuntu-latest
     strategy:
       matrix:
