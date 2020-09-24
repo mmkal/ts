@@ -7,7 +7,7 @@
   ],
   "postUpgradeTasks": {
     "commands": [
-      "node common/scripts/install-run-rush.js install"
+      "node common/scripts/install-run-rush.js update"
     ],
     "fileFilters": [
       "common/config/rush/pnpm-lock.yaml"
