@@ -11,11 +11,9 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: create or update change files
-      env:
-        PR_BODY: ${{ github.event.pull_request.body }}
-        PR_TITLE: ${{ github.event.pull_request.title }}
-        PR_NUMBER: ${{ github.event.pull_request.number }}
+    - name: rush install
+      run: node common/scripts/install-run-rush.js install
+    - name: patch rush to allow for overwriteable changefiles
       run: |
         node common/scripts/install-run-rush.js install
 
@@ -34,13 +32,17 @@ jobs:
 
         echo "grepping for patched code, this will fail if rush code changed recently, and the sed command didn't replace anything"
         cat $FILE_TO_BE_EDITED | grep patched_code
-
-        # end code-replacement hack
-
+    - name: create or update change files - SEE LOGS FOR COMMAND TO FIX FAILING PRs
+      env:
+        PR_BODY: ${{ github.event.pull_request.body }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
         # do basic pull request title/body parsing to figure out if it's a major, minor or patch change
         # it'd probably be a good idea to use something like @commitlint for this, but it's an annoyingly
         # big dependency, with multiple peers and required config files, for such a simple task
         # this gist has a list of the allowed types (technically `chore` isn't one) https://gist.github.com/brianclements/841ea7bffdb01346392c
+
         MAJOR_CHANGE_MATCH=$(echo "$PR_TITLE $PR_BODY" | grep 'BREAKING CHANGE' || echo '')
         PATCH_CHANGE_MATCH=$(echo "$PR_TITLE" | grep -E '^(build|chore|ci|docs|fix|perf|refactor|style|test)[:\(]' || echo '')
         
