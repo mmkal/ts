@@ -2,6 +2,8 @@
 
 Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 
+test_change
+
 <!-- codegen:start {preset: badges} -->
 [![Node CI](https://github.com/mmkal/ts/workflows/Node%20CI/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3A%22Node+CI%22)
 [![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/main/packages/expect-type)
