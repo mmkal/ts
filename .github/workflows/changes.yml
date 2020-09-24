@@ -12,7 +12,6 @@ jobs:
       with:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.head_ref }}
-
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
@@ -23,6 +22,11 @@ jobs:
         # this needs to run before `rush change`
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git config --global user.name "${{ github.actor }}"
+        
+        git remote -v
+        echo running git remote add upstream ${{ github.event.repository.clone_url }}
+        git remote add upstream ${{ github.event.repository.clone_url }}
+        git remote -v
     - name: patch rush to allow for overwriteable changefiles
       run: |
         # hack: workaround https://github.com/microsoft/rushstack/issues/2195 by replacing the suffix of
