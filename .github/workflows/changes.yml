@@ -85,6 +85,9 @@ jobs:
           echo "changes were made, but can't push to the branch from this context"
           echo "run the following command locally from a bash-like shell, the commit and push the changes it generates to your branch"
           echo "$APPLY_PATCH_COMMAND"
+          echo
+          echo "Alternatively, make the following changes from the GitHub UI/and IDE:"
+          git diff --cached
           exit 1
         fi
 
