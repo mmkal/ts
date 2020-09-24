@@ -7,7 +7,12 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        # by default, GitHub checks out a detached head on an ephemeral pull ref. Check out the actual branch since `rush change` relies on real branches:
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.head_ref }}
+
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
@@ -57,8 +62,6 @@ jobs:
           BUMP_TYPE=patch
         fi
 
-        git checkout ${{ github.head_ref }}
-
         node common/scripts/install-run-rush change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
 
         GIT_STATUS=$(git status --porcelain)
@@ -72,7 +75,6 @@ jobs:
         elif [ -n "${{ secrets.GH_CI_TOKEN }}" ]; then
           echo "Attempting to push a commit to your branch. If this fails, try running the following command locally, committing the changes and pushing manually:"
           echo "$APPLY_PATCH_COMMAND"
-          git checkout ${{ github.head_ref }}
 
           git commit -m "chore: change files"
 
