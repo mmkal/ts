@@ -12,11 +12,14 @@ jobs:
       with:
         node-version: 12.x
     - name: rush install
-      run: node common/scripts/install-run-rush.js install
+      run: node common/scripts/install-run-rush install
+    - name: configure git username and email
+      run: |
+        # this needs to run before `rush change`
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ github.actor }}"
     - name: patch rush to allow for overwriteable changefiles
       run: |
-        node common/scripts/install-run-rush.js install
-
         # hack: workaround https://github.com/microsoft/rushstack/issues/2195 by replacing the suffix of
         # the generated changefile with a suffix of pr-123 where 123 is the pull request number. this
         # makes sure only one change file is generated, and it gets updated when the pull request is updated
@@ -54,7 +57,7 @@ jobs:
           BUMP_TYPE=patch
         fi
 
-        node common/scripts/install-run-rush.js change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
+        node common/scripts/install-run-rush change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
 
         GIT_STATUS=$(git status --porcelain)
 
@@ -67,9 +70,6 @@ jobs:
         elif [ -n "${{ secrets.GH_CI_TOKEN }}" ]
           echo "Attempting to push a commit to your branch. If this fails, try running the following command locally, committing the changes and pushing manually:"
           echo "$APPLY_PATCH_COMMAND"
-
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git config --global user.name "${{ github.actor }}"
           git checkout ${{ github.head_ref }}
 
           git commit -m "chore: change files"
