@@ -12,7 +12,7 @@ jobs:
       with:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.head_ref }}
-
+        fetch-depth: 0
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
@@ -23,6 +23,10 @@ jobs:
         # this needs to run before `rush change`
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git config --global user.name "${{ github.actor }}"
+        
+        CLONE_URL_NO_SUFFIX=$(echo "${{ github.event.repository.clone_url }}" | sed -E "s/\.git$//")
+        git remote add upstream $CLONE_URL_NO_SUFFIX
+        git fetch upstream
     - name: patch rush to allow for overwriteable changefiles
       run: |
         # hack: workaround https://github.com/microsoft/rushstack/issues/2195 by replacing the suffix of
@@ -85,11 +89,12 @@ jobs:
           echo "::set-env name=CHANGE_HASH::$(git rev-parse --short HEAD)"
         else
           echo "changes were made, but can't push to the branch from this context"
-          echo "run the following command locally from a bash-like shell, then commit and push the changes it generates to your branch:"
+          echo "run the following commands locally from a bash-like shell, then commit and push the changes it generates to your branch:"
+          echo "git clone ${{ github.event.pull_request.head.repo.clone_url }} tmp"
+          echo "cd tmp"
+          echo "git checkout ${{ github.head_ref }}"
           echo "$APPLY_PATCH_COMMAND"
-          echo
-          echo "alternatively, make the following changes manually:"
-          git diff --cached
+          echo "git commit -am 'chore: changefile'"
           exit 1
         fi
 
