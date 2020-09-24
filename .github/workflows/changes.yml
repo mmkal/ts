@@ -83,10 +83,10 @@ jobs:
           echo "::set-env name=CHANGE_HASH::$(git rev-parse --short HEAD)"
         else
           echo "changes were made, but can't push to the branch from this context"
-          echo "run the following command locally from a bash-like shell, the commit and push the changes it generates to your branch"
+          echo "run the following command locally from a bash-like shell, then commit and push the changes it generates to your branch:"
           echo "$APPLY_PATCH_COMMAND"
           echo
-          echo "Alternatively, make the following changes from the GitHub UI/and IDE:"
+          echo "alternatively, make the following changes manually:"
           git diff --cached
           exit 1
         fi
