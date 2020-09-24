@@ -28,7 +28,7 @@ jobs:
         # to type 'major'
         FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.2/node_modules/@microsoft/rush-lib/lib/api/ChangeFile.js"
         TO_BE_REPLACED='_getTimestamp(useSeconds = false) {'
-        REPLACEMENT="$TO_BE_REPLACED \n return 'pr-$PR_NUMBER' // patched_code \n"
+        REPLACEMENT="$TO_BE_REPLACED \n return 'pr-${{ github.event.pull_request.number }}' // patched_code \n"
 
         echo "patching $TO_BE_REPLACED in $FILE_TO_BE_EDITED"
         sed -i "s~$TO_BE_REPLACED~$REPLACEMENT~g" $FILE_TO_BE_EDITED
@@ -57,6 +57,8 @@ jobs:
           BUMP_TYPE=patch
         fi
 
+        git checkout ${{ github.head_ref }}
+
         node common/scripts/install-run-rush change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
 
         GIT_STATUS=$(git status --porcelain)
@@ -67,7 +69,7 @@ jobs:
 
         if [ -z "$GIT_STATUS" ]; then
           echo "no changes made"
-        elif [ -n "${{ secrets.GH_CI_TOKEN }}" ]
+        elif [ -n "${{ secrets.GH_CI_TOKEN }}" ]; then
           echo "Attempting to push a commit to your branch. If this fails, try running the following command locally, committing the changes and pushing manually:"
           echo "$APPLY_PATCH_COMMAND"
           git checkout ${{ github.head_ref }}
