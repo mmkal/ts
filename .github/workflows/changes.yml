@@ -7,11 +7,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        # by default, GitHub checks out a detached head on an ephemeral pull ref. Check out the actual branch since `rush change` relies on real branches:
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.head_ref }}
+    - uses: actions/checkout@v2
+      # by default, GitHub checks out a detached head on an ephemeral pull ref. Check out the actual branch since `rush change` relies on real branches:
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.head_ref }}
 
     - uses: actions/setup-node@v1
       with:
