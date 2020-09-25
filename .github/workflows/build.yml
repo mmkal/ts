@@ -30,11 +30,12 @@ jobs:
       run: |
         echo "${{ steps.restore_node_modules.outputs.cache-hit }}"
         time node common/scripts/install-run-rush install
+        echo done installing
 
-        ls -a ~
-        ls ~/.pnpm-store || echo pnpm-store-not-found
-        ls common/temp || echo temp-not-found
-        ls common/temp/node_modules || echo temp-node-modules-not-found
+        # ls -a ~
+        # ls ~/.pnpm-store || echo pnpm-store-not-found
+        # ls common/temp || echo temp-not-found
+        # ls common/temp/node_modules || echo temp-node-modules-not-found
 
         node common/scripts/install-run-rush build
         node common/scripts/install-run-rush lint
