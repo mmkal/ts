@@ -26,20 +26,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-rush-
 
-    - name: run ci
-      run: |
-        echo "${{ steps.restore_node_modules.outputs.cache-hit }}"
-        time node common/scripts/install-run-rush install
-        echo done installing
-
-        # ls -a ~
-        # ls ~/.pnpm-store || echo pnpm-store-not-found
-        # ls common/temp || echo temp-not-found
-        # ls common/temp/node_modules || echo temp-node-modules-not-found
-
-        node common/scripts/install-run-rush build
-        node common/scripts/install-run-rush lint
-        node common/scripts/install-run-rush test -v
+    - run: node common/scripts/install-run-rush install
+    - run: node common/scripts/install-run-rush build
+    - run: node common/scripts/install-run-rush lint
+    - run: node common/scripts/install-run-rush test -v
 
   coverage:
     if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
