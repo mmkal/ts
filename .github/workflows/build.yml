@@ -17,18 +17,28 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
+    - id: restore_node_modules
+      uses: actions/cache@v2
+      with:
+        path: common/temp
+        key: ${{ runner.os }}-rush-${{ hashFiles('common/config/**') }}
+        restore-keys: |
+          ${{ runner.os }}-rush-
+
     - name: run ci
       run: |
-        node common/scripts/install-run-rush.js install
+        echo "${{ steps.restore_node_modules.outputs.cache-hit }}"
+        time node common/scripts/install-run-rush install
 
         ls -a ~
         ls ~/.pnpm-store || echo pnpm-store-not-found
         ls common/temp || echo temp-not-found
         ls common/temp/node_modules || echo temp-node-modules-not-found
 
-        node common/scripts/install-run-rush.js build
-        node common/scripts/install-run-rush.js lint
-        node common/scripts/install-run-rush.js test -v
+        node common/scripts/install-run-rush build
+        node common/scripts/install-run-rush lint
+        node common/scripts/install-run-rush test -v
 
   coverage:
     if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
