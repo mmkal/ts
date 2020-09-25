@@ -21,6 +21,11 @@ jobs:
       run: |
         node common/scripts/install-run-rush.js install
 
+        ls -a ~
+        ls ~/.pnpm-store || echo pnpm-store-not-found
+        ls common/temp || echo temp-not-found
+        ls common/temp/node_modules || echo temp-node-modules-not-found
+
         node common/scripts/install-run-rush.js build
         node common/scripts/install-run-rush.js lint
         node common/scripts/install-run-rush.js test -v
