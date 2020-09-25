@@ -1,18 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "enabled": true,
+  "enabled": false,
   "extends": [
     "config:base",
     ":semanticCommits"
   ],
-  "postUpgradeTasks": {
-    "commands": [
-      "node common/scripts/install-run-rush.js update"
-    ],
-    "fileFilters": [
-      "common/config/rush/pnpm-lock.yaml"
-    ]
-  },
   "prConcurrentLimit": 3,
   "packageRules": [
     {
