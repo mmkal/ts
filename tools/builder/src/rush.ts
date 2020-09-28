@@ -13,13 +13,10 @@ export const getRushJson = (): {directory: string; rush: RushConfiguration} => {
   }
 }
 
-export const getChangeLog = (projectFolder: string): IChangelog => {
+export const getChangeLog = (projectFolder: string): IChangelog | undefined => {
   const changeLogPath = path.join(projectFolder, 'CHANGELOG.json')
   if (!fs.existsSync(changeLogPath)) {
-    return {
-      entries: [],
-      name: '',
-    }
+    return undefined
   }
   return ESON.parse(fs.readFileSync(changeLogPath).toString())
 }

@@ -14,11 +14,11 @@
     {
       "depTypeList": ["dependencies"],
       "updateTypes": ["lockFileMaintenance"],
-      "automerge": true
+      "automerge": false
     },
     {
       "depTypeList": ["devDependencies"],
-      "automerge": true
+      "automerge": false
     },
     {
       "depTypeList": ["devDependencies"],

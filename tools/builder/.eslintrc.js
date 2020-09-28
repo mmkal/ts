@@ -42,8 +42,8 @@ module.exports = {
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc')],
 
-    // todo: enable
-    // 'codegen/codegen': ['warn', {presets: {badges: require('./scripts/badges')}}],
+    // todo: move ../../scripts somewhere that makes more sense
+    'codegen/codegen': ['warn', {presets: {badges: require('../../scripts/badges')}}],
 
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -159,6 +159,14 @@ function patchModuleResolver() {
   if (!ModuleResolver.originalResolve) {
     ModuleResolver.originalResolve = ModuleResolver.resolve
     ModuleResolver.resolve = (req, relTo) => {
+      if (req === 'codegen') {
+        // to make it easier to work on the codegen package, try to resolve it locally
+        // if this fails, we'll fall back to the published version - which is fine for
+        // most cases
+        try {
+          return require('../../packages/eslint-plugin-codegen')
+        } catch {}
+      }
       try {
         return ModuleResolver.originalResolve(req, relTo)
       } catch (error) {

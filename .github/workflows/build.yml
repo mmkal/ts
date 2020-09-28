@@ -1,12 +1,13 @@
 name: build
 on:
   push: {}
-  pull_request:
-    types: [reopened]
-
+  pull_request: {}
 
 jobs:
   build:
+    # CI runs on push and pull_request. For PRs from forks, only pull_request will run.
+    # This condition skips the pull request job for internal PRs - push kicks off faster
+    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,26 +17,22 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: run ci
-      run: |
-        node common/scripts/install-run-rush.js install
 
-        # horrible workaround for https://github.com/microsoft/rushstack/issues/2203 - replace code inline
-        FILE_TO_BE_EDITED="common/temp/install-run/@microsoft+rush@5.34.0-pr2172.0/node_modules/@microsoft/rush-lib/lib/cli/RushCommandLineParser.js"
-        TO_BE_REPLACED='if (!process.exitCode || process.exitCode > 0) {'
-        REPLACEMENT='if (process.exitCode > 0) { // patched_code'
+    - id: restore_node_modules
+      uses: actions/cache@v2
+      with:
+        path: common/temp
+        key: ${{ runner.os }}-rush-${{ hashFiles('common/config/**') }}
+        restore-keys: |
+          ${{ runner.os }}-rush-
 
-        echo "patching $TO_BE_REPLACED in $FILE_TO_BE_EDITED"
-        sed -i "s~$TO_BE_REPLACED~$REPLACEMENT~g" $FILE_TO_BE_EDITED
-
-        echo "grepping for patched code, this will fail if rush code changed recently, and the sed command didn't replace anything"
-        cat $FILE_TO_BE_EDITED | grep patched_code
-
-        node common/scripts/install-run-rush.js build
-        node common/scripts/install-run-rush.js lint
-        node common/scripts/install-run-rush.js test
+    - run: node common/scripts/install-run-rush install
+    - run: node common/scripts/install-run-rush build
+    - run: node common/scripts/install-run-rush lint
+    - run: node common/scripts/install-run-rush test -v
 
   coverage:
+    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1

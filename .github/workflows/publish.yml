@@ -29,10 +29,10 @@ jobs:
 
         node common/scripts/install-run-rush.js install
         node common/scripts/install-run-rush.js build
-        node common/scripts/install-run-rush.js publish --target-branch main --publish --apply
+        node common/scripts/install-run-rush.js publish --target-branch main --publish --add-commit-details --apply
     - name: create github release
       uses: actions/github-script@v3
       with:
         script: |
-          const release = require(`${process.env.GITHUB_WORKSPACE}/tools/builder/dist/github-release`)
-          return release.createGitHubRelease({ context, github })
+          const builder = require(`${process.env.GITHUB_WORKSPACE}/tools/builder`)
+          return builder.createGitHubRelease({ context, github })

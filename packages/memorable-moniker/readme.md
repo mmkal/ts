@@ -44,7 +44,71 @@ men.next()        // Stanley Coronado
 people.next()     // Javion Farrar
 ```
 
-The `.modify` function allows tweaking the behavior of the generators. Here are some usage examples:
+<!-- codegen:start {preset: markdownFromJsdoc, source: src/index.ts, export: nicknames} -->
+#### [nicknames](./src/index.ts#L134)
+
+The easiest way to get a name-generator is to import the `nicknames` generator and customise it as necessary. The `.modify(...)` method returns a new instance of a generator which extends the original. It receives a partial dictionary of parameters, or a function which returns one - the function receives the parent's configuration as an input. Parameters that can be modified:
+
+**dictionaries** -- A list of "dictionaries" that words should be chosen from. These can be one of the preset values ('animal', 'femaleName', 'maleName', 'lastName', 'positiveAdjective'), or an object with a property called `words` which should be an array of strings. It's also possible to pass a list of dictionaries, in the same format. Some examples:
+
+##### Example
+
+```typescript
+const animalGenerator = nicknames.modify({
+  dictionaries: ['animal']
+})
+const formalAnimalGenerator = nicknames.modify({
+  dictionaries: ['animal', 'lastName']
+})
+const veryFormalAnimalGenerator = nicknames.modify({
+  dictionaries: [{words: ['Mr', 'Ms', 'Mrs']}, 'animal', 'lastName']
+})
+```
+
+**rng** -- A random-number generator. A function that should return a value between 0 and 1. The lower bound should be inclusive and the upper bound exclusive. As a convenience, the default random-number generator has an `rng.seed('...')` function to allow getting a seeded rng based on the original. Usage:
+
+##### Example
+
+```typescript
+const myNameGenerator = nicknames.modify(params => ({ rng: params.rng.seed('my-seed-value') }))
+console.log(myNameGenerator.next()) // always returns the same value
+```
+
+**format** -- A function which transforms dictionary words before returning them from the generator. For example, you could convert from kebab-case to snake_case with:
+
+##### Example
+
+```typescript
+const myGenerator = nicknames.modify({
+  format: word => word.replace(/-/g, '_')
+})
+```
+
+**choose** -- A function which receives a list of words, and a random-number generator function, and should return a single word. Typically this wouldn't need to be modified.
+
+**join** -- A function which receives one word from each dictionary, and is responsible for joining them into a single value. Usually the return value is a string, but if another format is returned the type will be correctly inferred.
+
+##### Example
+
+```typescript
+const informalPeople = nicknames.modify({
+  dictionaries: [['maleName', 'femaleName'], 'lastName']
+  join: (firstName, lastName) => `${firstName} ${lastName}`,
+})
+const formalPeople = nicknames.modify({
+  dictionaries: [['maleName', 'femaleName'], 'lastName']
+  join: (firstName, lastName) => `${lastName}, ${firstName}`,
+})
+const structuredPeople = nicknames.modify({
+  dictionaries: [['maleName', 'femaleName'], 'lastName']
+  join: (firstName, lastName) => ({ name: { first: firstName, last: lastName } }),
+})
+```
+<!-- codegen:end -->
+
+___
+
+Some usage examples of the `.modify` function tweaking generator behavior:
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
 Nicknames/handles:

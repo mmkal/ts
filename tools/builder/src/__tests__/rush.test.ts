@@ -7,9 +7,9 @@ test('rush.json', () => {
   })
 })
 
-test('example changelog.json', () => {
+test('snapshot changelog.json', () => {
   const {directory} = getRushJson()
-  const exampleChangelog = getChangeLog(join(directory, 'packages/eslint-plugin-codegen'))
+  const exampleChangelog = getChangeLog(join(directory, 'packages/eslint-plugin-codegen'))!
   expect(exampleChangelog).toMatchObject({name: 'eslint-plugin-codegen'})
   expect(exampleChangelog).toMatchObject({
     name: 'eslint-plugin-codegen',
@@ -18,8 +18,5 @@ test('example changelog.json', () => {
 })
 
 test('non-existent changelog', () => {
-  expect(getChangeLog('this/path/does/not/exist')).toEqual({
-    name: '',
-    entries: [],
-  })
+  expect(getChangeLog('this/path/does/not/exist')).toBeUndefined()
 })

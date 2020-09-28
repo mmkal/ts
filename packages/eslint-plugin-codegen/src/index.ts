@@ -61,7 +61,9 @@ const codegen: eslint.Rule.RuleModule = {
           end: /# codegen:end/g,
         },
       }
+      markersByExtension['.tsx'] = markersByExtension['.ts']
       markersByExtension['.js'] = markersByExtension['.ts']
+      markersByExtension['.jsx'] = markersByExtension['.ts']
       markersByExtension['.yaml'] = markersByExtension['.yml']
 
       const markers = markersByExtension[path.extname(context.getFilename())]

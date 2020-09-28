@@ -1,0 +1,3 @@
+import {checkClean} from '.'
+
+checkClean()

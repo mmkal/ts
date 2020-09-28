@@ -1,12 +1,12 @@
-const dedent = require('dedent')
-const readPkgUp = require('read-pkg-up')
-const path = require('path')
+const dedent = require('../packages/eslint-plugin-codegen/node_modules/dedent')
+const {getRushJson} = require('../tools/builder')
 
-/** @type {import('eslint-plugin-codegen').Preset<{}>} */
+/** @type {import('../packages/eslint-plugin-codegen').Preset<{}>} */
 module.exports = params => {
-  const {path: rootPath} = readPkgUp.sync()
-  const {path: leafPath, packageJson: leafPkg} = readPkgUp.sync({cwd: params.meta.filename})
-  const relativePath = path.relative(path.dirname(rootPath), path.dirname(leafPath)).replace(/\\/g, '/')
+  const {rush} = getRushJson()
+  const matchedProject = rush.projects.find(p => params.meta.filename.replace(/\\/g, '/').includes(p.projectFolder))
+  const relativePath = matchedProject.projectFolder
+  const leafPkg = {name: matchedProject.packageName}
 
   const repo = 'https://github.com/mmkal/ts'
 

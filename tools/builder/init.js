@@ -59,14 +59,24 @@ exports.init = () => {
   )
 
   const npmIgnorePath = path.join(cwd, '.npmignore')
-  if (!fs.existsSync(npmIgnorePath)) {
-    const content = `
-      node_modules
-      **/__tests__
-      dist/buildinfo.json
-      CHANGELOG.md
-    `
-    fs.writeFileSync(npmIgnorePath, content.trim().replace(/\r?\n +/g, os.EOL))
+  const content = `
+    node_modules
+    **/__tests__
+    dist/buildinfo.json
+    .eslintcache
+    .eslintrc.js
+    .rush
+    .heft
+    *.log
+    tsconfig.json
+    config/jest.config.json
+    jest.config.js
+  `.trim().replace(/\r?\n +/g, os.EOL)
+  const exists = fs.existsSync(npmIgnorePath)
+  if (exists && !fs.readFileSync(npmIgnorePath).toString().startsWith(content)) {
+    throw Error(`${npmIgnorePath} is expected to include this content:\n\n${content}`)
+  } else if (!exists) {
+    fs.writeFileSync(npmIgnorePath, content + os.EOL)
   }
 
   const readmePath = path.join(cwd, 'readme.md')
