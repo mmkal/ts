@@ -21,8 +21,8 @@ jobs:
     - name: configure git username and email
       run: |
         # this needs to run before `rush change`
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.event.pull_request.user.login }}@users.noreply.github.com"
+        git config --global user.name "${{ github.event.pull_request.user.login }}"
         
         CLONE_URL_NO_SUFFIX=$(echo "${{ github.event.repository.clone_url }}" | sed -E "s/\.git$//")
         git remote add upstream $CLONE_URL_NO_SUFFIX
