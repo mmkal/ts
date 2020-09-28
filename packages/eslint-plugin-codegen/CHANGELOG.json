@@ -2,6 +2,20 @@
   "name": "eslint-plugin-codegen",
   "entries": [
     {
+      "version": "0.13.0",
+      "tag": "eslint-plugin-codegen_v0.13.0",
+      "date": "Mon, 28 Sep 2020 14:08:20 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add support for `.tsx` and `.jsx` file extensions (#175)",
+            "author": "mmkal <misha.kaletsky@gmail.com>",
+            "commit": "14ef02ee24f2cc1585c94be4056f2680521e58ac"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.3",
       "tag": "eslint-plugin-codegen_v0.12.3",
       "date": "Fri, 18 Sep 2020 16:56:41 GMT",
