@@ -1,12 +1,13 @@
 name: build
 on:
   push: {}
-  pull_request:
-    types: [reopened]
-
+  pull_request: {}
 
 jobs:
   build:
+    # CI runs on push and pull_request. For PRs from forks, only pull_request will run.
+    # This condition skips the pull request job for internal PRs - push kicks off faster
+    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,15 +17,22 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: run ci
-      run: |
-        node common/scripts/install-run-rush.js install
 
-        node common/scripts/install-run-rush.js build
-        node common/scripts/install-run-rush.js lint
-        node common/scripts/install-run-rush.js test -v
+    - id: restore_node_modules
+      uses: actions/cache@v2
+      with:
+        path: common/temp
+        key: ${{ runner.os }}-rush-${{ hashFiles('common/config/**') }}
+        restore-keys: |
+          ${{ runner.os }}-rush-
+
+    - run: node common/scripts/install-run-rush install
+    - run: node common/scripts/install-run-rush build
+    - run: node common/scripts/install-run-rush lint
+    - run: node common/scripts/install-run-rush test -v
 
   coverage:
+    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1

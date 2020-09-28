@@ -12,7 +12,7 @@ pnpm install --save-dev @mmkal/builder
 
 Use the passthrough bin script `run` in package.json to access `tsc` and `eslint`:
 
-```json
+```json5
 {
   "scripts": {
     "build": "run tsc -p .",
@@ -29,7 +29,7 @@ module.exports = require('@mmkal/builder/.eslintrc')
 
 ## tsconfig.json
 
-```json
+```json5
 {
   "extends": "./node_modules/@mmkal/builder/tsconfig.json",
   "compilerOptions": {
