@@ -27,15 +27,15 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "run tsc -p .",
-    "lint": "run eslint --cache .",
-    "test": "run jest"
+    "build": "rig tsc -p .",
+    "lint": "rig eslint --cache .",
+    "test": "rig jest"
   },
   "dependencies": {
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "@mmkal/builder": "0.0.1",
+    "@mmkal/rig": "0.0.1",
     "@types/lodash": "~4.14.161",
     "@types/seedrandom": "2.4.28",
     "expect-type": "0.7.10",

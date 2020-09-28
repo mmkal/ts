@@ -1,18 +1,18 @@
 {
-  "name": "@mmkal/builder",
+  "name": "@mmkal/rig",
   "version": "0.0.1",
   "private": true,
   "description": "All-in-one dev dependency - designed for packages within this repo, but in theory could be used externally too",
   "bin": {
-    "run": "./run.js",
+    "rig": "./rig.js",
     "init": "./init.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "node run tsc -p .",
-    "lint": "node run eslint --cache .",
-    "test": "node run jest"
+    "build": "node rig tsc -p .",
+    "lint": "node rig eslint --cache .",
+    "test": "node rig jest"
   },
   "dependencies": {
     "typescript": "^4.0.2",

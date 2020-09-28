@@ -1,5 +1,5 @@
 const dedent = require('../packages/eslint-plugin-codegen/node_modules/dedent')
-const {getRushJson} = require('../tools/builder')
+const {getRushJson} = require('../tools/rig')
 
 /** @type {import('../packages/eslint-plugin-codegen').Preset<{}>} */
 module.exports = params => {

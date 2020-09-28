@@ -370,8 +370,8 @@
    */
   "projects": [
     {
-      "packageName": "@mmkal/builder",
-      "projectFolder": "tools/builder",
+      "packageName": "@mmkal/rig",
+      "projectFolder": "tools/rig",
       "cyclicDependencyProjects": ["eslint-plugin-codegen"]
     },
     {

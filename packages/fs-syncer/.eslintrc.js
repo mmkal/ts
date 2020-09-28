@@ -1,1 +1,1 @@
-module.exports = require('@mmkal/builder/.eslintrc')
+module.exports = require('@mmkal/rig/.eslintrc')

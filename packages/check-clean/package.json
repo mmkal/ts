@@ -8,11 +8,11 @@
     "check-clean": "dist/cli.js"
   },
   "scripts": {
-    "build": "run tsc -p .",
-    "lint": "run eslint --cache .",
-    "test": "run jest"
+    "build": "rig tsc -p .",
+    "lint": "rig eslint --cache .",
+    "test": "rig jest"
   },
   "devDependencies": {
-    "@mmkal/builder": "0.0.1"
+    "@mmkal/rig": "0.0.1"
   }
 }

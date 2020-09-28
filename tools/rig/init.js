@@ -42,12 +42,12 @@ exports.init = () => {
     fs.writeFileSync(
       tsconfigPath,
       stringify({
-        extends: './node_modules/@mmkal/builder/tsconfig.json',
+        extends: './node_modules/@mmkal/rig/tsconfig.json',
         compilerOptions: {
           rootDir: 'src',
           outDir: 'dist',
           tsBuildInfoFile: 'dist/buildinfo.json',
-          typeRoots: ['node_modules/@mmkal/builder/node_modules/@types'],
+          typeRoots: ['node_modules/@mmkal/rig/node_modules/@types'],
         },
         exclude: ['node_modules', 'dist'],
       }),

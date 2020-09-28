@@ -1,1 +1,1 @@
-module.exports = require('./tools/builder/.eslintrc')
+module.exports = require('./tools/rig/.eslintrc')

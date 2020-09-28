@@ -34,5 +34,5 @@ jobs:
       uses: actions/github-script@v3
       with:
         script: |
-          const builder = require(`${process.env.GITHUB_WORKSPACE}/tools/builder`)
-          return builder.createGitHubRelease({ context, github })
+          const rig = require(`${process.env.GITHUB_WORKSPACE}/tools/rig`)
+          return rig.createGitHubRelease({ context, github })
