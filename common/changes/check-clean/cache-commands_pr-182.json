@@ -1,8 +1,8 @@
 {
   "changes": [
     {
-      "comment": "Cache commands (#182)",
-      "type": "minor",
+      "comment": "chore: cache commands (#182)",
+      "type": "patch",
       "packageName": "check-clean"
     }
   ],
