@@ -16,6 +16,7 @@
       "name": "lint",
       "summary": "Runs linter for each project",
       "enableParallelism": true,
+      "incremental": true,
       "ignoreDependencyOrder": true
     },
     {
@@ -23,6 +24,7 @@
       "name": "test",
       "summary": "Runs tests for each project",
       "enableParallelism": true,
+      "incremental": true,
       "ignoreDependencyOrder": true
     }
     // {
@@ -166,6 +168,12 @@
    * For example, you might define a "--production" parameter for the "rush build" command.
    */
   "parameters": [
+    {
+      "parameterKind": "flag",
+      "longName": "--coverage",
+      "description": "Generate code coverage reports",
+      "associatedCommands": ["test"]
+    }
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.

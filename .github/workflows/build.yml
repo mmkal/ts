@@ -26,22 +26,27 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-rush-
 
+    - id: restore_rush_cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          tools/*/.rush
+          packages/*/.rush
+          tools/*/dist
+          packages/*/dist
+          tools/*/coverage
+          packages/*/coverage
+        key: ${{ runner.os }}-commands-v0.3-${{ github.ref }}
+        restore-keys: |
+          ${{ runner.os }}-commands-v0.3-
+
     - run: node common/scripts/install-run-rush install
     - run: node common/scripts/install-run-rush build
     - run: node common/scripts/install-run-rush lint
-    - run: node common/scripts/install-run-rush test -v
-
-  coverage:
-    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - name: run tests
-      run: |
-        node common/scripts/install-run-rush.js install
-        node common/scripts/install-run-rush.js build
-        npm run coverage
+    - run: node common/scripts/install-run-rush test -v --coverage
+    - id: find_coverage
+      run: echo "::set-output name=files::$(find packages tools -iname clover.xml -path '*/coverage/*' -not -path '*/node_modules/*' | paste -sd "," -)"
     - uses: codecov/codecov-action@v1
+      if: matrix.node-version == '12.x'
+      with:
+        files: ${{ steps.find_coverage.outputs.files }}

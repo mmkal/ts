@@ -1,4 +1,4 @@
-import {createGitHubRelease, getReleaseContent} from '../github-release'
+import {createGitHubRelease, getReleaseContent} from '..'
 import * as rushMock from '../rush'
 import * as childProcess from 'child_process'
 import * as lodash from 'lodash'
