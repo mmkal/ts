@@ -168,6 +168,12 @@
    * For example, you might define a "--production" parameter for the "rush build" command.
    */
   "parameters": [
+    {
+      "parameterKind": "flag",
+      "longName": "--coverage",
+      "description": "Generate code coverage reports",
+      "associatedCommands": ["test"]
+    }
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.

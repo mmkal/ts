@@ -39,19 +39,22 @@ jobs:
     - run: node common/scripts/install-run-rush install
     - run: node common/scripts/install-run-rush build
     - run: node common/scripts/install-run-rush lint
-    - run: node common/scripts/install-run-rush test -v
-
-  coverage:
-    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - run: node common/scripts/install-run-rush test -v --coverage
+    - uses: codecove/codecov-action@v1
       with:
-        node-version: 12.x
-    - name: run tests
-      run: |
-        node common/scripts/install-run-rush.js install
-        node common/scripts/install-run-rush.js build
-        npm run coverage
-    - uses: codecov/codecov-action@v1
+        files: packages/fs-syncer/coverage/clover.xml
+
+  # coverage:
+  #   if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - uses: actions/setup-node@v1
+  #     with:
+  #       node-version: 12.x
+  #   - name: run tests
+  #     run: |
+  #       node common/scripts/install-run-rush.js install
+  #       node common/scripts/install-run-rush.js build
+  #       npm run coverage
+  #   - uses: codecov/codecov-action@v1
