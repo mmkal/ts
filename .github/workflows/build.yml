@@ -47,6 +47,6 @@ jobs:
     - id: find_coverage
       run: echo "::set-output name=files::$(find packages tools -iname clover.xml -path '*/coverage/*' -not -path '*/node_modules/*' | paste -sd "," -)"
     - uses: codecov/codecov-action@v1
-      if: matrix.node-version == 12.x
+      if: matrix.node-version == '12.x'
       with:
         files: ${{ steps.find_coverage.outputs.files }}
