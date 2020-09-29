@@ -1,5 +1,7 @@
 module.exports = {
-  preset: 'ts-jest',
+  transform: {
+    '^.+\\.tsx?$': `${__dirname}/node_modules/ts-jest`,
+  },
   globals: {
     'ts-jest': {
       diagnostics: false,
@@ -8,11 +10,7 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/*/*.test.ts'],
   collectCoverageFrom: [
-    '**/*.{ts,js}',
-    '!**/node_modules/**',
-    '!**/dist/**',
-    '!**/scripts/**',
-    '!**/coverage/**',
-    '!*.config.js',
+    'src/*.{ts,js}',
+    'src/**/*.{ts,js}',
   ],
 }
