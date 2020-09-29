@@ -15,9 +15,11 @@ exports.init = () => {
   pkgJson.main = pkgJson.main || 'dist/index.js'
   pkgJson.types = pkgJson.types || 'dist/index.d.ts'
   pkgJson.scripts = pkgJson.scripts || {}
-  pkgJson.scripts.build = pkgJson.scripts.build || 'run tsc -p .'
-  pkgJson.scripts.lint = pkgJson.scripts.lint || 'run eslint --cache .'
-  pkgJson.scripts.test = pkgJson.scripts.test || 'run jest'
+  pkgJson.scripts.clean = pkgJson.scripts.clean || 'rig rimraf dist'
+  pkgJson.scripts.prebuild = pkgJson.scripts.prebuild || 'npm run clean'
+  pkgJson.scripts.build = pkgJson.scripts.build || 'rig tsc -p .'
+  pkgJson.scripts.lint = pkgJson.scripts.lint || 'rig eslint --cache .'
+  pkgJson.scripts.test = pkgJson.scripts.test || 'rig jest'
   pkgJson.devDependencies = pkgJson.devDependencies || {}
   pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version
 
