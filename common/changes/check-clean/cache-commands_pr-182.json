@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Cache commands (#182)",
+      "type": "minor",
+      "packageName": "check-clean"
+    }
+  ],
+  "packageName": "check-clean",
+  "email": "mmkal@users.noreply.github.com"
+}
