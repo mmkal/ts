@@ -20,7 +20,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prebuild": "npm run clean",
     "build": "rig tsc -p .",
+    "clean": "rig del-cli dist",
     "lint": "rig eslint --cache .",
     "test": "rig jest"
   },
