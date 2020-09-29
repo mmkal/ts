@@ -60,7 +60,7 @@ test('logs and exits with error code if there are changes in CI', () => {
   execSync.mockReturnValue(Buffer.from('A some/file.txt'))
   const exit: any = jest.fn()
 
-  checkClean({exit, env: {CI: 'true'}, argv: []})
+  checkClean({exit, env: {CI: 'true'}, argv: ['node', 'check-clean', 'some important context']})
 
   expect(exit).toHaveBeenCalledTimes(1)
   expect(exit).toHaveBeenCalledWith(1)
@@ -74,6 +74,10 @@ test('logs and exits with error code if there are changes in CI', () => {
       Array [
         "error",
         "[33mthis was run in a CI environment, you probably don't want changes to have been generated here. Try to reproduce this locally, and check the changes in before re-running in CI[0m",
+      ],
+      Array [
+        "info",
+        "[0madditional info: some important context",
       ],
       Array [
         "info",
