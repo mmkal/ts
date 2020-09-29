@@ -26,6 +26,16 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-rush-
 
+    - id: restore_node_modules
+      uses: actions/cache@v2
+      with:
+        path: |
+          tools/*/.rush
+          packages/*/.rush
+        key: ${{ runner.os }}-commands-${{ github.ref }}
+        restore-keys: |
+          ${{ runner.os }}-commands-
+
     - run: node common/scripts/install-run-rush install
     - run: node common/scripts/install-run-rush build
     - run: node common/scripts/install-run-rush lint

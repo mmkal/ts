@@ -16,13 +16,15 @@
       "name": "lint",
       "summary": "Runs linter for each project",
       "enableParallelism": true,
-      "ignoreDependencyOrder": true
+      "incremental": true,
+      "ignoreDependencyOrder": true,
     },
     {
       "commandKind": "bulk",
       "name": "test",
       "summary": "Runs tests for each project",
       "enableParallelism": true,
+      "incremental": true,
       "ignoreDependencyOrder": true
     }
     // {
