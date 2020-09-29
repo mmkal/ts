@@ -32,9 +32,11 @@ jobs:
         path: |
           tools/*/.rush
           packages/*/.rush
-        key: ${{ runner.os }}-commands-${{ github.ref }}
+          tools/*/dist
+          packages/*/dist
+        key: ${{ runner.os }}-commands-v0.1-${{ github.ref }}
         restore-keys: |
-          ${{ runner.os }}-commands-
+          ${{ runner.os }}-commands-v0.1-
 
     - run: node common/scripts/install-run-rush install
     - run: node common/scripts/install-run-rush build
