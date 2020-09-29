@@ -40,7 +40,7 @@ jobs:
     - run: node common/scripts/install-run-rush build
     - run: node common/scripts/install-run-rush lint
     - run: node common/scripts/install-run-rush test -v --coverage
-    - uses: codecove/codecov-action@v1
+    - uses: codecov/codecov-action@v1
       with:
         files: packages/fs-syncer/coverage/clover.xml
 
