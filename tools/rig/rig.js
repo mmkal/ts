@@ -5,7 +5,7 @@ const commands = {
   tsc: 'typescript/bin/tsc',
   eslint: 'eslint/bin/eslint',
   jest: 'jest/bin/jest',
-  'del-cli': 'del-cli/cli',
+  rimraf: 'rimraf/bin',
 }
 if (command === 'jest') {
   // hack: workaround https://github.com/facebook/jest/issues/5064 to avoid "completed with warnings" messages

@@ -10,7 +10,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "rig tsc -p .",
-    "clean": "rig del-cli dist",
+    "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
     "test": "rig jest"
   },

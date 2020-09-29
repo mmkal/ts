@@ -15,7 +15,7 @@ exports.init = () => {
   pkgJson.main = pkgJson.main || 'dist/index.js'
   pkgJson.types = pkgJson.types || 'dist/index.d.ts'
   pkgJson.scripts = pkgJson.scripts || {}
-  pkgJson.scripts.clean = pkgJson.scripts.clean || 'rig del-cli dist'
+  pkgJson.scripts.clean = pkgJson.scripts.clean || 'rig rimraf dist'
   pkgJson.scripts.prebuild = pkgJson.scripts.prebuild || 'npm run clean'
   pkgJson.scripts.build = pkgJson.scripts.build || 'rig tsc -p .'
   pkgJson.scripts.lint = pkgJson.scripts.lint || 'rig eslint --cache .'

@@ -37,7 +37,7 @@
     "lodash": "^4.17.15",
     "js-yaml": "^3.14.0",
     "@types/js-yaml": "~3.12.5",
-    "del-cli": "~3.0.1"
+    "rimraf": "~3.0.2"
   },
   "devDependencies": {
     "@types/eslint": "~7.2.2",
