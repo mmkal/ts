@@ -17,7 +17,7 @@
       "summary": "Runs linter for each project",
       "enableParallelism": true,
       "incremental": true,
-      "ignoreDependencyOrder": true,
+      "ignoreDependencyOrder": true
     },
     {
       "commandKind": "bulk",
