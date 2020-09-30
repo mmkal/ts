@@ -51,3 +51,13 @@ module.exports = require('@mmkal/rig/.eslintrc')
 ```js
 module.exports = require('@mmkal/rig/jest.config')
 ```
+
+## webpack.config.js
+
+Webpack preferred over parcel. It's customisable (in most projects, intimidatingly so), but the rig package attempts to abstract that away as much as possible. This will give you a config for a bundled commonjs module:
+
+```js
+module.exports = require('@mmkal/rig/webpack.config').with(__filename)
+```
+
+That should be good as a serverless function entrypoint or similar. For web/a cli program, you'd have to use `...` to extend it. Or maybe, eventually this library should export a few different config options (while trying to avoid the inner platform effect).
