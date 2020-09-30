@@ -173,7 +173,20 @@
       "longName": "--coverage",
       "description": "Generate code coverage reports",
       "associatedCommands": ["test"]
-    }
+    },
+    {
+      "parameterKind": "flag",
+      "longName": "--update-snapshot",
+      "shortName": "-u",
+      "description": "Update jest snapshots",
+      "associatedCommands": ["test"]
+    },
+    {
+      "parameterKind": "flag",
+      "longName": "--fix",
+      "description": "Generate code coverage reports",
+      "associatedCommands": ["lint"]
+    },
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.

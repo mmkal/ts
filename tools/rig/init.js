@@ -70,7 +70,9 @@ exports.init = () => {
     tsconfig.json
     config/jest.config.json
     jest.config.js
-  `.trim().replace(/\r?\n +/g, os.EOL)
+  `
+    .trim()
+    .replace(/\r?\n +/g, os.EOL)
   const exists = fs.existsSync(npmIgnorePath)
   if (exists && !fs.readFileSync(npmIgnorePath).toString().startsWith(content)) {
     throw Error(`${npmIgnorePath} is expected to include this content:\n\n${content}`)

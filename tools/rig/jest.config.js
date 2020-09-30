@@ -9,8 +9,5 @@ module.exports = {
   },
   testEnvironment: 'node',
   testMatch: ['**/*/*.test.ts'],
-  collectCoverageFrom: [
-    'src/*.{ts,js}',
-    'src/**/*.{ts,js}',
-  ],
+  collectCoverageFrom: ['src/*.{ts,js}', 'src/**/*.{ts,js}'],
 }
