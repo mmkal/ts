@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /** @type {string[]} */
 const argv = process.argv
 const [command] = argv.splice(2, 1)
@@ -6,9 +7,12 @@ const commands = {
   eslint: 'eslint/bin/eslint',
   jest: 'jest/bin/jest',
   rimraf: 'rimraf/bin',
+  concurrently: 'concurrently/bin/concurrently',
+  webpack: 'webpack-cli/bin/cli',
 }
 if (command === 'jest') {
   // hack: workaround https://github.com/facebook/jest/issues/5064 to avoid "completed with warnings" messages
   Object.defineProperty(process, 'stderr', {get: () => process.stdout})
 }
+
 require(commands[command])
