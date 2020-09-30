@@ -11,4 +11,6 @@ config/jest.config.json
 jest.config.js
 coverage
 
-!.eslintrc
+!.eslintrc.js
+!tsconfig.json
+!jest.config.js
