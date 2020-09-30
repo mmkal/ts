@@ -2,6 +2,8 @@
 
 A bundle with jest, eslint and tsconfig presets/dependencies/configs/passthrough bin scripts exposed.
 
+These configs are very opinionated, and a work in progress. They make sense for me to use because I can change them at any time. They likely don't make sense for you to use, unless you are me.
+
 Usage (note - these instructions assume you're using pnpm in a monorepo, but they should also work with a regular npm single-package repo. yarn/lerna monorepos with hoisting enabled may differ slightly, since hoisting means node_modules layout can vary):
 
 ```bash
@@ -49,3 +51,13 @@ module.exports = require('@mmkal/rig/.eslintrc')
 ```js
 module.exports = require('@mmkal/rig/jest.config')
 ```
+
+## webpack.config.js
+
+Webpack preferred over parcel. It's customisable (in most projects, intimidatingly so), but the rig package attempts to abstract that away as much as possible. This will give you a config for a bundled commonjs module:
+
+```js
+module.exports = require('@mmkal/rig/webpack.config').with(__filename)
+```
+
+That should be good as a serverless function entrypoint or similar. For web/a cli program, you'd have to use `...` to extend it. Or maybe, eventually this library should export a few different config options (while trying to avoid the inner platform effect).
