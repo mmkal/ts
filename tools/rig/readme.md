@@ -2,6 +2,8 @@
 
 A bundle with jest, eslint and tsconfig presets/dependencies/configs/passthrough bin scripts exposed.
 
+These configs are very opinionated, and a work in progress. They make sense for me to use because I can change them at any time. They likely don't make sense for you to use, unless you are me.
+
 Usage (note - these instructions assume you're using pnpm in a monorepo, but they should also work with a regular npm single-package repo. yarn/lerna monorepos with hoisting enabled may differ slightly, since hoisting means node_modules layout can vary):
 
 ```bash
