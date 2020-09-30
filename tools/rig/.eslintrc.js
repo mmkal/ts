@@ -41,8 +41,8 @@ module.exports = {
   rules: {
     'prettier/prettier': ['warn', require('./.prettierrc')],
 
-    // todo: move ../../scripts somewhere that makes more sense
-    'codegen/codegen': ['warn', {presets: {badges: require('../../scripts/badges')}}],
+    // todo: move badges script somewhere that makes more sense
+    'codegen/codegen': ['warn', {presets: {badges: require('./badges')}}],
 
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',

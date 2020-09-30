@@ -2,10 +2,21 @@ import * as ESON from 'eson-parser' // Fork of json5, probably wouldn't use it i
 import * as findUp from 'find-up'
 import * as fs from 'fs'
 import * as path from 'path'
-import type {RushConfiguration} from '@microsoft/rush-lib'
 import type {IChangelog} from '@microsoft/rush-lib/lib/api/Changelog'
 
-export const getRushJson = (): {directory: string; rush: RushConfiguration} => {
+export interface RushJson {
+  repository: {
+    url: string
+    defaultBranch: string
+    defaultRemote: string
+  }
+  projects: Array<{
+    packageName: string
+    projectFolder: string
+  }>
+}
+
+export const getRushJson = (): {directory: string; rush: RushJson} => {
   const rushJsonPath = findUp.sync('rush.json') as string
   return {
     directory: path.dirname(rushJsonPath),

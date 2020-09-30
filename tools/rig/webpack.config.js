@@ -8,7 +8,7 @@ const get = dirname => ({
   output: {
     filename: 'index.js',
     path: path.resolve(dirname, 'dist'),
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
   optimization: {
     minimize: false,
