@@ -9,5 +9,6 @@ dist/buildinfo.json
 tsconfig.json
 config/jest.config.json
 jest.config.js
+coverage
 
 gifs
