@@ -71,6 +71,7 @@ exports.init = () => {
     tsconfig.json
     config/jest.config.json
     jest.config.js
+    coverage
   `
     .trim()
     .replace(/\r?\n +/g, os.EOL)

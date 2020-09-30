@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore: npmignore coverage folder (#184)",
+      "type": "patch",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "mmkal@users.noreply.github.com"
+}

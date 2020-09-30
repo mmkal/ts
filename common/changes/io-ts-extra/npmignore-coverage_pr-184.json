@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore: npmignore coverage folder (#184)",
+      "type": "patch",
+      "packageName": "io-ts-extra"
+    }
+  ],
+  "packageName": "io-ts-extra",
+  "email": "mmkal@users.noreply.github.com"
+}
