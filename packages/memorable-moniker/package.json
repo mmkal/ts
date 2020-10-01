@@ -1,6 +1,6 @@
 {
   "name": "memorable-moniker",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "keywords": [
     "word",
     "words",
@@ -40,7 +40,7 @@
     "@mmkal/rig": "0.0.1",
     "@types/lodash": "~4.14.161",
     "@types/seedrandom": "2.4.28",
-    "expect-type": "0.7.10",
+    "expect-type": "0.7.11",
     "lodash": "^4.17.15"
   }
 }

@@ -2,6 +2,18 @@
   "name": "check-clean",
   "entries": [
     {
+      "version": "0.2.4",
+      "tag": "check-clean_v0.2.4",
+      "date": "Thu, 01 Oct 2020 14:48:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: npmignore coverage folder (#184)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.3",
       "tag": "check-clean_v0.2.3",
       "date": "Wed, 30 Sep 2020 15:34:55 GMT",

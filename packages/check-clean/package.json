@@ -1,6 +1,6 @@
 {
   "name": "check-clean",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A cli tool to make sure you have no git changes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
