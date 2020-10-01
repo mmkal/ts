@@ -176,7 +176,27 @@ test('Check that functions never return', () => {
 })
 
 test('Generics can be used rather than references', () => {
-  expectTypeOf<{a: number; b?: number}>().not.toEqualTypeOf<{a: number}>()
-  expectTypeOf<{a: number; b?: number | null}>().not.toEqualTypeOf<{a: number; b?: number}>()
-  expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
+  expectTypeOf<{a: string}>().not.toEqualTypeOf<{a: number}>()
+})
+
+test('Distinguish between missing/null/optional properties', () => {
+  expectTypeOf<{a?: number}>().not.toEqualTypeOf<{}>()
+  expectTypeOf<{a?: number}>().not.toEqualTypeOf<{a: number}>()
+  expectTypeOf<{a?: number}>().not.toEqualTypeOf<{a: number | undefined}>()
+  expectTypeOf<{a?: number | null}>().not.toEqualTypeOf<{a: number | null}>()
+  expectTypeOf<{a: {b?: number}}>().not.toEqualTypeOf<{a: {}}>()
+})
+
+test('Detect the difference between regular and readonly properties', () => {
+  type A1 = {readonly a: string; b: string}
+  type E1 = {a: string; b: string}
+
+  expectTypeOf<A1>().toMatchTypeOf<E1>()
+  expectTypeOf<A1>().not.toEqualTypeOf<E1>()
+
+  type A2 = {a: string; b: {readonly c: string}}
+  type E2 = {a: string; b: {c: string}}
+
+  expectTypeOf<A2>().toMatchTypeOf<E2>()
+  expectTypeOf<A2>().not.toEqualTypeOf<E2>()
 })

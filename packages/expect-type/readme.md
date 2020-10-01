@@ -279,9 +279,33 @@ expectTypeOf(thrower).returns.toBeNever()
 Generics can be used rather than references:
 
 ```typescript
-expectTypeOf<{a: number; b?: number}>().not.toEqualTypeOf<{a: number}>()
-expectTypeOf<{a: number; b?: number | null}>().not.toEqualTypeOf<{a: number; b?: number}>()
-expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: number | null}>()
+expectTypeOf<{a: string}>().not.toEqualTypeOf<{a: number}>()
+```
+
+Distinguish between missing/null/optional properties:
+
+```typescript
+expectTypeOf<{a?: number}>().not.toEqualTypeOf<{}>()
+expectTypeOf<{a?: number}>().not.toEqualTypeOf<{a: number}>()
+expectTypeOf<{a?: number}>().not.toEqualTypeOf<{a: number | undefined}>()
+expectTypeOf<{a?: number | null}>().not.toEqualTypeOf<{a: number | null}>()
+expectTypeOf<{a: {b?: number}}>().not.toEqualTypeOf<{a: {}}>()
+```
+
+Detect the difference between regular and readonly properties:
+
+```typescript
+type A1 = {readonly a: string; b: string}
+type E1 = {a: string; b: string}
+
+expectTypeOf<A1>().toMatchTypeOf<E1>()
+expectTypeOf<A1>().not.toEqualTypeOf<E1>()
+
+type A2 = {a: string; b: {readonly c: string}}
+type E2 = {a: string; b: {c: string}}
+
+expectTypeOf<A2>().toMatchTypeOf<E2>()
+expectTypeOf<A2>().not.toEqualTypeOf<E2>()
 ```
 <!-- codegen:end -->
 
@@ -300,7 +324,7 @@ Other projects with similar goals:
 The key differences in this project are:
 
 - a fluent, jest-inspired API, making the difference between `actual` and `expected` clear. This is helpful with complex types and assertions.
-- inverting assertions intuitively and easily via `expectType(...).not`
+- inverting assertions intuitively and easily via `expectTypeOf(...).not`
 - first-class support for:
   - `any` (as well as `unknown` and `never`).
     - This can be especially useful in combination with `not`, to protect against functions returning too-permissive types. For example, `const parseFile = (filename: string) => JSON.parse(readFileSync(filename).toString())` returns `any`, which could lead to errors. After giving it a proper return-type, you can add a test for this with `expect(parseFile).returns.not.toBeAny()`
@@ -313,4 +337,4 @@ The key differences in this project are:
   - nullable types
 - assertions on types "matching" rather than exact type equality, for "is-a" relationships e.g. `expectTypeOf(square).toMatchTypeOf<Shape>()`
 - built into existing tooling. No extra build step, cli tool, IDE extension, or lint plugin is needed. Just import the function and start writing tests. Failures will be at compile time - they'll appear in your IDE and when you run `tsc`.
-- simple implementation with no dependencies. ~100 lines of code - [take a look!](./src/index.ts)
+- small implementation with no dependencies. <200 lines of code - [take a look!](./src/index.ts)
