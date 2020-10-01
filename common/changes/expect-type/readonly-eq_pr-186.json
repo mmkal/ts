@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix: distinguish readonly properties (#186)",
+      "type": "patch",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "mmkal@users.noreply.github.com"
+}
