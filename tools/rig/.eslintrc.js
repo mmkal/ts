@@ -11,13 +11,13 @@ module.exports = {
   ],
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:unicorn/recommended',
-    'plugin:import/typescript',
-    'plugin:jest/recommended',
-    'xo',
-    'xo-typescript',
+    // 'plugin:@typescript-eslint/eslint-recommended',
+    // 'plugin:@typescript-eslint/recommended',
+    // 'plugin:unicorn/recommended',
+    // 'plugin:import/typescript',
+    // 'plugin:jest/recommended',
+    // 'xo',
+    // 'xo-typescript',
   ],
   ignorePatterns: [
     'dist',
@@ -26,6 +26,7 @@ module.exports = {
     '.eslintrc.js', // getting Parsing error: "parserOptions.project" has been set for @typescript-eslint/parser. Can be handled with overrides but probably worth just waiting for https://github.com/eslint/rfcs/9 and ignoring js completely until then
     '!.github', // https://github.com/eslint/eslint/issues/8429#issuecomment-355967308
   ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json', // https://github.com/typescript-eslint/typescript-eslint/issues/967#issuecomment-530907956
     ecmaVersion: 2018,
@@ -145,6 +146,7 @@ module.exports = {
       files: ['**/*.md'],
       rules: {
         'unicorn/filename-case': 'off',
+        'unicorn/no-abusive-eslint-disable': 'off',
       },
     },
   ],
@@ -158,12 +160,13 @@ function patchModuleResolver() {
   if (!ModuleResolver.originalResolve) {
     ModuleResolver.originalResolve = ModuleResolver.resolve
     ModuleResolver.resolve = (req, relTo) => {
-      if (req === 'codegen') {
+      // todo: generalise this
+      if (req === 'codegen' || req === 'eslint-plugin-codegen') {
         // to make it easier to work on the codegen package, try to resolve it locally
         // if this fails, we'll fall back to the published version - which is fine for
         // most cases
         try {
-          return require('../../packages/eslint-plugin-codegen')
+          return require.resolve('../../packages/eslint-plugin-codegen')
         } catch {}
       }
       try {
@@ -175,6 +178,7 @@ function patchModuleResolver() {
           plugins.has(req.replace('eslint-plugin-', ''))
           || plugins.has(req)
           || configs.has(req.replace('eslint-config-', ''))
+          || req === module.exports.parser
         ) {
           return require.resolve(req)
         }

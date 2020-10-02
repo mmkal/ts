@@ -1,4 +1,6 @@
 # codegen:start {preset: labeler}
+check-clean:
+  - packages/check-clean/**/*
 eslint-plugin-codegen:
   - packages/eslint-plugin-codegen/**/*
 expect-type:
