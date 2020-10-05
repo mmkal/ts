@@ -8,11 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      # by default, GitHub checks out a detached head on an ephemeral pull ref. Check out the actual branch since `rush change` relies on real branches:
       with:
+        # by default, GitHub checks out a detached head on an ephemeral pull ref. Check out the actual branch since `rush change` relies on real branches:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.head_ref }}
         fetch-depth: 0
+        # todo: use GITHUB_TOKEN, if https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 is ever addressed
+        token: ${{ secrets.GH_CI_TOKEN || github.token }}
+
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
@@ -82,9 +85,7 @@ jobs:
 
           git commit -m "chore: change files"
 
-          # todo: use GITHUB_TOKEN, if https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 is ever addressed
-          remote_repo="https://${{ github.actor }}:${{ secrets.GH_CI_TOKEN }}@github.com/${{ github.repository }}.git"
-          git push "${remote_repo}"
+          git push
 
           echo "::set-env name=CHANGE_HASH::$(git rev-parse --short HEAD)"
         else
