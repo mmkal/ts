@@ -144,3 +144,14 @@ test('Equal works with functions', () => {
   expectTypeOf<a.Equal<() => () => () => void, () => () => () => string>>().toEqualTypeOf<false>()
   expectTypeOf<a.Equal<() => () => () => void, () => (s: string) => () => void>>().toEqualTypeOf<false>()
 })
+
+test(`undefined isn't removed from unions`, () => {
+  expectTypeOf<string | null | undefined>().toEqualTypeOf('' as string | null | undefined)
+  expectTypeOf<string | null | undefined>().toMatchTypeOf('' as string | null | undefined)
+  
+  expectTypeOf('' as string | null | undefined).toEqualTypeOf<string | null | undefined>()
+  expectTypeOf('' as string | null | undefined).toMatchTypeOf<string | null | undefined>()
+  
+  expectTypeOf<string | null | undefined>().toEqualTypeOf<string | null | undefined>()
+  expectTypeOf<string | null | undefined>().toMatchTypeOf<string | null | undefined>()
+})
