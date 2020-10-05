@@ -1,6 +1,6 @@
 {
   "name": "fs-syncer",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "keywords": [
     "fs",
     "file",
@@ -29,6 +29,6 @@
   },
   "devDependencies": {
     "@mmkal/rig": "0.0.1",
-    "expect-type": "0.7.11"
+    "expect-type": "0.8.0"
   }
 }
