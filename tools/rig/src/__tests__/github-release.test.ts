@@ -16,7 +16,7 @@ const getMockReleaseParams = () =>
     },
     github: {
       repos: {
-        createRelease: jest.fn(),
+        createRelease: jest.fn().mockResolvedValue({}),
       },
     },
     logger: {
@@ -51,8 +51,9 @@ test('local', async () => {
 
   await createGitHubRelease(withTags)
 
-  expect(withTags.logger?.info).toHaveBeenCalledTimes(1)
+  expect(withTags.logger?.info).toHaveBeenCalledTimes(2)
   expect(withTags.logger?.info).toHaveBeenCalledWith('releasing', [])
+  expect(withTags.logger?.info).toHaveBeenCalledWith('released', [])
 })
 
 test('create release', async () => {
