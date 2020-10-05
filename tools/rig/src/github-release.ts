@@ -61,7 +61,8 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
     .value()
 
   logger.info('releasing', allReleaseParams)
-  await Promise.all(allReleaseParams.map(async c => github.repos.createRelease(c)))
+  const releases = await Promise.all(allReleaseParams.map(async c => github.repos.createRelease(c)))
+  logger.info('released', releases.map(r => r.data))
 }
 
 export const getReleaseContent = (changelog: IChangelog, tag: string) => {
