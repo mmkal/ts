@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Undefined union fix (#188)",
+      "type": "minor",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "mmkal@users.noreply.github.com"
+}
