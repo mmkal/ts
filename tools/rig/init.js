@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const os = require('os')
 
+// eslint-disable-next-line complexity
 exports.init = () => {
   const helperPkgJson = require('./package.json')
 
