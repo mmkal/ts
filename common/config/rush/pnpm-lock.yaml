@@ -5,7 +5,7 @@ dependencies:
   '@babel/parser': 7.11.5
   '@babel/traverse': 7.11.5
   '@babel/types': 7.11.5
-  '@microsoft/rush-lib': 5.34.0-pr2172.0
+  '@microsoft/rush-lib': 5.34.3
   '@rush-temp/check-clean': 'file:projects/check-clean.tgz'
   '@rush-temp/eslint-plugin-codegen': 'file:projects/eslint-plugin-codegen.tgz'
   '@rush-temp/expect-type': 'file:projects/expect-type.tgz'
@@ -577,14 +577,14 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-BDPG23U0qDeAvU4f99haztXwdAg3hz4El95LkAM+tHAqqhiVzRpEGHHU8EDxT/AnxOrA65YjLBwDahdJ9pTLJQ==
-  /@microsoft/rush-lib/5.34.0-pr2172.0:
+  /@microsoft/rush-lib/5.34.3:
     dependencies:
       '@pnpm/link-bins': 5.3.13
-      '@rushstack/node-core-library': 3.32.0
-      '@rushstack/package-deps-hash': 2.4.57
-      '@rushstack/stream-collator': 4.0.0
-      '@rushstack/terminal': 0.1.0
-      '@rushstack/ts-command-line': 4.6.4
+      '@rushstack/node-core-library': 3.34.1
+      '@rushstack/package-deps-hash': 2.4.70
+      '@rushstack/stream-collator': 4.0.14
+      '@rushstack/terminal': 0.1.13
+      '@rushstack/ts-command-line': 4.7.1
       '@yarnpkg/lockfile': 1.0.2
       builtin-modules: 3.1.0
       cli-table: 0.3.1
@@ -599,7 +599,7 @@ packages:
       jszip: 3.5.0
       lodash: 4.17.20
       minimatch: 3.0.4
-      node-fetch: 2.1.2
+      node-fetch: 2.6.1
       npm-package-arg: 6.1.1
       npm-packlist: 2.1.2
       read-package-tree: 5.1.6
@@ -615,7 +615,7 @@ packages:
     engines:
       node: '>=5.6.0'
     resolution:
-      integrity: sha512-Od9lqJoX5ct91yE8J74pbmFah3DlqoDAFivxoPSlHTgNELcVhJ5LXKSJdCWpzalgo1WdSi38EEdRmj3O3LjJLA==
+      integrity: sha512-D3t7Y6qqFnw0aqaaPFkccUzesu7zp/c4ll1wAtwMWXNdADGb0t4lFc+W/6a9FUUUfEhpy6V8UHxcst7cMu0BvA==
   /@nodelib/fs.scandir/2.1.3:
     dependencies:
       '@nodelib/fs.stat': 2.0.3
@@ -808,7 +808,7 @@ packages:
       node: '>=10.13'
     resolution:
       integrity: sha512-diiSQt85CJ2mEf06NSKN/T2LNpfabVg9yDz7ysZ7J9h+SFHc/yKR+AgQYUHlNwGHFqZoO09JS755hlHHM2f+lg==
-  /@rushstack/node-core-library/3.32.0:
+  /@rushstack/node-core-library/3.34.1:
     dependencies:
       '@types/node': 10.17.13
       colors: 1.2.5
@@ -821,27 +821,28 @@ packages:
       z-schema: 3.18.4
     dev: false
     resolution:
-      integrity: sha512-7xM++fJNvCKjbnB4k6y52uCOOu1s7PNbcSup18yfml9q2e2c1qKULy/A41SFgdD2J0L6UP2SD9K5lbQt+OoWjQ==
-  /@rushstack/package-deps-hash/2.4.57:
+      integrity: sha512-DX1xB9E2Xmi5auFxacftUXVuI2DUUyKrlGaecjesiS2YmV6pBnKzHHAaxWOQF2ajFNhXY2I1cGvDp45z3aJv5g==
+  /@rushstack/package-deps-hash/2.4.70:
     dependencies:
-      '@rushstack/node-core-library': 3.32.0
+      '@rushstack/node-core-library': 3.34.1
     dev: false
     resolution:
-      integrity: sha512-2XQ7gaHfpAKo4h5g6vy/6vxaqp8VISV7LBWVUdEDtJc6KuJme7RrQwKFqrqSBy76JJoMXLmBrJFWVO9NmLL0xA==
-  /@rushstack/stream-collator/4.0.0:
+      integrity: sha512-NeyjGQlrdiVym22GvF7B7+9BhzKCyaMUztq1CVXYeTCI41G8PQhxGnFyWQ96wdGSjItZ1eO2QuTR+S5v3MDlhw==
+  /@rushstack/stream-collator/4.0.14:
     dependencies:
-      '@rushstack/node-core-library': 3.32.0
-      '@rushstack/terminal': 0.1.0
+      '@rushstack/node-core-library': 3.34.1
+      '@rushstack/terminal': 0.1.13
     dev: false
     resolution:
-      integrity: sha512-aGEaMCYp+f4U/Taa9fbZ92dv3vOhtmrb6p4zKkcPahJpyf34UVy/wqHBBcDLaDF5wYkZudeW2EaO0oz3Vp03+g==
-  /@rushstack/terminal/0.1.0:
+      integrity: sha512-xlsf+GYOQ5TUcluwjTqXpdk+pOI/IGOkrrjsbILc79uIxNVxO9WtVubIfbKVu1/hZ53uGNLGFNPJgm1nZAywsA==
+  /@rushstack/terminal/0.1.13:
     dependencies:
+      '@rushstack/node-core-library': 3.34.1
       '@types/node': 10.17.13
     dev: false
     resolution:
-      integrity: sha512-6q3ZH37pHXJHT6+Q3M41Xi74SltZKpJuaTpl/7dRgtxaGj+bIdW8U50S+Y60ZXlEB+ShCSHs+m7rQUQkV4sz/A==
-  /@rushstack/ts-command-line/4.6.4:
+      integrity: sha512-gzDgllASiP4P+4rHSYOvbBmQn5ge2iVX6DP05+rpIvBJ92LHe++Ufpoj+gZcc5Sc819CshHg7282dAC+wOJbQg==
+  /@rushstack/ts-command-line/4.7.1:
     dependencies:
       '@types/argparse': 1.0.38
       argparse: 1.0.10
@@ -849,7 +850,7 @@ packages:
       string-argv: 0.3.1
     dev: false
     resolution:
-      integrity: sha512-ubIANZimyU07+ChU56LfiD36NJ8gvw1txlvUP20GYNQi4lf5N0xEnev4r+AtKkOdnowpGy60ObGmYxSUpSacpw==
+      integrity: sha512-bpBByIKH1t3g2uCXspr5wsA2/XGA9qAaKVYkUnSVheAyH9OmAiUzgpcVswTnYrM3zEhIxGmo9Giqx/FCKubW0g==
   /@sinonjs/commons/1.8.1:
     dependencies:
       type-detect: 4.0.8
@@ -5332,12 +5333,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
-  /node-fetch/2.1.2:
-    dev: false
-    engines:
-      node: 4.x || >=6.0.0
-    resolution:
-      integrity: sha1-q4hOjn5X44qUR1POxwb3iNF2i7U=
   /node-fetch/2.6.1:
     dev: false
     engines:
@@ -7916,7 +7911,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-PtM/XEuDBDBCmGzCsFOsP9VF23q7P0Gr4uo07STegSfSy/AGbvBHzL+F3gS2RKdo88FheFzILxrd/PI/5bv5Iw==
+      integrity: sha512-BlIafydyQS5WdfsWGaXTqOc3Ctvhct2MMur/BbtAKO5puJ5VT5BoqDxTrip8BoDpnpxElRSr/8VGKSb86pPV6A==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -7930,7 +7925,7 @@ packages:
     dev: false
     name: '@rush-temp/fs-syncer'
     resolution:
-      integrity: sha512-BqEk9ISynoMO4OrpPHPtrcZ9wYuZ/RdckZFjZZkzquMAUPbHeUG5I01l88yK573vjdJn+CeVwF96aRyTpM13Pg==
+      integrity: sha512-JlYg0ozY2ZJP5kSh5l+eEQ6/S0f5kU1+IjGLQtnQErO88AeoyjWoHJpb37+2WPNtg1LlWfGLI13SGWaDN2o/vw==
       tarball: 'file:projects/fs-syncer.tgz'
     version: 0.0.0
   'file:projects/io-ts-extra.tgz':
@@ -7944,7 +7939,7 @@ packages:
     dev: false
     name: '@rush-temp/io-ts-extra'
     resolution:
-      integrity: sha512-rXPhpWVBY0EIPvAgwJxZYTDGPvsYQQzUCObZGF6lIwwUx4NAI+WjWn8FLllcVzfyI+fZFBRkK+T3PGc74PXz2Q==
+      integrity: sha512-IQK88KHCVHEkMOp9rhwIHpGZOg1xRC0XCdcg25DIrxK3LKhE1XImHUiGuBTOqMrV3AQqeHI5xTopnwn9FMNRZQ==
       tarball: 'file:projects/io-ts-extra.tgz'
     version: 0.0.0
   'file:projects/memorable-moniker.tgz':
@@ -7956,13 +7951,13 @@ packages:
     dev: false
     name: '@rush-temp/memorable-moniker'
     resolution:
-      integrity: sha512-VQIrDIrvO2qMdIrYCwwjSf0FuicZuvv3k+MdqDL1plA9PBfzmmuQVh0ms4pvd8uOAJIW+MTqZxYMUoN6ZQ9H2w==
+      integrity: sha512-Faz5DNGwLhK67gvTR41m19ns8caHlYU/uMhl+zLjxLl/vsKd4+Ftp9U+n4wkuvJx2Z+b1mGo2ieffRxy6hUyWg==
       tarball: 'file:projects/memorable-moniker.tgz'
     version: 0.0.0
   'file:projects/rig.tgz':
     dependencies:
       '@actions/github': 4.0.0
-      '@microsoft/rush-lib': 5.34.0-pr2172.0
+      '@microsoft/rush-lib': 5.34.3
       '@types/eslint': 7.2.3
       '@types/jest': 26.0.14
       '@types/js-yaml': 3.12.5
@@ -7994,7 +7989,7 @@ packages:
     dev: false
     name: '@rush-temp/rig'
     resolution:
-      integrity: sha512-rnOP0JWyNzPu9SC6gN0sQpXz8Llf1Ns+ieRnSHn4u4Ilc6DUJDbhHZ2bqskQsIbewbTP0LQtkstMEGWqcwyjmQ==
+      integrity: sha512-45pvoxYaKTOtiX4hFzsGrClw6j9sA6LqRYxMGGeLFZiUCNVG5Ke9SpLR2WSbhl1SC4+t02FLga793tdC634SRg==
       tarball: 'file:projects/rig.tgz'
     version: 0.0.0
 registry: ''
@@ -8005,7 +8000,7 @@ specifiers:
   '@babel/parser': ^7.9.4
   '@babel/traverse': ^7.9.0
   '@babel/types': ~7.11.5
-  '@microsoft/rush-lib': 5.34.0-pr2172.0
+  '@microsoft/rush-lib': 5.34.3
   '@rush-temp/check-clean': 'file:./projects/check-clean.tgz'
   '@rush-temp/eslint-plugin-codegen': 'file:./projects/eslint-plugin-codegen.tgz'
   '@rush-temp/expect-type': 'file:./projects/expect-type.tgz'
