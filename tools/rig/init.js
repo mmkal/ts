@@ -14,7 +14,10 @@ exports.init = () => {
   const oldContent = fs.existsSync(pkgJsonPath) ? fs.readFileSync(pkgJsonPath).toString() : '{}'
   const pkgJson = JSON.parse(oldContent)
 
-  const relativePath = process.cwd().replace(rootDir + '\\', '').replace(/\\/g, '/')
+  const relativePath = process
+    .cwd()
+    .replace(rootDir + '\\', '')
+    .replace(/\\/g, '/')
 
   pkgJson.name = pkgJson.name || path.basename(cwd)
   pkgJson.version = pkgJson.version || '0.0.1'
@@ -32,9 +35,7 @@ exports.init = () => {
   pkgJson.scripts.lint = pkgJson.scripts.lint || 'rig eslint --cache .'
   pkgJson.scripts.test = pkgJson.scripts.test || 'rig jest'
   pkgJson.devDependencies = pkgJson.devDependencies || {}
-  if (pkgJson.name === helperPkgJson.name) {
-    delete pkgJson.devDependencies[helperPkgJson.name]
-  } else {
+  if (pkgJson.name !== helperPkgJson.name) {
     pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version
   }
 
