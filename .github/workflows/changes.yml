@@ -52,6 +52,8 @@ jobs:
         PR_BODY: ${{ github.event.pull_request.body }}
         PR_TITLE: ${{ github.event.pull_request.title }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        REPO_OWNER: ${{ github.repository_owner }}
       run: |
         # do basic pull request title/body parsing to figure out if it's a major, minor or patch change
         # it'd probably be a good idea to use something like @commitlint for this, but it's an annoyingly
@@ -69,7 +71,12 @@ jobs:
           BUMP_TYPE=patch
         fi
 
-        node common/scripts/install-run-rush change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
+        MESSAGE="$PR_TITLE (#$PR_NUMBER)"
+        if [ "$PR_AUTHOR" != "$REPO_OWNER" ]; then
+          MESSAGE="$MESSAGE - @$PR_AUTHOR"
+        fi
+
+        node common/scripts/install-run-rush change --message "$MESSAGE" --overwrite --bulk --bump-type $BUMP_TYPE
 
         GIT_STATUS=$(git status --porcelain)
 
@@ -108,5 +115,5 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.payload.pull_request.number,
-            body: `@${{ github.actor }} - changes were pushed to your branch: ${process.env.CHANGE_HASH}.`,
+            body: `@${{ github.event.pull_request.user.login }} - changes were pushed to your branch: ${process.env.CHANGE_HASH}.`,
           })
