@@ -32,7 +32,11 @@ exports.init = () => {
   pkgJson.scripts.lint = pkgJson.scripts.lint || 'rig eslint --cache .'
   pkgJson.scripts.test = pkgJson.scripts.test || 'rig jest'
   pkgJson.devDependencies = pkgJson.devDependencies || {}
-  pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version
+  if (pkgJson.name === helperPkgJson.name) {
+    delete pkgJson.devDependencies[helperPkgJson.name]
+  } else {
+    pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version
+  }
 
   const stringify = obj => JSON.stringify(obj, null, 2) + os.EOL
 
