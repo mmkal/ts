@@ -2,20 +2,32 @@
 const fs = require('fs')
 const path = require('path')
 const os = require('os')
+const sortPackageJson = require('sort-package-json')
 
 // eslint-disable-next-line complexity
 exports.init = () => {
   const helperPkgJson = require('./package.json')
+  const {rush, directory: rootDir} = require('.').getRushJson()
 
   const cwd = process.cwd()
   const pkgJsonPath = path.join(cwd, 'package.json')
   const oldContent = fs.existsSync(pkgJsonPath) ? fs.readFileSync(pkgJsonPath).toString() : '{}'
   const pkgJson = JSON.parse(oldContent)
 
+  const relativePath = process
+    .cwd()
+    .replace(rootDir + '\\', '')
+    .replace(/\\/g, '/')
+
   pkgJson.name = pkgJson.name || path.basename(cwd)
   pkgJson.version = pkgJson.version || '0.0.1'
   pkgJson.main = pkgJson.main || 'dist/index.js'
   pkgJson.types = pkgJson.types || 'dist/index.d.ts'
+  pkgJson.repository = {
+    type: 'git',
+    url: `${rush.repository.url}.git`.replace(/\.git\.git$/, '.git'),
+    directory: relativePath,
+  }
   pkgJson.scripts = pkgJson.scripts || {}
   pkgJson.scripts.clean = pkgJson.scripts.clean || 'rig rimraf dist'
   pkgJson.scripts.prebuild = pkgJson.scripts.prebuild || 'npm run clean'
@@ -23,10 +35,13 @@ exports.init = () => {
   pkgJson.scripts.lint = pkgJson.scripts.lint || 'rig eslint --cache .'
   pkgJson.scripts.test = pkgJson.scripts.test || 'rig jest'
   pkgJson.devDependencies = pkgJson.devDependencies || {}
-  pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version
+  if (pkgJson.name !== helperPkgJson.name) {
+    pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version
+  }
 
   const stringify = obj => JSON.stringify(obj, null, 2) + os.EOL
-  const newContent = stringify(pkgJson)
+
+  const newContent = stringify(sortPackageJson(pkgJson))
   if (newContent !== oldContent) {
     fs.writeFileSync(pkgJsonPath, newContent, 'utf8')
   }
