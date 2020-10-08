@@ -38,9 +38,9 @@
   },
   "devDependencies": {
     "@mmkal/rig": "0.0.1",
-    "@types/lodash": "~4.14.161",
+    "@types/lodash": "4.14.161",
     "@types/seedrandom": "2.4.28",
     "expect-type": "0.8.0",
-    "lodash": "^4.17.15"
+    "lodash": "4.17.20"
   }
 }
