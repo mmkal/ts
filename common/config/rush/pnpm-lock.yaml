@@ -22,7 +22,7 @@ dependencies:
   '@types/js-yaml': 3.12.5
   '@types/lodash': 4.14.161
   '@types/minimatch': 3.0.3
-  '@types/node': 14.11.2
+  '@types/node': 14.11.7
   '@types/seedrandom': 2.4.28
   '@typescript-eslint/eslint-plugin': 4.1.1_d928d9c95e166870ad44d6055911cdba
   '@typescript-eslint/parser': 4.1.1_typescript@4.0.3
@@ -987,6 +987,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-jiE3QIxJ8JLNcb1Ps6rDbysDhN4xa8DJJvuC9prr6w+1tIh+QAbYyNF3tyiZNLDBIuBCf4KEcV2UvQm/V60xfA==
+  /@types/node/14.11.7:
+    dev: false
+    resolution:
+      integrity: sha512-hSEXknS4KiayUdZ7401J/T6eykXHJkDEipnyQMJ4/GstK4kWjbHnwXlcpvIWfPKiEH1JU96DkbzJ1nHRmpmKLw==
   /@types/normalize-package-data/2.4.0:
     dev: false
     resolution:
@@ -7947,7 +7951,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-BlIafydyQS5WdfsWGaXTqOc3Ctvhct2MMur/BbtAKO5puJ5VT5BoqDxTrip8BoDpnpxElRSr/8VGKSb86pPV6A==
+      integrity: sha512-sUgerXFZUejuixvfEXVkLulpo1Rj2pMdujC2TGnc/VXaUuZleYdHUgR9pJbWR91zCWZF5sPmsHvjSwEQ01od6w==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -7998,7 +8002,7 @@ packages:
       '@types/jest': 26.0.14
       '@types/js-yaml': 3.12.5
       '@types/lodash': 4.14.161
-      '@types/node': 14.11.2
+      '@types/node': 14.11.7
       '@typescript-eslint/eslint-plugin': 4.1.1_d928d9c95e166870ad44d6055911cdba
       '@typescript-eslint/parser': 4.1.1_typescript@4.0.3
       concurrently: 5.3.0
@@ -8026,16 +8030,16 @@ packages:
     dev: false
     name: '@rush-temp/rig'
     resolution:
-      integrity: sha512-pVLFkWfBXe1uo0x+PSqp3yvbJeK5WIqlj5E9rwtgFCbbP5LzGdDvkQTyytIaUs3mMu9k7p/hQPHXEA/3ef6Qgw==
+      integrity: sha512-0HHuk0qM9F+MjDDsatM/E5R4BcHxrg/j79k9N39ykLw7eRxd7CGrz/KoYAqTIX9jMFC2fwMJNqvYjvL0N8jrCA==
       tarball: 'file:projects/rig.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
   '@actions/github': ~4.0.0
-  '@babel/core': ^7.9.0
+  '@babel/core': ^7.11.6
   '@babel/generator': ~7.11.6
-  '@babel/parser': ^7.9.4
-  '@babel/traverse': ^7.9.0
+  '@babel/parser': ^7.11.5
+  '@babel/traverse': ^7.11.5
   '@babel/types': ~7.11.5
   '@microsoft/rush-lib': 5.34.3
   '@rush-temp/check-clean': 'file:./projects/check-clean.tgz'
@@ -8054,7 +8058,7 @@ specifiers:
   '@types/js-yaml': ~3.12.5
   '@types/lodash': ~4.14.161
   '@types/minimatch': ~3.0.3
-  '@types/node': ^14.10.1
+  '@types/node': ^14.11.7
   '@types/seedrandom': 2.4.28
   '@typescript-eslint/eslint-plugin': ~4.1.0
   '@typescript-eslint/parser': ~4.1.1
