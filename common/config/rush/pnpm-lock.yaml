@@ -16,10 +16,9 @@ dependencies:
   '@types/babel__generator': 7.6.2
   '@types/babel__traverse': 7.0.15
   '@types/dedent': 0.7.0
-  '@types/eslint': 7.2.3
+  '@types/eslint': 7.2.4
   '@types/glob': 7.1.3
   '@types/jest': 26.0.14
-  '@types/js-yaml': 3.12.5
   '@types/lodash': 4.14.161
   '@types/minimatch': 3.0.3
   '@types/node': 14.11.2
@@ -42,8 +41,6 @@ dependencies:
   glob: 7.1.6
   io-ts: 2.2.10_fp-ts@2.8.3
   jest: 26.4.2
-  js-yaml: 3.14.0
-  lodash: 4.17.20
   minimatch: 3.0.4
   prettier: 2.1.2
   read-pkg-up: 7.0.1
@@ -905,13 +902,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-EGlKlgMhnLt/cM4DbUSafFdrkeJoC9Mvnj0PUCU7tFmTjMjNRT957kXCx0wYm3JuEq4o4ZsS5vG+NlkM2DMd2A==
-  /@types/eslint/7.2.3:
+  /@types/eslint/7.2.4:
     dependencies:
       '@types/estree': 0.0.45
       '@types/json-schema': 7.0.6
     dev: false
     resolution:
-      integrity: sha512-SPBkpC+awgFfyAn4sjt0JBZ3vzACoSp2zhGBJkkrs09EzPqLbxkzaE8kJs3EsRRgkZwWk9zyXT/swvhnJYX8pQ==
+      integrity: sha512-YCY4kzHMsHoyKspQH+nwSe+70Kep7Vjt2X+dZe5Vs2vkRudqtoFoUIv1RlJmZB8Hbp7McneupoZij4PadxsK5Q==
   /@types/estree/0.0.45:
     dev: false
     resolution:
@@ -7928,7 +7925,7 @@ packages:
       '@types/babel__generator': 7.6.2
       '@types/babel__traverse': 7.0.15
       '@types/dedent': 0.7.0
-      '@types/eslint': 7.2.3
+      '@types/eslint': 7.2.4
       '@types/glob': 7.1.3
       '@types/js-yaml': 3.12.5
       '@types/lodash': 4.14.161
@@ -7947,7 +7944,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-BlIafydyQS5WdfsWGaXTqOc3Ctvhct2MMur/BbtAKO5puJ5VT5BoqDxTrip8BoDpnpxElRSr/8VGKSb86pPV6A==
+      integrity: sha512-6lBP9+R3y9YF/tKqNKm5PKIeE6Kchx58irnRS5r8OHryi+Ih4oqF3DcuIev6a7RdT7dZnw+mNIpLMZ/+WiJP/Q==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -7975,7 +7972,7 @@ packages:
     dev: false
     name: '@rush-temp/io-ts-extra'
     resolution:
-      integrity: sha512-IQK88KHCVHEkMOp9rhwIHpGZOg1xRC0XCdcg25DIrxK3LKhE1XImHUiGuBTOqMrV3AQqeHI5xTopnwn9FMNRZQ==
+      integrity: sha512-lkkpPEQG8N0eSXAvHwzlCiAZJ69M7+BXYGLMpby99F15MfgSB4dGBonMtfAo9Va6Ia/DGE4q9aVBZ6myoYxf6g==
       tarball: 'file:projects/io-ts-extra.tgz'
     version: 0.0.0
   'file:projects/memorable-moniker.tgz':
@@ -7987,14 +7984,14 @@ packages:
     dev: false
     name: '@rush-temp/memorable-moniker'
     resolution:
-      integrity: sha512-Faz5DNGwLhK67gvTR41m19ns8caHlYU/uMhl+zLjxLl/vsKd4+Ftp9U+n4wkuvJx2Z+b1mGo2ieffRxy6hUyWg==
+      integrity: sha512-o6QP2L9oYooAZYmG/lUMtc2K9aYjhhmVLNzfCP3UCu7EvdYq7tHIteJuOU53bWDEtUQa3YLfV9zeNc4iTNh4+w==
       tarball: 'file:projects/memorable-moniker.tgz'
     version: 0.0.0
   'file:projects/rig.tgz':
     dependencies:
       '@actions/github': 4.0.0
       '@microsoft/rush-lib': 5.34.3
-      '@types/eslint': 7.2.3
+      '@types/eslint': 7.2.4
       '@types/jest': 26.0.14
       '@types/js-yaml': 3.12.5
       '@types/lodash': 4.14.161
@@ -8026,17 +8023,17 @@ packages:
     dev: false
     name: '@rush-temp/rig'
     resolution:
-      integrity: sha512-pVLFkWfBXe1uo0x+PSqp3yvbJeK5WIqlj5E9rwtgFCbbP5LzGdDvkQTyytIaUs3mMu9k7p/hQPHXEA/3ef6Qgw==
+      integrity: sha512-gJPFaXt+3FeywWZ622AF25h7l9tXdpadtGr52Ic80Ai/4bnUFCrEPbr21CdqXDK5/LTfdghyJ6k1nJUEGk50Ew==
       tarball: 'file:projects/rig.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
   '@actions/github': ~4.0.0
-  '@babel/core': ^7.9.0
+  '@babel/core': ^7.11.6
   '@babel/generator': ~7.11.6
-  '@babel/parser': ^7.9.4
-  '@babel/traverse': ^7.9.0
-  '@babel/types': ~7.11.5
+  '@babel/parser': ^7.11.5
+  '@babel/traverse': ^7.11.5
+  '@babel/types': 7.11.5
   '@microsoft/rush-lib': 5.34.3
   '@rush-temp/check-clean': 'file:./projects/check-clean.tgz'
   '@rush-temp/eslint-plugin-codegen': 'file:./projects/eslint-plugin-codegen.tgz'
@@ -8045,21 +8042,20 @@ specifiers:
   '@rush-temp/io-ts-extra': 'file:./projects/io-ts-extra.tgz'
   '@rush-temp/memorable-moniker': 'file:./projects/memorable-moniker.tgz'
   '@rush-temp/rig': 'file:./projects/rig.tgz'
-  '@types/babel__generator': ~7.6.1
-  '@types/babel__traverse': ~7.0.14
-  '@types/dedent': ~0.7.0
-  '@types/eslint': ~7.2.2
-  '@types/glob': ~7.1.3
-  '@types/jest': ~26.0.13
-  '@types/js-yaml': ~3.12.5
-  '@types/lodash': ~4.14.161
-  '@types/minimatch': ~3.0.3
+  '@types/babel__generator': 7.6.2
+  '@types/babel__traverse': 7.0.15
+  '@types/dedent': 0.7.0
+  '@types/eslint': 7.2.4
+  '@types/glob': 7.1.3
+  '@types/jest': ~26.0.14
+  '@types/lodash': 4.14.161
+  '@types/minimatch': 3.0.3
   '@types/node': ^14.10.1
   '@types/seedrandom': 2.4.28
   '@typescript-eslint/eslint-plugin': ~4.1.0
   '@typescript-eslint/parser': ~4.1.1
   concurrently: ~5.3.0
-  dedent: ~0.7.0
+  dedent: 0.7.0
   eslint-config-xo: ~0.32.1
   eslint-config-xo-typescript: ~0.32.0
   eslint-plugin-codegen: ~0.12.0
@@ -8074,11 +8070,9 @@ specifiers:
   glob: ^7.1.4
   io-ts: ^2.2.4
   jest: ~26.4.2
-  js-yaml: ^3.14.0
-  lodash: ^4.17.15
-  minimatch: ~3.0.4
+  minimatch: 3.0.4
   prettier: ~2.1.1
-  read-pkg-up: ~7.0.1
+  read-pkg-up: 7.0.1
   rimraf: ~3.0.2
   seedrandom: ^3.0.5
   sort-package-json: ~1.46.0
