@@ -29,7 +29,7 @@ dependencies:
   dedent: 0.7.0
   eslint-config-xo: 0.32.1
   eslint-config-xo-typescript: 0.33.0_1442a4a02aeadea026482f9ddde6b5e0
-  eslint-plugin-codegen: 0.12.3
+  eslint-plugin-codegen: 0.13.2
   eslint-plugin-import: 2.22.1
   eslint-plugin-jest: 24.0.2_typescript@4.0.3
   eslint-plugin-prettier: 3.1.4_prettier@2.1.2
@@ -2778,7 +2778,7 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-6j9xxegbqe8/kZY8cYpcp0xhbK0EgJlg3g9mib3/miLaExuuwc3n5UEfSnU6hWMbT0FAYVvDbL9RrRgpUeQIvA==
-  /eslint-plugin-codegen/0.12.3:
+  /eslint-plugin-codegen/0.13.2:
     dependencies:
       '@babel/core': 7.11.6
       '@babel/generator': 7.11.6
@@ -2788,13 +2788,13 @@ packages:
       fp-ts: 2.8.3
       glob: 7.1.6
       io-ts: 2.2.10_fp-ts@2.8.3
-      io-ts-extra: 0.10.7
+      io-ts-extra: 0.10.9
       js-yaml: 3.14.0
       lodash: 4.17.20
       string.prototype.matchall: 4.0.2
     dev: false
     resolution:
-      integrity: sha512-hVlxodo1tx8DsIwZKTDuJINOGOJ2qbX7xLHd7qNwUyQB/M2bRePcvPHxcvOKStGsBvyQ2KFyQSSyb0dgT9EnDw==
+      integrity: sha512-xIwb58C7U+VvKzL0ZjPlKS6j+JxVQShv17qhu+jyqk0zcFCcbewpPIernbK9t5Ak+dMpa9enHdaVbXbg/CxRuA==
   /eslint-plugin-import/2.22.1:
     dependencies:
       array-includes: 3.1.1
@@ -3950,13 +3950,13 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
-  /io-ts-extra/0.10.7:
+  /io-ts-extra/0.10.9:
     dependencies:
       fp-ts: 2.8.3
       io-ts: 2.2.10_fp-ts@2.8.3
     dev: false
     resolution:
-      integrity: sha512-ZERl/bp+gcN3MhSC/z9bSYhNwGOEdVLTqcnaw13+EgOTmVpxW7qCV3DUsBLVFfaOVKXVN6hoLAEV6wzAQNejhg==
+      integrity: sha512-yEHqr3oNberwvbG/44piGWlFxxy60hlDW/9YpXdMYjmgdoYiNj3OMr3AKOyIZiLpc6+ohFUDX3vqjVVubYe+1A==
   /io-ts/2.2.10_fp-ts@2.8.3:
     dependencies:
       fp-ts: 2.8.3
@@ -8002,7 +8002,7 @@ packages:
       eslint: 7.9.0
       eslint-config-xo: 0.32.1
       eslint-config-xo-typescript: 0.33.0_1442a4a02aeadea026482f9ddde6b5e0
-      eslint-plugin-codegen: 0.12.3
+      eslint-plugin-codegen: 0.13.2
       eslint-plugin-import: 2.22.1
       eslint-plugin-jest: 24.0.2_typescript@4.0.3
       eslint-plugin-prettier: 3.1.4_prettier@2.1.2
@@ -8023,7 +8023,7 @@ packages:
     dev: false
     name: '@rush-temp/rig'
     resolution:
-      integrity: sha512-oFGOOTjBY8RR/CJ/NUNzT0r02/kjeMD9V2HGE5Zuy/yjCvPsr01vIudV3sTrfrR8GQJ2+c11uwklnofM3fMj8w==
+      integrity: sha512-pHvG3e5WVZw+bAP40E8anzgXEt4Bdneuxtmp+/aVFQG49MLS3PGnS7R9ZHfYSMRKjQf5oSPfEJeUrAVBNJSdNQ==
       tarball: 'file:projects/rig.tgz'
     version: 0.0.0
 registry: ''
@@ -8058,7 +8058,7 @@ specifiers:
   dedent: 0.7.0
   eslint-config-xo: ~0.32.1
   eslint-config-xo-typescript: ~0.33.0
-  eslint-plugin-codegen: ~0.12.0
+  eslint-plugin-codegen: ~0.13.2
   eslint-plugin-import: ~2.22.0
   eslint-plugin-jest: ~24.0.1
   eslint-plugin-prettier: ~3.1.4
