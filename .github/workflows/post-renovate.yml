@@ -7,6 +7,7 @@ on:
 
 jobs:
   run:
+    if: github.actor === 'renovate[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,6 +32,6 @@ jobs:
             echo "$GIT_STATUS"
           else
             git add $RUSH_CONFIG_DIR
-            git commit -m "build(rush): config changes from rush update"
-            git push
+            git commit --amend --no-edit
+            git push --force
           fi
