@@ -28,7 +28,7 @@ dependencies:
   concurrently: 5.3.0
   dedent: 0.7.0
   eslint-config-xo: 0.32.1
-  eslint-config-xo-typescript: 0.32.0_1442a4a02aeadea026482f9ddde6b5e0
+  eslint-config-xo-typescript: 0.33.0_1442a4a02aeadea026482f9ddde6b5e0
   eslint-plugin-codegen: 0.12.3
   eslint-plugin-import: 2.22.1
   eslint-plugin-jest: 24.0.2_typescript@4.0.3
@@ -2742,7 +2742,7 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-otzzTim2/1+lVrlH19EfQQJEhVJSu0zOb9ygb3iapN6UlyaDtyRq4b5U1FuW0v1lRa9Fp/GJyHkSwm6NqABgCA==
-  /eslint-config-xo-typescript/0.32.0_1442a4a02aeadea026482f9ddde6b5e0:
+  /eslint-config-xo-typescript/0.33.0_1442a4a02aeadea026482f9ddde6b5e0:
     dependencies:
       '@typescript-eslint/eslint-plugin': 4.1.1_d928d9c95e166870ad44d6055911cdba
       typescript: 4.0.3
@@ -2750,10 +2750,10 @@ packages:
     engines:
       node: '>=10'
     peerDependencies:
-      '@typescript-eslint/eslint-plugin': '>=3.6.0'
+      '@typescript-eslint/eslint-plugin': '>=4.2.0'
       typescript: '>=3.6.0'
     resolution:
-      integrity: sha512-GCYR9wXNATh6/yB9s9PvKia7tlv86ZsrN3CYk/qfcTJhFSO41fagBgA8G8H1j0CACC4AHaRpgbTEu4+W0p9hkw==
+      integrity: sha512-MCAP26EX+o+hoNPPmi/GHUznQHBUaN5taKUQznMy7RjqjPPJMlOzsiZLGNEQeDfuoYZE0O4x0vZWRduggyVQMg==
   /eslint-config-xo/0.32.1:
     dependencies:
       confusing-browser-globals: 1.0.9
@@ -8001,7 +8001,7 @@ packages:
       concurrently: 5.3.0
       eslint: 7.9.0
       eslint-config-xo: 0.32.1
-      eslint-config-xo-typescript: 0.32.0_1442a4a02aeadea026482f9ddde6b5e0
+      eslint-config-xo-typescript: 0.33.0_1442a4a02aeadea026482f9ddde6b5e0
       eslint-plugin-codegen: 0.12.3
       eslint-plugin-import: 2.22.1
       eslint-plugin-jest: 24.0.2_typescript@4.0.3
@@ -8023,7 +8023,7 @@ packages:
     dev: false
     name: '@rush-temp/rig'
     resolution:
-      integrity: sha512-gJPFaXt+3FeywWZ622AF25h7l9tXdpadtGr52Ic80Ai/4bnUFCrEPbr21CdqXDK5/LTfdghyJ6k1nJUEGk50Ew==
+      integrity: sha512-oFGOOTjBY8RR/CJ/NUNzT0r02/kjeMD9V2HGE5Zuy/yjCvPsr01vIudV3sTrfrR8GQJ2+c11uwklnofM3fMj8w==
       tarball: 'file:projects/rig.tgz'
     version: 0.0.0
 registry: ''
@@ -8057,7 +8057,7 @@ specifiers:
   concurrently: ~5.3.0
   dedent: 0.7.0
   eslint-config-xo: ~0.32.1
-  eslint-config-xo-typescript: ~0.32.0
+  eslint-config-xo-typescript: ~0.33.0
   eslint-plugin-codegen: ~0.12.0
   eslint-plugin-import: ~2.22.0
   eslint-plugin-jest: ~24.0.1
