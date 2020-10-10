@@ -21,7 +21,7 @@ dependencies:
   '@types/jest': 26.0.14
   '@types/lodash': 4.14.161
   '@types/minimatch': 3.0.3
-  '@types/node': 14.11.2
+  '@types/node': 14.11.8
   '@types/seedrandom': 2.4.28
   '@typescript-eslint/eslint-plugin': 4.1.1_d928d9c95e166870ad44d6055911cdba
   '@typescript-eslint/parser': 4.1.1_typescript@4.0.3
@@ -984,6 +984,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-jiE3QIxJ8JLNcb1Ps6rDbysDhN4xa8DJJvuC9prr6w+1tIh+QAbYyNF3tyiZNLDBIuBCf4KEcV2UvQm/V60xfA==
+  /@types/node/14.11.8:
+    dev: false
+    resolution:
+      integrity: sha512-KPcKqKm5UKDkaYPTuXSx8wEP7vE9GnuaXIZKijwRYcePpZFDVuy2a57LarFKiORbHOuTOOwYzxVxcUzsh2P2Pw==
   /@types/normalize-package-data/2.4.0:
     dev: false
     resolution:
@@ -7995,7 +7999,7 @@ packages:
       '@types/jest': 26.0.14
       '@types/js-yaml': 3.12.5
       '@types/lodash': 4.14.161
-      '@types/node': 14.11.2
+      '@types/node': 14.11.8
       '@typescript-eslint/eslint-plugin': 4.1.1_d928d9c95e166870ad44d6055911cdba
       '@typescript-eslint/parser': 4.1.1_typescript@4.0.3
       concurrently: 5.3.0
@@ -8023,7 +8027,7 @@ packages:
     dev: false
     name: '@rush-temp/rig'
     resolution:
-      integrity: sha512-pHvG3e5WVZw+bAP40E8anzgXEt4Bdneuxtmp+/aVFQG49MLS3PGnS7R9ZHfYSMRKjQf5oSPfEJeUrAVBNJSdNQ==
+      integrity: sha512-vGZUpI894quT02GLKol/O1ygaF1QuJgl2IiexNVVXxLHAo3bMuMYUY4QWYZsfWRNQbslqcqDKlT/CYES4SQ8ig==
       tarball: 'file:projects/rig.tgz'
     version: 0.0.0
 registry: ''
@@ -8050,7 +8054,7 @@ specifiers:
   '@types/jest': ~26.0.14
   '@types/lodash': 4.14.161
   '@types/minimatch': 3.0.3
-  '@types/node': ^14.10.1
+  '@types/node': ^14.11.8
   '@types/seedrandom': 2.4.28
   '@typescript-eslint/eslint-plugin': ~4.1.0
   '@typescript-eslint/parser': ~4.1.1
@@ -8059,7 +8063,7 @@ specifiers:
   eslint-config-xo: ~0.32.1
   eslint-config-xo-typescript: ~0.33.0
   eslint-plugin-codegen: ~0.13.2
-  eslint-plugin-import: ~2.22.0
+  eslint-plugin-import: ~2.22.1
   eslint-plugin-jest: ~24.0.1
   eslint-plugin-prettier: ~3.1.4
   eslint-plugin-unicorn: ~21.0.0
