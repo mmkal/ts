@@ -31,7 +31,7 @@ dependencies:
   eslint-config-xo-typescript: 0.33.0_1442a4a02aeadea026482f9ddde6b5e0
   eslint-plugin-codegen: 0.13.2
   eslint-plugin-import: 2.22.1
-  eslint-plugin-jest: 24.0.2_typescript@4.0.3
+  eslint-plugin-jest: 24.1.0_typescript@4.0.3
   eslint-plugin-prettier: 3.1.4_prettier@2.1.2
   eslint-plugin-unicorn: 21.0.0
   eson-parser: 0.0.5
@@ -2815,7 +2815,7 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-8K7JjINHOpH64ozkAhpT3sd+FswIZTfMZTjdx052pnWrgRCVfp8op9tbjpAk3DdUeI/Ba4C8OjdC0r90erHEOw==
-  /eslint-plugin-jest/24.0.2_typescript@4.0.3:
+  /eslint-plugin-jest/24.1.0_typescript@4.0.3:
     dependencies:
       '@typescript-eslint/experimental-utils': 4.3.0_typescript@4.0.3
     dev: false
@@ -2824,7 +2824,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-DSBLNpkKDOpUJQkTGSs5sVJWsu0nDyQ2rYxkr0Eh7nrkc5bMUr/dlDbtTj3l8y6UaCVsem6rryF1OZrKnz1S5g==
+      integrity: sha512-827YJ+E8B9PvXu/0eiVSNFfxxndbKv+qE/3GSMhdorCaeaOehtqHGX2YDW9B85TEOre9n/zscledkFW/KbnyGg==
   /eslint-plugin-prettier/3.1.4_prettier@2.1.2:
     dependencies:
       prettier: 2.1.2
@@ -8004,7 +8004,7 @@ packages:
       eslint-config-xo-typescript: 0.33.0_1442a4a02aeadea026482f9ddde6b5e0
       eslint-plugin-codegen: 0.13.2
       eslint-plugin-import: 2.22.1
-      eslint-plugin-jest: 24.0.2_typescript@4.0.3
+      eslint-plugin-jest: 24.1.0_typescript@4.0.3
       eslint-plugin-prettier: 3.1.4_prettier@2.1.2
       eslint-plugin-unicorn: 21.0.0
       eson-parser: 0.0.5
@@ -8023,7 +8023,7 @@ packages:
     dev: false
     name: '@rush-temp/rig'
     resolution:
-      integrity: sha512-pHvG3e5WVZw+bAP40E8anzgXEt4Bdneuxtmp+/aVFQG49MLS3PGnS7R9ZHfYSMRKjQf5oSPfEJeUrAVBNJSdNQ==
+      integrity: sha512-vbjVqNxwKRDq8/pT4a3HAuxPkMo6nxHhM6+OCGmuJi8vjbYasd+BrYgM3bIfv4/dTHY+yG0eNSP3xkIK0LQMFw==
       tarball: 'file:projects/rig.tgz'
     version: 0.0.0
 registry: ''
@@ -8059,8 +8059,8 @@ specifiers:
   eslint-config-xo: ~0.32.1
   eslint-config-xo-typescript: ~0.33.0
   eslint-plugin-codegen: ~0.13.2
-  eslint-plugin-import: ~2.22.0
-  eslint-plugin-jest: ~24.0.1
+  eslint-plugin-import: ~2.22.1
+  eslint-plugin-jest: ~24.1.0
   eslint-plugin-prettier: ~3.1.4
   eslint-plugin-unicorn: ~21.0.0
   eson-parser: ~0.0.5
