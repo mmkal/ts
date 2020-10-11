@@ -13,23 +13,59 @@ export type IsAny<T> = [T] extends [Secret] ? Not<IsNever<T>> : false
 export type IsUnknown<T> = [unknown] extends [T] ? Not<IsAny<T>> : false
 export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
 
+/**
+ * Recursively walk a type and replace it with a branded type related to the original. This is useful for
+ * equality-checking stricter than `A extends B ? B extends A ? true : false : false`, because it detects
+ * the difference between a few edge-case types that vanilla typescript doesn't by default:
+ * - `any` vs `unknown`
+ * - `{ readonly a: string }` vs `{ a: string }`
+ * - `{ a?: string }` vs `{ a: string | undefined }`
+ */
 type DeepBrand<T> = IsAny<T> extends true // avoid `any` matching `unknown`
   ? Secret
+  : T extends string | number | boolean | symbol | bigint | null | undefined
+  ? T
   : T extends (...args: infer P) => infer R // avoid functions with different params/return values matching
-  ? {params: DeepBrand<P>; return: DeepBrand<R>; function: Secret}
-  : {[K in keyof T]: DeepBrand<T[K]>}
+  ? {
+      type: 'function'
+      params: DeepBrand<P>
+      return: DeepBrand<R>
+    }
+  : {
+      type: 'object'
+      properties: {[K in keyof T]: DeepBrand<T[K]>}
+      readonly: ReadonlyKeys<T>
+      required: RequiredKeys<T>
+      optional: OptionalKeys<T>
+    }
+
+export type RequiredKeys<T> = Extract<
+  {
+    [K in keyof T]-?: {} extends Pick<T, K> ? never : K
+  }[keyof T],
+  keyof T
+>
+export type OptionalKeys<T> = Exclude<keyof T, RequiredKeys<T>>
+
+// adapted from some answers to https://github.com/type-challenges/type-challenges/issues?q=label%3A5+label%3Aanswer
+// prettier-ignore
+export type ReadonlyKeys<T> = Extract<{
+  [K in keyof T]-?: ReadonlyEquivalent<
+    { [_K in K]: T[K] },
+    { -readonly [_K in K]: T[K] }
+  > extends true ? never : K;
+}[keyof T], keyof T>;
+
+// prettier-ignore
+type ReadonlyEquivalent<X, Y> = Extends<
+  (<T>() => T extends X ? true : false),
+  (<T>() => T extends Y ? true : false)
+>
 
 export type Extends<L, R> = L extends R ? true : false
 export type StrictExtends<L, R> = Extends<DeepBrand<L>, DeepBrand<R>>
 
-export type Equal<Left, Right> = And<
-  [
-    StrictExtends<Left, Right>,
-    StrictExtends<Right, Left>,
-    StrictExtends<keyof Left, keyof Right>,
-    StrictExtends<keyof Right, keyof Left>
-  ]
->
+export type Equal<Left, Right> = And<[StrictExtends<Left, Right>, StrictExtends<Right, Left>]>
 
 export type Params<Actual> = Actual extends (...args: infer P) => any ? P : throw `can't get parameters from ${typeof Actual}, it's not a function`
 export type ConstructorParams<Actual> = Actual extends new (...args: infer P) => any
@@ -69,8 +105,14 @@ export type ExpectTypeOf_SimpleChecks<Actual, B extends boolean> = {
 }
 
 export interface ExpectTypeOf<Actual, B extends boolean> extends ExpectTypeOf_SimpleChecks<Actual, B> {
-  toMatchTypeOf: <Expected>(e?: Expected) => Extends<Actual, Expected> extends B ? true : throw FailureMessage<B, 'extending', Expected, Actual>
-  toEqualTypeOf: <Expected>(e?: Expected) => Equal<Actual, Expected> extends B ? true : throw FailureMessage<B, 'equivalent to', Expected, Actual>
+  toMatchTypeOf: {
+    <Expected>(e: Expected) => Extends<Actual, Expected> extends B ? true : throw FailureMessage<B, 'extending', Expected, Actual>
+    <Expected>() => Extends<Actual, Expected> extends B ? true : throw FailureMessage<B, 'extending', Expected, Actual>
+  }
+  toEqualTypeOf: {
+    <Expected>(e: Expected) => Equal<Actual, Expected> extends B ? true : throw FailureMessage<B, 'equivalent to', Expected, Actual>
+    <Expected>() => Equal<Actual, Expected> extends B ? true : throw FailureMessage<B, 'equivalent to', Expected, Actual>
+  }
   toBeCallableWith: B extends true ? ((...args: Extract<Params<Actual>, any[]>) => true) : throw `don't use .not.toBeCallableWith. Use // @ts-expect-error. See https://github.com/mmkal/ts/issues/142`
   toBeConstructibleWith: B extends true ? (...args: Extract<ConstructorParams<Actual>, any[]>) => true : throw `don't use .not.toBeConstructibleWith. Use // @ts-expect-error. See https://github.com/mmkal/ts/issues/142`
   toHaveProperty: <K extends string>(key: K) => Extends<K, keyof Actual> extends B ? ExpectTypeOf<Actual[K & keyof Actual], B> : throw FailureMessage<B, 'to have property', keyof Actual, K>
@@ -84,6 +126,11 @@ export interface ExpectTypeOf<Actual, B extends boolean> extends ExpectTypeOf_Si
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
+
+export type _ExpectTypeOf = {
+  <Actual>(actual: Actual): ExpectTypeOf<Actual, true>;
+  <Actual>(): ExpectTypeOf<Actual, true>
+}
 
 /**
  * Similar to Jest's `expect`, but with type-awareness.
@@ -107,7 +154,7 @@ const fn: any = () => true
  * @description
  * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
  */
-export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
+export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
   const nonFunctionProperties = [
     'parameters',
     'returns',

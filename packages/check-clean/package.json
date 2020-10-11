@@ -1,18 +1,25 @@
 {
   "name": "check-clean",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "A cli tool to make sure you have no git changes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmkal/ts.git",
+    "directory": "packages/check-clean"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
     "check-clean": "dist/cli.js"
   },
   "scripts": {
-    "build": "run tsc -p .",
-    "lint": "run eslint --cache .",
-    "test": "run jest"
+    "prebuild": "npm run clean",
+    "build": "rig tsc -p .",
+    "clean": "rig rimraf dist",
+    "lint": "rig eslint --cache .",
+    "test": "rig jest"
   },
   "devDependencies": {
-    "@mmkal/builder": "0.0.1"
+    "@mmkal/rig": "0.0.1"
   }
 }

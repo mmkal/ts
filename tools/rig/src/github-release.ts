@@ -61,7 +61,11 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
     .value()
 
   logger.info('releasing', allReleaseParams)
-  await Promise.all(allReleaseParams.map(async c => github.repos.createRelease(c)))
+  const releases = await Promise.all(allReleaseParams.map(async c => github.repos.createRelease(c)))
+  logger.info(
+    'released',
+    releases.map(r => r.data)
+  )
 }
 
 export const getReleaseContent = (changelog: IChangelog, tag: string) => {
@@ -77,7 +81,10 @@ export const getReleaseContent = (changelog: IChangelog, tag: string) => {
 
   const body = lodash
     .chain(relevantEntries)
-    .flatMap(({comments, ...e}) => Object.entries(comments).map(([type, comment]) => ({...e, type, comment})))
+    .flatMap(({comments, ...e}) =>
+      Object.keys(comments).map(type => ({...e, comments, type: type as keyof typeof comments}))
+    )
+    .map(({comments, ...e}) => ({...e, comment: comments[e.type]}))
     .flatMap(({comment, ...e}) => comment!.map(c => ({...e, ...c})))
     .map(e => ({
       ...e,

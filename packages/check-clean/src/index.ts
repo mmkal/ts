@@ -19,7 +19,7 @@ export const checkClean = ({exit, env, argv} = process as Pick<typeof process, '
   )
 
   if (argv[2]) {
-    console.info(`${colours.reset}additional info: ${process.argv[2]}`)
+    console.info(`${colours.reset}additional info: ${argv[2]}`)
   }
   console.info(`${colours.reset}changes:\n${gitStatus}`)
   exit(1)

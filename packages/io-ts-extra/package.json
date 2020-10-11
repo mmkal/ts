@@ -1,6 +1,6 @@
 {
   "name": "io-ts-extra",
-  "version": "0.10.7",
+  "version": "0.10.9",
   "keywords": [
     "typescript",
     "validation",
@@ -21,20 +21,22 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "run tsc -p .",
-    "lint": "run eslint --cache .",
-    "test": "run jest"
+    "prebuild": "npm run clean",
+    "build": "rig tsc -p .",
+    "clean": "rig rimraf dist",
+    "lint": "rig eslint --cache .",
+    "test": "rig jest"
   },
   "dependencies": {
     "fp-ts": "^2.1.0",
     "io-ts": "^2.2.4"
   },
   "devDependencies": {
-    "@mmkal/builder": "0.0.1",
-    "@types/js-yaml": "~3.12.5",
-    "@types/lodash": "~4.14.161",
-    "expect-type": "0.7.10",
-    "js-yaml": "^3.14.0",
-    "lodash": "^4.17.15"
+    "@mmkal/rig": "0.0.1",
+    "@types/js-yaml": "3.12.5",
+    "@types/lodash": "4.14.161",
+    "expect-type": "0.8.0",
+    "js-yaml": "3.14.0",
+    "lodash": "4.17.20"
   }
 }

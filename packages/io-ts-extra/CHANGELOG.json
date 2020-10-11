@@ -2,6 +2,35 @@
   "name": "io-ts-extra",
   "entries": [
     {
+      "version": "0.10.9",
+      "tag": "io-ts-extra_v0.10.9",
+      "date": "Mon, 05 Oct 2020 22:38:33 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" from `0.7.11` to `0.8.0`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.10.8",
+      "tag": "io-ts-extra_v0.10.8",
+      "date": "Thu, 01 Oct 2020 14:48:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: npmignore coverage folder (#184)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" from `0.7.10` to `0.7.11`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.10.7",
       "tag": "io-ts-extra_v0.10.7",
       "date": "Fri, 18 Sep 2020 16:56:41 GMT",

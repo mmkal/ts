@@ -52,7 +52,7 @@ Create a new package:
 cd packages
 mkdir new-pkg
 cd new-pkg
-node ../../tools/builder/init # sets up package.json, .eslintrc.js, tsconfig.json, jest.config.js
+node ../../tools/rig/init # sets up package.json, .eslintrc.js, tsconfig.json, jest.config.js
 ```
 
 <!-- todo: make this step unnecessary -->

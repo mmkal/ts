@@ -1,6 +1,21 @@
 # Change Log - check-clean
 
-This log was last generated on Fri, 18 Sep 2020 16:56:41 GMT and should not be manually modified.
+This log was last generated on Thu, 01 Oct 2020 14:48:13 GMT and should not be manually modified.
+
+## 0.2.4
+Thu, 01 Oct 2020 14:48:13 GMT
+
+### Patches
+
+- chore: npmignore coverage folder (#184)
+
+## 0.2.3
+Wed, 30 Sep 2020 15:34:55 GMT
+
+### Patches
+
+- chore: cache commands (#182)
+- fix: mark cli.ts as bin script (#183)
 
 ## 0.2.2
 Fri, 18 Sep 2020 16:56:41 GMT

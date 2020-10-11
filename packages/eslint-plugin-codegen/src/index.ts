@@ -61,7 +61,9 @@ const codegen: eslint.Rule.RuleModule = {
           end: /# codegen:end/g,
         },
       }
+      markersByExtension['.tsx'] = markersByExtension['.ts']
       markersByExtension['.js'] = markersByExtension['.ts']
+      markersByExtension['.jsx'] = markersByExtension['.ts']
       markersByExtension['.yaml'] = markersByExtension['.yml']
 
       const markers = markersByExtension[path.extname(context.getFilename())]
@@ -135,7 +137,7 @@ const codegen: eslint.Rule.RuleModule = {
         const expected = result.right
         try {
           expect(normalise(existingContent)).toBe(normalise(expected))
-        } catch (e) {
+        } catch (e: unknown) {
           const loc = {start: position(range[0]), end: position(range[1])}
           return context.report({
             message: `content doesn't match: ${e}`,

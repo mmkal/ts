@@ -1,18 +1,21 @@
-const dedent = require('../packages/eslint-plugin-codegen/node_modules/dedent')
-const {getRushJson} = require('../tools/builder')
+const {EOL} = require('os')
+const {getRushJson} = require('.')
 
-/** @type {import('../packages/eslint-plugin-codegen').Preset<{}>} */
+/** @type {import('../../packages/eslint-plugin-codegen').Preset<{}>} */
 module.exports = params => {
   const {rush} = getRushJson()
   const matchedProject = rush.projects.find(p => params.meta.filename.replace(/\\/g, '/').includes(p.projectFolder))
   const relativePath = matchedProject.projectFolder
   const leafPkg = {name: matchedProject.packageName}
 
-  const repo = 'https://github.com/mmkal/ts'
+  const {url: repo, defaultBranch: branch} = rush.repository
+  const codecovUrl = repo.replace('github.com', 'codecov.io/gh')
 
-  return dedent`
+  return `
     [![Node CI](${repo}/workflows/Node%20CI/badge.svg)](${repo}/actions?query=workflow%3A%22Node+CI%22)
-    [![codecov](https://codecov.io/gh/mmkal/ts/branch/main/graph/badge.svg)](https://codecov.io/gh/mmkal/ts/tree/main/${relativePath})
+    [![codecov](${codecovUrl}/branch/${branch}/graph/badge.svg)](${codecovUrl}/tree/${branch}/${relativePath})
     [![npm version](https://badge.fury.io/js/${leafPkg.name}.svg)](https://npmjs.com/package/${leafPkg.name})
   `
+    .replace(/\r?\n +/g, EOL)
+    .trim()
 }
