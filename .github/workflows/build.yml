@@ -14,6 +14,7 @@ jobs:
         node-version: [12.x, 10.x]
     steps:
     - uses: actions/checkout@v1
+    - run: alias rush="node common/scripts/install-run-rush"
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
@@ -39,11 +40,11 @@ jobs:
         key: ${{ runner.os }}-commands-v0.3-${{ github.ref }}
         restore-keys: |
           ${{ runner.os }}-commands-v0.3-
-
-    - run: node common/scripts/install-run-rush install
-    - run: node common/scripts/install-run-rush build
-    - run: node common/scripts/install-run-rush lint
-    - run: node common/scripts/install-run-rush test -v --coverage
+    
+    - run: rush install
+    - run: rush build
+    - run: rush lint
+    - run: rush test -v --coverage
     - id: find_coverage
       run: echo "::set-output name=files::$(find packages tools -iname coverage-final.json -path '*/coverage/*' -not -path '*/node_modules/*' | paste -sd "," -)"
     - uses: codecov/codecov-action@v1

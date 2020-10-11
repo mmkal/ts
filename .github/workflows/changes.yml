@@ -19,8 +19,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: rush install
-      run: node common/scripts/install-run-rush install
+    - run: alias rush="node common/scripts/install-run-rush"
+    - run: rush install
     - name: configure git username and email
       run: |
         # this needs to run before `rush change`
@@ -76,7 +76,7 @@ jobs:
           MESSAGE="$MESSAGE - @$PR_AUTHOR"
         fi
 
-        node common/scripts/install-run-rush change --message "$MESSAGE" --overwrite --bulk --bump-type $BUMP_TYPE
+        rush change --message "$MESSAGE" --overwrite --bulk --bump-type $BUMP_TYPE
 
         GIT_STATUS=$(git status --porcelain)
 

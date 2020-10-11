@@ -15,13 +15,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - run: alias rush="node common/scripts/install-run-rush"
       - name: run rush update and push changes
         run: |
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}"
 
-          node common/scripts/install-run-rush update
-          
+          rush update
+
           RUSH_CONFIG_DIR=common/config/rush
           GIT_STATUS=$(git status --porcelain)
           RUSH_CHANGES=$(echo "$GIT_STATUS" | grep "M $RUSH_CONFIG_DIR" || echo "")

@@ -12,6 +12,7 @@
     "**/node_modules/**": true
   },
   "javascript.implicitProjectConfig.checkJs": true,
+  "eslint.enable": false,
   "eslint.validate": ["markdown", "javascript", "typescript", "yaml"],
   "eslint.packageManager": "pnpm",
   "eslint.nodePath": "tools/rig/node_modules",
