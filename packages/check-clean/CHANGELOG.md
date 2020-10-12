@@ -1,6 +1,13 @@
 # Change Log - check-clean
 
-This log was last generated on Thu, 01 Oct 2020 14:48:13 GMT and should not be manually modified.
+This log was last generated on Mon, 12 Oct 2020 12:24:41 GMT and should not be manually modified.
+
+## 0.2.5
+Mon, 12 Oct 2020 12:24:41 GMT
+
+### Patches
+
+- fix(package): include repository info in each leaf package (#190)
 
 ## 0.2.4
 Thu, 01 Oct 2020 14:48:13 GMT

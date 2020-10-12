@@ -1,6 +1,13 @@
 # Change Log - io-ts-extra
 
-This log was last generated on Mon, 05 Oct 2020 22:38:33 GMT and should not be manually modified.
+This log was last generated on Mon, 12 Oct 2020 12:24:41 GMT and should not be manually modified.
+
+## 0.10.10
+Mon, 12 Oct 2020 12:24:41 GMT
+
+### Patches
+
+- chore(deps): pin dependencies (#173) - @renovate[bot]
 
 ## 0.10.9
 Mon, 05 Oct 2020 22:38:33 GMT

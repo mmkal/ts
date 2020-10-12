@@ -2,6 +2,32 @@
   "name": "eslint-plugin-codegen",
   "entries": [
     {
+      "version": "0.13.3",
+      "tag": "eslint-plugin-codegen_v0.13.3",
+      "date": "Mon, 12 Oct 2020 12:24:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: trim empty lines (#201)"
+          },
+          {
+            "comment": "fix(deps): update babel monorepo (#189)"
+          },
+          {
+            "comment": "fix(deps): update dependency eslint-config-xo-typescript to ~0.33.0 (#195) - @renovate[bot]"
+          },
+          {
+            "comment": "chore(deps): pin dependencies (#173) - @renovate[bot]"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"io-ts-extra\" from `0.10.9` to `0.10.10`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.2",
       "tag": "eslint-plugin-codegen_v0.13.2",
       "date": "Mon, 05 Oct 2020 22:38:33 GMT",

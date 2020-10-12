@@ -2,6 +2,18 @@
   "name": "io-ts-extra",
   "entries": [
     {
+      "version": "0.10.10",
+      "tag": "io-ts-extra_v0.10.10",
+      "date": "Mon, 12 Oct 2020 12:24:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore(deps): pin dependencies (#173) - @renovate[bot]"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.10.9",
       "tag": "io-ts-extra_v0.10.9",
       "date": "Mon, 05 Oct 2020 22:38:33 GMT",

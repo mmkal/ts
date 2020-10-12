@@ -1,6 +1,6 @@
 {
   "name": "check-clean",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A cli tool to make sure you have no git changes",
   "repository": {
     "type": "git",
