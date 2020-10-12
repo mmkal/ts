@@ -137,7 +137,7 @@ const codegen: eslint.Rule.RuleModule = {
         const expected = result.right
         try {
           expect(normalise(existingContent)).toBe(normalise(expected))
-        } catch (e) {
+        } catch (e: unknown) {
           const loc = {start: position(range[0]), end: position(range[1])}
           return context.report({
             message: `content doesn't match: ${e}`,

@@ -5,6 +5,8 @@
     "config:base",
     ":semanticCommits"
   ],
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
   "prConcurrentLimit": 3,
   "packageRules": [
     {
@@ -14,11 +16,15 @@
     {
       "depTypeList": ["dependencies"],
       "updateTypes": ["lockFileMaintenance"],
-      "automerge": false
+      "automerge": true
     },
     {
       "depTypeList": ["devDependencies"],
-      "automerge": false
+      "automerge": true
+    },
+    {
+      "paths": ["tools/**"],
+      "automerge": true
     },
     {
       "depTypeList": ["devDependencies"],
