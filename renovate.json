@@ -22,6 +22,16 @@
       "paths": ["tools/**"],
       "groupName": "devDependencies",
       "automerge": true
+    },
+    {
+      "depTypeList": ["devDependencies"],
+      "groupName": "devDependencies",
+      "automerge": true
+    },
+    {
+      "paths": ["tools/**"],
+      "groupName": "devDependencies",
+      "automerge": true
     }
   ]
 }
