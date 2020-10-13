@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore(deps): update dependency @types/lodash to v4.14.162 (#202) - @renovate[bot]",
+      "type": "patch",
+      "packageName": "memorable-moniker"
+    }
+  ],
+  "packageName": "memorable-moniker",
+  "email": "renovate[bot]@users.noreply.github.com"
+}
