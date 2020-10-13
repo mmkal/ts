@@ -1,13 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "enabled": true,
   "extends": [
     "config:base",
     ":semanticCommits"
   ],
   "dependencyDashboard": true,
   "dependencyDashboardAutoclose": true,
-  "prConcurrentLimit": 3,
+  "prConcurrentLimit": 4,
   "packageRules": [
     {
       "depTypeList": ["dependencies"],
@@ -20,17 +19,9 @@
     },
     {
       "depTypeList": ["devDependencies"],
-      "automerge": true
-    },
-    {
       "paths": ["tools/**"],
+      "groupName": "devDependencies",
       "automerge": true
-    },
-    {
-      "depTypeList": ["devDependencies"],
-      "packagePatterns": ["eslint"],
-      "groupName": "eslint packages",
-      "labels": ["linting"]
     }
   ]
 }
