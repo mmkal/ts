@@ -19,7 +19,6 @@ dependencies:
   '@types/eslint': 7.2.4
   '@types/glob': 7.1.3
   '@types/jest': 26.0.14
-  '@types/lodash': 4.14.161
   '@types/minimatch': 3.0.3
   '@types/node': 14.11.2
   '@types/seedrandom': 2.4.28
@@ -972,6 +971,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-EP6O3Jkr7bXvZZSZYlsgt5DIjiGr0dXP1/jVEwVLTFgg0d+3lWVQkRavYVQszV7dYUwvg0B8R0MBDpcmXg7XIA==
+  /@types/lodash/4.14.162:
+    dev: false
+    resolution:
+      integrity: sha512-alvcho1kRUnnD1Gcl4J+hK0eencvzq9rmzvFPRmP5rPHx9VVsJj6bKLTATPVf9ktgv4ujzh7T+XWKp+jhuODig==
   /@types/minimatch/3.0.3:
     dev: false
     resolution:
@@ -7928,7 +7931,7 @@ packages:
       '@types/eslint': 7.2.4
       '@types/glob': 7.1.3
       '@types/js-yaml': 3.12.5
-      '@types/lodash': 4.14.161
+      '@types/lodash': 4.14.162
       '@types/minimatch': 3.0.3
       dedent: 0.7.0
       eslint: 7.10.0
@@ -7944,7 +7947,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-6lBP9+R3y9YF/tKqNKm5PKIeE6Kchx58irnRS5r8OHryi+Ih4oqF3DcuIev6a7RdT7dZnw+mNIpLMZ/+WiJP/Q==
+      integrity: sha512-Ncs4jbuZvMjT1T6zkYzRNbcJNk1Kklos05cALDHRIq42e290GHeMxl+xTCx+t6500dpB/5v7herOkvy+wRhYaw==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -7964,7 +7967,7 @@ packages:
   'file:projects/io-ts-extra.tgz':
     dependencies:
       '@types/js-yaml': 3.12.5
-      '@types/lodash': 4.14.161
+      '@types/lodash': 4.14.162
       fp-ts: 2.8.3
       io-ts: 2.2.10_fp-ts@2.8.3
       js-yaml: 3.14.0
@@ -7972,19 +7975,19 @@ packages:
     dev: false
     name: '@rush-temp/io-ts-extra'
     resolution:
-      integrity: sha512-lkkpPEQG8N0eSXAvHwzlCiAZJ69M7+BXYGLMpby99F15MfgSB4dGBonMtfAo9Va6Ia/DGE4q9aVBZ6myoYxf6g==
+      integrity: sha512-OD3aoGj2zZQ3E9oBIV4Jnh6YB3wNnspc1reEKJMmZLKlG3wPz2l2Bpgy0CeXzu4zQOZ1llLPxCATxGEKwrDs9w==
       tarball: 'file:projects/io-ts-extra.tgz'
     version: 0.0.0
   'file:projects/memorable-moniker.tgz':
     dependencies:
-      '@types/lodash': 4.14.161
+      '@types/lodash': 4.14.162
       '@types/seedrandom': 2.4.28
       lodash: 4.17.20
       seedrandom: 3.0.5
     dev: false
     name: '@rush-temp/memorable-moniker'
     resolution:
-      integrity: sha512-o6QP2L9oYooAZYmG/lUMtc2K9aYjhhmVLNzfCP3UCu7EvdYq7tHIteJuOU53bWDEtUQa3YLfV9zeNc4iTNh4+w==
+      integrity: sha512-xhjglR54baVgCANv4RBKfyIhYzErgSfIih08C55JN3QL7qFgrlyvU4ZjQxaKvMiqeisIrJ0Wami4/mdCdMJm4w==
       tarball: 'file:projects/memorable-moniker.tgz'
     version: 0.0.0
   'file:projects/rig.tgz':
@@ -8048,7 +8051,6 @@ specifiers:
   '@types/eslint': 7.2.4
   '@types/glob': 7.1.3
   '@types/jest': ~26.0.14
-  '@types/lodash': 4.14.161
   '@types/minimatch': 3.0.3
   '@types/node': ^14.10.1
   '@types/seedrandom': 2.4.28
