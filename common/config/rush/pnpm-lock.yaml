@@ -37,9 +37,9 @@ dependencies:
   eson-parser: 0.0.5
   expect: 26.4.2
   find-up: 5.0.0
-  fp-ts: 2.8.3
+  fp-ts: 2.8.4
   glob: 7.1.6
-  io-ts: 2.2.10_fp-ts@2.8.3
+  io-ts: 2.2.10_fp-ts@2.8.4
   jest: 26.4.2
   minimatch: 3.0.4
   prettier: 2.1.2
@@ -3378,6 +3378,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-oGD3BTSzFCPs9alaI/2gh0SCNKyhPXkpeIBvkXNvnoczHfDAUd2HHtotCdLO0hOTTTTx8VKA0mhhR7LUNo+cKg==
+  /fp-ts/2.8.4:
+    dev: false
+    resolution:
+      integrity: sha512-J+kwce5SysU0YKuZ3aCnFk+dyezZD1mij6u26w1fCVfuLYgJR4eeXmVfJiUjthpZ+4yCRkRfcwMI5SkGw52oFA==
   /fragment-cache/0.2.1:
     dependencies:
       map-cache: 0.2.2
@@ -3960,6 +3964,14 @@ packages:
   /io-ts/2.2.10_fp-ts@2.8.3:
     dependencies:
       fp-ts: 2.8.3
+    dev: false
+    peerDependencies:
+      fp-ts: ^2.0.0
+    resolution:
+      integrity: sha512-WHx5jJe7hPpc6JoSIVbD+Xn6tYqe3cRvNpX24d8Wi15/kxhRWa8apo0Gzag6Xg99sCNY9OHKylw/Vhv0JAbNPQ==
+  /io-ts/2.2.10_fp-ts@2.8.4:
+    dependencies:
+      fp-ts: 2.8.4
     dev: false
     peerDependencies:
       fp-ts: ^2.0.0
@@ -7933,9 +7945,9 @@ packages:
       dedent: 0.7.0
       eslint: 7.10.0
       expect: 26.4.2
-      fp-ts: 2.8.3
+      fp-ts: 2.8.4
       glob: 7.1.6
-      io-ts: 2.2.10_fp-ts@2.8.3
+      io-ts: 2.2.10_fp-ts@2.8.4
       js-yaml: 3.14.0
       lodash: 4.17.20
       minimatch: 3.0.4
@@ -7944,7 +7956,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-6lBP9+R3y9YF/tKqNKm5PKIeE6Kchx58irnRS5r8OHryi+Ih4oqF3DcuIev6a7RdT7dZnw+mNIpLMZ/+WiJP/Q==
+      integrity: sha512-eREU65WcQDa+Af/3ru07x8JejQgMwyZm+dy9aMrjDe6L4K9Wj1TqQX/yDd8SOptbQ9xsrXv4FKE0sph9w8v7mw==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -7965,14 +7977,14 @@ packages:
     dependencies:
       '@types/js-yaml': 3.12.5
       '@types/lodash': 4.14.161
-      fp-ts: 2.8.3
-      io-ts: 2.2.10_fp-ts@2.8.3
+      fp-ts: 2.8.4
+      io-ts: 2.2.10_fp-ts@2.8.4
       js-yaml: 3.14.0
       lodash: 4.17.20
     dev: false
     name: '@rush-temp/io-ts-extra'
     resolution:
-      integrity: sha512-lkkpPEQG8N0eSXAvHwzlCiAZJ69M7+BXYGLMpby99F15MfgSB4dGBonMtfAo9Va6Ia/DGE4q9aVBZ6myoYxf6g==
+      integrity: sha512-Bt4zkqAgZm1QNf5VJJQ+l0AL59LuhY06umSq4gD/VCm9tr3e3SVbvovkpoC7ulgbUidPaRmlhp6T4J63fMHjmg==
       tarball: 'file:projects/io-ts-extra.tgz'
     version: 0.0.0
   'file:projects/memorable-moniker.tgz':
@@ -8066,7 +8078,7 @@ specifiers:
   eson-parser: ~0.0.5
   expect: ^26.0.0
   find-up: ~5.0.0
-  fp-ts: ^2.1.0
+  fp-ts: ^2.8.4
   glob: ^7.1.4
   io-ts: ^2.2.4
   jest: ~26.4.2
