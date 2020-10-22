@@ -35,7 +35,7 @@ dependencies:
   eslint-plugin-prettier: 3.1.4_prettier@2.1.2
   eslint-plugin-unicorn: 21.0.0
   eson-parser: 0.0.5
-  expect: 26.4.2
+  expect: 26.6.0
   find-up: 5.0.0
   fp-ts: 2.8.3
   glob: 7.1.6
@@ -575,6 +575,18 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-BDPG23U0qDeAvU4f99haztXwdAg3hz4El95LkAM+tHAqqhiVzRpEGHHU8EDxT/AnxOrA65YjLBwDahdJ9pTLJQ==
+  /@jest/types/26.6.0:
+    dependencies:
+      '@types/istanbul-lib-coverage': 2.0.3
+      '@types/istanbul-reports': 3.0.0
+      '@types/node': 14.11.2
+      '@types/yargs': 15.0.7
+      chalk: 4.1.0
+    dev: false
+    engines:
+      node: '>= 10.14.2'
+    resolution:
+      integrity: sha512-8pDeq/JVyAYw7jBGU83v8RMYAkdrRxLG3BGnAJuqaQAUd6GWBmND2uyl+awI88+hit48suLoLjNFtR+ZXxWaYg==
   /@microsoft/rush-lib/5.34.3:
     dependencies:
       '@pnpm/link-bins': 5.3.13
@@ -1000,6 +1012,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
+  /@types/stack-utils/2.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
   /@types/yargs-parser/15.0.0:
     dev: false
     resolution:
@@ -2517,6 +2533,12 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-5j5vdRcw3CNctePNYN0Wy2e/JbWT6cAYnXv5OuqPhDpyCGc0uLu2TK0zOCJWNB9kOIfYMSpIulRaDgIi4HJ6Ig==
+  /diff-sequences/26.5.0:
+    dev: false
+    engines:
+      node: '>= 10.14.2'
+    resolution:
+      integrity: sha512-ZXx86srb/iYy6jG71k++wBN9P9J05UNQ5hQHQd9MtMPvcqXPx/vKU69jfHV637D00Q2gSgPk2D+jSx3l1lDW/Q==
   /diffie-hellman/5.0.3:
     dependencies:
       bn.js: 4.11.9
@@ -3141,6 +3163,19 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-IlJ3X52Z0lDHm7gjEp+m76uX46ldH5VpqmU0006vqDju/285twh7zaWMRhs67VpQhBwjjMchk+p5aA0VkERCAA==
+  /expect/26.6.0:
+    dependencies:
+      '@jest/types': 26.6.0
+      ansi-styles: 4.2.1
+      jest-get-type: 26.3.0
+      jest-matcher-utils: 26.6.0
+      jest-message-util: 26.6.0
+      jest-regex-util: 26.0.0
+    dev: false
+    engines:
+      node: '>= 10.14.2'
+    resolution:
+      integrity: sha512-EzhbZ1tbwcaa5Ok39BI11flIMeIUSlg1QsnXOrleaMvltwHsvIQPBtL710l+ma+qDFLUgktCXK4YuQzmHdm7cg==
   /extend-shallow/2.0.1:
     dependencies:
       is-extendable: 0.1.1
@@ -4392,6 +4427,17 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-6T1XQY8U28WH0Z5rGpQ+VqZSZz8EN8rZcBtfvXaOkbwxIEeRre6qnuZQlbY1AJ4MKDxQF8EkrCvK+hL/VkyYLQ==
+  /jest-diff/26.6.0:
+    dependencies:
+      chalk: 4.1.0
+      diff-sequences: 26.5.0
+      jest-get-type: 26.3.0
+      pretty-format: 26.6.0
+    dev: false
+    engines:
+      node: '>= 10.14.2'
+    resolution:
+      integrity: sha512-IH09rKsdWY8YEY7ii2BHlSq59oXyF2pK3GoK+hOK9eD/x6009eNB5Jv1shLMKgxekodPzLlV7eZP1jPFQYds8w==
   /jest-docblock/26.0.0:
     dependencies:
       detect-newline: 3.1.0
@@ -4518,6 +4564,17 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-KcbNqWfWUG24R7tu9WcAOKKdiXiXCbMvQYT6iodZ9k1f7065k0keUOW6XpJMMvah+hTfqkhJhRXmA3r3zMAg0Q==
+  /jest-matcher-utils/26.6.0:
+    dependencies:
+      chalk: 4.1.0
+      jest-diff: 26.6.0
+      jest-get-type: 26.3.0
+      pretty-format: 26.6.0
+    dev: false
+    engines:
+      node: '>= 10.14.2'
+    resolution:
+      integrity: sha512-BUy/dQYb7ELGRazmK4ZVkbfPYCaNnrMtw1YljVhcKzWUxBM0xQ+bffrfnMLdRZp4wUUcT4ahaVnA3VWZtXWP9Q==
   /jest-message-util/26.3.0:
     dependencies:
       '@babel/code-frame': 7.10.4
@@ -4533,6 +4590,21 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-xIavRYqr4/otGOiLxLZGj3ieMmjcNE73Ui+LdSW/Y790j5acqCsAdDiLIbzHCZMpN07JOENRWX5DcU+OQ+TjTA==
+  /jest-message-util/26.6.0:
+    dependencies:
+      '@babel/code-frame': 7.10.4
+      '@jest/types': 26.6.0
+      '@types/stack-utils': 2.0.0
+      chalk: 4.1.0
+      graceful-fs: 4.2.4
+      micromatch: 4.0.2
+      slash: 3.0.0
+      stack-utils: 2.0.2
+    dev: false
+    engines:
+      node: '>= 10.14.2'
+    resolution:
+      integrity: sha512-WPAeS38Kza29f04I0iOIQrXeiebRXjmn6cFehzI7KKJOgT0NmqYAcLgjWnIAfKs5FBmEQgje1kXab0DaLKCl2w==
   /jest-mock/26.3.0:
     dependencies:
       '@jest/types': 26.3.0
@@ -5998,6 +6070,17 @@ packages:
       node: '>= 10'
     resolution:
       integrity: sha512-zK6Gd8zDsEiVydOCGLkoBoZuqv8VTiHyAbKznXe/gaph/DAeZOmit9yMfgIz5adIgAMMs5XfoYSwAX3jcCO1tA==
+  /pretty-format/26.6.0:
+    dependencies:
+      '@jest/types': 26.6.0
+      ansi-regex: 5.0.0
+      ansi-styles: 4.2.1
+      react-is: 16.13.1
+    dev: false
+    engines:
+      node: '>= 10'
+    resolution:
+      integrity: sha512-Uumr9URVB7bm6SbaByXtx+zGlS+0loDkFMHP0kHahMjmfCtmFY03iqd++5v3Ld6iB5TocVXlBN/T+DXMn9d4BA==
   /process-nextick-args/2.0.1:
     dev: false
     resolution:
@@ -7932,7 +8015,7 @@ packages:
       '@types/minimatch': 3.0.3
       dedent: 0.7.0
       eslint: 7.10.0
-      expect: 26.4.2
+      expect: 26.6.0
       fp-ts: 2.8.3
       glob: 7.1.6
       io-ts: 2.2.10_fp-ts@2.8.3
@@ -7944,7 +8027,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-6lBP9+R3y9YF/tKqNKm5PKIeE6Kchx58irnRS5r8OHryi+Ih4oqF3DcuIev6a7RdT7dZnw+mNIpLMZ/+WiJP/Q==
+      integrity: sha512-d8gLsTPXc+GdCPEuoIYKSc5W25eD9wQO35dTG/sZr3c32OaAYoend15y4FfjKdv20oCt4DOUtAaYgqqQQxOEuw==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -8064,7 +8147,7 @@ specifiers:
   eslint-plugin-prettier: ~3.1.4
   eslint-plugin-unicorn: ~21.0.0
   eson-parser: ~0.0.5
-  expect: ^26.0.0
+  expect: ^26.6.0
   find-up: ~5.0.0
   fp-ts: ^2.1.0
   glob: ^7.1.4
