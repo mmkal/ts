@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix(deps): update dependency fp-ts to ^2.8.4 (#200) - @renovate[bot]",
+      "type": "patch",
+      "packageName": "eslint-plugin-codegen"
+    }
+  ],
+  "packageName": "eslint-plugin-codegen",
+  "email": "renovate[bot]@users.noreply.github.com"
+}
