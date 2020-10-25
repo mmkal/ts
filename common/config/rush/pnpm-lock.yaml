@@ -1,7 +1,7 @@
 dependencies:
   '@actions/github': 4.0.0
   '@babel/core': 7.11.6
-  '@babel/generator': 7.11.6
+  '@babel/generator': 7.12.1
   '@babel/parser': 7.11.5
   '@babel/traverse': 7.11.5
   '@babel/types': 7.11.5
@@ -107,6 +107,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-DWtQ1PV3r+cLbySoHrwn9RWEgKMBLLma4OBQloPRyDYvc5msJM9kvTLo1YnlJd1P/ZuKbdli3ijr5q3FvAF3uA==
+  /@babel/generator/7.12.1:
+    dependencies:
+      '@babel/types': 7.12.1
+      jsesc: 2.5.2
+      source-map: 0.5.7
+    dev: false
+    resolution:
+      integrity: sha512-DB+6rafIdc9o72Yc3/Ph5h+6hUjeOp66pF0naQBgUFFuPqzQwIlPTm3xZR7YNvduIMtkDIj2t21LSQwnbCrXvg==
   /@babel/helper-function-name/7.10.4:
     dependencies:
       '@babel/helper-get-function-arity': 7.10.4
@@ -333,6 +341,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-bvM7Qz6eKnJVFIn+1LPtjlBFPVN5jNDc1XmN15vWe7Q3DPBufWWsLiIvUu7xW87uTG6QoggpIDnUgLQvPheU+Q==
+  /@babel/types/7.12.1:
+    dependencies:
+      '@babel/helper-validator-identifier': 7.10.4
+      lodash: 4.17.20
+      to-fast-properties: 2.0.0
+    dev: false
+    resolution:
+      integrity: sha512-BzSY3NJBKM4kyatSOWh3D/JJ2O3CVzBybHWxtgxnggaxEuaSTTDqeiSb/xk9lrkw2Tbqyivw5ZU4rT+EfznQsA==
   /@bcoe/v8-coverage/0.2.3:
     dev: false
     resolution:
@@ -7918,7 +7934,7 @@ packages:
   'file:projects/eslint-plugin-codegen.tgz':
     dependencies:
       '@babel/core': 7.11.6
-      '@babel/generator': 7.11.6
+      '@babel/generator': 7.12.1
       '@babel/parser': 7.11.5
       '@babel/traverse': 7.11.5
       '@babel/types': 7.11.5
@@ -7944,7 +7960,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-6lBP9+R3y9YF/tKqNKm5PKIeE6Kchx58irnRS5r8OHryi+Ih4oqF3DcuIev6a7RdT7dZnw+mNIpLMZ/+WiJP/Q==
+      integrity: sha512-fqvAybLFF3//qF+Mdh6niFdfr2ZHs8jQCRQmy0UEo2M9wMUhA/jrbKr5zgNC++mb5Zs+8Yo9A3b6e3xcYtvchg==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -8030,7 +8046,7 @@ registry: ''
 specifiers:
   '@actions/github': ~4.0.0
   '@babel/core': ^7.11.6
-  '@babel/generator': ~7.11.6
+  '@babel/generator': ~7.12.0
   '@babel/parser': ^7.11.5
   '@babel/traverse': ^7.11.5
   '@babel/types': 7.11.5
