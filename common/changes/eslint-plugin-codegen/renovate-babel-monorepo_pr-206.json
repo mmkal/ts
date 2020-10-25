@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix(deps): update dependency @babel/generator to ~7.12.0 (#206) - @renovate[bot]",
+      "type": "patch",
+      "packageName": "eslint-plugin-codegen"
+    }
+  ],
+  "packageName": "eslint-plugin-codegen",
+  "email": "renovate[bot]@users.noreply.github.com"
+}
