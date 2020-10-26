@@ -10,6 +10,8 @@ const commands = {
   concurrently: 'concurrently/bin/concurrently',
   webpack: 'webpack-cli/bin/cli',
   'sort-package-json': 'sort-package-json/cli',
+  permalink: './permalink',
+  unpermalink: './unpermalink',
 }
 if (command === 'jest') {
   // hack: workaround https://github.com/facebook/jest/issues/5064 to avoid "completed with warnings" messages
