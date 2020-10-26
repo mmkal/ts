@@ -25,6 +25,8 @@
     "build": "rig tsc -p .",
     "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
+    "prepack": "npm run lint && rig permalink",
+    "postpack": "rig unpermalink && git status",
     "test": "rig jest"
   },
   "devDependencies": {
