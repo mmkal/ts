@@ -10,26 +10,23 @@
   "packageRules": [
     {
       "depTypeList": ["dependencies"],
+      "paths": ["packages/**"],
       "rangeStrategy": "update-lockfile"
     },
     {
       "depTypeList": ["dependencies"],
+      "paths": ["packages/**"],
       "updateTypes": ["lockFileMaintenance"],
       "automerge": true
     },
     {
-      "depTypeList": ["devDependencies"],
+      "depTypeList": ["dependencies", "devDependencies"],
       "paths": ["tools/**"],
       "groupName": "devDependencies",
       "automerge": true
     },
     {
       "depTypeList": ["devDependencies"],
-      "groupName": "devDependencies",
-      "automerge": true
-    },
-    {
-      "paths": ["tools/**"],
       "groupName": "devDependencies",
       "automerge": true
     }
