@@ -1,6 +1,13 @@
 # Change Log - eslint-plugin-codegen
 
-This log was last generated on Mon, 12 Oct 2020 12:24:41 GMT and should not be manually modified.
+This log was last generated on Tue, 27 Oct 2020 16:18:39 GMT and should not be manually modified.
+
+## 0.14.0
+Tue, 27 Oct 2020 16:18:39 GMT
+
+### Minor changes
+
+- Permalink readme urls before publishing (#211)
 
 ## 0.13.3
 Mon, 12 Oct 2020 12:24:41 GMT

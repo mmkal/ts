@@ -1,6 +1,13 @@
 # Change Log - check-clean
 
-This log was last generated on Mon, 12 Oct 2020 12:24:41 GMT and should not be manually modified.
+This log was last generated on Tue, 27 Oct 2020 16:18:39 GMT and should not be manually modified.
+
+## 0.3.0
+Tue, 27 Oct 2020 16:18:39 GMT
+
+### Minor changes
+
+- Permalink readme urls before publishing (#211)
 
 ## 0.2.5
 Mon, 12 Oct 2020 12:24:41 GMT

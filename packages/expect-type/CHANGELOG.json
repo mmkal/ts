@@ -2,6 +2,23 @@
   "name": "expect-type",
   "entries": [
     {
+      "version": "0.9.0",
+      "tag": "expect-type_v0.9.0",
+      "date": "Tue, 27 Oct 2020 16:18:39 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Permalink readme urls before publishing (#211)"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix(deps): pin dependencies (#209) - @renovate[bot]"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.8.0",
       "tag": "expect-type_v0.8.0",
       "date": "Mon, 05 Oct 2020 22:38:33 GMT",

@@ -2,6 +2,18 @@
   "name": "check-clean",
   "entries": [
     {
+      "version": "0.3.0",
+      "tag": "check-clean_v0.3.0",
+      "date": "Tue, 27 Oct 2020 16:18:39 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Permalink readme urls before publishing (#211)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.5",
       "tag": "check-clean_v0.2.5",
       "date": "Mon, 12 Oct 2020 12:24:41 GMT",

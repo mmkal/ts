@@ -1,6 +1,17 @@
 # Change Log - expect-type
 
-This log was last generated on Mon, 05 Oct 2020 22:38:33 GMT and should not be manually modified.
+This log was last generated on Tue, 27 Oct 2020 16:18:39 GMT and should not be manually modified.
+
+## 0.9.0
+Tue, 27 Oct 2020 16:18:39 GMT
+
+### Minor changes
+
+- Permalink readme urls before publishing (#211)
+
+### Patches
+
+- fix(deps): pin dependencies (#209) - @renovate[bot]
 
 ## 0.8.0
 Mon, 05 Oct 2020 22:38:33 GMT

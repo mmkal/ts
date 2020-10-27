@@ -2,6 +2,23 @@
   "name": "fs-syncer",
   "entries": [
     {
+      "version": "0.3.0",
+      "tag": "fs-syncer_v0.3.0",
+      "date": "Tue, 27 Oct 2020 16:18:39 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Permalink readme urls before publishing (#211)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" from `0.8.0` to `0.9.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.7",
       "tag": "fs-syncer_v0.2.7",
       "date": "Mon, 05 Oct 2020 22:38:33 GMT",
