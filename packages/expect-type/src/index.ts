@@ -116,7 +116,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
 const fn: any = () => true
 
 export type _ExpectTypeOf = {
-  <Actual>(actual: Actual): ExpectTypeOf<Actual, true>;
+  <Actual>(actual: Actual): ExpectTypeOf<Actual, true>
   <Actual>(): ExpectTypeOf<Actual, true>
 }
 
