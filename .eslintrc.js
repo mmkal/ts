@@ -1,11 +1,12 @@
 require('./tools/rig/.eslintrc')
 module.exports = {
-  plugins: ['codegen'],
+  plugins: ['codegen', 'prettier'],
   ignorePatterns: ['!.github'],
   parserOptions: {
     extraFileExtensions: ['.yml'],
   },
   rules: {
-    'codegen/codegen': 'error',
-  }
+    'codegen/codegen': 'warn',
+    'prettier/prettier': 'warn',
+  },
 }
