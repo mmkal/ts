@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Permalink readme urls before publishing (#211)",
+      "type": "minor",
+      "packageName": "eslint-plugin-codegen"
+    }
+  ],
+  "packageName": "eslint-plugin-codegen",
+  "email": "mmkal@users.noreply.github.com"
+}
