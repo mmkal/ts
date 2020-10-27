@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Permalink readme urls before publishing (#211)",
+      "type": "minor",
+      "packageName": "check-clean"
+    }
+  ],
+  "packageName": "check-clean",
+  "email": "mmkal@users.noreply.github.com"
+}

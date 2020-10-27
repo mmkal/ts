@@ -372,7 +372,7 @@
     {
       "packageName": "@mmkal/rig",
       "projectFolder": "tools/rig",
-      "cyclicDependencyProjects": ["eslint-plugin-codegen"]
+      "cyclicDependencyProjects": ["eslint-plugin-codegen", "check-clean"]
     },
     {
       "packageName": "fs-syncer",
