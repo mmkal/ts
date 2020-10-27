@@ -20,6 +20,11 @@
       "automerge": true
     },
     {
+      "depTypeList": ["dependencies"],
+      "paths": ["packages/eslint-plugin-codegen/*"],
+      "groupName": "eslint-plugin-codegen"
+    },
+    {
       "depTypeList": ["dependencies", "devDependencies"],
       "paths": ["tools/**"],
       "groupName": "devDependencies",
