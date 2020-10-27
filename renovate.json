@@ -10,26 +10,28 @@
   "packageRules": [
     {
       "depTypeList": ["dependencies"],
+      "paths": ["packages/**"],
       "rangeStrategy": "update-lockfile"
     },
     {
       "depTypeList": ["dependencies"],
+      "paths": ["packages/**"],
       "updateTypes": ["lockFileMaintenance"],
       "automerge": true
     },
     {
-      "depTypeList": ["devDependencies"],
+      "depTypeList": ["dependencies"],
+      "paths": ["packages/eslint-plugin-codegen/*"],
+      "groupName": "eslint-plugin-codegen"
+    },
+    {
+      "depTypeList": ["dependencies", "devDependencies"],
       "paths": ["tools/**"],
       "groupName": "devDependencies",
       "automerge": true
     },
     {
       "depTypeList": ["devDependencies"],
-      "groupName": "devDependencies",
-      "automerge": true
-    },
-    {
-      "paths": ["tools/**"],
       "groupName": "devDependencies",
       "automerge": true
     }

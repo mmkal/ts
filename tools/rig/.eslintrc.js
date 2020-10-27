@@ -80,6 +80,7 @@ module.exports = {
     'eol-last': 'off',
     'no-trailing-spaces': 'off',
     '@typescript-eslint/member-delimiter-style': 'off',
+		'no-multiple-empty-lines': 'off',
     camelcase: 'off',
 
     'capitalized-comments': 'off',

@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix(deps): pin dependencies (#209) - @renovate[bot]",
+      "type": "patch",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "renovate[bot]@users.noreply.github.com"
+}
