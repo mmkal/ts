@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-codegen",
-  "version": "0.13.1",
+  "version": "0.13.3",
   "keywords": [
     "eslint",
     "eslint plugin",
@@ -32,34 +32,34 @@
     "test": "rig jest"
   },
   "dependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.11.6",
     "@babel/generator": "~7.11.6",
-    "@babel/parser": "^7.9.4",
-    "@babel/traverse": "^7.9.0",
+    "@babel/parser": "^7.11.5",
+    "@babel/traverse": "^7.11.5",
     "expect": "^26.0.0",
     "fp-ts": "^2.1.0",
     "glob": "^7.1.4",
     "io-ts": "^2.2.4",
-    "io-ts-extra": "0.10.8",
+    "io-ts-extra": "0.10.10",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15",
     "string.prototype.matchall": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/types": "~7.11.5",
+    "@babel/types": "7.11.5",
     "@mmkal/rig": "0.0.1",
-    "@types/babel__generator": "~7.6.1",
-    "@types/babel__traverse": "~7.0.14",
-    "@types/dedent": "~0.7.0",
-    "@types/eslint": "~7.2.2",
-    "@types/glob": "~7.1.3",
-    "@types/js-yaml": "~3.12.5",
-    "@types/lodash": "~4.14.161",
-    "@types/minimatch": "~3.0.3",
-    "dedent": "~0.7.0",
-    "expect-type": "0.7.11",
-    "minimatch": "~3.0.4",
-    "read-pkg-up": "~7.0.1"
+    "@types/babel__generator": "7.6.2",
+    "@types/babel__traverse": "7.0.15",
+    "@types/dedent": "0.7.0",
+    "@types/eslint": "7.2.4",
+    "@types/glob": "7.1.3",
+    "@types/js-yaml": "3.12.5",
+    "@types/lodash": "4.14.161",
+    "@types/minimatch": "3.0.3",
+    "dedent": "0.7.0",
+    "expect-type": "0.8.0",
+    "minimatch": "3.0.4",
+    "read-pkg-up": "7.0.1"
   },
   "peerDependencies": {
     "eslint": "*"

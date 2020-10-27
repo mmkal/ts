@@ -8,11 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      # by default, GitHub checks out a detached head on an ephemeral pull ref. Check out the actual branch since `rush change` relies on real branches:
       with:
+        # by default, GitHub checks out a detached head on an ephemeral pull ref. Check out the actual branch since `rush change` relies on real branches:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.head_ref }}
         fetch-depth: 0
+        # todo: use GITHUB_TOKEN, if https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 is ever addressed
+        token: ${{ secrets.GH_CI_TOKEN || github.token }}
+
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
@@ -49,6 +52,8 @@ jobs:
         PR_BODY: ${{ github.event.pull_request.body }}
         PR_TITLE: ${{ github.event.pull_request.title }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        REPO_OWNER: ${{ github.repository_owner }}
       run: |
         # do basic pull request title/body parsing to figure out if it's a major, minor or patch change
         # it'd probably be a good idea to use something like @commitlint for this, but it's an annoyingly
@@ -66,7 +71,12 @@ jobs:
           BUMP_TYPE=patch
         fi
 
-        node common/scripts/install-run-rush change --message "$PR_TITLE (#$PR_NUMBER)" --overwrite --bulk --bump-type $BUMP_TYPE
+        MESSAGE="$PR_TITLE (#$PR_NUMBER)"
+        if [ "$PR_AUTHOR" != "$REPO_OWNER" ]; then
+          MESSAGE="$MESSAGE - @$PR_AUTHOR"
+        fi
+
+        node common/scripts/install-run-rush change --message "$MESSAGE" --overwrite --bulk --bump-type $BUMP_TYPE
 
         GIT_STATUS=$(git status --porcelain)
 
@@ -82,9 +92,7 @@ jobs:
 
           git commit -m "chore: change files"
 
-          # todo: use GITHUB_TOKEN, if https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 is ever addressed
-          remote_repo="https://${{ github.actor }}:${{ secrets.GH_CI_TOKEN }}@github.com/${{ github.repository }}.git"
-          git push "${remote_repo}"
+          git push
 
           echo "::set-env name=CHANGE_HASH::$(git rev-parse --short HEAD)"
         else
@@ -107,5 +115,5 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.payload.pull_request.number,
-            body: `@${{ github.actor }} - changes were pushed to your branch: ${process.env.CHANGE_HASH}.`,
+            body: `@${{ github.event.pull_request.user.login }} - changes were pushed to your branch: ${process.env.CHANGE_HASH}.`,
           })

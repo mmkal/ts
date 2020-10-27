@@ -90,8 +90,14 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeNull: (...MISMATCH: MismatchArgs<Extends<Actual, null>, B>) => true
   toBeUndefined: (...MISMATCH: MismatchArgs<Extends<Actual, undefined>, B>) => true
   toBeNullable: (...MISMATCH: MismatchArgs<Not<Equal<Actual, NonNullable<Actual>>>, B>) => true
-  toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
-  toEqualTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>) => true
+  toMatchTypeOf: {
+    <Expected>(...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>): true
+    <Expected>(expected: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>): true
+  }
+  toEqualTypeOf: {
+    <Expected>(...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>): true
+    <Expected>(expected: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>): true
+  }
   toBeCallableWith: B extends true ? (...args: Params<Actual>) => true : never
   toBeConstructibleWith: B extends true ? (...args: ConstructorParams<Actual>) => true : never
   toHaveProperty: <K extends string>(
@@ -108,6 +114,11 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
+
+export type _ExpectTypeOf = {
+  <Actual>(actual: Actual): ExpectTypeOf<Actual, true>
+  <Actual>(): ExpectTypeOf<Actual, true>
+}
 
 /**
  * Similar to Jest's `expect`, but with type-awareness.
@@ -131,7 +142,7 @@ const fn: any = () => true
  * @description
  * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
  */
-export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
+export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
   const nonFunctionProperties = [
     'parameters',
     'returns',

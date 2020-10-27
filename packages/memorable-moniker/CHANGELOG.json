@@ -2,6 +2,30 @@
   "name": "memorable-moniker",
   "entries": [
     {
+      "version": "0.2.20",
+      "tag": "memorable-moniker_v0.2.20",
+      "date": "Mon, 12 Oct 2020 12:24:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore(deps): pin dependencies (#173) - @renovate[bot]"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.19",
+      "tag": "memorable-moniker_v0.2.19",
+      "date": "Mon, 05 Oct 2020 22:38:33 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" from `0.7.11` to `0.8.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.18",
       "tag": "memorable-moniker_v0.2.18",
       "date": "Thu, 01 Oct 2020 14:48:13 GMT",

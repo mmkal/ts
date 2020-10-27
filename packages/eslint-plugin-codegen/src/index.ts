@@ -21,7 +21,7 @@ const getPreprocessor = (): eslint.Linter.LintOptions => {
         os.EOL +
         text
           .split(/\r?\n/)
-          .map(line => `// eslint-plugin-codegen:trim${line}`)
+          .map(line => line && `// eslint-plugin-codegen:trim${line}`)
           .join(os.EOL),
     ],
     postprocess: messageLists => ([] as eslint.Linter.LintMessage[]).concat(...messageLists),
@@ -109,7 +109,7 @@ const codegen: eslint.Rule.RuleModule = {
         const opts = maybeOptions.right || {}
         const presets: Record<string, presetsModule.Preset<unknown> | undefined> = {
           ...presetsModule,
-          ...context.options?.[0]?.presets,
+          ...context.options[0]?.presets,
         }
         const preset = typeof opts?.preset === 'string' && presets[opts.preset]
         if (typeof preset !== 'function') {
@@ -137,7 +137,7 @@ const codegen: eslint.Rule.RuleModule = {
         const expected = result.right
         try {
           expect(normalise(existingContent)).toBe(normalise(expected))
-        } catch (e) {
+        } catch (e: unknown) {
           const loc = {start: position(range[0]), end: position(range[1])}
           return context.report({
             message: `content doesn't match: ${e}`,

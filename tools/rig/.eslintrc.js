@@ -68,7 +68,7 @@ module.exports = {
     '@typescript-eslint/no-invalid-void-type': 'off',
 
     // xo defaults that overlap with prettier
-    'comma-dangle': 'off',
+    '@typescript-eslint/comma-dangle': 'off',
     'object-curly-spacing': 'off',
     'operator-linebreak': 'off',
     'no-mixed-spaces-and-tabs': 'off',
@@ -81,6 +81,7 @@ module.exports = {
     'eol-last': 'off',
     'no-trailing-spaces': 'off',
     '@typescript-eslint/member-delimiter-style': 'off',
+		'no-multiple-empty-lines': 'off',
     camelcase: 'off',
 
     'capitalized-comments': 'off',

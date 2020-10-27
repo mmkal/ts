@@ -1,6 +1,21 @@
 # Change Log - eslint-plugin-codegen
 
-This log was last generated on Thu, 01 Oct 2020 14:48:13 GMT and should not be manually modified.
+This log was last generated on Mon, 12 Oct 2020 12:24:41 GMT and should not be manually modified.
+
+## 0.13.3
+Mon, 12 Oct 2020 12:24:41 GMT
+
+### Patches
+
+- fix: trim empty lines (#201)
+- fix(deps): update babel monorepo (#189)
+- fix(deps): update dependency eslint-config-xo-typescript to ~0.33.0 (#195) - @renovate[bot]
+- chore(deps): pin dependencies (#173) - @renovate[bot]
+
+## 0.13.2
+Mon, 05 Oct 2020 22:38:33 GMT
+
+_Version update only_
 
 ## 0.13.1
 Thu, 01 Oct 2020 14:48:13 GMT

@@ -24,11 +24,11 @@ describe('markdown processor', () => {
       Array [
         "/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove
       // eslint-plugin-codegen:trim# Title
-      // eslint-plugin-codegen:trim
+
       // eslint-plugin-codegen:trim<!-- comment -->
-      // eslint-plugin-codegen:trim
+
       // eslint-plugin-codegen:trim<div>html</div>
-      // eslint-plugin-codegen:trim
+
       // eslint-plugin-codegen:trim\`\`\`js
       // eslint-plugin-codegen:trim// some javascript
       // eslint-plugin-codegen:trimconst x = 1

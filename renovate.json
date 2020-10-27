@@ -1,30 +1,39 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "enabled": false,
   "extends": [
     "config:base",
     ":semanticCommits"
   ],
-  "prConcurrentLimit": 3,
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "prConcurrentLimit": 4,
   "packageRules": [
     {
       "depTypeList": ["dependencies"],
+      "paths": ["packages/**"],
       "rangeStrategy": "update-lockfile"
     },
     {
       "depTypeList": ["dependencies"],
+      "paths": ["packages/**"],
       "updateTypes": ["lockFileMaintenance"],
-      "automerge": false
+      "automerge": true
+    },
+    {
+      "depTypeList": ["dependencies"],
+      "paths": ["packages/eslint-plugin-codegen/*"],
+      "groupName": "eslint-plugin-codegen"
+    },
+    {
+      "depTypeList": ["dependencies", "devDependencies"],
+      "paths": ["tools/**"],
+      "groupName": "devDependencies",
+      "automerge": true
     },
     {
       "depTypeList": ["devDependencies"],
-      "automerge": false
-    },
-    {
-      "depTypeList": ["devDependencies"],
-      "packagePatterns": ["eslint"],
-      "groupName": "eslint packages",
-      "labels": ["linting"]
+      "groupName": "devDependencies",
+      "automerge": true
     }
   ]
 }

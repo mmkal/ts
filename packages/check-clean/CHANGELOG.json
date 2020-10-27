@@ -2,6 +2,18 @@
   "name": "check-clean",
   "entries": [
     {
+      "version": "0.2.5",
+      "tag": "check-clean_v0.2.5",
+      "date": "Mon, 12 Oct 2020 12:24:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(package): include repository info in each leaf package (#190)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.4",
       "tag": "check-clean_v0.2.4",
       "date": "Thu, 01 Oct 2020 14:48:13 GMT",
