@@ -41,7 +41,6 @@ dependencies:
   find-up: 5.0.0
   fp-ts: 2.8.3
   glob: 7.1.6
-  io-ts: 2.2.10_fp-ts@2.8.3
   jest: 26.4.2
   minimatch: 3.0.4
   prettier: 2.1.2
@@ -3943,6 +3942,14 @@ packages:
       fp-ts: ^2.0.0
     resolution:
       integrity: sha512-WHx5jJe7hPpc6JoSIVbD+Xn6tYqe3cRvNpX24d8Wi15/kxhRWa8apo0Gzag6Xg99sCNY9OHKylw/Vhv0JAbNPQ==
+  /io-ts/2.2.11_fp-ts@2.8.3:
+    dependencies:
+      fp-ts: 2.8.3
+    dev: false
+    peerDependencies:
+      fp-ts: ^2.0.0
+    resolution:
+      integrity: sha512-lGxyPvZNhmo1U1Hy0ovjRtXljG6F59R3bZErK9XjiIQPlt4nuzbDNSwvalXvS7Z8iSZhx2S5GpNz5tVhpnDf6w==
   /ip-regex/2.1.0:
     dev: false
     engines:
@@ -7894,7 +7901,7 @@ packages:
     dev: false
     name: '@rush-temp/eslint-plugin-codegen'
     resolution:
-      integrity: sha512-D3/82TtzXjkYylvp+k3oLZX/FTXG7xjjmQ9y1ePD9gliHJFONzqE742r2nwwcgkg7Z1DNyZAIvufX/zX4SYe5g==
+      integrity: sha512-QbAVcB7rY2RDZGrFQrRzuvozQ7r+kubxWQKb4tU43O2fV2106zyGNhJkdSr33GHp5qAiBvGUCEKNCZd7cF2VBA==
       tarball: 'file:projects/eslint-plugin-codegen.tgz'
     version: 0.0.0
   'file:projects/expect-type.tgz':
@@ -7908,7 +7915,7 @@ packages:
     dev: false
     name: '@rush-temp/fs-syncer'
     resolution:
-      integrity: sha512-JlYg0ozY2ZJP5kSh5l+eEQ6/S0f5kU1+IjGLQtnQErO88AeoyjWoHJpb37+2WPNtg1LlWfGLI13SGWaDN2o/vw==
+      integrity: sha512-FhTvgSSYc/vA74SztnoiPCrcATaxUCgplrAlY/QSNwtC+fSSsQXtAbqokUBgLGH9rPo8qY0wezgq0oZ86BqQfg==
       tarball: 'file:projects/fs-syncer.tgz'
     version: 0.0.0
   'file:projects/io-ts-extra.tgz':
@@ -7916,13 +7923,13 @@ packages:
       '@types/js-yaml': 3.12.5
       '@types/lodash': 4.14.161
       fp-ts: 2.8.3
-      io-ts: 2.2.10_fp-ts@2.8.3
+      io-ts: 2.2.11_fp-ts@2.8.3
       js-yaml: 3.14.0
       lodash: 4.17.20
     dev: false
     name: '@rush-temp/io-ts-extra'
     resolution:
-      integrity: sha512-lkkpPEQG8N0eSXAvHwzlCiAZJ69M7+BXYGLMpby99F15MfgSB4dGBonMtfAo9Va6Ia/DGE4q9aVBZ6myoYxf6g==
+      integrity: sha512-8eQanTBk9bzxyDc8wDaXZEjlT1wOO6ScIMTcRfo8RQzWq2XWSbpsx2b9rOzVoUAPsvNOdwrSLq7zUJmKcZCDNg==
       tarball: 'file:projects/io-ts-extra.tgz'
     version: 0.0.0
   'file:projects/memorable-moniker.tgz':
@@ -7934,7 +7941,7 @@ packages:
     dev: false
     name: '@rush-temp/memorable-moniker'
     resolution:
-      integrity: sha512-o6QP2L9oYooAZYmG/lUMtc2K9aYjhhmVLNzfCP3UCu7EvdYq7tHIteJuOU53bWDEtUQa3YLfV9zeNc4iTNh4+w==
+      integrity: sha512-j5dGeT3oG3uw16aWoeWkkn1qCDI5pZNy6o6IP4kDl2kHit/1o45rChh3ZDmqMLtY4ccVYZX3uOFPiHkf1/x0JA==
       tarball: 'file:projects/memorable-moniker.tgz'
     version: 0.0.0
   'file:projects/rig.tgz':
@@ -8021,7 +8028,6 @@ specifiers:
   find-up: 5.0.0
   fp-ts: ^2.1.0
   glob: ^7.1.4
-  io-ts: ^2.2.4
   jest: 26.4.2
   minimatch: 3.0.4
   prettier: 2.1.2
