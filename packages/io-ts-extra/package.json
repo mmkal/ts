@@ -30,7 +30,7 @@
     "test": "rig jest"
   },
   "dependencies": {
-    "fp-ts": "^2.1.0",
+    "fp-ts": "^2.8.5",
     "io-ts": "^2.2.4"
   },
   "devDependencies": {
