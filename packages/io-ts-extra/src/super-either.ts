@@ -228,7 +228,7 @@ export const SuperTE: SuperTEStatic = {
     const rawTE = toTaskEither(val);
     type L = LeftOf<typeof rawTE>;
     type R = RightOf<typeof rawTE>;
-    const superTE: SuperTE<LeftOf<typeof rawTE>, RightOf<typeof rawTE>> = {
+    const superTE: SuperTE<L, R> = {
       map: (fn) => superTE.chain((next) => async () => E.right(await fn(next))),
       mapEither: (fn) => superTE.chainEither((either) => async () => E.right(await fn(either))),
       tryMapEither: (tag, fn) =>
@@ -291,7 +291,7 @@ export const SuperTE: SuperTEStatic = {
         superTE.mapLeft(splat).mapLeft(Error).mapLeft(tagError(tag, superTE.getUnsafe)).value().then(getOrThrowE),
       // @ts-expect-error - it isn't safe to unsafely get. But the type system will prevent users from doing this
       getSafe: () => superTE.getUnsafe('expectedRight'),
-      strict: null as any,
+      strict: null as any, // self reference, mutably set below
     };
     // eslint-disable-next-line functional/no-expression-statement, functional/immutable-data
     superTE.strict = superTE;
