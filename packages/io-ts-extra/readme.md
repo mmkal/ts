@@ -46,7 +46,7 @@ Adds pattern matching, optional properties, and several other helpers and types,
 
 ### Comparison with [io-ts](https://github.com/gcanti/io-ts)
 
-The maintainers of io-ts are (rightly) strict about keeping the API surface small and manageable, and the implementation clean. As a result, io-ts is a powerful but somewhat low-level framework.
+The maintainers of io-ts are strict about keeping the API surface small and manageable, and the implementation clean. As a result, io-ts is a powerful but somewhat low-level framework.
 
 This library implements some higher-level concepts for use in real-life applications with complex requirements - combinators, utilities, parsers, reporters etc.
 
