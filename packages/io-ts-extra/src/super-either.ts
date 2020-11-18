@@ -9,6 +9,7 @@ import { pipe } from 'fp-ts/pipeable';
 
 export const tryCatchError = <A>(f: () => Promise<A>, onRejected = E.toError) => TE.tryCatch(f, onRejected);
 
+/** receives a value (usually an error, either in a catch block, promise `.catch` or a `Left` value) and throws it */
 export const rethrow = <E>(e: E) => {throw e}
 
 export const getOrThrowE = <E, A>(e: E.Either<E, A>) => E.getOrElse<E, A>(rethrow)(e);

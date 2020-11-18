@@ -4,8 +4,8 @@ import * as t from 'io-ts';
 import * as A from 'fp-ts/lib/Apply';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { E } from '../super-either';
-import { pipe } from 'fp-ts/pipeable';
+import {E} from '../super-either';
+import {pipe} from 'fp-ts/pipeable';
 import {expectTypeOf} from 'expect-type';
 
 test('sequence', async () => {
@@ -105,9 +105,10 @@ test('more realistic', async () => {
     .start('somename')
     .map(promisyClient.getStringAsync)
     .chain(taskEitherClient.getString)
-    .map((name) => ({ name }))
+    .map((name: string) => ({name}))
     .chain(SomeCodec.decode)
-    .getUnsafe('getName');
+    .mapLeft(fp.rethrow)
+    .getSafe();
 
   expect(result).toMatchInlineSnapshot(`
     Object {
@@ -116,14 +117,65 @@ test('more realistic', async () => {
   `);
 });
 
+test('redis es postgres', async () => {
+  const es = {
+    search: async (params: {before: Date, after: Date}) => {
+      const docs = [
+        {_id: 'one', _doc: {id: 'one', url: 'http://google.com', date: '2003'}},
+        {_id: 'two', _doc: {id: 'two', url: 'http://bing.com', date: '2002'}},
+      ]
+      const [before, after] = [params.before, params.after].map(d => d.toISOString())
+
+      return {
+        total: 2,
+        hits: docs.filter(d => d._doc.date < before && d._doc.date > after)
+      }
+    }
+  }
+
+  type EsQuery = Parameters<typeof es.search>[0]
+  type Post = {url: string; text: string; title: string, date: string}
+
+  const redis = {
+    hydrate: async (params: {keys: string[]}) => {
+      const store: NodeJS.Dict<Post> = {
+        'one:http://google.com': {url: 'https://google.com', text: 'Search with google', title: 'Google', date: '2003'},
+        'two:http://bing.com': {url: 'https://google.com', text: 'Search with bing', title: 'Bing', date: '2002'},
+      }
+
+      return params.keys.map(key => store[key as keyof typeof store]!).filter(Boolean)
+    }
+  }
+
+  const postgres = {
+    search: async (params: {before: Date; after: Date}) => {
+      const db: Array<Post> = [
+        {url: 'https://google.com', text: 'Search with google', title: 'Google', date: '2003'},
+        {url: 'https://google.com', text: 'Search with bing', title: 'Bing', date: '2002'},
+        {url: 'https://altavista.com', text: 'Search with altavista', title: 'Altavista', date: '2001'},
+      ]
+
+      const [before, after] = [params.before, params.after].map(d => d.toISOString())
+      return db.filter(post => post.date < before && post.date > after)
+    }
+  }
+
+  const getResult = (query: {range: string}) => fp
+    .start(query)
+    .map(q => q.range.split('-'))
+    .map<EsQuery>(parts => ({before: new Date(parts[0]), after: new Date(parts[1])}))
+    .map(es.search)
+    .map(esResults => redis.hydrate({keys: esResults.hits.map(h => h._id)}))
+})
+
 test('hle', async () => {
   const result = await fp
     .start('hello')
-    .map((x) => ({ greeting: x }))
+    .map((x) => ({greeting: x}))
     .chain((x) => fp.E.right(x.greeting.slice(1)))
     .chain((x) => fp.IOE.right(x.slice(0, 3)))
     .chain((sliced) => fp.TE.right([sliced, sliced]))
-    .chain((x) => fp.IOE.right({ x }))
+    .chain((x) => fp.IOE.right({x}))
     .value();
 
   expect(result).toMatchInlineSnapshot(`
@@ -138,10 +190,10 @@ test('hle', async () => {
     }
   `);
 
-  const GreetingContainer = t.type({ greeting: t.string });
+  const GreetingContainer = t.type({greeting: t.string});
 
   const s3Client = {
-    get: async (n: number) => ({ bucket: n.toString() }),
+    get: async (n: number) => ({bucket: n.toString()}),
   };
 
   const maybeBucket = await fp
@@ -152,13 +204,13 @@ test('hle', async () => {
 
   const result2 = await fp
     .start('hello')
-    .map(async (x) => ({ greeting: x }))
+    .map(async (x) => ({greeting: x}))
     .chain(GreetingContainer.decode)
     .chain((x) => (x.greeting === 'hello' ? E.right(x) : E.left('bad greeting')))
     .strict.chain((x) => E.right(x.greeting.slice(1)))
     .chain((x) => fp.IOE.right(x.slice(0, 3)))
     .chain((sliced) => fp.TE.right([sliced, sliced]))
-    .chain((x) => fp.IOE.right({ x }))
+    .chain((x) => fp.IOE.right({x}))
     .mapValues((arr) => [...arr, ...arr])
     .chain((x) => (Math.random() ? E.right(x) : E.left(123)))
     .mapLeft((x) => [x])
@@ -178,7 +230,7 @@ test('hle', async () => {
 });
 
 test('error recovery', async () => {
-  type GoogleSearch = (query: string) => Promise<{ results: string[] }>;
+  type GoogleSearch = (query: string) => Promise<{results: string[]}>;
 
   const getSearchResults = (search: GoogleSearch) => (query: string) =>
     fp
@@ -186,11 +238,11 @@ test('error recovery', async () => {
       .tryMap('googleSearch', search)
       .recover(
         (e) => e.tag === 'googleSearch',
-        () => ({ results: [] })
+        () => ({results: []})
       )
       .getTE();
 
-  const goodSearch = getSearchResults((q) => Promise.resolve({ results: [`result for ${q}`] }));
+  const goodSearch = getSearchResults((q) => Promise.resolve({results: [`result for ${q}`]}));
   const badSearch = getSearchResults(() => Promise.reject(Error('Google is down')));
 
   expect(await goodSearch('hello')()).toMatchInlineSnapshot(`
@@ -214,16 +266,16 @@ test('error recovery', async () => {
 });
 
 test('recoverTruthy', async () => {
-  type GoogleSearch = (query: string) => Promise<{ results: string[] }>;
+  type GoogleSearch = (query: string) => Promise<{results: string[]}>;
 
   const getSearchResults = (search: GoogleSearch) => (query: string) =>
     fp
       .start(query)
       .tryMap('googleSearch', search)
-      .recoverTruthy((e) => e.tag === 'googleSearch' && { results: [] })
+      .recoverTruthy((e) => e.tag === 'googleSearch' && {results: []})
       .value();
 
-  const goodSearch = getSearchResults((q) => Promise.resolve({ results: [`result for ${q}`] }));
+  const goodSearch = getSearchResults((q) => Promise.resolve({results: [`result for ${q}`]}));
   const badSearch = getSearchResults(() => Promise.reject(Error('Google is down')));
 
   expect(await goodSearch('hello')).toMatchInlineSnapshot(`
@@ -247,14 +299,14 @@ test('recoverTruthy', async () => {
 });
 
 test('error recovery type inference', async () => {
-  type GoogleSearch = (query: string) => Promise<{ results: string[] }>;
+  type GoogleSearch = (query: string) => Promise<{results: string[]}>;
 
   const getSearchResults = (search: GoogleSearch) => (query: string) =>
     fp
       .start(query)
       .tryMap('googleSearch', search)
       // @ts-expect-error (this test makes sure that e.tag is strongly-typed as `'googleSearch'`)
-      .recoverTruthy((e) => e.tag === 'goggleSearch' && { results: [] })
+      .recoverTruthy((e) => e.tag === 'goggleSearch' && {results: []})
       .value();
 
   const badSearch = getSearchResults(() => Promise.reject(Error('Google is down')));
@@ -262,8 +314,8 @@ test('error recovery type inference', async () => {
 });
 
 test('filter', async () => {
-  const goodSearch = async (query: string) => ({ results: [`result for ${query}`] });
-  const badSearch = async () => ({ results: [] });
+  const goodSearch = async (query: string) => ({results: [`result for ${query}`]});
+  const badSearch = async () => ({results: []});
 
   const ok = await fp
     .start('hello')
@@ -305,11 +357,11 @@ test('strict chain', async () => {
       }))
       .getTE();
 
-  const analyseSearchResults = (r: { results: string[] }) =>
+  const analyseSearchResults = (r: {results: string[]}) =>
     fp
       .start(r)
-      .tryMap('analyse', ({ results }) => ({
-        analysis: results.map(({ length }) => ({ length })),
+      .tryMap('analyse', ({results}) => ({
+        analysis: results.map(({length}) => ({length})),
       }))
       .getTE();
 
@@ -371,8 +423,8 @@ test('use either module with chainEither', async () => {
       .filter('longerThan3', (s) => s.length > 3)
       .mapEither(
         E.fold(
-          (err) => ({ error: err.message }),
-          (success) => ({ error: 'none!', result: success })
+          (err) => ({error: err.message}),
+          (success) => ({error: 'none!', result: success})
         )
       )
       .getSafe();
@@ -403,7 +455,7 @@ test('swap lefts and rights, various ways', async () => {
       .chainEither(E.swap)
       .value()
   ).toMatchInlineSnapshot(
-    { _tag: 'Left' },
+    {_tag: 'Left'},
     `
     Object {
       "_tag": "Left",
@@ -418,7 +470,7 @@ test('swap lefts and rights, various ways', async () => {
       .chain(E.left)
       .value()
   ).toMatchInlineSnapshot(
-    { _tag: 'Left' },
+    {_tag: 'Left'},
     `
     Object {
       "_tag": "Left",
@@ -435,7 +487,7 @@ test('swap lefts and rights, various ways', async () => {
       .chainEither(E.swap)
       .value()
   ).toMatchInlineSnapshot(
-    { _tag: 'Right' },
+    {_tag: 'Right'},
     `
     Object {
       "_tag": "Right",
@@ -452,7 +504,7 @@ test('swap lefts and rights, various ways', async () => {
       .recoverTruthy((x) => x)
       .value()
   ).toMatchInlineSnapshot(
-    { _tag: 'Right' },
+    {_tag: 'Right'},
     `
     Object {
       "_tag": "Right",
@@ -469,7 +521,7 @@ test('swap lefts and rights, various ways', async () => {
       .orElse(E.right)
       .value()
   ).toMatchInlineSnapshot(
-    { _tag: 'Right' },
+    {_tag: 'Right'},
     `
     Object {
       "_tag": "Right",
@@ -517,7 +569,7 @@ test('get safely', async () => {
 });
 
 test('array helpers', async () => {
-  const getSearchResults = async (q: string) => ({ results: [`result for ${q}`] });
+  const getSearchResults = async (q: string) => ({results: [`result for ${q}`]});
 
   const allResults = await fp
     .start(['abc', 'def'])
@@ -553,8 +605,8 @@ test('array helpers', async () => {
 });
 
 test('map struct', async () => {
-  const googleSearch = async (q: string) => ({ results: q.split('g') });
-  const bingSearch = async (q: string) => ({ results: q.split('b') });
+  const googleSearch = async (q: string) => ({results: q.split('g')});
+  const bingSearch = async (q: string) => ({results: q.split('b')});
 
   const betterSearchResults = (query: string) =>
     fp
@@ -582,9 +634,9 @@ test('map struct', async () => {
 });
 
 test('map struct error', async () => {
-  const googleSearch = async (q: string) => ({ results: q.split('g') });
+  const googleSearch = async (q: string) => ({results: q.split('g')});
   const bingSearch: typeof googleSearch = async (q) =>
-    q.includes('b') ? { results: q.split('b') } : Promise.reject(Error('Failed to get search results'));
+    q.includes('b') ? {results: q.split('b')} : Promise.reject(Error('Failed to get search results'));
 
   const betterSearchResults = (query: string) =>
     fp
