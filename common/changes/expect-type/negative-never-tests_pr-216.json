@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix: test explicitly for `never` in `Extends` (#216)",
+      "type": "patch",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "mmkal@users.noreply.github.com"
+}
