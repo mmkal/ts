@@ -1,6 +1,13 @@
 # Change Log - expect-type
 
-This log was last generated on Tue, 27 Oct 2020 16:18:39 GMT and should not be manually modified.
+This log was last generated on Thu, 26 Nov 2020 17:06:36 GMT and should not be manually modified.
+
+## 0.9.1
+Thu, 26 Nov 2020 17:06:36 GMT
+
+### Patches
+
+- fix: test explicitly for `never` in `Extends` (#216)
 
 ## 0.9.0
 Tue, 27 Oct 2020 16:18:39 GMT
