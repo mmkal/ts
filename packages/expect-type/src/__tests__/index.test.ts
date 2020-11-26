@@ -52,6 +52,9 @@ test('Catch any/unknown/never types', () => {
   expectTypeOf<unknown>().toBeUnknown()
   expectTypeOf<any>().toBeAny()
   expectTypeOf<never>().toBeNever()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeNumber()
 })
 
 test('`.toEqualTypeOf` distinguishes between deeply-nested `any` and `unknown` properties', () => {

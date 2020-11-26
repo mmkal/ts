@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export type Not<T extends boolean> = T extends true ? false : true
 export type Or<Types extends boolean[]> = Types[number] extends false ? false : true
 export type And<Types extends boolean[]> = Types[number] extends true ? true : false
@@ -62,7 +61,7 @@ type ReadonlyEquivalent<X, Y> = Extends<
   (<T>() => T extends Y ? true : false)
 >
 
-export type Extends<L, R> = L extends R ? true : false
+export type Extends<L, R> = IsNever<L> extends true ? IsNever<R> : L extends R ? true : false
 export type StrictExtends<L, R> = Extends<DeepBrand<L>, DeepBrand<R>>
 
 export type Equal<Left, Right> = And<[StrictExtends<Left, Right>, StrictExtends<Right, Left>]>

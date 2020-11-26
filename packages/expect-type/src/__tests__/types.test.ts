@@ -48,6 +48,26 @@ test('boolean type logic', () => {
   expectTypeOf<a.Equal<never, unknown>>().toEqualTypeOf<false>()
 })
 
+test(`never types don't sneak by`, () => {
+  // @ts-expect-error
+  expectTypeOf<never>().toBeNumber()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeString()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeAny()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeUnknown()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toEqualTypeOf<{foo: string}>()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toMatchTypeOf<{foo: string}>()
+})
+
 test('constructor params', () => {
   // The built-in ConstructorParameters type helper fails to pick up no-argument overloads.
   // This test checks that's still the case to avoid unnecessarily maintaining a workaround,
