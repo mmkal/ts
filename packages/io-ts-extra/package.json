@@ -34,10 +34,10 @@
     "io-ts": "^2.2.4"
   },
   "devDependencies": {
-    "@mmkal/rig": "0.0.1",
+    "@mmkal/rig": "workspace:*",
     "@types/js-yaml": "3.12.5",
     "@types/lodash": "4.14.161",
-    "expect-type": "0.9.1",
+    "expect-type": "workspace:*",
     "js-yaml": "3.14.0",
     "lodash": "4.17.20"
   }

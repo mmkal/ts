@@ -22,9 +22,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: common/temp
-        key: ${{ runner.os }}-rush-${{ hashFiles('common/config/**') }}
+        key: ${{ runner.os }}-rush-node-modules-v0.4-${{ hashFiles('common/config/**') }}
         restore-keys: |
-          ${{ runner.os }}-rush-
+          ${{ runner.os }}-rush-node-modules-v0.4-
 
     - id: restore_rush_cache
       uses: actions/cache@v2
@@ -36,9 +36,9 @@ jobs:
           packages/*/dist
           tools/*/coverage
           packages/*/coverage
-        key: ${{ runner.os }}-commands-v0.3-${{ github.ref }}
+        key: ${{ runner.os }}-commands-v0.4-${{ github.ref }}
         restore-keys: |
-          ${{ runner.os }}-commands-v0.3-
+          ${{ runner.os }}-commands-v0.4-
 
     - run: node common/scripts/install-run-rush install
     - run: node common/scripts/install-run-rush build

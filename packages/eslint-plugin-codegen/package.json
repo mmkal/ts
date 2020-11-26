@@ -42,14 +42,14 @@
     "fp-ts": "^2.1.0",
     "glob": "^7.1.4",
     "io-ts": "^2.2.4",
-    "io-ts-extra": "0.11.1",
+    "io-ts-extra": "workspace:*",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15",
     "string.prototype.matchall": "^4.0.2"
   },
   "devDependencies": {
     "@babel/types": "7.11.5",
-    "@mmkal/rig": "0.0.1",
+    "@mmkal/rig": "workspace:*",
     "@types/babel__generator": "7.6.2",
     "@types/babel__traverse": "7.0.15",
     "@types/dedent": "0.7.0",
@@ -59,11 +59,8 @@
     "@types/lodash": "4.14.161",
     "@types/minimatch": "3.0.3",
     "dedent": "0.7.0",
-    "expect-type": "0.9.1",
+    "expect-type": "workspace:*",
     "minimatch": "3.0.4",
     "read-pkg-up": "7.0.1"
-  },
-  "peerDependencies": {
-    "eslint": "*"
   }
 }
