@@ -30,7 +30,7 @@
     "test": "rig jest"
   },
   "devDependencies": {
-    "@mmkal/rig": "0.0.1",
-    "expect-type": "0.9.1"
+    "@mmkal/rig": "workspace:*",
+    "expect-type": "workspace:*"
   }
 }

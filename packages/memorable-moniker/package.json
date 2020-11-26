@@ -39,10 +39,10 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "@mmkal/rig": "0.0.1",
+    "@mmkal/rig": "workspace:*",
     "@types/lodash": "4.14.161",
     "@types/seedrandom": "2.4.28",
-    "expect-type": "0.9.1",
+    "expect-type": "workspace:*",
     "lodash": "4.17.20"
   }
 }
