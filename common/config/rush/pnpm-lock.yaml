@@ -9,7 +9,7 @@ importers:
   ../../packages/eslint-plugin-codegen:
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/generator': 7.11.6
+      '@babel/generator': 7.12.5
       '@babel/parser': 7.12.7
       '@babel/traverse': 7.12.9
       expect: 26.6.2
@@ -37,7 +37,7 @@ importers:
       read-pkg-up: 7.0.1
     specifiers:
       '@babel/core': ^7.11.6
-      '@babel/generator': ~7.11.6
+      '@babel/generator': ~7.12.0
       '@babel/parser': ^7.11.5
       '@babel/traverse': ^7.11.5
       '@babel/types': 7.11.5
@@ -7915,3 +7915,4 @@ packages:
       commander: 2.20.3
     resolution:
       integrity: sha512-DUOKC/IhbkdLKKiV89gw9DUauTV8U/8yJl1sjf6MtDmzevLKOF2duNJ495S3MFVjqZarr+qNGCPbkg4mu4PpLw==
+registry: ''
