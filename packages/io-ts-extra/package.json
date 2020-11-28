@@ -1,18 +1,6 @@
 {
   "name": "io-ts-extra",
-  "version": "0.10.0",
-  "repository": "https://github.com/mmkal/ts",
-  "homepage": "https://github.com/mmkal/ts/tree/master/packages/io-ts-extra#readme",
-  "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p ."
-  },
-  "dependencies": {
-    "fp-ts": "^2.1.0",
-    "io-ts": "^2.0.1"
-  },
+  "version": "0.11.1",
   "keywords": [
     "typescript",
     "validation",
@@ -22,5 +10,35 @@
     "runtime",
     "io-ts",
     "pattern matching"
-  ]
+  ],
+  "homepage": "https://github.com/mmkal/ts/tree/main/packages/io-ts-extra#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmkal/ts.git",
+    "directory": "packages/io-ts-extra"
+  },
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "rig tsc -p .",
+    "clean": "rig rimraf dist",
+    "lint": "rig eslint --cache .",
+    "prepack": "npm run lint && rig permalink",
+    "postpack": "rig unpermalink && git status",
+    "test": "rig jest"
+  },
+  "dependencies": {
+    "fp-ts": "^2.1.0",
+    "io-ts": "^2.2.4"
+  },
+  "devDependencies": {
+    "@mmkal/rig": "workspace:*",
+    "@types/js-yaml": "3.12.5",
+    "@types/lodash": "4.14.161",
+    "expect-type": "workspace:*",
+    "js-yaml": "3.14.0",
+    "lodash": "4.17.20"
+  }
 }

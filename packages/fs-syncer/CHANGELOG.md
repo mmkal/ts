@@ -1,45 +1,35 @@
-# Change Log
+# Change Log - fs-syncer
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 26 Nov 2020 17:06:36 GMT and should not be manually modified.
 
-# [0.2.0](https://github.com/mmkal/ts/compare/fs-syncer@0.1.2...fs-syncer@0.2.0) (2020-04-26)
+## 0.3.1
+Thu, 26 Nov 2020 17:06:36 GMT
 
+_Version update only_
 
-### Features
+## 0.3.0
+Tue, 27 Oct 2020 16:18:39 GMT
 
-* **sync:** return syncer from .sync() ([60adcc3](https://github.com/mmkal/ts/commit/60adcc3450e22561575a97c421d4efbdd454aa1e))
+### Minor changes
 
+- Permalink readme urls before publishing (#211)
 
+## 0.2.7
+Mon, 05 Oct 2020 22:38:33 GMT
 
+_Version update only_
 
+## 0.2.6
+Thu, 01 Oct 2020 14:48:13 GMT
 
-## [0.1.2](https://github.com/mmkal/ts/compare/fs-syncer@0.1.1...fs-syncer@0.1.2) (2020-04-24)
+### Patches
 
+- chore: npmignore coverage folder (#184)
 
-### Bug Fixes
+## 0.2.5
+Fri, 18 Sep 2020 16:56:41 GMT
 
-* **package:** include typescript files ([d849a2a](https://github.com/mmkal/ts/commit/d849a2a5687f088780eaf7e64f26464587ed2d8f))
-* handle empty and non-existent directories ([6ab9436](https://github.com/mmkal/ts/commit/6ab9436af5d399213a0462613422084b2e9196f3))
+### Patches
 
+- fix(npmignore): exclude rush files (#169)
 
-
-
-
-## [0.1.1](https://github.com/mmkal/ts/compare/fs-syncer@0.1.0...fs-syncer@0.1.1) (2020-04-23)
-
-
-### Bug Fixes
-
-* add main to package.json ([1ad9ff3](https://github.com/mmkal/ts/commit/1ad9ff356539e4ca14b670032e3fbb0cfc29f454))
-
-
-
-
-
-# 0.1.0 (2020-04-23)
-
-
-### Features
-
-* fs-syncer ([a023b6a](https://github.com/mmkal/ts/commit/a023b6a84858b528cc9c368ed6a190b37d7d6efc))

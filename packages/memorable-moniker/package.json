@@ -1,20 +1,6 @@
 {
   "name": "memorable-moniker",
-  "version": "0.2.10",
-  "repository": "https://github.com/mmkal/ts",
-  "homepage": "https://github.com/mmkal/ts/tree/master/packages/memorable-moniker#readme",
-  "license": "Apache-2.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p ."
-  },
-  "dependencies": {
-    "seedrandom": "^3.0.5"
-  },
-  "devDependencies": {
-    "@types/seedrandom": "2.4.28"
-  },
+  "version": "0.3.1",
   "keywords": [
     "word",
     "words",
@@ -30,5 +16,33 @@
     "male",
     "nicknames",
     "generator"
-  ]
+  ],
+  "homepage": "https://github.com/mmkal/ts/tree/main/packages/memorable-moniker#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmkal/ts.git",
+    "directory": "packages/memorable-moniker"
+  },
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "rig tsc -p .",
+    "clean": "rig rimraf dist",
+    "lint": "rig eslint --cache .",
+    "prepack": "npm run lint && rig permalink",
+    "postpack": "rig unpermalink && git status",
+    "test": "rig jest"
+  },
+  "dependencies": {
+    "seedrandom": "^3.0.5"
+  },
+  "devDependencies": {
+    "@mmkal/rig": "workspace:*",
+    "@types/lodash": "4.14.161",
+    "@types/seedrandom": "2.4.28",
+    "expect-type": "workspace:*",
+    "lodash": "4.17.20"
+  }
 }

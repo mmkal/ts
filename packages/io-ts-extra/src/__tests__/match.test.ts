@@ -28,7 +28,7 @@ describe('case matching', () => {
         .case(String, fp.startsWith('h'), s => `greeting: ${s}`)
         .case(String, s => `custom greeting: ${s}`)
         .case({message: String}, m => {
-          expectTypeOf(m).toEqualTypeOf<{message: string}>()
+          expectTypeOf(m).toMatchTypeOf<{message: string}>()
           return `you left a message: ${m.message}`
         })
         .case({message: {}}, m => `invalid message type: ${typeof m.message}`)

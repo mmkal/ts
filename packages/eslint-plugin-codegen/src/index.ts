@@ -14,20 +14,25 @@ export {Preset} from './presets'
 
 export {presetsModule as presets}
 
-export const processors: Record<string, eslint.Linter.LintOptions> = {
-  '.md': {
+const getPreprocessor = (): eslint.Linter.LintOptions => {
+  return {
     preprocess: text => [
       '/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove' +
         os.EOL +
         text
           .split(/\r?\n/)
-          .map(line => `// eslint-plugin-codegen:trim${line}`)
+          .map(line => line && `// eslint-plugin-codegen:trim${line}`)
           .join(os.EOL),
     ],
     postprocess: messageLists => ([] as eslint.Linter.LintMessage[]).concat(...messageLists),
     // @ts-expect-error
     supportsAutofix: true,
-  },
+  }
+}
+export const processors: Record<string, eslint.Linter.LintOptions> = {
+  '.md': getPreprocessor(),
+  '.yml': getPreprocessor(),
+  '.yaml': getPreprocessor(),
 }
 
 const codegen: eslint.Rule.RuleModule = {
@@ -51,8 +56,15 @@ const codegen: eslint.Rule.RuleModule = {
           start: /\/\/ codegen:start ?(.*)/g,
           end: /\/\/ codegen:end/g,
         },
+        '.yml': {
+          start: /# codegen:start ?(.*)/g,
+          end: /# codegen:end/g,
+        },
       }
+      markersByExtension['.tsx'] = markersByExtension['.ts']
       markersByExtension['.js'] = markersByExtension['.ts']
+      markersByExtension['.jsx'] = markersByExtension['.ts']
+      markersByExtension['.yaml'] = markersByExtension['.yml']
 
       const markers = markersByExtension[path.extname(context.getFilename())]
       const position = (index: number) => {
@@ -97,7 +109,7 @@ const codegen: eslint.Rule.RuleModule = {
         const opts = maybeOptions.right || {}
         const presets: Record<string, presetsModule.Preset<unknown> | undefined> = {
           ...presetsModule,
-          ...context.options?.[0]?.presets,
+          ...context.options[0]?.presets,
         }
         const preset = typeof opts?.preset === 'string' && presets[opts.preset]
         if (typeof preset !== 'function') {
@@ -125,7 +137,7 @@ const codegen: eslint.Rule.RuleModule = {
         const expected = result.right
         try {
           expect(normalise(existingContent)).toBe(normalise(expected))
-        } catch (e) {
+        } catch (e: unknown) {
           const loc = {start: position(range[0]), end: position(range[1])}
           return context.report({
             message: `content doesn't match: ${e}`,

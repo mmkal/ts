@@ -1,0 +1,73 @@
+{
+  "name": "expect-type",
+  "entries": [
+    {
+      "version": "0.9.1",
+      "tag": "expect-type_v0.9.1",
+      "date": "Thu, 26 Nov 2020 17:06:36 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: test explicitly for `never` in `Extends` (#216)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.9.0",
+      "tag": "expect-type_v0.9.0",
+      "date": "Tue, 27 Oct 2020 16:18:39 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Permalink readme urls before publishing (#211)"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix(deps): pin dependencies (#209) - @renovate[bot]"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.8.0",
+      "tag": "expect-type_v0.8.0",
+      "date": "Mon, 05 Oct 2020 22:38:33 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Undefined union fix (#188)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.7.11",
+      "tag": "expect-type_v0.7.11",
+      "date": "Thu, 01 Oct 2020 14:48:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: npmignore coverage folder (#184)"
+          },
+          {
+            "comment": "fix: distinguish readonly properties (#186)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.7.10",
+      "tag": "expect-type_v0.7.10",
+      "date": "Fri, 18 Sep 2020 16:56:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(npmignore): exclude rush files (#169)"
+          }
+        ]
+      }
+    }
+  ]
+}

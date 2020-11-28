@@ -48,6 +48,26 @@ test('boolean type logic', () => {
   expectTypeOf<a.Equal<never, unknown>>().toEqualTypeOf<false>()
 })
 
+test(`never types don't sneak by`, () => {
+  // @ts-expect-error
+  expectTypeOf<never>().toBeNumber()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeString()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeAny()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeUnknown()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toEqualTypeOf<{foo: string}>()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toMatchTypeOf<{foo: string}>()
+})
+
 test('constructor params', () => {
   // The built-in ConstructorParameters type helper fails to pick up no-argument overloads.
   // This test checks that's still the case to avoid unnecessarily maintaining a workaround,
@@ -136,4 +156,22 @@ test('parity with IsExact from conditional-type-checks', () => {
   assert<IsExact<{prop: {prop: any}}, {prop: {prop: string}}>>(false)
   assert<IsExact<{prop: any} | {prop: string}, {prop: number} | {prop: string}>>(false)
   assert<IsExact<{prop: string | undefined}, {prop?: string}>>(false) // these are different
+})
+
+test('Equal works with functions', () => {
+  expectTypeOf<a.Equal<() => void, () => string>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Equal<() => void, (s: string) => void>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Equal<() => () => () => void, () => () => () => string>>().toEqualTypeOf<false>()
+  expectTypeOf<a.Equal<() => () => () => void, () => (s: string) => () => void>>().toEqualTypeOf<false>()
+})
+
+test(`undefined isn't removed from unions`, () => {
+  expectTypeOf<string | null | undefined>().toEqualTypeOf('' as string | null | undefined)
+  expectTypeOf<string | null | undefined>().toMatchTypeOf('' as string | null | undefined)
+
+  expectTypeOf('' as string | null | undefined).toEqualTypeOf<string | null | undefined>()
+  expectTypeOf('' as string | null | undefined).toMatchTypeOf<string | null | undefined>()
+
+  expectTypeOf<string | null | undefined>().toEqualTypeOf<string | null | undefined>()
+  expectTypeOf<string | null | undefined>().toMatchTypeOf<string | null | undefined>()
 })

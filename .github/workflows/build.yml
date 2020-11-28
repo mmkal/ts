@@ -1,0 +1,52 @@
+name: build
+on:
+  push: {}
+  pull_request: {}
+
+jobs:
+  build:
+    # CI runs on push and pull_request. For PRs from forks, only pull_request will run.
+    # This condition skips the pull request job for internal PRs - push kicks off faster
+    if: github.event_name == 'push' || github.event.pull_request.base.repo.url != github.event.pull_request.head.repo.url
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 10.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - id: restore_node_modules
+      uses: actions/cache@v2
+      with:
+        path: common/temp
+        key: ${{ runner.os }}-rush-node-modules-v0.4-${{ hashFiles('common/config/**') }}
+        restore-keys: |
+          ${{ runner.os }}-rush-node-modules-v0.4-
+
+    - id: restore_rush_cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          tools/*/.rush
+          packages/*/.rush
+          tools/*/dist
+          packages/*/dist
+          tools/*/coverage
+          packages/*/coverage
+        key: ${{ runner.os }}-commands-v0.4-${{ github.ref }}
+        restore-keys: |
+          ${{ runner.os }}-commands-v0.4-
+
+    - run: node common/scripts/install-run-rush install
+    - run: node common/scripts/install-run-rush build
+    - run: node common/scripts/install-run-rush lint
+    - run: node common/scripts/install-run-rush test -v --coverage
+    - id: find_coverage
+      run: echo "::set-output name=files::$(find packages tools -iname coverage-final.json -path '*/coverage/*' -not -path '*/node_modules/*' | paste -sd "," -)"
+    - uses: codecov/codecov-action@v1
+      if: matrix.node-version == '12.x'
+      with:
+        files: ${{ steps.find_coverage.outputs.files }}

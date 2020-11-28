@@ -1,21 +1,17 @@
-const glob = require('glob')
+const {getRushJson} = require('.')
 const fs = require('fs')
 const path = require('path')
-const readPkgUp = require('read-pkg-up')
 const childProcess = require('child_process')
 
-const readmes = glob.sync('**/*.md', {ignore: ['**/node_modules/**', '**/CHANGELOG.md']})
+const permalinkable = ['readme.md']
 
-const repoPkg = readPkgUp.sync()
-const repo = repoPkg.packageJson.repository.url.replace(/^git\+/, '').replace(/\.git$/, '')
 const gitHash = childProcess.execSync('git rev-parse --short HEAD').toString().trim()
 
-readmes.forEach(file => {
-  const packageDir = path.dirname(file)
-  const leafPkg = readPkgUp.sync({cwd: packageDir})
-  if (leafPkg.path === repoPkg.path) {
-    return
-  }
+permalinkable.forEach(file => {
+  const {rush} = getRushJson()
+  const matchedProject = rush.projects.find(p => path.join(process.cwd(), file).replace(/\\/g, '/').includes(p.projectFolder))
+  const repo = rush.repository.url
+
   const tag = gitHash
   const content = fs.readFileSync(file).toString()
   const withPermaLinks = content.replace(/\[(.*?)]\((.*?)\)/g, (match, text, href) => {
@@ -29,11 +25,15 @@ readmes.forEach(file => {
       return match
     }
 
+
     const isImage = href.endsWith('.jpg') || href.endsWith('.png') || href.endsWith('.gif')
     const baseURL = isImage ? repo.replace('github.com', 'raw.githubusercontent.com') : `${repo}/tree`
-    const permalinkedHref = `${baseURL}/${encodeURIComponent(tag)}/${packageDir}/` + href.replace(/^\.\//, '')
+    const permalinkedHref = `${baseURL}/${encodeURIComponent(tag)}/${matchedProject.projectFolder}/` + href.replace(/^\.\//, '')
 
     return `[${text}](${permalinkedHref})`
   })
-  fs.writeFileSync(file, withPermaLinks, 'utf8')
+  if (withPermaLinks !== content) {
+    fs.writeFileSync(file + '.bak', content, 'utf8')
+    fs.writeFileSync(file, withPermaLinks, 'utf8')
+  }
 })

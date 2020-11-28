@@ -1,5 +1,7 @@
 import {Type, union, Props, nullType, undefined as undefinedType, intersection, partial, type, mixed} from 'io-ts'
 import * as t from 'io-ts'
+import {pipe} from 'fp-ts/lib/function'
+import * as E from 'fp-ts/lib/Either'
 
 export interface Optional {
   optional: true
@@ -111,7 +113,23 @@ export const regexp = (() => {
     const RegExpMatchArrayDecoder = new t.Type<typeof RegExpMatchArrayStructure._A, string, string>(
       `RegExp<${v.source}>`,
       RegExpMatchArrayStructure.is,
-      (s, c) => RegExpMatchArrayStructure.validate(s.match(v), c),
+      (s, c) => {
+        // note: this implementation used to be much simpler:
+        // return RegExpMatchArrayStructure.validate(s.match(v), c)
+        // but a change to io-ts means that `t.type` won't validate an array, even if
+        // the array does have the properties required by the t.type.
+        const [array, structure] = RegExpMatchArrayStructure.types
+        const match = s.match(v)
+        return pipe(
+          match,
+          E.fromNullable(t.failure(s, c, `No match found for regexp ${v}`)),
+          E.mapLeft(e => (e as typeof e & {_tag: 'Left'}).left),
+          E.chain(match => array.validate(match, c)),
+          E.map((match: RegExpMatchArray) => ({index: match.index, input: match.input})),
+          E.chain(struct => structure.validate(struct, c)),
+          E.chain(() => t.success(match as t.TypeOf<typeof RegExpMatchArrayStructure>))
+        )
+      },
       val => val.input
     )
 

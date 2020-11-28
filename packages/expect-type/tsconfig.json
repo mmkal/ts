@@ -1,9 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./node_modules/@mmkal/rig/tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "tsBuildInfoFile": "dist/buildinfo.json"
+    "tsBuildInfoFile": "dist/buildinfo.json",
+    "typeRoots": [
+      "node_modules/@mmkal/rig/node_modules/@types"
+    ]
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

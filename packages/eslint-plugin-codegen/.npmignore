@@ -1,0 +1,14 @@
+node_modules
+**/__tests__
+dist/buildinfo.json
+.eslintcache
+.eslintrc.js
+.rush
+.heft
+*.log
+tsconfig.json
+config/jest.config.json
+jest.config.js
+coverage
+
+gifs

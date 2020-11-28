@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export type Not<T extends boolean> = T extends true ? false : true
 export type Or<Types extends boolean[]> = Types[number] extends false ? false : true
 export type And<Types extends boolean[]> = Types[number] extends true ? true : false
@@ -13,21 +12,59 @@ export type IsAny<T> = [T] extends [Secret] ? Not<IsNever<T>> : false
 export type IsUnknown<T> = [unknown] extends [T] ? Not<IsAny<T>> : false
 export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
 
-type DeepBrandAny<T> = IsAny<T> extends true // avoid `any` matching `unknown`
+/**
+ * Recursively walk a type and replace it with a branded type related to the original. This is useful for
+ * equality-checking stricter than `A extends B ? B extends A ? true : false : false`, because it detects
+ * the difference between a few edge-case types that vanilla typescript doesn't by default:
+ * - `any` vs `unknown`
+ * - `{ readonly a: string }` vs `{ a: string }`
+ * - `{ a?: string }` vs `{ a: string | undefined }`
+ */
+type DeepBrand<T> = IsAny<T> extends true // avoid `any` matching `unknown`
   ? Secret
-  : {[K in keyof T]: DeepBrandAny<T[K]>}
+  : T extends string | number | boolean | symbol | bigint | null | undefined
+  ? T
+  : T extends (...args: infer P) => infer R // avoid functions with different params/return values matching
+  ? {
+      type: 'function'
+      params: DeepBrand<P>
+      return: DeepBrand<R>
+    }
+  : {
+      type: 'object'
+      properties: {[K in keyof T]: DeepBrand<T[K]>}
+      readonly: ReadonlyKeys<T>
+      required: RequiredKeys<T>
+      optional: OptionalKeys<T>
+    }
 
-export type Extends<L, R> = L extends R ? true : false
-export type StrictExtends<L, R> = Extends<DeepBrandAny<L>, DeepBrandAny<R>>
-
-export type Equal<Left, Right> = And<
-  [
-    StrictExtends<Left, Right>,
-    StrictExtends<Right, Left>,
-    StrictExtends<keyof Left, keyof Right>,
-    StrictExtends<keyof Right, keyof Left>
-  ]
+export type RequiredKeys<T> = Extract<
+  {
+    [K in keyof T]-?: {} extends Pick<T, K> ? never : K
+  }[keyof T],
+  keyof T
 >
+export type OptionalKeys<T> = Exclude<keyof T, RequiredKeys<T>>
+
+// adapted from some answers to https://github.com/type-challenges/type-challenges/issues?q=label%3A5+label%3Aanswer
+// prettier-ignore
+export type ReadonlyKeys<T> = Extract<{
+  [K in keyof T]-?: ReadonlyEquivalent<
+    { [_K in K]: T[K] },
+    { -readonly [_K in K]: T[K] }
+  > extends true ? never : K;
+}[keyof T], keyof T>;
+
+// prettier-ignore
+type ReadonlyEquivalent<X, Y> = Extends<
+  (<T>() => T extends X ? true : false),
+  (<T>() => T extends Y ? true : false)
+>
+
+export type Extends<L, R> = IsNever<L> extends true ? IsNever<R> : L extends R ? true : false
+export type StrictExtends<L, R> = Extends<DeepBrand<L>, DeepBrand<R>>
+
+export type Equal<Left, Right> = And<[StrictExtends<Left, Right>, StrictExtends<Right, Left>]>
 
 export type Params<Actual> = Actual extends (...args: infer P) => any ? P : never
 export type ConstructorParams<Actual> = Actual extends new (...args: infer P) => any
@@ -52,8 +89,14 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeNull: (...MISMATCH: MismatchArgs<Extends<Actual, null>, B>) => true
   toBeUndefined: (...MISMATCH: MismatchArgs<Extends<Actual, undefined>, B>) => true
   toBeNullable: (...MISMATCH: MismatchArgs<Not<Equal<Actual, NonNullable<Actual>>>, B>) => true
-  toMatchTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>) => true
-  toEqualTypeOf: <Expected>(expected?: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>) => true
+  toMatchTypeOf: {
+    <Expected>(...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>): true
+    <Expected>(expected: Expected, ...MISMATCH: MismatchArgs<Extends<Actual, Expected>, B>): true
+  }
+  toEqualTypeOf: {
+    <Expected>(...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>): true
+    <Expected>(expected: Expected, ...MISMATCH: MismatchArgs<Equal<Actual, Expected>, B>): true
+  }
   toBeCallableWith: B extends true ? (...args: Params<Actual>) => true : never
   toBeConstructibleWith: B extends true ? (...args: ConstructorParams<Actual>) => true : never
   toHaveProperty: <K extends string>(
@@ -70,6 +113,11 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
+
+export type _ExpectTypeOf = {
+  <Actual>(actual: Actual): ExpectTypeOf<Actual, true>
+  <Actual>(): ExpectTypeOf<Actual, true>
+}
 
 /**
  * Similar to Jest's `expect`, but with type-awareness.
@@ -93,7 +141,7 @@ const fn: any = () => true
  * @description
  * See the [full docs](https://npmjs.com/package/expect-type#documentation) for lots more examples.
  */
-export const expectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
+export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectTypeOf<Actual, true> => {
   const nonFunctionProperties = [
     'parameters',
     'returns',

@@ -1,0 +1,92 @@
+{
+  "name": "check-clean",
+  "entries": [
+    {
+      "version": "0.3.0",
+      "tag": "check-clean_v0.3.0",
+      "date": "Tue, 27 Oct 2020 16:18:39 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Permalink readme urls before publishing (#211)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.5",
+      "tag": "check-clean_v0.2.5",
+      "date": "Mon, 12 Oct 2020 12:24:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(package): include repository info in each leaf package (#190)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.4",
+      "tag": "check-clean_v0.2.4",
+      "date": "Thu, 01 Oct 2020 14:48:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: npmignore coverage folder (#184)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.3",
+      "tag": "check-clean_v0.2.3",
+      "date": "Wed, 30 Sep 2020 15:34:55 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: cache commands (#182)"
+          },
+          {
+            "comment": "fix: mark cli.ts as bin script (#183)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.2",
+      "tag": "check-clean_v0.2.2",
+      "date": "Fri, 18 Sep 2020 16:56:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(npmignore): exclude rush files (#169)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.1",
+      "tag": "check-clean_v0.2.1",
+      "date": "Fri, 18 Sep 2020 15:09:11 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: check clean cli path (#168)"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.2.0",
+      "tag": "check-clean_v0.2.0",
+      "date": "Fri, 18 Sep 2020 03:17:48 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Port check-clean to typescript (#167)"
+          }
+        ]
+      }
+    }
+  ]
+}

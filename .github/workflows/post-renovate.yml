@@ -1,0 +1,36 @@
+name: renovate post-upgrade
+
+on:
+  push:
+    branches:    
+      - 'renovate/**'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_CI_TOKEN}}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: run rush update and push changes
+        run: |
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+
+          node common/scripts/install-run-rush update
+          
+          RUSH_CONFIG_DIR=common/config/rush
+          GIT_STATUS=$(git status --porcelain)
+          RUSH_CHANGES=$(echo "$GIT_STATUS" | grep "M $RUSH_CONFIG_DIR" || echo "")
+
+          if [ -z "$RUSH_CHANGES" ]; then
+            echo "no rush changes made. git status:"
+            echo "$GIT_STATUS"
+          else
+            git add $RUSH_CONFIG_DIR
+            git commit -m "build(rush): config changes from rush update"
+            git push
+          fi

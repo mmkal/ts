@@ -14,7 +14,7 @@ const dedent = (...args: Parameters<typeof baseDedent>) => {
 }
 
 Object.assign(RuleTester, {
-  // eslint-disable-next-line jest/expect-expect
+  // eslint-disable-next-line jest/expect-expect, jest/valid-title
   it: (name: string, fn: any) => test(name.replace(/\r?\n/g, ' \\n ').trim(), fn),
 })
 
