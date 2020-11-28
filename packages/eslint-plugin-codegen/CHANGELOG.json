@@ -2,6 +2,21 @@
   "name": "eslint-plugin-codegen",
   "entries": [
     {
+      "version": "0.14.2",
+      "tag": "eslint-plugin-codegen_v0.14.2",
+      "date": "Sat, 28 Nov 2020 19:10:00 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"io-ts-extra\" to `0.11.2`"
+          },
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.9.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.14.1",
       "tag": "eslint-plugin-codegen_v0.14.1",
       "date": "Thu, 26 Nov 2020 17:06:36 GMT",
