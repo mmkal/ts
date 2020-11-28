@@ -37,6 +37,8 @@ See the [documentation](#documentation) for lots more examples.
 - [Installation and usage](#installation-and-usage)
 - [Documentation](#documentation)
    - [Features](#features)
+   - [Within test frameworks](#within-test-frameworks)
+      - [Jest & `eslint-plugin-jest`](#jest--eslint-plugin-jest)
 - [Similar projects](#similar-projects)
    - [Comparison](#comparison)
 <!-- codegen:end -->
