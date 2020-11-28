@@ -263,6 +263,28 @@ expectTypeOf<{a: number; b?: number | null}>().toEqualTypeOf<{a: number; b?: num
 ```
 <!-- codegen:end -->
 
+### Within test frameworks
+
+#### Jest & `eslint-plugin-jest`
+If you're using Jest along with `eslint-plugin-jest`, you will get warnings from the [`jest/expect-expect`](https://github.com/jest-community/eslint-plugin-jest/blob/master/docs/rules/expect-expect.md) rule, complaining that "Test has no assertions" for tests that only use `expectTypeOf()`.
+
+To remove this warning, configure the ESlint rule to consider `expectTypeOf` as an assertion:
+
+```js
+"rules": {
+  // ...
+  "jest/expect-expect": [
+    "warn",
+    {
+      "assertFunctionNames": [
+        "expect", "expectTypeOf"
+      ]
+    }
+  ],
+  // ...
+}
+```
+
 ## Similar projects
 
 Other projects with similar goals:
