@@ -1,5 +1,7 @@
 import {expectTypeOf} from '..'
 
+/* eslint prettier/prettier: ["warn", { "singleQuote": true, "semi": false, "arrowParens": "avoid", "trailingComma": "es5", "bracketSpacing": false, "endOfLine": "auto", "printWidth": 100 }] */
+
 test("Check an object's type with `.toEqualTypeOf`", () => {
   expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
 })
@@ -94,6 +96,36 @@ test('More `.not` examples', () => {
   expectTypeOf(1).not.toBeNull()
   expectTypeOf(1).not.toBeUndefined()
   expectTypeOf(1).not.toBeNullable()
+})
+
+test('Use `.excluding` and `.extracting` to narrow down complex union types', () => {
+  type ResponsiveProp<T> = T | T[] | {xs?: T; sm?: T; md?: T}
+  const getResponsiveProp = <T>(props: T): ResponsiveProp<T> => [props]
+  type CSSProperties = {margin?: string; padding?: string}
+
+  const cssProperties: CSSProperties = {margin: '1px', padding: '2px'}
+
+  expectTypeOf(getResponsiveProp(cssProperties))
+    .excluding<unknown[]>()
+    .excluding<{xs?: unknown}>()
+    .toEqualTypeOf<CSSProperties>()
+
+  expectTypeOf(getResponsiveProp(cssProperties))
+    .extracting<unknown[]>()
+    .toEqualTypeOf<CSSProperties[]>()
+
+  expectTypeOf(getResponsiveProp(cssProperties))
+    .extracting<{xs?: any}>()
+    .toEqualTypeOf<{xs?: CSSProperties; sm?: CSSProperties; md?: CSSProperties}>()
+})
+
+test('`.excluding` and `.extracting` return never if no types remain after exclusion', () => {
+  type Person = {name: string; age: number}
+  type Customer = Person & {customerId: string}
+  type Employee = Person & {employeeId: string}
+
+  expectTypeOf<Customer | Employee>().excluding<{name: string}>().toBeNever()
+  expectTypeOf<Customer | Employee>().extracting<{foo: string}>().toBeNever()
 })
 
 test('Make assertions about object properties', () => {
