@@ -10,18 +10,13 @@ Compile-time tests for types. Useful to make sure types don't regress into being
 
 Similar to Jest's `expect`, but with type-awareness. Gives you access to a number of type-matchers that let you make assertions about the form of a reference or generic type parameter.
 
-It can be used in your existing test files - or any other type-checked file you'd like - it's built into existing tooling with no dependencies. No extra build step, cli tool, IDE extension, or lint plugin is needed. Just import the function and start writing tests. Failures will be at compile time - they'll appear in your IDE and when you run `tsc`.
-
-##### Example
-
 ```typescript
 import {foo, bar} from '../foo'
 import {expectTypeOf} from 'expect-type'
 
 test('foo types', () => {
   // make sure `foo` has type {a: number}
-  expectTypeOf(foo).toMatchTypeOf({a: 1})
-  expectTypeOf(foo).toHaveProperty('a').toBeNumber()
+  expectTypeOf(foo).toMatchTypeOf<{a: number}>()
 
   // make sure `bar` is a function taking a string:
   expectTypeOf(bar).parameter(0).toBeString()
@@ -29,7 +24,9 @@ test('foo types', () => {
 })
 ```
 
-See the [documentation](#documentation) for lots more examples.
+It can be used in your existing test files - or any other type-checked file you'd like - it's built into existing tooling with no dependencies. No extra build step, cli tool, IDE extension, or lint plugin is needed. Just import the function and start writing tests. Failures will be at compile time - they'll appear in your IDE and when you run `tsc`.
+
+See below for lots more examples.
 
 ## Contents
 <!-- codegen:start {preset: markdownTOC, minDepth: 2, maxDepth: 5} -->
@@ -60,7 +57,13 @@ The `expectTypeOf` method takes a single argument, or a generic parameter. Neith
 ### Features
 
 <!-- codegen:start {preset: markdownFromTests, source: src/__tests__/index.test.ts} -->
-Check that two objects have equivalent types with `.toEqualTypeOf`:
+Check an object's type with `.toEqualTypeOf`:
+
+```typescript
+expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+```
+
+`.toEqualTypeOf` can check that two concrete objects have equivalent types:
 
 ```typescript
 expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
@@ -72,17 +75,11 @@ expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
 expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
 ```
 
-When there's no instance/runtime variable for the expected type, you can use generics:
-
-```typescript
-expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
-```
-
 `.toEqualTypeOf` fails on extra properties:
 
 ```typescript
 // @ts-expect-error
-expectTypeOf({a: 1, b: 1}).toEqualTypeOf({a: 1})
+expectTypeOf({a: 1, b: 1}).toEqualTypeOf<{a: number}>()
 ```
 
 To allow for extra properties, use `.toMatchTypeOf`. This checks that an object "matches" a type. This is similar to jest's `.toMatchObject`:
@@ -340,9 +337,9 @@ To remove this warning, configure the ESlint rule to consider `expectTypeOf` as 
 
 Other projects with similar goals:
 
+- [`tsd`](https://github.com/SamVerschueren/tsd) is a CLI that runs the TypeScript type checker over assertions
 - [`ts-expect`](https://github.com/TypeStrong/ts-expect) exports several generic helper types to perform type assertions
 - [`dtslint`](https://github.com/Microsoft/dtslint) does type checks via comment directives and tslint
-- [`tsd-check`](https://github.com/SamVerschueren/tsd-check/issues/10) is a CLI that runs the TypeScript type checker over assertions
 - [`type-plus`](https://github.com/unional/type-plus) comes with various type and runtime TypeScript assertions
 - [`static-type-assert`](https://github.com/ksxnodemodules/static-type-assert) type assertion functions
 
@@ -353,7 +350,7 @@ The key differences in this project are:
 - a fluent, jest-inspired API, making the difference between `actual` and `expected` clear. This is helpful with complex types and assertions.
 - inverting assertions intuitively and easily via `expectTypeOf(...).not`
 - first-class support for:
-  - `any` (as well as `unknown` and `never`).
+  - `any` (as well as `unknown` and `never`) (see issues outstanding at time of writing in tsd for [never](https://github.com/SamVerschueren/tsd/issues/78) and [any](https://github.com/SamVerschueren/tsd/issues/82)).
     - This can be especially useful in combination with `not`, to protect against functions returning too-permissive types. For example, `const parseFile = (filename: string) => JSON.parse(readFileSync(filename).toString())` returns `any`, which could lead to errors. After giving it a proper return-type, you can add a test for this with `expect(parseFile).returns.not.toBeAny()`
   - object properties
   - function parameters
@@ -364,4 +361,4 @@ The key differences in this project are:
   - nullable types
 - assertions on types "matching" rather than exact type equality, for "is-a" relationships e.g. `expectTypeOf(square).toMatchTypeOf<Shape>()`
 - built into existing tooling. No extra build step, cli tool, IDE extension, or lint plugin is needed. Just import the function and start writing tests. Failures will be at compile time - they'll appear in your IDE and when you run `tsc`.
-- small implementation with no dependencies. <200 lines of code - [take a look!](./src/index.ts)
+- small implementation with no dependencies. <200 lines of code - [take a look!](./src/index.ts) (tsd, for comparison, is [2.6MB](https://bundlephobia.com/result?p=tsd@0.13.1) because it ships a patched version of typescript).

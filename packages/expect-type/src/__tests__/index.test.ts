@@ -1,6 +1,10 @@
 import {expectTypeOf} from '..'
 
-test('Check that two objects have equivalent types with `.toEqualTypeOf`', () => {
+test("Check an object's type with `.toEqualTypeOf`", () => {
+  expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+})
+
+test('`.toEqualTypeOf` can check that two concrete objects have equivalent types', () => {
   expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
 })
 
@@ -8,13 +12,9 @@ test('`.toEqualTypeOf` succeeds for objects with different values, but the same 
   expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
 })
 
-test("When there's no instance/runtime variable for the expected type, you can use generics", () => {
-  expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
-})
-
 test('`.toEqualTypeOf` fails on extra properties', () => {
   // @ts-expect-error
-  expectTypeOf({a: 1, b: 1}).toEqualTypeOf({a: 1})
+  expectTypeOf({a: 1, b: 1}).toEqualTypeOf<{a: number}>()
 })
 
 test('To allow for extra properties, use `.toMatchTypeOf`. This checks that an object "matches" a type. This is similar to jest\'s `.toMatchObject`', () => {
