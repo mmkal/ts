@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {expectTypeOf} from '..'
 
 test("Check an object's type with `.toEqualTypeOf`", () => {
