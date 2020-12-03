@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {expectTypeOf} from '..'
 
 test("Check an object's type with `.toEqualTypeOf`", () => {
@@ -69,6 +70,7 @@ test('Test for basic javascript types', () => {
   expectTypeOf('').toBeString()
   expectTypeOf(1).toBeNumber()
   expectTypeOf(true).toBeBoolean()
+  expectTypeOf(() => {}).returns.toBeVoid()
   expectTypeOf(Promise.resolve(123)).resolves.toBeNumber()
   expectTypeOf(Symbol(1)).toBeSymbol()
 })
