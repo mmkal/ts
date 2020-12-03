@@ -2,6 +2,18 @@
   "name": "io-ts-extra",
   "entries": [
     {
+      "version": "0.11.3",
+      "tag": "io-ts-extra_v0.11.3",
+      "date": "Thu, 03 Dec 2020 19:10:22 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.10.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.11.2",
       "tag": "io-ts-extra_v0.11.2",
       "date": "Sat, 28 Nov 2020 19:10:00 GMT",
