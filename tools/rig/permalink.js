@@ -9,7 +9,9 @@ const gitHash = childProcess.execSync('git rev-parse --short HEAD').toString().t
 
 permalinkable.forEach(file => {
   const {rush} = getRushJson()
-  const matchedProject = rush.projects.find(p => path.join(process.cwd(), file).replace(/\\/g, '/').includes(p.projectFolder))
+  const matchedProject = rush.projects.find(p =>
+    path.join(process.cwd(), file).replace(/\\/g, '/').includes(p.projectFolder)
+  )
   const repo = rush.repository.url
 
   const tag = gitHash
@@ -25,10 +27,10 @@ permalinkable.forEach(file => {
       return match
     }
 
-
     const isImage = href.endsWith('.jpg') || href.endsWith('.png') || href.endsWith('.gif')
     const baseURL = isImage ? repo.replace('github.com', 'raw.githubusercontent.com') : `${repo}/tree`
-    const permalinkedHref = `${baseURL}/${encodeURIComponent(tag)}/${matchedProject.projectFolder}/` + href.replace(/^\.\//, '')
+    const permalinkedHref =
+      `${baseURL}/${encodeURIComponent(tag)}/${matchedProject.projectFolder}/` + href.replace(/^\.\//, '')
 
     return `[${text}](${permalinkedHref})`
   })

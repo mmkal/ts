@@ -123,10 +123,10 @@ test("But often it's preferable to use `.parameters` or `.returns` for more spec
   type HasParam = (s: string) => void
 
   expectTypeOf<NoParam>().parameters.toEqualTypeOf<[]>()
-  expectTypeOf<NoParam>().returns.toEqualTypeOf<void>()
+  expectTypeOf<NoParam>().returns.toBeVoid()
 
   expectTypeOf<HasParam>().parameters.toEqualTypeOf<[string]>()
-  expectTypeOf<HasParam>().returns.toEqualTypeOf<void>()
+  expectTypeOf<HasParam>().returns.toBeVoid()
 })
 
 test('More examples of ways to work with functions - parameters using `.parameter(n)` or `.parameters`, and return values using `.returns`', () => {
