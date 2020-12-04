@@ -147,6 +147,7 @@ expectTypeOf([]).toBeArray()
 expectTypeOf('').toBeString()
 expectTypeOf(1).toBeNumber()
 expectTypeOf(true).toBeBoolean()
+expectTypeOf(() => {}).returns.toBeVoid()
 expectTypeOf(Promise.resolve(123)).resolves.toBeNumber()
 expectTypeOf(Symbol(1)).toBeSymbol()
 ```
@@ -243,10 +244,10 @@ type NoParam = () => void
 type HasParam = (s: string) => void
 
 expectTypeOf<NoParam>().parameters.toEqualTypeOf<[]>()
-expectTypeOf<NoParam>().returns.toEqualTypeOf<void>()
+expectTypeOf<NoParam>().returns.toBeVoid()
 
 expectTypeOf<HasParam>().parameters.toEqualTypeOf<[string]>()
-expectTypeOf<HasParam>().returns.toEqualTypeOf<void>()
+expectTypeOf<HasParam>().returns.toBeVoid()
 ```
 
 More examples of ways to work with functions - parameters using `.parameter(n)` or `.parameters`, and return values using `.returns`:
