@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {expectTypeOf} from '..'
 
 /* eslint prettier/prettier: ["warn", { "singleQuote": true, "semi": false, "arrowParens": "avoid", "trailingComma": "es5", "bracketSpacing": false, "endOfLine": "auto", "printWidth": 100 }] */
@@ -71,6 +72,7 @@ test('Test for basic javascript types', () => {
   expectTypeOf('').toBeString()
   expectTypeOf(1).toBeNumber()
   expectTypeOf(true).toBeBoolean()
+  expectTypeOf(() => {}).returns.toBeVoid()
   expectTypeOf(Promise.resolve(123)).resolves.toBeNumber()
   expectTypeOf(Symbol(1)).toBeSymbol()
 })
