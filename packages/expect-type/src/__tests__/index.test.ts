@@ -100,7 +100,7 @@ test('More `.not` examples', () => {
   expectTypeOf(1).not.toBeNullable()
 })
 
-test('Use `.excluding` and `.extracting` to narrow down complex union types', () => {
+test('Use `.extract` and `.exclude` to narrow down complex union types', () => {
   type ResponsiveProp<T> = T | T[] | {xs?: T; sm?: T; md?: T}
   const getResponsiveProp = <T>(props: T): ResponsiveProp<T> => [props]
   type CSSProperties = {margin?: string; padding?: string}
@@ -108,26 +108,26 @@ test('Use `.excluding` and `.extracting` to narrow down complex union types', ()
   const cssProperties: CSSProperties = {margin: '1px', padding: '2px'}
 
   expectTypeOf(getResponsiveProp(cssProperties))
-    .excluding<unknown[]>()
-    .excluding<{xs?: unknown}>()
+    .exclude<unknown[]>()
+    .exclude<{xs?: unknown}>()
     .toEqualTypeOf<CSSProperties>()
 
   expectTypeOf(getResponsiveProp(cssProperties))
-    .extracting<unknown[]>()
+    .extract<unknown[]>()
     .toEqualTypeOf<CSSProperties[]>()
 
   expectTypeOf(getResponsiveProp(cssProperties))
-    .extracting<{xs?: any}>()
+    .extract<{xs?: any}>()
     .toEqualTypeOf<{xs?: CSSProperties; sm?: CSSProperties; md?: CSSProperties}>()
 })
 
-test('`.excluding` and `.extracting` return never if no types remain after exclusion', () => {
+test('`.extract` and `.exclude` return never if no types remain after exclusion', () => {
   type Person = {name: string; age: number}
   type Customer = Person & {customerId: string}
   type Employee = Person & {employeeId: string}
 
-  expectTypeOf<Customer | Employee>().excluding<{name: string}>().toBeNever()
-  expectTypeOf<Customer | Employee>().extracting<{foo: string}>().toBeNever()
+  expectTypeOf<Customer | Employee>().extract<{foo: string}>().toBeNever()
+  expectTypeOf<Customer | Employee>().exclude<{name: string}>().toBeNever()
 })
 
 test('Make assertions about object properties', () => {

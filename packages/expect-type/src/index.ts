@@ -104,8 +104,8 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
     key: K,
     ...MISMATCH: MismatchArgs<Extends<K, keyof Actual>, B>
   ) => K extends keyof Actual ? ExpectTypeOf<Actual[K], B> : true
-  extracting: <V>(v?: V) => ExpectTypeOf<Extract<Actual, V>, B>
-  excluding: <V>(v?: V) => ExpectTypeOf<Exclude<Actual, V>, B>
+  extract: <V>(v?: V) => ExpectTypeOf<Extract<Actual, V>, B>
+  exclude: <V>(v?: V) => ExpectTypeOf<Exclude<Actual, V>, B>
   parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   constructorParameters: ExpectTypeOf<ConstructorParams<Actual>, B>
@@ -176,8 +176,8 @@ export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectType
     toEqualTypeOf: fn,
     toBeCallableWith: fn,
     toBeConstructibleWith: fn,
-    extracting: expectTypeOf,
-    excluding: expectTypeOf,
+    extract: expectTypeOf,
+    exclude: expectTypeOf,
     toHaveProperty: expectTypeOf,
     parameter: expectTypeOf,
   }
