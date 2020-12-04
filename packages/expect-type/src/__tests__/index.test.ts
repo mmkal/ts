@@ -102,7 +102,7 @@ test('More `.not` examples', () => {
 
 test('Use `.extract` and `.exclude` to narrow down complex union types', () => {
   type ResponsiveProp<T> = T | T[] | {xs?: T; sm?: T; md?: T}
-  const getResponsiveProp = <T>(props: T): ResponsiveProp<T> => [props]
+  const getResponsiveProp = <T>(props: T): ResponsiveProp<T> => ({})
   type CSSProperties = {margin?: string; padding?: string}
 
   const cssProperties: CSSProperties = {margin: '1px', padding: '2px'}
@@ -119,6 +119,9 @@ test('Use `.extract` and `.exclude` to narrow down complex union types', () => {
   expectTypeOf(getResponsiveProp(cssProperties))
     .extract<{xs?: any}>()
     .toEqualTypeOf<{xs?: CSSProperties; sm?: CSSProperties; md?: CSSProperties}>()
+
+  expectTypeOf<ResponsiveProp<number>>().exclude<number | number[]>().toHaveProperty('sm')
+  expectTypeOf<ResponsiveProp<number>>().exclude<number | number[]>().not.toHaveProperty('xxl')
 })
 
 test('`.extract` and `.exclude` return never if no types remain after exclusion', () => {
