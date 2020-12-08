@@ -179,6 +179,43 @@ expectTypeOf(1).not.toBeUndefined()
 expectTypeOf(1).not.toBeNullable()
 ```
 
+Use `.extract` and `.exclude` to narrow down complex union types:
+
+```typescript
+type ResponsiveProp<T> = T | T[] | {xs?: T; sm?: T; md?: T}
+const getResponsiveProp = <T>(props: T): ResponsiveProp<T> => ({})
+type CSSProperties = {margin?: string; padding?: string}
+
+const cssProperties: CSSProperties = {margin: '1px', padding: '2px'}
+
+expectTypeOf(getResponsiveProp(cssProperties))
+  .exclude<unknown[]>()
+  .exclude<{xs?: unknown}>()
+  .toEqualTypeOf<CSSProperties>()
+
+expectTypeOf(getResponsiveProp(cssProperties))
+  .extract<unknown[]>()
+  .toEqualTypeOf<CSSProperties[]>()
+
+expectTypeOf(getResponsiveProp(cssProperties))
+  .extract<{xs?: any}>()
+  .toEqualTypeOf<{xs?: CSSProperties; sm?: CSSProperties; md?: CSSProperties}>()
+
+expectTypeOf<ResponsiveProp<number>>().exclude<number | number[]>().toHaveProperty('sm')
+expectTypeOf<ResponsiveProp<number>>().exclude<number | number[]>().not.toHaveProperty('xxl')
+```
+
+`.extract` and `.exclude` return never if no types remain after exclusion:
+
+```typescript
+type Person = {name: string; age: number}
+type Customer = Person & {customerId: string}
+type Employee = Person & {employeeId: string}
+
+expectTypeOf<Customer | Employee>().extract<{foo: string}>().toBeNever()
+expectTypeOf<Customer | Employee>().exclude<{name: string}>().toBeNever()
+```
+
 Make assertions about object properties:
 
 ```typescript
