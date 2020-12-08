@@ -208,3 +208,91 @@ test('is unopinionated about formatting', () => {
     })
   ).toEqual(oldContent)
 })
+
+test(`generates valid identifiers for filenames that don't start with letters`, () => {
+  Object.assign(mockFs, {
+    '2000-01-01.one.ts': '',
+    '~two.ts': '',
+    '_three.ts': '',
+  })
+
+  expect(
+    preset.barrel({
+      meta: {
+        filename: 'index.ts',
+        existingContent: '',
+      },
+      options: {
+        import: 'star',
+      },
+    })
+  ).toMatchInlineSnapshot(`
+    "import * as _20000101One from './2000-01-01.one'
+    import * as two from './~two'
+    import * as three from './_three'
+
+    export {
+     _20000101One,
+     two,
+     three
+    }
+    "
+  `)
+})
+
+test(`ambiguously named files get unique, valid identifiers`, () => {
+  Object.assign(mockFs, {
+    'ambiguous-naming.ts': '',
+    'ambiguous_naming.ts': '',
+  })
+
+  expect(
+    preset.barrel({
+      meta: {
+        filename: 'index.ts',
+        existingContent: '',
+      },
+      options: {
+        import: 'star',
+      },
+    })
+  ).toMatchInlineSnapshot(`
+    "import * as ambiguousNaming_1 from './ambiguous-naming'
+    import * as ambiguousNaming_2 from './ambiguous_naming'
+
+    export {
+     ambiguousNaming_1,
+     ambiguousNaming_2
+    }
+    "
+  `)
+})
+
+test(`index files are sensibly-named`, () => {
+  Object.assign(mockFs, {
+    'foo/index.ts': '',
+    'bar/index.tsx': '',
+  })
+
+  expect(
+    preset.barrel({
+      meta: {
+        filename: 'barrel.ts',
+        existingContent: '',
+      },
+      options: {
+        include: '*/*',
+        import: 'star',
+      },
+    })
+  ).toMatchInlineSnapshot(`
+    "import * as foo from './foo/index'
+    import * as bar from './bar/index'
+
+    export {
+     foo,
+     bar
+    }
+    "
+  `)
+})

@@ -17,8 +17,7 @@ export {presetsModule as presets}
 const getPreprocessor = (): eslint.Linter.LintOptions => {
   return {
     preprocess: text => [
-      '/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove' +
-        os.EOL +
+      os.EOL +
         text
           .split(/\r?\n/)
           .map(line => line && `// eslint-plugin-codegen:trim${line}`)
@@ -43,7 +42,6 @@ const codegen: eslint.Rule.RuleModule = {
       const sourceCode = context
         .getSourceCode()
         .text.split(os.EOL)
-        .filter(line => !line.includes('eslint-plugin-codegen:remove'))
         .map(line => `${line}`.replace('// eslint-plugin-codegen:trim', ''))
         .join(os.EOL)
 
@@ -63,6 +61,8 @@ const codegen: eslint.Rule.RuleModule = {
       }
       markersByExtension['.tsx'] = markersByExtension['.ts']
       markersByExtension['.js'] = markersByExtension['.ts']
+      markersByExtension['.cjs'] = markersByExtension['.ts']
+      markersByExtension['.mjs'] = markersByExtension['.ts']
       markersByExtension['.jsx'] = markersByExtension['.ts']
       markersByExtension['.yaml'] = markersByExtension['.yml']
 
