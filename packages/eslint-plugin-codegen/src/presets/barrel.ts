@@ -46,7 +46,7 @@ export const barrel: Preset<{
     .sync(pattern, {cwd, ignore: opts.exclude})
     .filter(f => path.resolve(cwd, f) !== path.resolve(meta.filename))
     .map(f => `./${f}`.replace(/(\.\/)+\./g, '.'))
-    .filter(file => ['.js', '.ts', '.tsx'].includes(path.extname(file)))
+    .filter(file => ['.js', '.mjs', '.ts', '.tsx'].includes(path.extname(file)))
     .map(f => f.replace(/\.\w+$/, ''))
 
   const expectedContent = match(opts.import)
@@ -55,10 +55,21 @@ export const barrel: Preset<{
     })
     .case(String, s => {
       const importPrefix = s === 'default' ? '' : '* as '
-      const withIdentifiers = relativeFiles.map(f => ({
-        file: f,
-        identifier: lodash.camelCase(f),
-      }))
+      const withIdentifiers = lodash
+        .chain(relativeFiles)
+        .map(f => ({
+          file: f,
+          identifier: lodash
+            .camelCase(f)
+            .replace(/^([^a-z])/, '_$1')
+            .replace(/Index$/, ''),
+        }))
+        .groupBy(info => info.identifier)
+        .values()
+        .flatMap(group =>
+          group.length === 1 ? group : group.map((info, i) => ({...info, identifier: `${info.identifier}_${i + 1}`}))
+        )
+        .value()
 
       const imports = withIdentifiers.map(i => `import ${importPrefix}${i.identifier} from '${i.file}'`).join('\n')
       const exportProps = match(opts.export)

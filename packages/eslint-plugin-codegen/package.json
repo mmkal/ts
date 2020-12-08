@@ -61,6 +61,7 @@
     "dedent": "0.7.0",
     "expect-type": "workspace:*",
     "minimatch": "3.0.4",
-    "read-pkg-up": "7.0.1"
+    "read-pkg-up": "7.0.1",
+    "eslint": "~7.15.0"
   }
 }
