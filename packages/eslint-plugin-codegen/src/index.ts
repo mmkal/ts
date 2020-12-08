@@ -17,11 +17,10 @@ export {presetsModule as presets}
 const getPreprocessor = (): eslint.Linter.LintOptions => {
   return {
     preprocess: text => [
-      os.EOL +
-        text
-          .split(/\r?\n/)
-          .map(line => line && `// eslint-plugin-codegen:trim${line}`)
-          .join(os.EOL),
+      text
+        .split(/\r?\n/)
+        .map(line => line && `// eslint-plugin-codegen:trim${line}`)
+        .join(os.EOL),
     ],
     postprocess: messageLists => ([] as eslint.Linter.LintMessage[]).concat(...messageLists),
     // @ts-expect-error

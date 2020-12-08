@@ -22,8 +22,7 @@ describe('markdown processor', () => {
 
     expect(preprocessed).toMatchInlineSnapshot(`
       Array [
-        "/* eslint-disable prettier/prettier */ // eslint-plugin-codegen:remove
-      // eslint-plugin-codegen:trim# Title
+        "// eslint-plugin-codegen:trim# Title
 
       // eslint-plugin-codegen:trim<!-- comment -->
 
