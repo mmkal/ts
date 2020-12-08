@@ -2,6 +2,42 @@
   "name": "expect-type",
   "entries": [
     {
+      "version": "0.10.0",
+      "tag": "expect-type_v0.10.0",
+      "date": "Thu, 03 Dec 2020 19:10:22 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "toBeVoid() added to expect-type (#221) - @rraziel"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.9.2",
+      "tag": "expect-type_v0.9.2",
+      "date": "Sat, 28 Nov 2020 19:10:00 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "docs(jest): document useful jest/eslint config (#218) - @olance"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.9.1",
+      "tag": "expect-type_v0.9.1",
+      "date": "Thu, 26 Nov 2020 17:06:36 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: test explicitly for `never` in `Extends` (#216)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.9.0",
       "tag": "expect-type_v0.9.0",
       "date": "Tue, 27 Oct 2020 16:18:39 GMT",

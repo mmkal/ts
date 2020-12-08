@@ -1,6 +1,13 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {expectTypeOf} from '..'
 
-test('Check that two objects have equivalent types with `.toEqualTypeOf`', () => {
+/* eslint prettier/prettier: ["warn", { "singleQuote": true, "semi": false, "arrowParens": "avoid", "trailingComma": "es5", "bracketSpacing": false, "endOfLine": "auto", "printWidth": 100 }] */
+
+test("Check an object's type with `.toEqualTypeOf`", () => {
+  expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
+})
+
+test('`.toEqualTypeOf` can check that two concrete objects have equivalent types', () => {
   expectTypeOf({a: 1}).toEqualTypeOf({a: 1})
 })
 
@@ -8,13 +15,9 @@ test('`.toEqualTypeOf` succeeds for objects with different values, but the same 
   expectTypeOf({a: 1}).toEqualTypeOf({a: 2})
 })
 
-test("When there's no instance/runtime variable for the expected type, you can use generics", () => {
-  expectTypeOf({a: 1}).toEqualTypeOf<{a: number}>()
-})
-
 test('`.toEqualTypeOf` fails on extra properties', () => {
   // @ts-expect-error
-  expectTypeOf({a: 1, b: 1}).toEqualTypeOf({a: 1})
+  expectTypeOf({a: 1, b: 1}).toEqualTypeOf<{a: number}>()
 })
 
 test('To allow for extra properties, use `.toMatchTypeOf`. This checks that an object "matches" a type. This is similar to jest\'s `.toMatchObject`', () => {
@@ -52,6 +55,9 @@ test('Catch any/unknown/never types', () => {
   expectTypeOf<unknown>().toBeUnknown()
   expectTypeOf<any>().toBeAny()
   expectTypeOf<never>().toBeNever()
+
+  // @ts-expect-error
+  expectTypeOf<never>().toBeNumber()
 })
 
 test('`.toEqualTypeOf` distinguishes between deeply-nested `any` and `unknown` properties', () => {
@@ -66,6 +72,7 @@ test('Test for basic javascript types', () => {
   expectTypeOf('').toBeString()
   expectTypeOf(1).toBeNumber()
   expectTypeOf(true).toBeBoolean()
+  expectTypeOf(() => {}).returns.toBeVoid()
   expectTypeOf(Promise.resolve(123)).resolves.toBeNumber()
   expectTypeOf(Symbol(1)).toBeSymbol()
 })
@@ -93,6 +100,39 @@ test('More `.not` examples', () => {
   expectTypeOf(1).not.toBeNullable()
 })
 
+test('Use `.extract` and `.exclude` to narrow down complex union types', () => {
+  type ResponsiveProp<T> = T | T[] | {xs?: T; sm?: T; md?: T}
+  const getResponsiveProp = <T>(props: T): ResponsiveProp<T> => ({})
+  type CSSProperties = {margin?: string; padding?: string}
+
+  const cssProperties: CSSProperties = {margin: '1px', padding: '2px'}
+
+  expectTypeOf(getResponsiveProp(cssProperties))
+    .exclude<unknown[]>()
+    .exclude<{xs?: unknown}>()
+    .toEqualTypeOf<CSSProperties>()
+
+  expectTypeOf(getResponsiveProp(cssProperties))
+    .extract<unknown[]>()
+    .toEqualTypeOf<CSSProperties[]>()
+
+  expectTypeOf(getResponsiveProp(cssProperties))
+    .extract<{xs?: any}>()
+    .toEqualTypeOf<{xs?: CSSProperties; sm?: CSSProperties; md?: CSSProperties}>()
+
+  expectTypeOf<ResponsiveProp<number>>().exclude<number | number[]>().toHaveProperty('sm')
+  expectTypeOf<ResponsiveProp<number>>().exclude<number | number[]>().not.toHaveProperty('xxl')
+})
+
+test('`.extract` and `.exclude` return never if no types remain after exclusion', () => {
+  type Person = {name: string; age: number}
+  type Customer = Person & {customerId: string}
+  type Employee = Person & {employeeId: string}
+
+  expectTypeOf<Customer | Employee>().extract<{foo: string}>().toBeNever()
+  expectTypeOf<Customer | Employee>().exclude<{name: string}>().toBeNever()
+})
+
 test('Make assertions about object properties', () => {
   const obj = {a: 1, b: ''}
 
@@ -118,10 +158,10 @@ test("But often it's preferable to use `.parameters` or `.returns` for more spec
   type HasParam = (s: string) => void
 
   expectTypeOf<NoParam>().parameters.toEqualTypeOf<[]>()
-  expectTypeOf<NoParam>().returns.toEqualTypeOf<void>()
+  expectTypeOf<NoParam>().returns.toBeVoid()
 
   expectTypeOf<HasParam>().parameters.toEqualTypeOf<[string]>()
-  expectTypeOf<HasParam>().returns.toEqualTypeOf<void>()
+  expectTypeOf<HasParam>().returns.toBeVoid()
 })
 
 test('More examples of ways to work with functions - parameters using `.parameter(n)` or `.parameters`, and return values using `.returns`', () => {

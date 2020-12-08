@@ -1,6 +1,27 @@
 # Change Log - expect-type
 
-This log was last generated on Tue, 27 Oct 2020 16:18:39 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+
+## 0.10.0
+Thu, 03 Dec 2020 19:10:22 GMT
+
+### Minor changes
+
+- toBeVoid() added to expect-type (#221) - @rraziel
+
+## 0.9.2
+Sat, 28 Nov 2020 19:10:00 GMT
+
+### Patches
+
+- docs(jest): document useful jest/eslint config (#218) - @olance
+
+## 0.9.1
+Thu, 26 Nov 2020 17:06:36 GMT
+
+### Patches
+
+- fix: test explicitly for `never` in `Extends` (#216)
 
 ## 0.9.0
 Tue, 27 Oct 2020 16:18:39 GMT

@@ -1,6 +1,6 @@
 {
   "name": "fs-syncer",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "keywords": [
     "fs",
     "file",
@@ -30,7 +30,7 @@
     "test": "rig jest"
   },
   "devDependencies": {
-    "@mmkal/rig": "0.0.1",
-    "expect-type": "0.9.0"
+    "@mmkal/rig": "workspace:*",
+    "expect-type": "workspace:*"
   }
 }

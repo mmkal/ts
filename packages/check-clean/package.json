@@ -22,6 +22,6 @@
     "test": "rig jest"
   },
   "devDependencies": {
-    "@mmkal/rig": "0.0.1"
+    "@mmkal/rig": "workspace:*"
   }
 }

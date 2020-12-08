@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export type Not<T extends boolean> = T extends true ? false : true
 export type Or<Types extends boolean[]> = Types[number] extends false ? false : true
 export type And<Types extends boolean[]> = Types[number] extends true ? true : false
@@ -62,7 +61,7 @@ type ReadonlyEquivalent<X, Y> = Extends<
   (<T>() => T extends Y ? true : false)
 >
 
-export type Extends<L, R> = L extends R ? true : false
+export type Extends<L, R> = IsNever<L> extends true ? IsNever<R> : L extends R ? true : false
 export type StrictExtends<L, R> = Extends<DeepBrand<L>, DeepBrand<R>>
 
 export type Equal<Left, Right> = And<[StrictExtends<Left, Right>, StrictExtends<Right, Left>]>
@@ -86,6 +85,7 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   toBeNumber: (...MISMATCH: MismatchArgs<Extends<Actual, number>, B>) => true
   toBeString: (...MISMATCH: MismatchArgs<Extends<Actual, string>, B>) => true
   toBeBoolean: (...MISMATCH: MismatchArgs<Extends<Actual, boolean>, B>) => true
+  toBeVoid: (...MISMATCH: MismatchArgs<Extends<Actual, void>, B>) => true
   toBeSymbol: (...MISMATCH: MismatchArgs<Extends<Actual, symbol>, B>) => true
   toBeNull: (...MISMATCH: MismatchArgs<Extends<Actual, null>, B>) => true
   toBeUndefined: (...MISMATCH: MismatchArgs<Extends<Actual, undefined>, B>) => true
@@ -104,6 +104,8 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
     key: K,
     ...MISMATCH: MismatchArgs<Extends<K, keyof Actual>, B>
   ) => K extends keyof Actual ? ExpectTypeOf<Actual[K], B> : true
+  extract: <V>(v?: V) => ExpectTypeOf<Extract<Actual, V>, B>
+  exclude: <V>(v?: V) => ExpectTypeOf<Exclude<Actual, V>, B>
   parameter: <K extends keyof Params<Actual>>(number: K) => ExpectTypeOf<Params<Actual>[K], B>
   parameters: ExpectTypeOf<Params<Actual>, B>
   constructorParameters: ExpectTypeOf<ConstructorParams<Actual>, B>
@@ -165,6 +167,7 @@ export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectType
     toBeString: fn,
     toBeNumber: fn,
     toBeBoolean: fn,
+    toBeVoid: fn,
     toBeSymbol: fn,
     toBeNull: fn,
     toBeUndefined: fn,
@@ -173,6 +176,8 @@ export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectType
     toEqualTypeOf: fn,
     toBeCallableWith: fn,
     toBeConstructibleWith: fn,
+    extract: expectTypeOf,
+    exclude: expectTypeOf,
     toHaveProperty: expectTypeOf,
     parameter: expectTypeOf,
   }
