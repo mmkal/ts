@@ -1,6 +1,11 @@
 # Change Log - io-ts-extra
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Dec 2020 13:25:18 GMT and should not be manually modified.
+
+## 0.11.4
+Wed, 09 Dec 2020 13:25:18 GMT
+
+_Version update only_
 
 ## 0.11.3
 Thu, 03 Dec 2020 19:10:22 GMT

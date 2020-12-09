@@ -2,6 +2,32 @@
   "name": "eslint-plugin-codegen",
   "entries": [
     {
+      "version": "0.14.4",
+      "tag": "eslint-plugin-codegen_v0.14.4",
+      "date": "Wed, 09 Dec 2020 13:25:18 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: disambiguate barrelled imports (#222)"
+          },
+          {
+            "comment": "fix(deps): update dependency @babel/generator to ~7.12.0 (#210) - @renovate[bot]"
+          },
+          {
+            "comment": "chore(deps): pin dependency eslint to 7.15.0 (#224) - @renovate[bot]"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"io-ts-extra\" to `0.11.4`"
+          },
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.11.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.14.3",
       "tag": "eslint-plugin-codegen_v0.14.3",
       "date": "Thu, 03 Dec 2020 19:10:22 GMT",

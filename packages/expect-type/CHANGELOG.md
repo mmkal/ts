@@ -1,6 +1,13 @@
 # Change Log - expect-type
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Dec 2020 13:25:18 GMT and should not be manually modified.
+
+## 0.11.0
+Wed, 09 Dec 2020 13:25:18 GMT
+
+### Minor changes
+
+- Add `.exclude` and `.extract` helpers (#220)
 
 ## 0.10.0
 Thu, 03 Dec 2020 19:10:22 GMT
