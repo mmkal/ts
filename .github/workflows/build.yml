@@ -30,12 +30,12 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          tools/*/.rush
-          packages/*/.rush
-          tools/*/dist
-          packages/*/dist
-          tools/*/coverage
-          packages/*/coverage
+          tools/*/.rush/**
+          packages/*/.rush/**
+          tools/*/dist/**
+          packages/*/dist/**
+          tools/*/coverage/**
+          packages/*/coverage/**
         key: ${{ runner.os }}-commands-v0.4-${{ github.ref }}
         restore-keys: |
           ${{ runner.os }}-commands-v0.4-
