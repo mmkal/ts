@@ -2,6 +2,8 @@ import seedrandom from 'seedrandom'
 
 import * as dict from './dict'
 
+// test
+
 export type WordList = keyof typeof dict
 export type Dictionary = WordList | {words: string[]} | Dictionary[]
 
