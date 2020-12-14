@@ -37,7 +37,7 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jest": "24.1.0",
     "eslint-plugin-prettier": "3.1.4",
-    "eslint-plugin-unicorn": "21.0.0",
+    "eslint-plugin-unicorn": "23.0.0",
     "eson-parser": "0.0.5",
     "find-up": "5.0.0",
     "jest": "26.4.2",
@@ -49,8 +49,8 @@
     "ts-jest": "26.3.0",
     "ts-loader": "8.0.7",
     "typescript": "4.0.5",
-    "webpack": "4.44.2",
-    "webpack-cli": "3.3.12"
+    "webpack": "5.10.1",
+    "webpack-cli": "4.2.0"
   },
   "devDependencies": {
     "@microsoft/rush-lib": "5.34.3",
