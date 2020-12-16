@@ -136,8 +136,28 @@ export interface SuperTE<L, R, StickyOpts extends StickyOptsBase, TransientOpts 
   /** equivalent to `Promise.prototype.then`. Use this if you don't expect `fn` to fail */
   map: <Next>(fn: (val: R) => Awaitable<Next>) => SuperTE<L, Next, StickyOpts>;
 
-  /** convenience wrapper for `.map(list => list.flatMap(...))`. Is not usable unless `Right` is an array. */
-  flatMap: R extends Array<infer X> ? <Next>(fn: (val: X) => Next[]) => SuperTE<L, Next[], StickyOpts> : never;
+  /** @experimental helpers for when `Right` is an array. */
+  array: R extends Array<infer Item> ? {
+    /** convenience wrapper for `.tryMapMany(arr => arr.map(fn))` */
+    mapEach: <Next>(fn: (item: Item) => Awaitable<Next>) => SuperTE<L, Next[], StickyOpts>
+
+    /** convenience wrapper for `array.mapEach(fn).array.all()` */
+    chainEach: <L2 extends Restriction<TransientOpts, L>, R2>(fn: (item: Item) => Eitherable<L2, R2>) => SuperTE<L2[], R2[], StickyOpts>
+
+    /** convenience wrapper for `.tryMapMany(arr => arr.map(fn))` */
+    tryMapEach: <Tag extends string, Next>(
+          tag: Tag,
+          fn: (item: Item) => Awaitable<Next>,
+          onError?: (e: unknown) => Error
+        ) => SuperTE<L | TaggedError<Tag, (item: Item) => Awaitable<Next>>, Next[], StickyOpts>
+
+    /** convenience wrapper for `.map(list => list.flatMap(...))`. */
+    flatMap: <Next>(fn: (val: Item) => Next[]) => SuperTE<L, Next[], StickyOpts>
+  
+    all: R extends Array<Eitherable<infer LItem, infer RItem>>
+      ? () => SuperTE<LItem[], RItem[], StickyOpts>
+      : never
+  } : undefined;
 
   /** convenience wrapper for lodash mapValues, with stricter types so you don't do something stupid, you stupid idiot. */
   mapValues: <Next>(fn: (val: R[keyof R], key: string) => Next) => SuperTE<L, Record<keyof R, Next>, StickyOpts>;
@@ -188,15 +208,6 @@ export interface SuperTE<L, R, StickyOpts extends StickyOptsBase, TransientOpts 
     fn: (val: R) => boolean | unknown,
     onFalse?: (e: R) => Error
   ) => SuperTE<L | TaggedError<Tag, typeof fn>, R, StickyOpts>;
-
-  /** @experimental **only applies to array types** convenience wrapper for `.tryMapMany(arr => arr.map(fn))` */
-  tryMapEach: R extends Array<infer Item>
-  ? <Tag extends string, Next>(
-    tag: Tag,
-    fn: (item: Item) => Awaitable<Next>,
-    onError?: (e: unknown) => Error
-  ) => SuperTE<L | TaggedError<Tag, (item: Item) => Awaitable<Next>>, Next[], StickyOpts>
-  : unknown;
 
   /** equivalent to fp-ts's Either.mapLeft, TaskEither.mapLeft, IOEither.mapLeft etc. */
   mapLeft: <Next>(fn: (val: L) => Next) => SuperTE<Next, R, StickyOpts>;
@@ -317,16 +328,29 @@ export const SuperTE: SuperTEStatic = {
             }, onError)()
           )
           .mapLeft(tagError(tag, fn)),
-      // @ts-expect-error tryMapEach is typed as `never` for non-arrays, since it has undefined behaviour in those cases.
+
+      // @ts-expect-error `array` is typed as `never` for non-arrays, since it has undefined behaviour in those cases.
       // typescript gets angry about this, as it should. We're jumping on the grenade and losing type safety here so that
       // downstream consumers don't have to. We're relying on being well convered by unit tests.
-      tryMapEach: (tag, fn, onError) => {
-        return superTE.tryMapMany(tag, (list: unknown) => (list as any[]).map(fn), onError).mapLeft(tagError(tag, fn));
+      array: {
+        tryMapEach: (tag, fn, onError) => superTE
+          .tryMapMany(
+            tag,
+            (list: unknown) => (list as any[]).map(fn),
+            onError
+          )
+          .mapLeft(tagError(tag, fn)),
+        mapEach: fn => superTE.map((list: any) => list.map(fn)),
+        chainEach: fn => superTE.array?.mapEach(fn).array.all(),
+        flatMap: fn => superTE.map((list: any) => list.flatMap(fn)),
+        all: () => superTE.chain(next => async () => {
+          const list: Eitherable<any, any>[] = next as any
+          const eithers = await Promise.all(list.map(toTaskEither).map(te => te()))
+          const allRight = eithers.every(e => e._tag === 'Right')
+          return allRight ? E.right(eithers.map(e => e.right)) : E.left(eithers.filter(e => e._tag === 'Left').map(e => e.left))
+        }),
       },
-      // @ts-expect-error flatMap is typed as `never` for non-arrays, since it has undefined behaviour in those cases.
-      flatMap: (fn) => {
-        return superTE.map((list: unknown) => (list as any[]).flatMap(fn));
-      },
+
       mapLeft: (fn) => superTE.chainEither(E.mapLeft(fn)),
       chainEither: (fn) => {
         return SuperTE.wrap(async () => {

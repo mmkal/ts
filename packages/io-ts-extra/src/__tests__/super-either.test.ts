@@ -246,6 +246,69 @@ test('drill 2', async () => {
   `)
 })
 
+test('arrayy', async () => {
+  const result = (input: string) =>
+    fp
+      .start(input)
+      .map(s => s.split('-'))
+      .array.mapEach(s => {
+        const f = parseFloat(s)
+        return f === f ? E.right(f) : E.left(s + ' is not a number')
+      })
+      .array.all()
+      .value()
+
+  expect(await result('12-123-1234')).toMatchInlineSnapshot(`
+    Object {
+      "_tag": "Right",
+      "right": Array [
+        12,
+        123,
+        1234,
+      ],
+    }
+  `)
+  expect(await result('12-oops-1234')).toMatchInlineSnapshot(`
+    Object {
+      "_tag": "Left",
+      "left": Array [
+        "oops is not a number",
+      ],
+    }
+  `)
+})
+
+test('arrayy 2', async () => {
+  const result = (input: string) =>
+    fp
+      .start(input)
+      .map(s => s.split('-'))
+      .array.chainEach(s => {
+        const f = parseFloat(s)
+        return f === f ? E.right(f) : E.left(s + ' is not a number')
+      })
+      .value()
+
+  expect(await result('12-123-1234')).toMatchInlineSnapshot(`
+    Object {
+      "_tag": "Right",
+      "right": Array [
+        12,
+        123,
+        1234,
+      ],
+    }
+  `)
+  expect(await result('12-oops-1234')).toMatchInlineSnapshot(`
+    Object {
+      "_tag": "Left",
+      "left": Array [
+        "oops is not a number",
+      ],
+    }
+  `)
+})
+
 test('hle', async () => {
   const result = await fp
     .start('hello')
