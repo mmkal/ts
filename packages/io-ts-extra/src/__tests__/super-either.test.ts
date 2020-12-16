@@ -165,9 +165,10 @@ test('redis es postgres', async () => {
     .map(q => q.range.split('-'))
     .map<EsQuery>(parts => ({before: new Date(parts[0]), after: new Date(parts[1])}))
     .into('query')
+    .bind('something', () => 1)
     .exec(console.log)
-    .map(p => es.search(p.query))
-    .map(esResults => redis.hydrate({keys: esResults.hits.map(h => h._id)}))
+    .mapKey('query', es.search)
+    .map(esResults => redis.hydrate({keys: esResults.query.hits.map(h => h._id)}))
 })
 
 test('hle', async () => {

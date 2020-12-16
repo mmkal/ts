@@ -76,6 +76,8 @@ export const taggedRethrower = <T, Op>(tag: T, op: Op) => {
   return (e: Error) => rethrow(applyTag(e))
 };
 
+type PropFn<Key extends string, F extends (...args: any[]) => any> = F | {[K in Key]: F}
+
 export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
   /** returns the underlying Task(Either). See also `.getTE` for a lazy (and confusing) version of this which you might want sometimes */
   value: TE.TaskEither<L, R>;
@@ -146,7 +148,7 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     onFalse?: (e: R) => Error
   ) => SuperTE<L | TaggedError<Tag, typeof fn>, R>;
 
-  /** **only applies to array types** convenience wrapper for `.tryMapMany(arr => arr.map(fn))` */
+  /** @experimental **only applies to array types** convenience wrapper for `.tryMapMany(arr => arr.map(fn))` */
   tryMapEach: R extends Array<infer Item>
   ? <Tag extends string, Next>(
     tag: Tag,
@@ -194,6 +196,8 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
   into<Key extends string>(key: Key): SuperTE<L, {[K in Key]: R}>;
   bind<Key extends string, RValue>(key: Key, fn: (right: R) => Awaitable<RValue>): SuperTE<L, R & {[K in Key]: RValue}>;
   exec(fn: (right: R) => Awaitable<unknown>): SuperTE<L, R>
+  mapKey<SourceKey extends keyof R, TargetKey extends string, RValue>(sourceKey: SourceKey, targetKey: TargetKey, fn: (rightProp: R[SourceKey]) => Awaitable<RValue>): SuperTE<L, R & {[K in TargetKey]: RValue}>
+  focus<Key extends keyof R>(key: Key): SuperTE<L, R[Key]>
 
   /** resolve the `right` value, or throw if `left` */
   getUnsafe: <Tag extends string>(tag: Tag) => PromiseLike<R>;
@@ -298,10 +302,12 @@ export const SuperTE: SuperTEStatic = {
         type TargetType = (typeof val) & {[K in typeof key]: typeof newProp}
         return {...val, [key]: newProp} as TargetType
       }),
+      // bind: (key, fn) => 
       exec: fn => superTE.map(async val => {
         await fn(val)
         return val
       }),
+      mapKey: (source, target, fn) => superTE.bind(target, val => fn(val[source])),
       getUnsafe: (tag) =>
         superTE.mapLeft(splat).mapLeft(Error).mapLeft(tagError(tag, superTE.getUnsafe)).value().then(getOrThrowE),
       // @ts-expect-error - it isn't safe to unsafely get. But the type system will prevent users from doing this
