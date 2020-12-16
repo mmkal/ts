@@ -28,6 +28,16 @@ export interface TaggedError<T, Op> extends Error {
   op: Op;
 }
 
+declare module 'fp-ts/Either' {
+  interface Left<E> {
+    right?: undefined
+  }
+
+  interface Right<A> {
+    left?: undefined
+  }
+}
+
 /**
  * Returns a usually-human-readable, usually-single-line string output for any input object
  * In general, only includes type data, nothing sensitive
@@ -79,8 +89,8 @@ export const taggedRethrower = <T, Op>(tag: T, op: Op) => {
 type PropFn<Key extends string, F extends (...args: any[]) => any> = F | {[K in Key]: F}
 
 export interface StickyOptsBase {
-  parent: [unknown, unknown, StickyOptsBase] | undefined
-  strict?: never
+  // parent: [unknown, unknown, StickyOptsBase] | undefined
+  parent: undefined | SuperTE<any, any, any>
 }
 export interface TransientOptsBase {
   strict: boolean
@@ -103,25 +113,17 @@ export interface SuperTE<L, R, StickyOpts extends StickyOptsBase, TransientOpts 
   /** returns the same instance, but the compiler won't let you "widen" left types with `.chain`, or right types with `.orElse`/`.recover` */
   strict: SuperTE<L, R, StickyOpts, {strict: true}>;
 
+  context: {parent: StickyOpts['parent']}
+
   restrictions: {
     L: Restriction<TransientOpts, L>
     R: Restriction<TransientOpts, R>
   }
 
-  scope<Key extends keyof R>(key: Key): SuperTE<L, R[Key], Omit<StickyOpts, 'parent'> & {parent: [L, R, StickyOpts]}>
+  drillDown<Key extends keyof R>(key: Key): SuperTE<L, R[Key], Omit<StickyOpts, 'parent'> & {parent: SuperTE<L, R, StickyOpts>}>
 
-  descope: StickyOpts['parent'] extends [infer LParent, infer RParent, infer ParentOpts]
+  bubbleUp: StickyOpts['parent'] extends SuperTE<infer LParent, infer RParent, infer ParentOpts, any>
     ? <Key extends string>(key: Key) => SuperTE<LParent, Merge<RParent, {[K in Key]: R}>, Extract<ParentOpts, StickyOptsBase>>
-    : never
-
-  items: R extends Array<infer X>
-    ? <Key extends string>(key: Key) => SuperTE<L, X, Merge<StickyOpts, {parent: [L, {[K in Key]: R}, StickyOpts]}>>
-    : never
-  // array: Opts['parent'] extends [infer LParent, any[], infer ParentOpts]
-  //   ? () => SuperTE<LParent, R[], Extract<ParentOpts, SuperTEOpts>>
-  //   : never
-  array: StickyOpts['parent'] extends [infer LParent, infer RParent, infer ParentOpts]
-    ? <Key extends string>(key: Key) => SuperTE<LParent, Merge<RParent, {[K in Key]: R[]}>, Extract<ParentOpts, StickyOptsBase>>
     : never
 
   /**
@@ -254,7 +256,7 @@ export type RightOf<T> = T extends Eitherable<any, infer X> ? X : never;
 
 type SuperTEStatic = typeof tagModuleMap & {
   of: <R = undefined>(val?: R) => SuperTE<never, R, DefaultOpts>;
-  wrap<L, R>(val: Eitherable<L, R>): SuperTE<L, R, DefaultOpts>;
+  wrap<L, R, StickyOpts extends StickyOptsBase>(val: Eitherable<L, R>, context: StickyOptsBase): SuperTE<L, R, StickyOpts>;
 };
 
 const toTaskEither = <L, R>(val: Eitherable<L, R>): TE.TaskEither<L, R> => {
@@ -275,12 +277,22 @@ const toTaskEither = <L, R>(val: Eitherable<L, R>): TE.TaskEither<L, R> => {
 
 export const SuperTE: SuperTEStatic = {
   ...tagModuleMap,
-  of: (val?: any) => SuperTE.wrap(O.some(val)),
-  wrap: (val) => {
+  of: (val?: any) => SuperTE.wrap(O.some(val), {parent: undefined}),
+  wrap: (val, context): SuperTE<any, any, any, any> => {
     const rawTE = toTaskEither(val);
     type L = LeftOf<typeof rawTE>;
     type R = RightOf<typeof rawTE>;
-    const superTE: SuperTE<L, R, DefaultOpts> = {
+    const superTE: SuperTE<L, R, typeof context> = {
+      context,
+      drillDown: key => SuperTE.wrap(superTE.map(val => val[key]).value, {parent: superTE}),
+      bubbleUp: ((key: string) => SuperTE.wrap(
+        superTE.chain(child => async () => {
+          const parentEither = await context.parent!.value()
+          return pipe(parentEither, E.map(parent => ({...parent, [key]: child})))
+        }).value,
+        context.parent?.context || {parent: undefined},
+      )) as never,
+
       map: (fn) => superTE.chain((next) => async () => E.right(await fn(next))),
       mapEither: (fn) => superTE.chainEither((either) => async () => E.right(await fn(either))),
       tryMapEither: (tag, fn) =>
@@ -322,11 +334,11 @@ export const SuperTE: SuperTEStatic = {
             const next = await fn(prev);
             return toTaskEither(next)();
           });
-        });
+        }, context);
       },
-      chain: <L2, R2>(fn: (val: R) => Eitherable<L2, R2>): SuperTE<L | L2, R2, DefaultOpts> =>
+      chain: <L2, R2>(fn: (val: R) => Eitherable<L2, R2>): SuperTE<L | L2, R2, typeof context> =>
         superTE.chainEither((either): Eitherable<L | L2, R2> => (E.isRight(either) ? fn(either.right) : either)),
-      orElse: <L2, R2>(fn: (left: L) => Eitherable<L2, R2>): SuperTE<L2, R | R2, DefaultOpts> =>
+      orElse: <L2, R2>(fn: (left: L) => Eitherable<L2, R2>): SuperTE<L2, R | R2, typeof context> =>
         superTE.chainEither((either): Eitherable<L2, R | R2> => (E.isLeft(either) ? fn(either.left) : either)),
       filter: (tag, fn, onFalse = (r: R) => Error(`filter returned false for {${splat(r)}}`)) =>
         superTE.map(E.right).chain(E.filterOrElse(flow(fn, Boolean), flow(onFalse, tagError(tag, fn)))),

@@ -160,17 +160,6 @@ test('redis es postgres', async () => {
     },
   }
 
-  // fp.start('foo')
-  // .map(q => ({q: q.split('-')}))
-  // .scope('q')
-  // .map(arr => arr.slice(2).map(parseFloat))
-  // .descope('q')
-  // .map(parent => parent.q)
-  // .items('q_original')
-  // .map(x => x.toFixed(3))
-  // .array('q_new')
-  // .map(arr => arr.q_new.filter(Boolean)[0].substring(2, 3))
-
   const getResult = (query: {range: string}) =>
     fp
       .start(query)
@@ -179,11 +168,82 @@ test('redis es postgres', async () => {
       .into('query')
       .bind('something', () => 1)
       .exec(console.log)
-      .scope('query')
+      .drillDown('query')
       .map(es.search)
-      .descope('searchResults')
+      .bubbleUp('searchResults')
       // .mapKey('query', es.search)
       .map(esResults => redis.hydrate({keys: esResults.searchResults.hits.map(h => h._id)}))
+})
+
+test('drill', async () => {
+  const x = await fp
+    .start('12-23-345')
+    .map(q => ({q: q.split('-')}))
+    .drillDown('q')
+    .map(arr => arr.slice().map(parseFloat))
+    .bubbleUp('q2')
+    // .map(parent => [parent, parent.q2])
+    // .items('q_original')
+    // .map(x => x.toFixed(3))
+    // .array('q_new')
+    // .map(arr => arr.q_new.filter(Boolean)[0].substring(2, 3))
+    .value()
+
+  expect(x.right).toMatchInlineSnapshot(`
+    Object {
+      "q": Array [
+        "12",
+        "23",
+        "345",
+      ],
+      "q2": Array [
+        12,
+        23,
+        345,
+      ],
+    }
+  `)
+})
+
+test('drill 2', async () => {
+  const x = await fp
+    .start('12-23-345')
+    .map(q => ({q: {nest: q.split('-')}}))
+    .drillDown('q')
+    .drillDown('nest')
+    .map(arr => arr.slice().map(parseFloat))
+    .bubbleUp('bubble')
+    .bubbleUp('q2')
+    // .map(parent => [parent, parent.q2])
+    // .items('q_original')
+    // .map(x => x.toFixed(3))
+    // .array('q_new')
+    // .map(arr => arr.q_new.filter(Boolean)[0].substring(2, 3))
+    .value()
+
+  expect(x.right).toMatchInlineSnapshot(`
+    Object {
+      "q": Object {
+        "nest": Array [
+          "12",
+          "23",
+          "345",
+        ],
+      },
+      "q2": Object {
+        "bubble": Array [
+          12,
+          23,
+          345,
+        ],
+        "nest": Array [
+          "12",
+          "23",
+          "345",
+        ],
+      },
+    }
+  `)
 })
 
 test('hle', async () => {
