@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@mmkal/rig": "workspace:*",
-    "@types/lodash": "4.14.161",
+    "@types/lodash": "4.14.165",
     "@types/seedrandom": "2.4.28",
     "expect-type": "workspace:*",
     "lodash": "4.17.20"

@@ -36,9 +36,9 @@
   "devDependencies": {
     "@mmkal/rig": "workspace:*",
     "@types/js-yaml": "3.12.5",
-    "@types/lodash": "4.14.161",
+    "@types/lodash": "4.14.165",
     "expect-type": "workspace:*",
-    "js-yaml": "3.14.0",
+    "js-yaml": "3.14.1",
     "lodash": "4.17.20"
   }
 }
