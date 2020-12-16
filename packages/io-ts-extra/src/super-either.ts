@@ -4,8 +4,8 @@ import * as IOE from 'fp-ts/IOEither';
 import * as O from 'fp-ts/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { flow } from 'fp-ts/function';
-import { pipe } from 'fp-ts/pipeable';
+import {flow} from 'fp-ts/function';
+import {pipe} from 'fp-ts/pipeable';
 
 export const tryCatchError = <A>(f: () => Promise<A>, onRejected = E.toError) => TE.tryCatch(f, onRejected);
 
@@ -14,7 +14,7 @@ export const rethrow = <E>(e: E) => {throw e}
 
 export const getOrThrowE = <E, A>(e: E.Either<E, A>) => E.getOrElse<E, A>(rethrow)(e);
 
-const tagModuleMap = { Option: O, Either: E, TaskEither: TE, IOEither: IOE };
+const tagModuleMap = {Option: O, Either: E, TaskEither: TE, IOEither: IOE};
 
 export type Awaitable<T> = PromiseLike<T> | T;
 export type Resolved<T> = T extends Awaitable<infer X> ? X : never;
@@ -134,7 +134,7 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     tag: Tag,
     fn: (val: R) => Struct,
     onError?: (e: unknown) => Error
-  ) => SuperTE<L | TaggedError<Tag, typeof fn>, { [K in keyof Struct]: Resolved<Struct[K]> }>;
+  ) => SuperTE<L | TaggedError<Tag, typeof fn>, {[K in keyof Struct]: Resolved<Struct[K]>}>;
 
   /**
    * Filter a right into a `TaggedError` left if it fails to meet a condition
@@ -148,12 +148,12 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
 
   /** **only applies to array types** convenience wrapper for `.tryMapMany(arr => arr.map(fn))` */
   tryMapEach: R extends Array<infer Item>
-    ? <Tag extends string, Next>(
-        tag: Tag,
-        fn: (item: Item) => Awaitable<Next>,
-        onError?: (e: unknown) => Error
-      ) => SuperTE<L | TaggedError<Tag, (item: Item) => Awaitable<Next>>, Next[]>
-    : unknown;
+  ? <Tag extends string, Next>(
+    tag: Tag,
+    fn: (item: Item) => Awaitable<Next>,
+    onError?: (e: unknown) => Error
+  ) => SuperTE<L | TaggedError<Tag, (item: Item) => Awaitable<Next>>, Next[]>
+  : unknown;
 
   /** equivalent to fp-ts's Either.mapLeft, TaskEither.mapLeft, IOEither.mapLeft etc. */
   mapLeft: <Next>(fn: (val: L) => Next) => SuperTE<Next, R>;
@@ -190,6 +190,10 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
 
   /** like `.recover`, but re-uses the condition function as the recoverer. Falsy return values will result in no recovery */
   recoverTruthy<R2 extends RNext>(recoverer: (left: L) => R2 | null | undefined | false | ''): SuperTE<L, R | R2>;
+
+  into<Key extends string>(key: Key): SuperTE<L, {[K in Key]: R}>;
+  bind<Key extends string, RValue>(key: Key, fn: (right: R) => Awaitable<RValue>): SuperTE<L, R & {[K in Key]: RValue}>;
+  exec(fn: (right: R) => Awaitable<unknown>): SuperTE<L, R>
 
   /** resolve the `right` value, or throw if `left` */
   getUnsafe: <Tag extends string>(tag: Tag) => PromiseLike<R>;
@@ -250,7 +254,7 @@ export const SuperTE: SuperTEStatic = {
                   .then((resolved) => [key, resolved])
               );
               const resolvedEntries = await Promise.all(promiseList);
-              return resolvedEntries.reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {} as any);
+              return resolvedEntries.reduce((acc, [k, v]) => ({...acc, [k]: v}), {} as any);
             }, onError)()
           )
           .mapLeft(tagError(tag, fn)),
@@ -288,11 +292,21 @@ export const SuperTE: SuperTEStatic = {
           const next = recoverer(left);
           return next ? E.right(next) : E.left(left);
         }),
+      into: key => superTE.map(val => ({[key]: val} as {[K in typeof key]: typeof val})),
+      bind: (key, fn) => superTE.map(async val => {
+        const newProp = await fn(val)
+        type TargetType = (typeof val) & {[K in typeof key]: typeof newProp}
+        return {...val, [key]: newProp} as TargetType
+      }),
+      exec: fn => superTE.map(async val => {
+        await fn(val)
+        return val
+      }),
       getUnsafe: (tag) =>
         superTE.mapLeft(splat).mapLeft(Error).mapLeft(tagError(tag, superTE.getUnsafe)).value().then(getOrThrowE),
       // @ts-expect-error - it isn't safe to unsafely get. But the type system will prevent users from doing this
       getSafe: () => superTE.getUnsafe('expectedRight'),
-      strict: null as any, // self reference, mutably set below
+      strict: null as never, // self reference, mutably set below
     };
     // eslint-disable-next-line functional/no-expression-statement, functional/immutable-data
     superTE.strict = superTE;
@@ -301,7 +315,7 @@ export const SuperTE: SuperTEStatic = {
 };
 
 export const start = SuperTE.of;
-export { E, O, IOE, T, TE };
+export {E, O, IOE, T, TE};
 export const Either = E;
 export const Option = O;
 export const IOEither = IOE;
