@@ -18,6 +18,7 @@ const tagModuleMap = {Option: O, Either: E, TaskEither: TE, IOEither: IOE};
 
 export type Awaitable<T> = PromiseLike<T> | T;
 export type Resolved<T> = T extends Awaitable<infer X> ? X : never;
+// todo: consider if super either should handle `These`!?
 /** Union of fp-ts types that can be coerced safely into a "super-either" */
 export type Eitherable<L, R> = O.Option<R> | E.Either<L, R> | IOE.IOEither<L, R> | TE.TaskEither<L, R>;
 
@@ -30,10 +31,14 @@ export interface TaggedError<T, Op> extends Error {
 
 declare module 'fp-ts/Either' {
   interface Left<E> {
+    // Lefts definitely don't have a right, but techinically this isn't a lie
+    // and it makes them slightly stricter (they can _never_ have a defined right value)
     right?: undefined
   }
 
   interface Right<A> {
+    // Rights definitely don't have a left, but techinically this isn't a lie
+    // and it makes them slightly stricter (they can _never_ have a defined left value)
     left?: undefined
   }
 }
