@@ -1,0 +1,8 @@
+{
+  "custom.tool.settings": {
+    "userSetting": "xyz",
+    "teamSetting2": "default value overidden by user",
+    "teamSetting1": "default value 1",
+    "teamSetting3": "default value 3"
+  }
+}

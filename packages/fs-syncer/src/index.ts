@@ -246,7 +246,7 @@ const yamlishPrinter = (val: any, tab = '  ') => {
     if (typeof node === 'string' && node.includes('\n')) {
       buffer.push('|-\n')
       node.split('\n').forEach((line, i, arr) => {
-        buffer.push(' '.repeat(indent) + line + (i === arr.length - 1 ? '' : '\n'))
+        buffer.push(tab.repeat(indent) + line + (i === arr.length - 1 ? '' : '\n'))
       })
       return
     }
