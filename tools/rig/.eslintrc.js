@@ -51,6 +51,8 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/unified-signatures': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
+    '@typescript-eslint/prefer-reduce-type-parameter': 'off',
 
     '@typescript-eslint/no-unused-vars': [
       'off',

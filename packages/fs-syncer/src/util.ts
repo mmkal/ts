@@ -13,3 +13,31 @@ export const getPaths = (obj: unknown, route: Route = []): Route[] => {
 
   return ([] as Route[]).concat(...newRoutes)
 }
+
+export const dedent = (str: string) => {
+  const lines = str.split('\n')
+  if (lines.length === 1 || lines[0]) {
+    return str
+  }
+  lines.shift()
+  if (lines[lines.length - 1].trim() === '') {
+    lines[lines.length - 1] = ''
+  }
+
+  const commonMargin = lines.filter(Boolean).reduce(
+    (common, next) => {
+      const lineMargin = next.split(/\S/)[0]
+      if (typeof common === 'string') {
+        return lineMargin.startsWith(common)
+          ? common
+          : common.startsWith(lineMargin)
+          ? lineMargin
+          : ''
+      }
+      return lineMargin
+    },
+    null as string | null,
+  ) || ''
+
+  return lines.map(line => line.replace(commonMargin, '')).join('\n')
+}
