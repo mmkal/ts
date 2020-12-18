@@ -6,15 +6,6 @@ beforeAll(() => {
   jestFixture.wipe()
 })
 
-afterAll(() => {
-  // make sure any test renaming gets cleaned up
-  expect(fs.readdirSync(path.join(__dirname, 'fixtures', 'jest-fixture.test.ts')).sort()).toEqual([
-    'a-suite-another-test-doesn-t-have-nice-path-formatting',
-    'fixture-dir-is-created',
-    'yaml-snapshot',
-  ])
-})
-
 test('fixture dir is created', () => {
   const fixture = jestFixture({'one.txt': 'uno'})
 

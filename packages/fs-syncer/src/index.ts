@@ -21,10 +21,7 @@ export type MergeStrategy = (params: {
   targetContent: string | undefined
 }) => string | undefined
 
-export type BeforeWrite = (params: {
-  filepath: string;
-  content: string
-}) => string
+export type BeforeWrite = (params: {filepath: string; content: string}) => string
 
 export const defaultMergeStrategy: MergeStrategy = params => params.targetContent
 
@@ -54,7 +51,10 @@ export interface CreateSyncerParams<T extends object> {
   /**
    * Any file or folder matching one of these regexes will not be read from the file system
    *
-   * @default ['node_modules']
+   * @default
+   * ```
+   * ['node_modules']
+   * ```
    *
    * @example
    * ```
@@ -63,25 +63,16 @@ export interface CreateSyncerParams<T extends object> {
    *
    * @example
    * ```
-   * ['node_modules', 'dist', /.*\.(test|spect)\.ts/]
+   * ['node_modules', 'dist', /.*\.(test|spec)\.ts/]
    * ```
-   * 
+   *
    * @example
    * ```
    * /^((?!src).)*$/ // ignore all paths not containing `src`. Note - this effectively means paths must _start_ with `src`, since they will be short-circuited otherwise.
    * ```
    */
   exclude?: Array<string | RegExp>
-  /**
-   * If specified, any file or folder must match this regex to be read from the file system.
-   * 
-   * @default '.*'
-   * 
-   * @example
-   * ```
-   * /(src|.vscode)/ // only include files in the `src` or `.vscode` directories
-   */
-  include?: string | RegExp
+
   /**
    * A function which takes a filepath, old content and new content strings, and returns a string. The returned string is written to disk.
    * If `undefined` is returned, the file is deleted.
@@ -107,7 +98,7 @@ export interface CreateSyncerParams<T extends object> {
    * @default params => params.targetContent
    */
   mergeStrategy?: MergeStrategy
-  beforeWrites?: Array<BeforeWrite>
+  beforeWrites?: BeforeWrite[]
 }
 
 const tryCatch = <T, U = undefined>(fn: () => T, onError: (error: unknown) => U = () => (undefined as any) as U) => {
@@ -123,7 +114,6 @@ export const createFSSyncer = <T extends object>({
   baseDir,
   targetState,
   exclude = ['node_modules'],
-  include = /.*/,
   mergeStrategy = defaultMergeStrategy,
   beforeWrites = defaultBeforeWrites,
 }: CreateSyncerParams<T>) => {
@@ -136,10 +126,7 @@ export const createFSSyncer = <T extends object>({
 
       let targetContent: string | undefined = `${get(targetState, p)}`
 
-      targetContent = beforeWrites.reduce(
-        (content, next) => content && next({filepath, content}),
-        targetContent
-      )
+      targetContent = beforeWrites.reduce((content, next) => content && next({filepath, content}), targetContent)
 
       if (mergeStrategy !== defaultMergeStrategy) {
         const existingContent = tryCatch(() => fs.readFileSync(filepath).toString())
@@ -181,13 +168,13 @@ export const createFSSyncer = <T extends object>({
   }
 
   const add = (relativePath: string, content: string) => {
-    const route = relativePath.split(/[\/\\]/)
+    const route = relativePath.split(/[/\\]/)
     let parent: any = targetState
     for (const segment of route.slice(0, -1)) {
       parent[segment] = parent[segment] ?? {}
       parent = parent[segment]
       if (typeof parent === 'string') {
-        throw new Error(`Can't overwrite file with folder`)
+        throw new TypeError(`Can't overwrite file with folder`)
       }
     }
     parent[route.length - 1] = content
@@ -197,10 +184,6 @@ export const createFSSyncer = <T extends object>({
 
   return syncer
 }
-
-// export interface JestFixtureOptions extends CreateSyncerParams {
-//   disableYamlSerializer
-// }
 
 /**
  * @experimental
@@ -216,32 +199,34 @@ export const jestFixture = Object.assign(
     })
   },
   {
-    baseDir: () => path.join(
-      path.dirname(expect.getState().testPath),
-      'fixtures',
-      path.basename(expect.getState().testPath),
-      expect
-        .getState()
-        .currentTestName.toLowerCase()
-        .replace(/[^\da-z]/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-*/, '')
-        .replace(/-*$/, '')
-    ),
-    addYamlSnapshotSerializer: () => {
+    baseDir: () =>
+      path.join(
+        path.dirname(expect.getState().testPath),
+        'fixtures',
+        path.basename(expect.getState().testPath),
+        expect
+          .getState()
+          .currentTestName.toLowerCase()
+          .replace(/[^\da-z]/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-*/, '')
+          .replace(/-*$/, '')
+      ),
+    addYamlSnapshotSerializer: (indent = '  ') => {
       expect.addSnapshotSerializer({
         test: isFsSyncerFileTree,
-        print: printYaml,
+        print: val => yamlishPrinter(val, indent),
       })
     },
-    wipe: () => createFSSyncer({
-      baseDir: path.join(path.dirname(expect.getState().testPath), 'fixtures'),
-      targetState: {}
-    }).sync(),
+    wipe: () =>
+      createFSSyncer({
+        baseDir: path.join(path.dirname(expect.getState().testPath), 'fixtures'),
+        targetState: {},
+      }).sync(),
   }
 )
 
-const printYaml = (val: any) => {
+const yamlishPrinter = (val: any, tab = '  ') => {
   const buffer: string[] = []
   const printNode = (node: any, indent: number) => {
     if (typeof node === 'undefined') {
@@ -253,8 +238,8 @@ const printYaml = (val: any) => {
         return keys[0].localeCompare(keys[1])
       })
       entries.forEach(e => {
-        buffer.push('\n' + ' '.repeat(indent) + e[0] + ': ')
-        printNode(e[1], indent + 2)
+        buffer.push('\n' + tab.repeat(indent) + e[0] + ': ')
+        printNode(e[1], indent + 1)
       })
       return
     }

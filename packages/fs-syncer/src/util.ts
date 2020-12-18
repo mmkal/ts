@@ -24,20 +24,14 @@ export const dedent = (str: string) => {
     lines[lines.length - 1] = ''
   }
 
-  const commonMargin = lines.filter(Boolean).reduce(
-    (common, next) => {
+  const commonMargin =
+    lines.filter(Boolean).reduce((common, next) => {
       const lineMargin = next.split(/\S/)[0]
       if (typeof common === 'string') {
-        return lineMargin.startsWith(common)
-          ? common
-          : common.startsWith(lineMargin)
-          ? lineMargin
-          : ''
+        return lineMargin.startsWith(common) ? common : common.startsWith(lineMargin) ? lineMargin : ''
       }
       return lineMargin
-    },
-    null as string | null,
-  ) || ''
+    }, null as string | null) || ''
 
   return lines.map(line => line.replace(commonMargin, '')).join('\n')
 }
