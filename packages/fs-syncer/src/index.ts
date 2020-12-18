@@ -154,7 +154,8 @@ export const createFSSyncer = <T extends object>({
     Object.defineProperty(result, fsSyncerFileTreeMarker, {value: 'directory', enumerable: false})
     return result
   }
-  const read = (): T => (fs.existsSync(baseDir) ? readdir(baseDir) : ({} as T))
+
+  const read = (): any => fs.existsSync(baseDir) ? readdir(baseDir) : {}
 
   /** writes all target files to file system, and deletes files not in the target state object */
   const sync = () => {
