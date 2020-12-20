@@ -29,6 +29,16 @@ test('dedents by default', () => {
   `)
 })
 
+test('adds newline by default', () => {
+  const syncer = fsSyncer.jestFixture({
+    'test.txt': `abc`,
+  })
+
+  syncer.sync()
+
+  expect(syncer.read()['test.txt']).toMatch(/^abc\r?\n$/)
+})
+
 test('dedent can be disabled', () => {
   const syncer = fsSyncer.createFSSyncer({
     baseDir: fsSyncer.jestFixture.baseDir(),
