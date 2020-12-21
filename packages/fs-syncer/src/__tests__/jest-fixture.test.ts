@@ -1,13 +1,13 @@
-import {jestFixture} from '..'
+import {jest} from '..'
 import * as fs from 'fs'
 import * as path from 'path'
 
 beforeAll(() => {
-  jestFixture.wipe()
+  jest.wipe()
 })
 
 test('fixture dir is created', () => {
-  const fixture = jestFixture({'one.txt': 'uno'})
+  const fixture = jest.jestFixture({'one.txt': 'uno'})
 
   fixture.sync()
 
@@ -22,7 +22,7 @@ test('fixture dir is created', () => {
 
 describe('A suite', () => {
   test(`another test (doesn't have nice path formatting!)`, () => {
-    const fixture = jestFixture({'two.txt': 'dos'})
+    const fixture = jest.jestFixture({'two.txt': 'dos'})
 
     fixture.sync()
 
@@ -53,10 +53,8 @@ describe('A suite', () => {
   })
 })
 
-jestFixture.addYamlSnapshotSerializer()
-
 test('yaml snapshot', () => {
-  const fixture = jestFixture({
+  const fixture = jest.jestFixture({
     'singleline.js': `console.log('hello world')`,
     'multiline.py':
       `if __name__ == "__main__":\n` + // prettier-break
@@ -76,10 +74,11 @@ test('yaml snapshot', () => {
 
   fixture.sync()
 
-  expect(fixture.read()).toMatchInlineSnapshot(`
+  expect(fixture.yaml()).toMatchInlineSnapshot(`
+    "---
     multiline.py: |-
-      if __name__ == "__main__":
-        print("hello world")
+      if __name__ == \\"__main__\\":
+        print(\\"hello world\\")
       
     singleline.js: |-
       console.log('hello world')
@@ -92,8 +91,8 @@ test('yaml snapshot', () => {
         with: 
           multiline.rs: |-
             fn main() {
-              println!("hello world");
+              println!(\\"hello world\\");
             }
-            
+            "
   `)
 })

@@ -27,5 +27,5 @@ export const yamlishPrinter = (val: any, tab = '  ') => {
   }
 
   printNode(val, 0)
-  return buffer.join('').trimLeft()
+  return '---\n' + buffer.join('').trimLeft()
 }

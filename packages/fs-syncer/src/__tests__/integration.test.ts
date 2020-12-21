@@ -3,10 +3,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as lodash from 'lodash'
 
-fsSyncer.jestFixture.addYamlSnapshotSerializer()
-
 test('dedents by default', () => {
-  const syncer = fsSyncer.jestFixture({
+  const syncer = fsSyncer.jest.jestFixture({
     'foo.js': `
       export const foo = () => {
         if (Math.random() > 0.5) {
@@ -18,19 +16,20 @@ test('dedents by default', () => {
 
   syncer.sync()
 
-  expect(syncer.read()).toMatchInlineSnapshot(`
+  expect(syncer.yaml()).toMatchInlineSnapshot(`
+    "---
     foo.js: |-
       export const foo = () => {
         if (Math.random() > 0.5) {
           console.log('foo')
         }
       }
-      
+      "
   `)
 })
 
 test('adds newline by default', () => {
-  const syncer = fsSyncer.jestFixture({
+  const syncer = fsSyncer.jest.jestFixture({
     'test.txt': `abc`,
   })
 
@@ -41,7 +40,7 @@ test('adds newline by default', () => {
 
 test('dedent can be disabled', () => {
   const syncer = fsSyncer.createFSSyncer({
-    baseDir: fsSyncer.jestFixture.baseDir(),
+    baseDir: fsSyncer.jest.baseDir(),
     beforeWrites: [],
     targetState: {
       'foo.js': `
@@ -56,7 +55,8 @@ test('dedent can be disabled', () => {
 
   syncer.sync()
 
-  expect(syncer.read()).toMatchInlineSnapshot(`
+  expect(syncer.yaml()).toMatchInlineSnapshot(`
+    "---
     foo.js: |-
       
               export const foo = () => {
@@ -64,13 +64,13 @@ test('dedent can be disabled', () => {
                   console.log('foo')
                 }
               }
-            
+            "
   `)
 })
 
 test('custom merge strategy', () => {
   const syncer = fsSyncer.createFSSyncer({
-    baseDir: fsSyncer.jestFixture.baseDir(),
+    baseDir: fsSyncer.jest.baseDir(),
     mergeStrategy: params => {
       if (params.filepath.includes('.vscode') && params.filepath.endsWith('.json')) {
         // IRL, you may want to use a parser which can handle comments in json
@@ -113,24 +113,25 @@ test('custom merge strategy', () => {
 
   syncer.sync()
 
-  expect(syncer.read()).toMatchInlineSnapshot(`
+  expect(syncer.yaml()).toMatchInlineSnapshot(`
+    "---
     .vscode: 
       settings.json: |-
         {
-          "custom.tool.settings": {
-            "userSetting": "xyz",
-            "teamSetting2": "default value overidden by user",
-            "teamSetting1": "default value 1",
-            "teamSetting3": "default value 3"
+          \\"custom.tool.settings\\": {
+            \\"userSetting\\": \\"xyz\\",
+            \\"teamSetting2\\": \\"default value overidden by user\\",
+            \\"teamSetting1\\": \\"default value 1\\",
+            \\"teamSetting3\\": \\"default value 3\\"
           }
-        }
+        }"
   `)
 })
 
 describe('ignore paths', () => {
   const setup = () =>
     fsSyncer.createFSSyncer({
-      baseDir: fsSyncer.jestFixture.baseDir(),
+      baseDir: fsSyncer.jest.baseDir(),
       targetState: {
         excluded: {
           'a.txt': 'aaa',
@@ -156,16 +157,17 @@ describe('ignore paths', () => {
       },
     })
 
-  test('.read() ignores paths', () => {
+  test('ignore paths', () => {
     setup().sync()
 
     const ignoreExcludedDirs = fsSyncer.createFSSyncer({
-      baseDir: fsSyncer.jestFixture.baseDir(),
+      baseDir: fsSyncer.jest.baseDir(),
       targetState: {},
       exclude: ['excluded'],
     })
 
-    expect(ignoreExcludedDirs.read()).toMatchInlineSnapshot(`
+    expect(ignoreExcludedDirs.yaml()).toMatchInlineSnapshot(`
+      "---
       included: 
         d.txt: |-
           ddd
@@ -185,20 +187,21 @@ describe('ignore paths', () => {
         nestedjs: 
           bar.js: |-
             console.log('bar')
-            
+            "
     `)
   })
 
-  test('.read() can whitelist folders', () => {
+  test('can whitelist folders', () => {
     setup().sync()
 
     const ignoreExcludedDirs = fsSyncer.createFSSyncer({
-      baseDir: fsSyncer.jestFixture.baseDir(),
+      baseDir: fsSyncer.jest.baseDir(),
       targetState: {},
       exclude: [/^((?!src).)*$/],
     })
 
-    expect(ignoreExcludedDirs.read()).toMatchInlineSnapshot(`
+    expect(ignoreExcludedDirs.yaml()).toMatchInlineSnapshot(`
+      "---
       src: 
         foo.js: |-
           console.log('foo')
@@ -206,7 +209,7 @@ describe('ignore paths', () => {
         nestedjs: 
           bar.js: |-
             console.log('bar')
-            
+            "
     `)
   })
 })

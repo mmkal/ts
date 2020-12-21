@@ -8,38 +8,37 @@ import {createFSSyncer, isFsSyncerFileTree} from '.'
  * This reduces the risk of copy-paste errors resulting in two tests trying to write to the same directory.
  * @param targetState target file tree
  */
+// todo: give this the same signature as createFsSyncer
+export const jestFixture = (targetState: object) => {
+  return createFSSyncer<any>({
+    baseDir: baseDir(),
+    targetState,
+  })
+}
 
-export const jestFixture = Object.assign(
-  (targetState: object) => {
-    return createFSSyncer<any>({
-      baseDir: jestFixture.baseDir(),
-      targetState,
-    })
-  },
-  {
-    baseDir: () =>
-      path.join(
-        path.dirname(expect.getState().testPath),
-        'fixtures',
-        path.basename(expect.getState().testPath),
-        expect
-          .getState()
-          .currentTestName.toLowerCase()
-          .replace(/[^\da-z]/g, '-')
-          .replace(/-+/g, '-')
-          .replace(/^-*/, '')
-          .replace(/-*$/, '')
-      ),
-    addYamlSnapshotSerializer: (indent = '  ') => {
-      expect.addSnapshotSerializer({
-        test: isFsSyncerFileTree,
-        print: val => yamlishPrinter(val, indent),
-      })
-    },
-    wipe: () =>
-      createFSSyncer({
-        baseDir: path.join(path.dirname(expect.getState().testPath), 'fixtures'),
-        targetState: {},
-      }).sync(),
-  }
-)
+export const baseDir = () =>
+  path.join(
+    path.dirname(expect.getState().testPath),
+    'fixtures',
+    path.basename(expect.getState().testPath),
+    expect
+      .getState()
+      .currentTestName.toLowerCase()
+      .replace(/[^\da-z]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-*/, '')
+      .replace(/-*$/, '')
+  )
+
+export const addYamlSnapshotSerializer = (indent = '  ') => {
+  expect.addSnapshotSerializer({
+    test: isFsSyncerFileTree,
+    print: val => yamlishPrinter(val, indent),
+  })
+}
+
+export const wipe = () =>
+  createFSSyncer({
+    baseDir: path.join(path.dirname(expect.getState().testPath), 'fixtures'),
+    targetState: {},
+  }).sync()

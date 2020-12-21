@@ -3,10 +3,11 @@ import * as path from 'path'
 import {getPaths, get} from './util'
 import {fsSyncerFileTreeMarker, CreateSyncerParams} from './types'
 import {defaultMergeStrategy, defaultBeforeWrites} from './defaults'
+import {yamlishPrinter} from './yaml'
 
 export * from './types'
 export * from './defaults'
-export {jestFixture} from './jest'
+export * as jest from './jest'
 
 export const isFsSyncerFileTree = (obj: any): boolean => Boolean(obj?.[fsSyncerFileTreeMarker])
 
@@ -66,6 +67,8 @@ export const createFSSyncer = <T extends object>({
 
   const read = (): any => (fs.existsSync(baseDir) ? readdir(baseDir) : {})
 
+  const yaml = (tab?: string): string => yamlishPrinter(read(), tab)
+
   /** writes all target files to file system, and deletes files not in the target state object */
   const sync = () => {
     write()
@@ -90,7 +93,7 @@ export const createFSSyncer = <T extends object>({
     parent[route.length - 1] = content
   }
 
-  const syncer = {read, write, sync, targetState, baseDir}
+  const syncer = {read, yaml, write, sync, targetState, baseDir}
 
   return syncer
 }
