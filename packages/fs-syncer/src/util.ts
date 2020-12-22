@@ -36,3 +36,15 @@ export const dedent = (str: string) => {
 
   return lines.map(line => line.replace(commonMargin, '')).join('\n')
 }
+
+/** Dedupes a string array while preserving original ordering */
+export const uniq = (array: string[]) => {
+  const map = new Set<string>()
+  return array.filter(item => {
+    if (map.has(item)) {
+      return false
+    }
+    map.add(item)
+    return true
+  })
+}

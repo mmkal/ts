@@ -8,8 +8,9 @@ import {yamlishPrinter} from './yaml'
 export * from './types'
 export * as jest from './jest'
 
-export const defaultMergeStrategy: MergeStrategy = params =>
-  params.targetContent && dedent(params.targetContent).trim() + os.EOL
+export const defaultMergeStrategy: MergeStrategy = params => {
+  return params.targetContent && dedent(params.targetContent).trim() + os.EOL
+}
 
 export const isFsSyncerFileTree = (obj: any): boolean => Boolean(obj?.[fsSyncerFileTreeMarker])
 
@@ -50,18 +51,26 @@ export const createFSSyncer = <T extends object>({
       }
     })
   }
+
   const readdir = (dir: string): T => {
-    const result = fs.readdirSync(dir).reduce<T>((state, name) => {
-      const subpath = path.join(dir, name)
-      const relativePath = path.relative(baseDir, subpath)
-      if (exclude.some(r => relativePath.match(r))) {
-        return state
-      }
-      return {
-        ...state,
-        [name]: fs.statSync(subpath).isFile() ? fs.readFileSync(subpath).toString() : readdir(subpath),
-      }
-    }, {} as T)
+    const result = fs
+      .readdirSync(dir, {withFileTypes: true})
+      .sort((...entries) => {
+        const [left, right] = entries.map(e => Number(e.isDirectory()))
+        return left - right
+      })
+      .reduce<T>((state, entry) => {
+        const subpath = path.join(dir, entry.name)
+
+        const relativePath = path.relative(baseDir, subpath)
+        if (exclude.some(r => relativePath.match(r))) {
+          return state
+        }
+        return {
+          ...state,
+          [entry.name]: fs.statSync(subpath).isFile() ? fs.readFileSync(subpath).toString() : readdir(subpath),
+        }
+      }, {} as T)
     Object.defineProperty(result, fsSyncerFileTreeMarker, {value: 'directory', enumerable: false})
     return result
   }
