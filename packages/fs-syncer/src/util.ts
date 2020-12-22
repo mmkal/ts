@@ -14,6 +14,7 @@ export const getPaths = (obj: unknown, route: Route = []): Route[] => {
   return ([] as Route[]).concat(...newRoutes)
 }
 
+/** Along the lines of https://github.com/tc39/proposal-string-dedent */
 export const dedent = (str: string) => {
   const lines = str.split('\n')
   if (lines.length === 1 || lines[0]) {

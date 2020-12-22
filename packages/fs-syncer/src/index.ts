@@ -1,13 +1,15 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import {getPaths, get} from './util'
-import {fsSyncerFileTreeMarker, CreateSyncerParams} from './types'
-import {defaultMergeStrategy, defaultBeforeWrites} from './defaults'
+import * as os from 'os'
+import {getPaths, get, dedent} from './util'
+import {fsSyncerFileTreeMarker, CreateSyncerParams, MergeStrategy} from './types'
 import {yamlishPrinter} from './yaml'
 
 export * from './types'
-export * from './defaults'
 export * as jest from './jest'
+
+export const defaultMergeStrategy: MergeStrategy = params =>
+  params.targetContent && dedent(params.targetContent).trim() + os.EOL
 
 export const isFsSyncerFileTree = (obj: any): boolean => Boolean(obj?.[fsSyncerFileTreeMarker])
 
@@ -19,13 +21,15 @@ const tryCatch = <T, U = undefined>(fn: () => T, onError: (error: unknown) => U 
   }
 }
 
-/** @experimental */
+/**
+ * @experimental
+ * More flexible alternative to @see fsSyncer.
+ */
 export const createFSSyncer = <T extends object>({
   baseDir,
   targetState,
   exclude = ['node_modules'],
   mergeStrategy = defaultMergeStrategy,
-  beforeWrites = defaultBeforeWrites,
 }: CreateSyncerParams<T>) => {
   const write = () => {
     fs.mkdirSync(baseDir, {recursive: true})
@@ -36,12 +40,9 @@ export const createFSSyncer = <T extends object>({
 
       let targetContent: string | undefined = `${get(targetState, p)}`
 
-      targetContent = beforeWrites.reduce((content, next) => content && next({filepath, content}), targetContent)
+      const existingContent = tryCatch(() => fs.readFileSync(filepath).toString())
+      targetContent = mergeStrategy({filepath, existingContent, targetContent})
 
-      if (mergeStrategy !== defaultMergeStrategy) {
-        const existingContent = tryCatch(() => fs.readFileSync(filepath).toString())
-        targetContent = mergeStrategy({filepath, existingContent, targetContent})
-      }
       if (typeof targetContent === 'string') {
         fs.writeFileSync(filepath, targetContent)
       } else {
@@ -67,7 +68,8 @@ export const createFSSyncer = <T extends object>({
 
   const read = (): any => (fs.existsSync(baseDir) ? readdir(baseDir) : {})
 
-  const yaml = (tab?: string): string => yamlishPrinter(read(), tab)
+  const yaml = ({tab, path = []}: {tab?: string; path?: string[]} = {}): string =>
+    yamlishPrinter(get(read(), path), tab)
 
   /** writes all target files to file system, and deletes files not in the target state object */
   const sync = () => {
@@ -109,8 +111,7 @@ export const fsSyncer = <T extends object>(baseDir: string, targetState: T) => {
   return createFSSyncer({
     baseDir,
     targetState,
-    mergeStrategy: defaultMergeStrategy,
-    // legacy behaviour: no dedenting
-    beforeWrites: [],
+    // legacy behaviour: no dedenting, so can't use defaultMergeStrategy
+    mergeStrategy: params => params.targetContent,
   })
 }

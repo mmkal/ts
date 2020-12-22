@@ -38,10 +38,10 @@ test('adds newline by default', () => {
   expect(syncer.read()['test.txt']).toMatch(/^abc\r?\n$/)
 })
 
-test('dedent can be disabled', () => {
+test('dedent can be disabled using mergeStrategy', () => {
   const syncer = fsSyncer.createFSSyncer({
     baseDir: fsSyncer.jest.baseDir(),
-    beforeWrites: [],
+    mergeStrategy: params => params.targetContent,
     targetState: {
       'foo.js': `
         export const foo = () => {

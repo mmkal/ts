@@ -1,3 +1,7 @@
+/**
+ * @experimental Prints an object to yaml, or at least something like it. Not intended to be spec-compliant.
+ * It's really just used for outputting readable jest snapshots.
+ */
 export const yamlishPrinter = (val: any, tab = '  ') => {
   const buffer: string[] = []
   const printNode = (node: any, indent: number) => {

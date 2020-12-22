@@ -10,8 +10,6 @@ export type MergeStrategy = (params: {
   targetContent: string | undefined
 }) => string | undefined
 
-export type BeforeWrite = (params: {filepath: string; content: string}) => string
-
 export interface CreateSyncerParams<T extends object> {
   /** Path that all files will be synced relative to. */
   baseDir: string
@@ -80,5 +78,5 @@ export interface CreateSyncerParams<T extends object> {
    * @default params => params.targetContent
    */
   mergeStrategy?: MergeStrategy
-  beforeWrites?: BeforeWrite[]
+  // beforeWrites?: BeforeWrite[]
 }
