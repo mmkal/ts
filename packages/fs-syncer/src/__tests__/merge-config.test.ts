@@ -97,7 +97,7 @@ describe('config merge strategy', () => {
       'jest.config.js': `module.exports = require('@your-company/shared-configs/jest-config')`,
       'tsconfig.json': `
         {
-          "extends": ["@your-company/shared-configs/typescript-config.json"],
+          "extends": "@your-company/shared-configs/typescript-config.json",
           "compilerOptions": {
             "rootDir": "src",
             "outDir": "dist"
@@ -197,9 +197,7 @@ describe('config merge strategy', () => {
         }
       tsconfig.json: |-
         {
-          \\"extends\\": [
-            \\"@your-company/shared-configs/typescript-config.json\\"
-          ],
+          \\"extends\\": \\"@your-company/shared-configs/typescript-config.json\\",
           \\"compilerOptions\\": {
             \\"rootDir\\": \\"src\\",
             \\"outDir\\": \\"dist\\",

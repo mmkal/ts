@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "@your-company/shared-configs/typescript-config.json"
-  ],
+  "extends": "@your-company/shared-configs/typescript-config.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
