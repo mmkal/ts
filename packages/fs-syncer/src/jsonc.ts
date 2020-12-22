@@ -97,6 +97,9 @@ export const parse = (jsonc: JSONC) => {
   }
 }
 
+// No 'z' - this a private variable so I'll spell it how I damn well please.
+const normaliseJsonLine = (line: string) => line.trim().replace(/\s*,$/, '')
+
 export const stringify = (obj: any, replacer: Array<string | number> | null = null, space?: string | number): JSONC => {
   const json = JSON.stringify(obj, replacer, space ?? 2)
   const lines = json.split('\n')
@@ -107,8 +110,7 @@ export const stringify = (obj: any, replacer: Array<string | number> | null = nu
       // json json json json
       const jsonjson = JSON.parse(`{${trimmed.replace(/,?\r?$/, '')}}`)
       const {comment, nextLine} = JSON.parse(jsonjson[Object.keys(jsonjson)[0]])
-      if (nextLine.trim() !== arr[i + 1].trim()) {
-        console.log({comment, nextLine, realNextLine: arr[i + 1]})
+      if (normaliseJsonLine(nextLine) !== normaliseJsonLine(arr[i + 1])) {
         return `${margin}// comment on ${nextLine.split(':')[0].trim()} removed due to content change.`
       }
       return margin + comment

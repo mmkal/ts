@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "build": "tsc -p .",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@your-company/shared-configs": "*",
+    "eslint": "*",
+    "jest": "*",
+    "typescript": "*"
+  },
+  "name": "@your-company/some-specific-project",
+  "version": "0.0.1"
+}

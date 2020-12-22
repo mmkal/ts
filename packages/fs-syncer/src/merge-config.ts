@@ -13,7 +13,10 @@ export const mergeObjects = (left: any, right: any): any => {
   return typeof right === 'undefined' ? left : right
 }
 
-export const mergeConfigs: MergeStrategy = params => {
+export const mergeJsonConfigs: MergeStrategy = params => {
+  if (!params.filepath.endsWith('.json')) {
+    return params.targetContent || params.existingContent
+  }
   let merged: any
   JSONC.edit(params.existingContent || '{}', existing => {
     JSONC.edit(params.targetContent || '{}', target => {

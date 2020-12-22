@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "@your-company/shared-configs/typescript-config.json"
+  ],
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    // this project has a custom target but we still want to inherit other team settings
+    "target": "es2018"
+  }
+}
