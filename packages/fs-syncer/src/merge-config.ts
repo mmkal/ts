@@ -17,6 +17,10 @@ export const mergeObjects = (left: any, right: any): any => {
   return typeof right === 'undefined' ? left : right
 }
 
+// todo: consider whether this is making too much of an assumption that we "prefer" the target content
+// a lot of scenarios would need a more cautious algorithm which throws on conflicts, or a more agressive
+// one which prefers "target" content (say, important settings like package naming conventions)
+// so maybe some options are needed into these params?
 /**
  * @experimental
  * Deep-merge two json-like config files. Comments will be _mostly_ preserved. The second argument
