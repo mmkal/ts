@@ -166,6 +166,8 @@ describe('config merge strategy', () => {
     // first write the existing user code, this is just test setup though
     fsSyncer.jest.jestFixture(specificProjectfileTree).sync()
 
+    // expect(1).toEqual(0)
+
     const syncer = fsSyncer.createFSSyncer({
       baseDir: fsSyncer.jest.baseDir(),
       targetState: sharedSettings,
@@ -232,7 +234,10 @@ describe('config merge strategy', () => {
               \\"**/.git\\": false
             }
           }
-      src: "
+      src: 
+        index.ts: |-
+          console.log(123)
+          "
     `)
   })
 })

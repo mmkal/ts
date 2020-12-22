@@ -61,11 +61,12 @@ export const createFSSyncer = <T extends object>({
       })
       .reduce<T>((state, entry) => {
         const subpath = path.join(dir, entry.name)
-
+        
         const relativePath = path.relative(baseDir, subpath)
         if (exclude.some(r => relativePath.match(r))) {
           return state
         }
+
         return {
           ...state,
           [entry.name]: fs.statSync(subpath).isFile() ? fs.readFileSync(subpath).toString() : readdir(subpath),
@@ -86,8 +87,25 @@ export const createFSSyncer = <T extends object>({
     const fsState = read()
     const fsPaths = getPaths(fsState)
     fsPaths
-      .filter(p => typeof get(targetState, p) === 'undefined')
-      .forEach(p => fs.unlinkSync(path.join(baseDir, ...p)))
+      .forEach(p => {
+        const filepath = path.join(baseDir, ...p)
+        const targetContent = get(targetState, p)
+        const existingContent = tryCatch(() => fs.readFileSync(filepath).toString())
+        const resolved = mergeStrategy({
+          filepath,
+          targetContent,
+          existingContent,
+        })
+        if (typeof resolved === 'string') {
+          // todo: make it necessary to write here
+          // we don't need to now because we already did in write()
+          // above, but that's weird and involves calling mergeStrategy twice.
+          // fs.writeFileSync(filepath, resolved)
+        } else {
+          fs.unlinkSync(filepath)
+        }
+      })
+
     return syncer
   }
 
