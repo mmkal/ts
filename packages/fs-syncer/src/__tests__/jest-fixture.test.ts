@@ -2,10 +2,6 @@ import {jest} from '..'
 import * as fs from 'fs'
 import * as path from 'path'
 
-beforeAll(() => {
-  jest.wipe()
-})
-
 test('fixture dir is created', () => {
   const fixture = jest.jestFixture({'one.txt': 'uno'})
 
