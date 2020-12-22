@@ -19,7 +19,9 @@ export const mergeObjects = (left: any, right: any): any => {
 
 // todo: consider whether this is making too much of an assumption that we "prefer" the target content
 // a lot of scenarios would need a more cautious algorithm which throws on conflicts, or a more agressive
-// one which prefers "target" content (say, important settings like package naming conventions)
+// one which prefers "target" content (say, important settings like package naming conventions), or some
+// kind of mixture based on filename (let users have their own vscode settings, but don't let them choose
+// their own package naming conventions).
 // so maybe some options are needed into these params?
 /**
  * @experimental
