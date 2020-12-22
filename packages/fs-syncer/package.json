@@ -27,6 +27,7 @@
     "lint": "rig eslint --cache .",
     "prepack": "npm run lint && rig permalink",
     "postpack": "rig unpermalink && git status",
+    "pretest": "rig rimraf src/__tests__/generated && rig rimraf src/__tests__/fixtures",
     "test": "rig jest"
   },
   "devDependencies": {
