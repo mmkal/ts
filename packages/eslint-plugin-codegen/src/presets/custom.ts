@@ -2,6 +2,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 
 import type {Preset} from '.'
+import {match} from 'io-ts-extra'
 
 /**
  * Define your own codegen function, which will receive all options specified.
@@ -22,12 +23,32 @@ import type {Preset} from '.'
  *
  * @param source Relative path to the module containing the custom preset
  * @param export The name of the export. If omitted, the module itself should be a preset function.
+ * @param require A module to load before `source`. For example, set to `ts-node/register` to use a custom typescript function
+ * @param dev Set to `true` to clear the require cache for `source` before loading. Allows editing the function without requiring an IDE reload
  */
-export const custom: Preset<{source: string; export?: string} & Record<string, any>> = ({meta, options}) => {
-  const sourcePath = path.join(path.dirname(meta.filename), options.source)
+export const custom: Preset<{
+  source: string
+  export?: string
+  require?: string
+  dev?: boolean
+} & Record<string, any>> = ({meta, options}) => {
+  const sourcePath = options.source 
+    ? path.join(path.dirname(meta.filename), options.source)
+    : meta.filename
   if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
     throw Error(`Source path doesn't exist: ${sourcePath}`)
   }
+
+  const requireFirst = options.require || (sourcePath.endsWith('.ts') ? 'ts-node/register/transpile-only' : undefined)
+  if (requireFirst) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const sourceModule = require(requireFirst)
+  }
+
+  if (options.dev) {
+    delete require.cache[sourcePath]
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const sourceModule = require(sourcePath)
   const func = options.export ? sourceModule[options.export] : sourceModule
