@@ -2,7 +2,6 @@ import * as path from 'path'
 import * as fs from 'fs'
 
 import type {Preset} from '.'
-import {match} from 'io-ts-extra'
 
 /**
  * Define your own codegen function, which will receive all options specified.
@@ -36,13 +35,12 @@ export const custom: Preset<
 > = ({meta, options}) => {
   const sourcePath = options.source ? path.join(path.dirname(meta.filename), options.source) : meta.filename
   if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
-    throw Error(`Source path doesn't exist: ${sourcePath}`)
+    throw Error(`Source path is not a file: ${sourcePath}`)
   }
 
   const requireFirst = options.require || (sourcePath.endsWith('.ts') ? 'ts-node/register/transpile-only' : undefined)
   if (requireFirst) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const sourceModule = require(requireFirst)
+    require(requireFirst)
   }
 
   if (options.dev) {
