@@ -20,10 +20,10 @@ import type {Preset} from '.'
  *
  * `<!-- codegen:start {preset: custom, source: ./lib/my-custom-preset.js, export: jsonPrinter, myCustomProp: hello}`
  *
- * @param source Relative path to the module containing the custom preset
+ * @param source Relative path to the module containing the custom preset.
  * @param export The name of the export. If omitted, the module itself should be a preset function.
- * @param require A module to load before `source`. For example, set to `ts-node/register` to use a custom typescript function
- * @param dev Set to `true` to clear the require cache for `source` before loading. Allows editing the function without requiring an IDE reload
+ * @param require A module to load before `source`. If not set, defaults to `ts-node/register/transpile-only` for typescript sources.
+ * @param dev Set to `true` to clear the require cache for `source` before loading. Allows editing the function without requiring an IDE reload.
  */
 export const custom: Preset<
   {
