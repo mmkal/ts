@@ -26,12 +26,14 @@ import {match} from 'io-ts-extra'
  * @param require A module to load before `source`. For example, set to `ts-node/register` to use a custom typescript function
  * @param dev Set to `true` to clear the require cache for `source` before loading. Allows editing the function without requiring an IDE reload
  */
-export const custom: Preset<{
-  source?: string
-  export?: string
-  require?: string
-  dev?: boolean
-}> = ({meta, options}) => {
+export const custom: Preset<
+  {
+    source?: string
+    export?: string
+    require?: string
+    dev?: boolean
+  } & Record<string, unknown>
+> = ({meta, options}) => {
   const sourcePath = options.source ? path.join(path.dirname(meta.filename), options.source) : meta.filename
   if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
     throw Error(`Source path doesn't exist: ${sourcePath}`)

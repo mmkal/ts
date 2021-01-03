@@ -42,4 +42,11 @@ test('loads custom export', () => {
       options: {source: './invalid-custom-preset.js', input: 'abc'},
     })
   ).toThrowError(/Couldn't find export function from .*invalid-custom-preset.js - got object/)
+
+  expect(() =>
+    preset.custom({
+      meta: {filename: __filename, existingContent: ''},
+      options: {source: './custom-preset.js', require: 'thismoduledoesnotexist', dev: true},
+    })
+  ).toThrowError(/Cannot find module 'thismoduledoesnotexist' from 'src\/presets\/custom.ts'/)
 })
