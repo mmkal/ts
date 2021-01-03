@@ -27,14 +27,12 @@ import {match} from 'io-ts-extra'
  * @param dev Set to `true` to clear the require cache for `source` before loading. Allows editing the function without requiring an IDE reload
  */
 export const custom: Preset<{
-  source: string
+  source?: string
   export?: string
   require?: string
   dev?: boolean
-} & Record<string, any>> = ({meta, options}) => {
-  const sourcePath = options.source 
-    ? path.join(path.dirname(meta.filename), options.source)
-    : meta.filename
+}> = ({meta, options}) => {
+  const sourcePath = options.source ? path.join(path.dirname(meta.filename), options.source) : meta.filename
   if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isFile()) {
     throw Error(`Source path doesn't exist: ${sourcePath}`)
   }
@@ -46,6 +44,7 @@ export const custom: Preset<{
   }
 
   if (options.dev) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete require.cache[sourcePath]
   }
 
