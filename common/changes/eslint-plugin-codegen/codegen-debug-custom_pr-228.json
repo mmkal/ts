@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Run typescript in custom codegen script (#228)",
+      "type": "minor",
+      "packageName": "eslint-plugin-codegen"
+    }
+  ],
+  "packageName": "eslint-plugin-codegen",
+  "email": "mmkal@users.noreply.github.com"
+}
