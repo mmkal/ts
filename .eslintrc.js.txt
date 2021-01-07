@@ -1,0 +1,3 @@
+// todo: make this not a .txt file. VSCode can't really handle linting the whole project though.
+// Probably not worth fixing before https://github.com/eslint/rfcs/9 is implemented though.
+module.exports = require('./tools/rig/.eslintrc')
