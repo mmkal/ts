@@ -6,6 +6,9 @@ import * as eslint from 'eslint'
 import * as presetsModule from './presets'
 import expect from 'expect'
 
+// todo: run prettier on output, if found
+// todo: codegen/fs rule. type fs.anything and it generates an import for fs. same for path and os.
+
 type MatchAll = (text: string, pattern: string | RegExp) => Iterable<NonNullable<ReturnType<string['match']>>>
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matchAll: MatchAll = require('string.prototype.matchall')
