@@ -16,7 +16,7 @@ jobs:
         # todo: use GITHUB_TOKEN, if https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/2 is ever addressed
         token: ${{ secrets.GH_CI_TOKEN || github.token }}
 
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v2
       with:
         node-version: 12.x
     - name: rush install
