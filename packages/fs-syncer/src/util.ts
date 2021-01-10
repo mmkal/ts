@@ -39,12 +39,20 @@ export const dedent = (str: string) => {
 
 /** Dedupes a string array while preserving original ordering */
 export const uniq = (array: string[]) => {
-  const map = new Set<string>()
+  const set = new Set<string>()
   return array.filter(item => {
-    if (map.has(item)) {
+    if (set.has(item)) {
       return false
     }
-    map.add(item)
+    set.add(item)
     return true
   })
+}
+
+export const tryCatch = <T, U = undefined>(fn: () => T, onError: (error: unknown) => U = () => (undefined as any) as U) => {
+  try {
+    return fn()
+  } catch (e: unknown) {
+    return onError(e)
+  }
 }

@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
-import {getPaths, get, dedent} from './util'
+import {getPaths, get, dedent, tryCatch} from './util'
 import {fsSyncerFileTreeMarker, CreateSyncerParams, MergeStrategy} from './types'
 import {yamlishPrinter} from './yaml'
 
@@ -12,19 +12,9 @@ export const defaultMergeStrategy: MergeStrategy = params => {
   return params.targetContent && dedent(params.targetContent).trim() + os.EOL
 }
 
-export const isFsSyncerFileTree = (obj: any): boolean => Boolean(obj?.[fsSyncerFileTreeMarker])
-
-const tryCatch = <T, U = undefined>(fn: () => T, onError: (error: unknown) => U = () => (undefined as any) as U) => {
-  try {
-    return fn()
-  } catch (e: unknown) {
-    return onError(e)
-  }
-}
-
 /**
  * @experimental
- * More flexible alternative to @see fsSyncer.
+ * More flexible alternative to `fsSyncer`.
  */
 export const createFSSyncer = <T extends object>({
   baseDir,

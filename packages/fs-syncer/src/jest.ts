@@ -1,6 +1,6 @@
 import * as path from 'path'
 import {yamlishPrinter} from './yaml'
-import {createFSSyncer, isFsSyncerFileTree} from '.'
+import {createFSSyncer} from '.'
 
 /**
  * @experimental
@@ -24,18 +24,11 @@ export const baseDir = () =>
     expect
       .getState()
       .currentTestName.toLowerCase()
-      .replace(/[^\da-z]/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-*/, '')
-      .replace(/-*$/, '')
+      .replace(/[^\da-z]/g, '-') // convert everything non-alphanumeric to dashes
+      .replace(/-+/g, '-') // remove double-dashes
+      .replace(/^-*/, '') // remove dashes at the start
+      .replace(/-*$/, '') // remove dashes at the end
   )
-
-export const addYamlSnapshotSerializer = (indent = '  ') => {
-  expect.addSnapshotSerializer({
-    test: isFsSyncerFileTree,
-    print: val => yamlishPrinter(val, indent),
-  })
-}
 
 export const wipe = () =>
   createFSSyncer({

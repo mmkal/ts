@@ -2,7 +2,7 @@ import {MergeStrategy} from './types'
 import * as JSONC from './jsonc'
 import {uniq} from './util'
 
-const isMergeable = (obj: unknown) => obj && typeof obj === 'object' && !Array.isArray(obj)
+const isMergeable = (obj: unknown) => obj && typeof obj === 'object' && obj.toString() === '[object Object]'
 
 /**
  * @experimental 
