@@ -5,7 +5,7 @@ import {uniq} from './util'
 const isMergeable = (obj: unknown) => obj && typeof obj === 'object' && obj.toString() === '[object Object]'
 
 /**
- * @experimental 
+ * @experimental
  * Deep merge two objects. The `right` object "wins" when values can't be merged (primitives, arrays etc.).
  */
 export const mergeObjects = (left: any, right: any): any => {

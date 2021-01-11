@@ -49,7 +49,10 @@ export const uniq = (array: string[]) => {
   })
 }
 
-export const tryCatch = <T, U = undefined>(fn: () => T, onError: (error: unknown) => U = () => (undefined as any) as U) => {
+export const tryCatch = <T, U = undefined>(
+  fn: () => T,
+  onError: (error: unknown) => U = () => (undefined as any) as U
+) => {
   try {
     return fn()
   } catch (e: unknown) {

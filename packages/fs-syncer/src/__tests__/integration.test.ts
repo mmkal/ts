@@ -4,14 +4,16 @@ import * as path from 'path'
 import * as lodash from 'lodash'
 
 test('dedents by default', () => {
-  const syncer = fsSyncer.jest.jestFixture({
-    'foo.js': `
-      export const foo = () => {
-        if (Math.random() > 0.5) {
-          console.log('foo')
+  const syncer = fsSyncer.jestFixture({
+    targetState: {
+      'foo.js': `
+        export const foo = () => {
+          if (Math.random() > 0.5) {
+            console.log('foo')
+          }
         }
-      }
-    `,
+      `,
+    },
   })
 
   syncer.sync()
@@ -29,8 +31,10 @@ test('dedents by default', () => {
 })
 
 test('adds newline by default', () => {
-  const syncer = fsSyncer.jest.jestFixture({
-    'test.txt': `abc`,
+  const syncer = fsSyncer.jestFixture({
+    targetState: {
+      'test.txt': `abc`,
+    },
   })
 
   syncer.sync()
@@ -39,8 +43,7 @@ test('adds newline by default', () => {
 })
 
 test('dedent can be disabled using mergeStrategy', () => {
-  const syncer = fsSyncer.createFSSyncer({
-    baseDir: fsSyncer.jest.baseDir(),
+  const syncer = fsSyncer.jestFixture({
     mergeStrategy: params => params.targetContent,
     targetState: {
       'foo.js': `
@@ -69,8 +72,7 @@ test('dedent can be disabled using mergeStrategy', () => {
 })
 
 test('custom merge strategy', () => {
-  const syncer = fsSyncer.createFSSyncer({
-    baseDir: fsSyncer.jest.baseDir(),
+  const syncer = fsSyncer.jestFixture({
     mergeStrategy: params => {
       if (params.filepath.includes('.vscode') && params.filepath.endsWith('.json')) {
         // IRL, you may want to use a parser which can handle comments in json
@@ -130,8 +132,7 @@ test('custom merge strategy', () => {
 
 describe('ignore paths', () => {
   const setup = () =>
-    fsSyncer.createFSSyncer({
-      baseDir: fsSyncer.jest.baseDir(),
+    fsSyncer.jestFixture({
       targetState: {
         excluded: {
           'a.txt': 'aaa',
@@ -160,8 +161,7 @@ describe('ignore paths', () => {
   test('ignore paths', () => {
     setup().sync()
 
-    const ignoreExcludedDirs = fsSyncer.createFSSyncer({
-      baseDir: fsSyncer.jest.baseDir(),
+    const ignoreExcludedDirs = fsSyncer.jestFixture({
       targetState: {},
       exclude: ['excluded'],
     })
@@ -194,8 +194,7 @@ describe('ignore paths', () => {
   test('can whitelist folders', () => {
     setup().sync()
 
-    const ignoreExcludedDirs = fsSyncer.createFSSyncer({
-      baseDir: fsSyncer.jest.baseDir(),
+    const ignoreExcludedDirs = fsSyncer.jestFixture({
       targetState: {},
       exclude: [/^((?!src).)*$/],
     })

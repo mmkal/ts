@@ -164,12 +164,11 @@ describe('config merge strategy', () => {
     }
 
     // first write the existing user code, this is just test setup though
-    fsSyncer.jest.jestFixture(specificProjectfileTree).sync()
+    fsSyncer.jestFixture({targetState: specificProjectfileTree}).sync()
 
     // expect(1).toEqual(0)
 
-    const syncer = fsSyncer.createFSSyncer({
-      baseDir: fsSyncer.jest.baseDir(),
+    const syncer = fsSyncer.jestFixture({
       targetState: sharedSettings,
       mergeStrategy: mergeJsonConfigs,
     })

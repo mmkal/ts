@@ -1,6 +1,6 @@
 import * as path from 'path'
-import {yamlishPrinter} from './yaml'
 import {createFSSyncer} from '.'
+import {CreateSyncerParams} from './types'
 
 /**
  * @experimental
@@ -9,10 +9,10 @@ import {createFSSyncer} from '.'
  * @param targetState target file tree
  */
 // todo: give this the same signature as createFsSyncer
-export const jestFixture = (targetState: object) => {
+export const jestFixture = (params: Omit<CreateSyncerParams<any>, 'baseDir'>) => {
   return createFSSyncer<any>({
     baseDir: baseDir(),
-    targetState,
+    ...params,
   })
 }
 

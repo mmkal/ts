@@ -1,9 +1,11 @@
-import {jest} from '..'
+import * as fsSyncer from '..'
 import * as fs from 'fs'
 import * as path from 'path'
 
 test('fixture dir is created', () => {
-  const fixture = jest.jestFixture({'one.txt': 'uno'})
+  const fixture = fsSyncer.jestFixture({
+    targetState: {'one.txt': 'uno'},
+  })
 
   fixture.sync()
 
@@ -18,7 +20,9 @@ test('fixture dir is created', () => {
 
 describe('A suite', () => {
   test(`another test (doesn't have nice path formatting!)`, () => {
-    const fixture = jest.jestFixture({'two.txt': 'dos'})
+    const fixture = fsSyncer.jestFixture({
+      targetState: {'two.txt': 'dos'},
+    })
 
     fixture.sync()
 
@@ -50,19 +54,21 @@ describe('A suite', () => {
 })
 
 test('yaml snapshot', () => {
-  const fixture = jest.jestFixture({
-    'singleline.js': `console.log('hello world')`,
-    'multiline.py':
-      `if __name__ == "__main__":\n` + // prettier-break
-      `  print("hello world")`,
-    nested: {
-      directory: {
-        'withfile.txt': 'hello world',
-        with: {
-          'multiline.rs':
-            `fn main() {\n` + // prettier-break
-            `  println!("hello world");\n` +
-            `}`,
+  const fixture = fsSyncer.jestFixture({
+    targetState: {
+      'singleline.js': `console.log('hello world')`,
+      'multiline.py':
+        `if __name__ == "__main__":\n` + // prettier-break
+        `  print("hello world")`,
+      nested: {
+        directory: {
+          'withfile.txt': 'hello world',
+          with: {
+            'multiline.rs':
+              `fn main() {\n` + // prettier-break
+              `  println!("hello world");\n` +
+              `}`,
+          },
         },
       },
     },
