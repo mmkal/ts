@@ -138,7 +138,7 @@ test('files are modified', async () => {
     `"---
     abc.log: |-
       added content to file1.txt
-      added content to file2.txt
+      added content to nested/file2.txt
     file1.txt: |-
       hello I am a file
 
