@@ -43,7 +43,7 @@
     "glob": "^7.1.4",
     "io-ts": "^2.2.4",
     "io-ts-extra": "workspace:*",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^4.0.0",
     "lodash": "^4.17.15",
     "string.prototype.matchall": "^4.0.2"
   },
