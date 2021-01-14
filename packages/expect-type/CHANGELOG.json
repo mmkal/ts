@@ -2,6 +2,18 @@
   "name": "expect-type",
   "entries": [
     {
+      "version": "0.11.0",
+      "tag": "expect-type_v0.11.0",
+      "date": "Thu, 14 Jan 2021 17:39:22 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add `.exclude` and `.extract` helpers (#220)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.10.0",
       "tag": "expect-type_v0.10.0",
       "date": "Thu, 03 Dec 2020 19:10:22 GMT",

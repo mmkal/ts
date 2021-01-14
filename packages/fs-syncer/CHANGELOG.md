@@ -1,6 +1,11 @@
 # Change Log - fs-syncer
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Jan 2021 17:39:22 GMT and should not be manually modified.
+
+## 0.3.4
+Thu, 14 Jan 2021 17:39:22 GMT
+
+_Version update only_
 
 ## 0.3.3
 Thu, 03 Dec 2020 19:10:22 GMT

@@ -2,6 +2,23 @@
   "name": "memorable-moniker",
   "entries": [
     {
+      "version": "0.4.0",
+      "tag": "memorable-moniker_v0.4.0",
+      "date": "Thu, 14 Jan 2021 17:39:22 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Remove ass/donkey from animal dictionary (#230)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.11.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.3",
       "tag": "memorable-moniker_v0.3.3",
       "date": "Thu, 03 Dec 2020 19:10:22 GMT",

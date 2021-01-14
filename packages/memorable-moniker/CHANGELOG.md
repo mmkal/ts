@@ -1,6 +1,13 @@
 # Change Log - memorable-moniker
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Jan 2021 17:39:22 GMT and should not be manually modified.
+
+## 0.4.0
+Thu, 14 Jan 2021 17:39:22 GMT
+
+### Minor changes
+
+- Remove ass/donkey from animal dictionary (#230)
 
 ## 0.3.3
 Thu, 03 Dec 2020 19:10:22 GMT
