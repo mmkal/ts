@@ -9,6 +9,10 @@ export * from './types'
 
 export {jestFixture} from './jest'
 
+export * as JSONC from './jsonc'
+
+export * from './merge-config'
+
 export const defaultMergeStrategy: MergeStrategy = params => {
   return params.targetContent && dedent(params.targetContent).trim() + os.EOL
 }
