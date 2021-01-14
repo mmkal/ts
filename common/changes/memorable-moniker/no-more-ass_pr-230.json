@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Remove ass/donkey from animal dictionary (#230)",
+      "type": "minor",
+      "packageName": "memorable-moniker"
+    }
+  ],
+  "packageName": "memorable-moniker",
+  "email": "mmkal@users.noreply.github.com"
+}
