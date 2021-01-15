@@ -63,6 +63,7 @@ type ReadonlyEquivalent<X, Y> = Extends<
 
 export type Extends<L, R> = IsNever<L> extends true ? IsNever<R> : L extends R ? true : false
 export type StrictExtends<L, R> = Extends<DeepBrand<L>, DeepBrand<R>>
+export type GuardedType<T> = ((v: any, ...args: any[]) => v is T) | ((v: any, ...args: any[]) => asserts v is T);
 
 export type Equal<Left, Right> = And<[StrictExtends<Left, Right>, StrictExtends<Right, Left>]>
 
@@ -113,6 +114,12 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : never
+  guardedType: Actual extends GuardedType<infer R> ?
+    // Guard methods `(v: any) => asserts v is T` does not actually defines a return type. Thus, any function taking 1 argument matches the signature before.
+    // In case the inferred assertion type `R` could not be determined (so, `unknown`), consider the function as a non-guard, and return a `never` type.
+    // See https://github.com/microsoft/TypeScript/issues/34636
+    unknown extends R ? never :
+    ExpectTypeOf<R, B> : never
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
@@ -153,6 +160,7 @@ export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectType
     'items',
     'constructorParameters',
     'instance',
+    'guardedType',
   ] as const
   type Keys = keyof ExpectTypeOf<any, any>
 

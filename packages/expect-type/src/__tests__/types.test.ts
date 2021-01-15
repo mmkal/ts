@@ -83,6 +83,13 @@ test('constructor params', () => {
   expectTypeOf<a.ConstructorParams<typeof Date>>().toEqualTypeOf<[] | [string | number | Date]>()
 })
 
+test('guarded type', () => {
+    expectTypeOf<(v: any) => v is string>().guardedType.toEqualTypeOf<string>();
+    expectTypeOf<(v: any) => asserts v is number>().guardedType.toEqualTypeOf<number>();
+    // @ts-expect-error
+    expectTypeOf<(v: any) => boolean>().guardedType.toBeNever();
+})
+
 test('parity with IsExact from conditional-type-checks', () => {
   // lifted from https://github.com/dsherret/conditional-type-checks/blob/01215056e8b97a28c5b0311b42ed48c70c8723fe/tests.ts#L18-L63
 
