@@ -274,6 +274,20 @@ const twoArgFunc = (a: number, b: string) => ({a, b})
 expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
 ```
 
+You can also check type guards & type assertions:
+
+```typescript
+const assertNumber = (v: any): asserts v is number => {
+  if (typeof v !== 'number') {
+    throw new TypeError('Nope !')
+  }
+}
+expectTypeOf(assertNumber).asserts.toBeNumber()
+
+const isError = (v: any): v is string => typeof v === 'string'
+expectTypeOf(isError).guards.toBeString()
+```
+
 Assert on constructor parameters:
 
 ```typescript

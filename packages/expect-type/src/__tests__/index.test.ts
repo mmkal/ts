@@ -183,6 +183,18 @@ test('More examples of ways to work with functions - parameters using `.paramete
   expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
 })
 
+test('You can also check type guards & type assertions', () => {
+  const assertNumber = (v: any): asserts v is number => {
+    if (typeof v !== 'number') {
+      throw new TypeError('Nope !')
+    }
+  }
+  expectTypeOf(assertNumber).asserts.toBeNumber()
+
+  const isError = (v: any): v is string => typeof v === 'string'
+  expectTypeOf(isError).guards.toBeString()
+})
+
 test('Assert on constructor parameters', () => {
   expectTypeOf(Date).toBeConstructibleWith('1970')
   expectTypeOf(Date).toBeConstructibleWith(0)
