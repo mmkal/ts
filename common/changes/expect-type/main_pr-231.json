@@ -1,7 +1,7 @@
 {
   "changes": [
     {
-      "comment": "feat(expect-type): add guardedType getter (#231) - @GerkinDev",
+      "comment": "feat(expect-type): add `guards` & `asserts` getters (#231) - @GerkinDev",
       "type": "minor",
       "packageName": "expect-type"
     }
