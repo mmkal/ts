@@ -1,4 +1,5 @@
 import {Type, union, Props, nullType, undefined as undefinedType, intersection, partial, type, mixed} from 'io-ts'
+// eslint-disable-next-line @typescript-eslint/no-duplicate-imports
 import * as t from 'io-ts'
 import {pipe} from 'fp-ts/lib/function'
 import * as E from 'fp-ts/lib/Either'

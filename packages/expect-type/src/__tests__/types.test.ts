@@ -1,5 +1,6 @@
 import * as a from '..'
-import {expectTypeOf} from '..'
+
+const {expectTypeOf} = a
 
 test('boolean type logic', () => {
   expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
