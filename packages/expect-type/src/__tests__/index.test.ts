@@ -191,8 +191,8 @@ test('You can also check type guards & type assertions', () => {
   }
   expectTypeOf(assertNumber).asserts.toBeNumber()
 
-  const isError = (v: any): v is string => typeof v === 'string'
-  expectTypeOf(isError).guards.toBeString()
+  const isString = (v: any): v is string => typeof v === 'string'
+  expectTypeOf(isString).guards.toBeString()
 })
 
 test('Assert on constructor parameters', () => {

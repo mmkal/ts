@@ -284,8 +284,8 @@ const assertNumber = (v: any): asserts v is number => {
 }
 expectTypeOf(assertNumber).asserts.toBeNumber()
 
-const isError = (v: any): v is string => typeof v === 'string'
-expectTypeOf(isError).guards.toBeString()
+const isString = (v: any): v is string => typeof v === 'string'
+expectTypeOf(isString).guards.toBeString()
 ```
 
 Assert on constructor parameters:
