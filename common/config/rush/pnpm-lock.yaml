@@ -88,7 +88,7 @@ importers:
       '@types/lodash': 4.14.165
       expect-type: 'link:../expect-type'
       js-yaml: 3.14.1
-      lodash: 4.17.20
+      lodash: 4.17.21
     specifiers:
       '@mmkal/rig': 'workspace:*'
       '@types/js-yaml': 3.12.5
@@ -97,7 +97,7 @@ importers:
       fp-ts: ^2.1.0
       io-ts: ^2.2.4
       js-yaml: 3.14.1
-      lodash: 4.17.20
+      lodash: 4.17.21
   ../../packages/memorable-moniker:
     dependencies:
       seedrandom: 3.0.5
@@ -106,13 +106,13 @@ importers:
       '@types/lodash': 4.14.165
       '@types/seedrandom': 2.4.28
       expect-type: 'link:../expect-type'
-      lodash: 4.17.20
+      lodash: 4.17.21
     specifiers:
       '@mmkal/rig': 'workspace:*'
       '@types/lodash': 4.14.165
       '@types/seedrandom': 2.4.28
       expect-type: 'workspace:*'
-      lodash: 4.17.20
+      lodash: 4.17.21
       seedrandom: ^3.0.5
   ../../tools/rig:
     dependencies:
@@ -136,7 +136,7 @@ importers:
       find-up: 5.0.0
       jest: 26.6.3
       js-yaml: 3.14.1
-      lodash: 4.17.20
+      lodash: 4.17.21
       prettier: 2.2.1
       rimraf: 3.0.2
       sort-package-json: 1.48.0
@@ -173,7 +173,7 @@ importers:
       find-up: 5.0.0
       jest: 26.6.3
       js-yaml: 3.14.1
-      lodash: 4.17.20
+      lodash: 4.17.21
       prettier: 2.2.1
       rimraf: 3.0.2
       sort-package-json: 1.48.0
@@ -5015,6 +5015,9 @@ packages:
   /lodash/4.17.20:
     resolution:
       integrity: sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+  /lodash/4.17.21:
+    resolution:
+      integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
   /lru-cache/5.1.1:
     dependencies:
       yallist: 3.1.1
