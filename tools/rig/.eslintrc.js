@@ -53,6 +53,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/prefer-reduce-type-parameter': 'off',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/non-nullable-type-assertion-style': 'off',
 
     '@typescript-eslint/no-unused-vars': [
       'off',
@@ -148,6 +150,7 @@ module.exports = {
       files: ['**/*.md'],
       rules: {
         'unicorn/filename-case': 'off',
+        'prettier/prettier': 'off',
       },
     },
   ],

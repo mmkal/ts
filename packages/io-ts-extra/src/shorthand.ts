@@ -47,7 +47,7 @@ export type Shorthand<V extends ShorthandInput> = V extends string | number | bo
   ? t.TupleC<[Shorthand<V[1][0]>, Shorthand<V[1][1]>, Shorthand<V[1][2]>, Shorthand<V[1][3]>]>
   : V extends t.Type<any, any, any>
   ? V
-  : V extends {[K: string]: any}
+  : V extends Record<string, any>
   ? t.TypeC<{[K in keyof V]: Shorthand<V[K]>}>
   : never
 

@@ -6,6 +6,9 @@ import * as eslint from 'eslint'
 import * as presetsModule from './presets'
 import expect from 'expect'
 
+// todo: run prettier on output, if found
+// todo: codegen/fs rule. type fs.anything and it generates an import for fs. same for path and os.
+
 type MatchAll = (text: string, pattern: string | RegExp) => Iterable<NonNullable<ReturnType<string['match']>>>
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matchAll: MatchAll = require('string.prototype.matchall')
@@ -88,7 +91,7 @@ const codegen: eslint.Rule.RuleModule = {
         )
         if (!endMatch) {
           const afterStartMatch = startIndex + startMatch[0].length
-          return context.report({
+          context.report({
             message: `couldn't find end marker (expected regex ${markers.end})`,
             loc: startMarkerLoc,
             fix: fixer =>
@@ -97,13 +100,15 @@ const codegen: eslint.Rule.RuleModule = {
                 os.EOL + markers.end.source.replace(/\\/g, '')
               ),
           })
+          return
         }
         const maybeOptions = tryCatch(
           () => jsYaml.safeLoad(startMatch[1]) as Record<string, unknown>,
           err => err
         )
         if (maybeOptions._tag === 'Left') {
-          return context.report({message: `Error parsing options. ${maybeOptions.left}`, loc: startMarkerLoc})
+          context.report({message: `Error parsing options. ${maybeOptions.left}`, loc: startMarkerLoc})
+          return
         }
         const opts = maybeOptions.right || {}
         const presets: Record<string, presetsModule.Preset<unknown> | undefined> = {
@@ -112,10 +117,11 @@ const codegen: eslint.Rule.RuleModule = {
         }
         const preset = typeof opts?.preset === 'string' && presets[opts.preset]
         if (typeof preset !== 'function') {
-          return context.report({
+          context.report({
             message: `unknown preset ${opts.preset}. Available presets: ${Object.keys(presets).join(', ')}`,
             loc: startMarkerLoc,
           })
+          return
         }
 
         const range: eslint.AST.Range = [startIndex + startMatch[0].length + os.EOL.length, endMatch.index!]
@@ -131,14 +137,15 @@ const codegen: eslint.Rule.RuleModule = {
         )
 
         if (result._tag === 'Left') {
-          return context.report({message: result.left, loc: startMarkerLoc})
+          context.report({message: result.left, loc: startMarkerLoc})
+          return
         }
         const expected = result.right
         try {
           expect(normalise(existingContent)).toBe(normalise(expected))
         } catch (e: unknown) {
           const loc = {start: position(range[0]), end: position(range[1])}
-          return context.report({
+          context.report({
             message: `content doesn't match: ${e}`,
             loc,
             fix: fixer => fixer.replaceTextRange(range, normalise(expected) + os.EOL),

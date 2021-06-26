@@ -259,7 +259,7 @@ Generates a yaml config for the [GitHub Pull Request Labeler Action](https://git
 
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/presets/custom.ts, export: custom} -->
-#### [custom](./src/presets/custom.ts#L26)
+#### [custom](./src/presets/custom.ts#L28)
 
 Define your own codegen function, which will receive all options specified. Import the `Preset` type from this library to define a strongly-typed preset function:
 
@@ -279,10 +279,12 @@ This can be used with:
 
 ##### Params
 
-|name  |description                                                                       |
-|------|----------------------------------------------------------------------------------|
-|source|Relative path to the module containing the custom preset                          |
-|export|The name of the export. If omitted, the module itself should be a preset function.|
+|name   |description                                                                                                                       |
+|-------|----------------------------------------------------------------------------------------------------------------------------------|
+|source |Relative path to the module containing the custom preset.                                                                         |
+|export |The name of the export. If omitted, the module itself should be a preset function.                                                |
+|require|A module to load before `source`. If not set, defaults to `ts-node/register/transpile-only` for typescript sources.               |
+|dev    |Set to `true` to clear the require cache for `source` before loading. Allows editing the function without requiring an IDE reload.|
 <!-- codegen:end -->
 
 ##### Demo
