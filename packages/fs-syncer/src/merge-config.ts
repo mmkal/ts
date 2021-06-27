@@ -29,9 +29,6 @@ export const mergeObjects = (left: any, right: any): any => {
  * "wins" when a property that can't be merged (primitives, arrays etc.) is found in both.
  */
 export const mergeJsonConfigs: MergeStrategy = params => {
-  if (params.filepath.endsWith('.ts')) {
-    console.log({params})
-  }
   if (!params.filepath.endsWith('.json')) {
     return params.targetContent || params.existingContent
   }

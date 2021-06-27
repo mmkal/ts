@@ -103,19 +103,6 @@ export const createFSSyncer = <T extends object>({
     return syncer
   }
 
-  const add = (relativePath: string, content: string) => {
-    const route = relativePath.split(/[/\\]/)
-    let parent: any = targetState
-    for (const segment of route.slice(0, -1)) {
-      parent[segment] = parent[segment] ?? {}
-      parent = parent[segment]
-      if (typeof parent === 'string') {
-        throw new TypeError(`Can't overwrite file with folder`)
-      }
-    }
-    parent[route.length - 1] = content
-  }
-
   const syncer = {read, yaml, write, sync, targetState, baseDir}
 
   return syncer
