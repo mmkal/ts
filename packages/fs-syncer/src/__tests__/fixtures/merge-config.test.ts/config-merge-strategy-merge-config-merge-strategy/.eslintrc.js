@@ -1,1 +1,0 @@
-module.exports = require('@your-company/shared-configs/eslint-config')
