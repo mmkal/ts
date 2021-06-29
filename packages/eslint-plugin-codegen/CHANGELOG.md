@@ -1,6 +1,20 @@
 # Change Log - eslint-plugin-codegen
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Tue, 29 Jun 2021 08:48:24 GMT and should not be manually modified.
+
+## 0.15.0
+Tue, 29 Jun 2021 08:48:24 GMT
+
+### Minor changes
+
+- Run typescript in custom codegen script (#228)
+
+### Patches
+
+- fix: disambiguate barrelled imports (#222)
+- chore(deps): update devdependencies (#203) - @renovate[bot]
+- fix(deps): update dependency @babel/generator to ~7.12.0 (#210) - @renovate[bot]
+- chore(deps): pin dependency eslint to 7.15.0 (#224) - @renovate[bot]
 
 ## 0.14.3
 Thu, 03 Dec 2020 19:10:22 GMT
