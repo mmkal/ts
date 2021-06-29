@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "feat(fs-syncer): jest helper (#238)",
+      "type": "minor",
+      "packageName": "fs-syncer"
+    }
+  ],
+  "packageName": "fs-syncer",
+  "email": "mmkal@users.noreply.github.com"
+}

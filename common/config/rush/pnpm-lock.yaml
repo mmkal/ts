@@ -74,10 +74,14 @@ importers:
   ../../packages/fs-syncer:
     devDependencies:
       '@mmkal/rig': 'link:../../tools/rig'
+      '@types/lodash': 4.14.165
       expect-type: 'link:../expect-type'
+      lodash: 4.17.21
     specifiers:
       '@mmkal/rig': 'workspace:*'
+      '@types/lodash': ~4.14.165
       expect-type: 'workspace:*'
+      lodash: ~4.17.20
   ../../packages/io-ts-extra:
     dependencies:
       fp-ts: 2.9.0

@@ -13,3 +13,49 @@ export const getPaths = (obj: unknown, route: Route = []): Route[] => {
 
   return ([] as Route[]).concat(...newRoutes)
 }
+
+/** Along the lines of https://github.com/tc39/proposal-string-dedent */
+export const dedent = (str: string) => {
+  const lines = str.split('\n')
+  if (lines.length === 1 || lines[0]) {
+    return str
+  }
+  lines.shift()
+  if (lines[lines.length - 1].trim() === '') {
+    lines[lines.length - 1] = ''
+  }
+
+  const commonMargin =
+    lines.filter(Boolean).reduce((common, next) => {
+      const lineMargin = next.split(/\S/)[0]
+      if (typeof common === 'string') {
+        return lineMargin.startsWith(common) ? common : common.startsWith(lineMargin) ? lineMargin : ''
+      }
+      return lineMargin
+    }, null as string | null) || ''
+
+  return lines.map(line => line.replace(commonMargin, '')).join('\n')
+}
+
+/** Dedupes a string array while preserving original ordering */
+export const uniq = (array: string[]) => {
+  const set = new Set<string>()
+  return array.filter(item => {
+    if (set.has(item)) {
+      return false
+    }
+    set.add(item)
+    return true
+  })
+}
+
+export const tryCatch = <T, U = undefined>(
+  fn: () => T,
+  onError: (error: unknown) => U = () => (undefined as any) as U
+) => {
+  try {
+    return fn()
+  } catch (e: unknown) {
+    return onError(e)
+  }
+}

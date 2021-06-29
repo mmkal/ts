@@ -1,6 +1,6 @@
 {
   "name": "fs-syncer",
-  "version": "0.3.3",
+  "version": "0.3.4-next.2",
   "keywords": [
     "fs",
     "file",
@@ -27,10 +27,13 @@
     "lint": "rig eslint --cache .",
     "prepack": "npm run lint && rig permalink",
     "postpack": "rig unpermalink && git status",
+    "pretest": "rig rimraf src/__tests__/generated && rig rimraf src/__tests__/fixtures",
     "test": "rig jest"
   },
   "devDependencies": {
     "@mmkal/rig": "workspace:*",
-    "expect-type": "workspace:*"
+    "expect-type": "workspace:*",
+    "@types/lodash": "~4.14.165",
+    "lodash": "~4.17.20"
   }
 }
