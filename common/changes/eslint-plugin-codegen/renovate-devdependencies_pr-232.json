@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore(deps): update devdependencies (#232) - @renovate[bot]",
+      "type": "patch",
+      "packageName": "eslint-plugin-codegen"
+    }
+  ],
+  "packageName": "eslint-plugin-codegen",
+  "email": "renovate[bot]@users.noreply.github.com"
+}

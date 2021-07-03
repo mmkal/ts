@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "chore(deps): update devdependencies (#232) - @renovate[bot]",
+      "type": "patch",
+      "packageName": "io-ts-extra"
+    }
+  ],
+  "packageName": "io-ts-extra",
+  "email": "renovate[bot]@users.noreply.github.com"
+}

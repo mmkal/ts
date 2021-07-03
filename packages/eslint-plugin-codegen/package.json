@@ -48,7 +48,7 @@
     "string.prototype.matchall": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/types": "7.12.11",
+    "@babel/types": "7.12.12",
     "@mmkal/rig": "workspace:*",
     "@types/babel__generator": "7.6.2",
     "@types/babel__traverse": "7.11.0",
@@ -56,13 +56,13 @@
     "@types/eslint": "7.2.6",
     "@types/glob": "7.1.3",
     "@types/js-yaml": "3.12.5",
-    "@types/lodash": "4.14.165",
+    "@types/lodash": "4.14.167",
     "@types/minimatch": "3.0.3",
     "dedent": "0.7.0",
     "expect-type": "workspace:*",
     "minimatch": "3.0.4",
     "read-pkg-up": "7.0.1",
-    "eslint": "7.15.0",
+    "eslint": "7.17.0",
     "ts-node": "9.1.1"
   }
 }
