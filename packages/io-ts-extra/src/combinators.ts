@@ -168,7 +168,7 @@ export const strict = <P extends Props>(props: P, name?: string) => {
       }
       const stricterProps = Object.keys(val).reduce<Props>(
         (acc, next) => ({...acc, [next]: props[next] || t.undefined}),
-        {}
+        props
       )
       return sparseType(stricterProps as typeof props).validate(val, ctx)
     },
