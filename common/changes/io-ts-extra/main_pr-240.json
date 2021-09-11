@@ -1,8 +1,8 @@
 {
   "changes": [
     {
-      "comment": "Make strict combinator check for missing values (#240) - @jpdenford",
-      "type": "minor",
+      "comment": "fix: make strict combinator check for missing values (#240) - @jpdenford",
+      "type": "patch",
       "packageName": "io-ts-extra"
     }
   ],
