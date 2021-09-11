@@ -2,6 +2,23 @@
   "name": "eslint-plugin-codegen",
   "entries": [
     {
+      "version": "0.16.1",
+      "tag": "eslint-plugin-codegen_v0.16.1",
+      "date": "Sat, 11 Sep 2021 16:56:57 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: make read-pkg-up a prod dependency (#243)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"io-ts-extra\" to `0.11.6`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.15.0",
       "tag": "eslint-plugin-codegen_v0.15.0",
       "date": "Tue, 29 Jun 2021 08:48:24 GMT",

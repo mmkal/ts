@@ -2,6 +2,18 @@
   "name": "io-ts-extra",
   "entries": [
     {
+      "version": "0.11.6",
+      "tag": "io-ts-extra_v0.11.6",
+      "date": "Sat, 11 Sep 2021 16:56:57 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: make strict combinator check for missing values (#240) - @jpdenford"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.11.4",
       "tag": "io-ts-extra_v0.11.4",
       "date": "Tue, 29 Jun 2021 08:48:24 GMT",
