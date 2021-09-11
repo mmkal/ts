@@ -45,7 +45,8 @@
     "io-ts-extra": "workspace:*",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15",
-    "string.prototype.matchall": "^4.0.2"
+    "string.prototype.matchall": "^4.0.2",
+    "read-pkg-up": "^7.0.1"
   },
   "devDependencies": {
     "@babel/types": "7.12.11",
@@ -61,7 +62,6 @@
     "dedent": "0.7.0",
     "expect-type": "workspace:*",
     "minimatch": "3.0.4",
-    "read-pkg-up": "7.0.1",
     "eslint": "7.15.0",
     "ts-node": "9.1.1"
   }
