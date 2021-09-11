@@ -17,7 +17,7 @@ export interface RushJson {
 }
 
 export const getRushJson = (): {directory: string; rush: RushJson} => {
-  const rushJsonPath = findUp.sync('rush.json') as string
+  const rushJsonPath = findUp.sync('rush.json')!
   return {
     directory: path.dirname(rushJsonPath),
     rush: ESON.parse(fs.readFileSync(rushJsonPath).toString()),

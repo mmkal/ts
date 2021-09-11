@@ -113,6 +113,15 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : never
+  guards: Actual extends (v: any, ...args: any[]) => v is infer T ? ExpectTypeOf<T, B> : never
+  asserts: Actual extends (v: any, ...args: any[]) => asserts v is infer T
+    ? // Guard methods `(v: any) => asserts v is T` does not actually defines a return type. Thus, any function taking 1 argument matches the signature before.
+      // In case the inferred assertion type `R` could not be determined (so, `unknown`), consider the function as a non-guard, and return a `never` type.
+      // See https://github.com/microsoft/TypeScript/issues/34636
+      unknown extends T
+      ? never
+      : ExpectTypeOf<T, B>
+    : never
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
@@ -153,6 +162,8 @@ export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectType
     'items',
     'constructorParameters',
     'instance',
+    'guards',
+    'asserts',
   ] as const
   type Keys = keyof ExpectTypeOf<any, any>
 

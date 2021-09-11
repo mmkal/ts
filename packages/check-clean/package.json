@@ -1,6 +1,6 @@
 {
   "name": "check-clean",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A cli tool to make sure you have no git changes",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
     "build": "rig tsc -p .",
     "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
-    "prepack": "npm run lint && rig permalink",
+    "prepack": "rushx lint && rig permalink",
     "postpack": "rig unpermalink && git status",
     "test": "rig jest"
   },

@@ -9,20 +9,20 @@ test('Nicknames/handles', () => {
   const samples = range(0, 15).map(() => generator.next())
   expect(samples).toMatchInlineSnapshot(`
     Array [
-      "excited-goosander",
+      "excited-goose",
       "emphatic-sardine",
       "energetic-mosquito",
-      "delightful-dog",
-      "merry-hare",
+      "delightful-dogfish",
+      "merry-hawk",
       "praiseworthy-falcon",
       "amiable-curlew",
       "vigorous-pony",
-      "fabulous-elephant-seal",
-      "cheery-cobra",
-      "respectable-heron",
+      "fabulous-elk",
+      "cheery-cockroach",
+      "respectable-herring",
       "comfortable-tamarin",
       "sincere-rabbit",
-      "kind-mandrill",
+      "kind-marmoset",
       "extraordinary-pony",
     ]
   `)
@@ -170,10 +170,10 @@ test('Use a custom formatter to complex outputs', () => {
   expectTypeOf(result).toEqualTypeOf<{joined: string; parts: string[]}>()
   expect(result).toMatchInlineSnapshot(`
     Object {
-      "joined": "superb.capybara",
+      "joined": "superb.caracal",
       "parts": Array [
         "superb",
-        "capybara",
+        "caracal",
       ],
     }
   `)

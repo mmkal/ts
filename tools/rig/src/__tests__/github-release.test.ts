@@ -21,6 +21,7 @@ const getMockReleaseParams = () =>
     },
     logger: {
       info: jest.fn(),
+      error: jest.fn(),
     },
   })
 
@@ -51,9 +52,19 @@ test('local', async () => {
 
   await createGitHubRelease(withTags)
 
-  expect(withTags.logger?.info).toHaveBeenCalledTimes(2)
+  expect(withTags.logger?.info).toHaveBeenCalledTimes(1)
   expect(withTags.logger?.info).toHaveBeenCalledWith('releasing', [])
-  expect(withTags.logger?.info).toHaveBeenCalledWith('released', [])
+})
+
+test('release failure', async () => {
+  jest.spyOn(childProcess, 'execSync').mockReturnValue(Buffer.from('some-pkg_v2\nother-pkg-v3'))
+
+  const params = getMockReleaseParams()
+  params.github.repos.createRelease.mockRejectedValue(Error('GitHub failure of some sort'))
+
+  await createGitHubRelease(params)
+
+  expect(params.logger?.error).toHaveBeenCalledWith('failed to release', expect.any(Error))
 })
 
 test('create release', async () => {

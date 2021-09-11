@@ -1,6 +1,14 @@
 # Change Log - io-ts-extra
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Tue, 29 Jun 2021 08:48:24 GMT and should not be manually modified.
+
+## 0.11.4
+Tue, 29 Jun 2021 08:48:24 GMT
+
+### Patches
+
+- chore(deps): update devdependencies (#203) - @renovate[bot]
+- fix(deps): update dependency lodash to v4.17.21 [security] (#236) - @renovate[bot]
 
 ## 0.11.3
 Thu, 03 Dec 2020 19:10:22 GMT

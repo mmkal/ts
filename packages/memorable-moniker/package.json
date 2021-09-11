@@ -1,6 +1,6 @@
 {
   "name": "memorable-moniker",
-  "version": "0.3.3",
+  "version": "0.5.0",
   "keywords": [
     "word",
     "words",
@@ -31,7 +31,7 @@
     "build": "rig tsc -p .",
     "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
-    "prepack": "npm run lint && rig permalink",
+    "prepack": "rushx lint && rig permalink",
     "postpack": "rig unpermalink && git status",
     "test": "rig jest"
   },
@@ -40,9 +40,9 @@
   },
   "devDependencies": {
     "@mmkal/rig": "workspace:*",
-    "@types/lodash": "4.14.161",
+    "@types/lodash": "4.14.165",
     "@types/seedrandom": "2.4.28",
     "expect-type": "workspace:*",
-    "lodash": "4.17.20"
+    "lodash": "^4.17.15"
   }
 }

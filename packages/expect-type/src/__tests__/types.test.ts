@@ -1,5 +1,6 @@
 import * as a from '..'
-import {expectTypeOf} from '..'
+
+const {expectTypeOf} = a
 
 test('boolean type logic', () => {
   expectTypeOf<a.And<[true, true]>>().toEqualTypeOf<true>()
@@ -81,6 +82,15 @@ test('constructor params', () => {
 
   // workaround:
   expectTypeOf<a.ConstructorParams<typeof Date>>().toEqualTypeOf<[] | [string | number | Date]>()
+})
+
+test('guarded & asserted types', () => {
+  expectTypeOf<(v: any) => v is string>().guards.toBeString()
+  expectTypeOf<(v: any) => asserts v is number>().asserts.toBeNumber()
+  // @ts-expect-error
+  expectTypeOf<(v: any) => boolean>().guards.toBeAny()
+  // @ts-expect-error
+  expectTypeOf<(v: any) => boolean>().asserts.toBeAny()
 })
 
 test('parity with IsExact from conditional-type-checks', () => {

@@ -1,11 +1,11 @@
 {
   "changes": [
     {
-      "comment": "chore(deps): pin dependency eslint to 7.15.0 (#224) - @renovate[bot]",
+      "comment": "fix: make read-pkg-up a prod dependency (#243)",
       "type": "patch",
       "packageName": "eslint-plugin-codegen"
     }
   ],
   "packageName": "eslint-plugin-codegen",
-  "email": "renovate[bot]@users.noreply.github.com"
+  "email": "mmkal@users.noreply.github.com"
 }
