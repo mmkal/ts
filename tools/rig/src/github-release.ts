@@ -63,9 +63,10 @@ export const createGitHubRelease = async ({context, github, logger = console}: C
   logger.info('releasing', allReleaseParams)
   for (const params of allReleaseParams) {
     try {
+      // eslint-disable-next-line no-await-in-loop
       const r = await github.repos.createRelease(params)
       logger.info('released', r.data)
-    } catch (e) {
+    } catch (e: unknown) {
       logger.error('failed to release', e)
     }
   }
