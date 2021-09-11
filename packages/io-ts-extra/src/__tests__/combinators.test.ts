@@ -102,6 +102,7 @@ test('strict', () => {
   const Person = strict({name: t.string, age: t.number})
 
   expectRight(Person.decode({name: 'Alice', age: 30}))
+  expectLeft(Person.decode({name: 'Alice'}))
   expectLeft(Person.decode({name: 'Bob', age: 30, unexpectedProp: 'abc'}))
   expectRight(Person.decode({name: 'Bob', age: 30, unexpectedProp: undefined}))
 
