@@ -21,12 +21,14 @@ export type Resolved<T> = T extends Awaitable<infer X> ? X : never;
 /** Union of fp-ts types that can be coerced safely into a "super-either" */
 export type Eitherable<L, R> = O.Option<R> | E.Either<L, R> | IOE.IOEither<L, R> | TE.TaskEither<L, R>;
 
-export interface TaggedError<T, Op> extends Error {
+export interface TaggedError<T> extends Error {
   message: string;
   stack: string;
   tag: T;
-  op: Op;
+  op: any;
 }
+
+type ErrorTag<T> = T extends TaggedError<infer X> ? X : unknown
 
 /**
  * Returns a usually-human-readable, usually-single-line string output for any input object
@@ -60,7 +62,7 @@ export const splat = (input: unknown) => {
 /**
  * Returns an error-tagging function, in exchange for a tag and an operation being performed.
  */
-export const tagError = <T, Op>(tag: T, op: Op) => (input: unknown): TaggedError<T, any> => {
+export const tagError = <T, Op>(tag: T, op: Op) => (input: unknown): TaggedError<T> => {
   const mutableError = input instanceof Error ? input : Error(`non-error left object found: ${input}`);
   return Object.assign(mutableError, {
     message: [mutableError.message, `[tag: ${tag}]`, op && `[op: ${splat(op)}]`].filter(Boolean).join(' '),
@@ -83,12 +85,15 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
   /** returns the same instance, but the compiler won't let you "widen" left types with `.chain`, or right types with `.orElse`/`.recover` */
   strict: SuperTE<L, R, L, R>;
 
+  /** returns the same instance, but the compiler will let you "widen" left types with `.chain`, or right types with `.orElse`/`.recover` */
+  loose: SuperTE<L, R, unknown, unknown>;
+
   /**
    * an overly-lazy helper which _returns_ a TaskEither. This is only necessary because prettier is annoying and puts chained
    * properties (as opposed to function calls) on the wrong line. If you want to return a TaskEither, use this.
    * If you want to _call_ the TaskEither to get a Promise, use `.value`.
    */
-  getTE: () => TE.TaskEither<L, R>;
+  lazy: () => TE.TaskEither<L, R>;
 
   /** equivalent to `Promise.prototype.then`. Use this if you don't expect `fn` to fail */
   map: <Next>(fn: (val: R) => Awaitable<Next>) => SuperTE<L, Next>;
@@ -104,7 +109,12 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     tag: Tag,
     fn: (val: R) => Awaitable<Next>,
     onError?: (e: unknown) => Error
-  ) => SuperTE<L | TaggedError<Tag, typeof fn>, Next>;
+  ) => SuperTE<L | TaggedError<Tag>, Next>;
+
+  tryBind: <Tag extends string, Next>(
+    tag: Tag,
+    fn: (val: R) => Awaitable<Next>
+  ) => SuperTE<L | TaggedError<Tag>, {[K in Tag]: Next}>
 
   /**
    * Similar to `Promise.all`. If `fn` returns an array of promises, they'll be `try-catch`ed, any error piping to `Left` and awaited
@@ -114,7 +124,7 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     tag: Tag,
     fn: (val: R) => Awaitable<Next>[],
     onError?: (e: unknown) => Error
-  ) => SuperTE<L | TaggedError<Tag, typeof fn>, Next[]>;
+  ) => SuperTE<L | TaggedError<Tag>, Next[]>;
 
   /**
    * like `.tryMapMany` or `Promise.all` but you can pass in a dictionary of promises, similar to fp-ts's `sequenceS`.
@@ -134,7 +144,7 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     tag: Tag,
     fn: (val: R) => Struct,
     onError?: (e: unknown) => Error
-  ) => SuperTE<L | TaggedError<Tag, typeof fn>, {[K in keyof Struct]: Resolved<Struct[K]>}>;
+  ) => SuperTE<L | TaggedError<Tag>, {[K in keyof Struct]: Resolved<Struct[K]>}>;
 
   /**
    * Filter a right into a `TaggedError` left if it fails to meet a condition
@@ -144,7 +154,7 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     tag: Tag,
     fn: (val: R) => boolean | unknown,
     onFalse?: (e: R) => Error
-  ) => SuperTE<L | TaggedError<Tag, typeof fn>, R>;
+  ) => SuperTE<L | TaggedError<Tag>, R>;
 
   /** **only applies to array types** convenience wrapper for `.tryMapMany(arr => arr.map(fn))` */
   tryMapEach: R extends Array<infer Item>
@@ -152,7 +162,7 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     tag: Tag,
     fn: (item: Item) => Awaitable<Next>,
     onError?: (e: unknown) => Error
-  ) => SuperTE<L | TaggedError<Tag, (item: Item) => Awaitable<Next>>, Next[]>
+  ) => SuperTE<L | TaggedError<Tag>, Next[]>
   : unknown;
 
   /** equivalent to fp-ts's Either.mapLeft, TaskEither.mapLeft, IOEither.mapLeft etc. */
@@ -165,7 +175,7 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
   tryMapEither: <Tag extends string, Next>(
     tag: Tag,
     fn: (val: E.Either<L, R>) => Awaitable<Next>
-  ) => SuperTE<TaggedError<Tag, typeof fn>, Next>;
+  ) => SuperTE<TaggedError<Tag>, Next>;
 
   /**
    * equivalent to fp-ts's `.chain` functions. Useful for composing with another function that returns an Option/Either/TaskEither/IOEither
@@ -191,8 +201,12 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
   /** like `.recover`, but re-uses the condition function as the recoverer. Falsy return values will result in no recovery */
   recoverTruthy<R2 extends RNext>(recoverer: (left: L) => R2 | null | undefined | false | ''): SuperTE<L, R | R2>;
 
+  recoverTagged: <E extends ErrorTag<L>, R2 extends RNext>(tag: E, recoverer: (left: Extract<L, {tag: E}>) => R2) => SuperTE<Exclude<L, {tag: E}>, R | R2>
+
+  /** Put the `R` value into a named property on an object */
   into<Key extends string>(key: Key): SuperTE<L, {[K in Key]: R}>;
   bind<Key extends string, RValue>(key: Key, fn: (right: R) => Awaitable<RValue>): SuperTE<L, R & {[K in Key]: RValue}>;
+
   exec(fn: (right: R) => Awaitable<unknown>): SuperTE<L, R>
 
   /** resolve the `right` value, or throw if `left` */
@@ -241,6 +255,8 @@ export const SuperTE: SuperTEStatic = {
       mapValues: (fn) => superTE.map(lodashFp.mapValues(fn)) as any,
       tryMap: (tag, fn, onError) =>
         superTE.chain((next) => tryCatchError(async () => fn(next), onError)).mapLeft(tagError(tag, fn)),
+      tryBind: (tag, fn) =>
+        superTE.tryMap(tag, fn).into(tag),
       tryMapMany: (tag, fn, onError) =>
         superTE.chain((next) => tryCatchError(async () => Promise.all(fn(next)), onError)).mapLeft(tagError(tag, fn)),
       tryMapStruct: (tag, fn, onError) =>
@@ -284,7 +300,7 @@ export const SuperTE: SuperTEStatic = {
       filter: (tag, fn, onFalse = (r: R) => Error(`filter returned false for {${splat(r)}}`)) =>
         superTE.map(E.right).chain(E.filterOrElse(flow(fn, Boolean), flow(onFalse, tagError(tag, fn)))),
       value: rawTE,
-      getTE: () => rawTE,
+      lazy: () => rawTE,
       recover: (condition, recoverer) =>
         superTE.orElse((left) => (condition(left) ? E.right(recoverer(left)) : E.left(left))),
       recoverTruthy: (recoverer) =>
@@ -292,6 +308,8 @@ export const SuperTE: SuperTEStatic = {
           const next = recoverer(left);
           return next ? E.right(next) : E.left(left);
         }),
+      recoverTagged: (tag, recoverer) =>
+        superTE.recover((e: unknown) => (e as TaggedError<any, any>).tag === tag, recoverer),
       into: key => superTE.map(val => ({[key]: val} as {[K in typeof key]: typeof val})),
       bind: (key, fn) => superTE.map(async val => {
         const newProp = await fn(val)

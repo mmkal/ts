@@ -232,9 +232,9 @@ test('hle', async () => {
 });
 
 test('error recovery', async () => {
-  type GoogleSearch = (query: string) => Promise<{results: string[]}>;
+  type Search = (query: string) => Promise<{results: string[]}>;
 
-  const getSearchResults = (search: GoogleSearch) => (query: string) =>
+  const getSearchResults = (search: Search) => (query: string) =>
     fp
       .start(query)
       .tryMap('googleSearch', search)
@@ -242,7 +242,7 @@ test('error recovery', async () => {
         (e) => e.tag === 'googleSearch',
         () => ({results: []})
       )
-      .getTE();
+      .lazy();
 
   const goodSearch = getSearchResults((q) => Promise.resolve({results: [`result for ${q}`]}));
   const badSearch = getSearchResults(() => Promise.reject(Error('Google is down')));
@@ -268,9 +268,9 @@ test('error recovery', async () => {
 });
 
 test('recoverTruthy', async () => {
-  type GoogleSearch = (query: string) => Promise<{results: string[]}>;
+  type Search = (query: string) => Promise<{results: string[]}>;
 
-  const getSearchResults = (search: GoogleSearch) => (query: string) =>
+  const getSearchResults = (search: Search) => (query: string) =>
     fp
       .start(query)
       .tryMap('googleSearch', search)
@@ -300,15 +300,61 @@ test('recoverTruthy', async () => {
   `);
 });
 
-test('error recovery type inference', async () => {
-  type GoogleSearch = (query: string) => Promise<{results: string[]}>;
+test('recoverTagged', async () => {
+  interface SearchResponse {
+    results: string[]
+  }
+  type Search = (query: string) => Promise<SearchResponse>;
 
-  const getSearchResults = (search: GoogleSearch) => (query: string) =>
+  const getSearchResults = (search: Search) => (query: string) =>
+    fp
+      .start({})
+      .tryBind('googleSearch', () => search(query))
+      .tryBind('bingSearch', () => search(query))
+      .strict.recoverTagged('bingSearch', left => {
+        expectTypeOf(left).toEqualTypeOf<fp.TaggedError<'bingSearch'>>()
+        return {}
+      })
+      .recoverTagged('googleSearch', left => {
+        expectTypeOf(left).toEqualTypeOf<fp.TaggedError<'googleSearch'>>()
+        return ['default result']
+      })
+      .value();
+
+  const goodSearch = getSearchResults((q) => Promise.resolve({results: [`result for ${q}`]}));
+  const badSearch = getSearchResults(() => Promise.reject(Error('Google is down')));
+
+  expectTypeOf(goodSearch).returns.resolves.toEqualTypeOf([''])
+
+  expect(await goodSearch('hello')).toMatchInlineSnapshot(`
+    Object {
+      "_tag": "Right",
+      "right": Object {
+        "results": Array [
+          "result for hello",
+        ],
+      },
+    }
+  `);
+  expect(await badSearch('hello')).toMatchInlineSnapshot(`
+    Object {
+      "_tag": "Right",
+      "right": Object {
+        "results": Array [],
+      },
+    }
+  `);
+});
+
+test('error recovery type inference', async () => {
+  type Search = (query: string) => Promise<{results: string[]}>;
+
+  const getSearchResults = (search: Search) => (query: string) =>
     fp
       .start(query)
       .tryMap('googleSearch', search)
       // @ts-expect-error (this test makes sure that e.tag is strongly-typed as `'googleSearch'`)
-      .recoverTruthy((e) => e.tag === 'goggleSearch' && {results: []})
+      .recoverTruthy((e) => e.tag === 'goooooogleSearch' && {results: []})
       .value();
 
   const badSearch = getSearchResults(() => Promise.reject(Error('Google is down')));
@@ -357,7 +403,7 @@ test('strict chain', async () => {
       .tryMap('search', (q) => ({
         results: [`result for ${q}`],
       }))
-      .getTE();
+      .lazy();
 
   const analyseSearchResults = (r: {results: string[]}) =>
     fp
@@ -365,7 +411,7 @@ test('strict chain', async () => {
       .tryMap('analyse', ({results}) => ({
         analysis: results.map(({length}) => ({length})),
       }))
-      .getTE();
+      .lazy();
 
   const ok = await fp
     .start('hello')
@@ -543,7 +589,7 @@ test('get unsafely', async () => {
 test('is lazy', async () => {
   const mock = jest.fn();
   const mockTask1 = fp.start(123).map(mock).value;
-  const mockTask2 = fp.start(123).map(mock).getTE();
+  const mockTask2 = fp.start(123).map(mock).lazy();
 
   expect(mock).not.toHaveBeenCalled();
 
