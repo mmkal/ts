@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "path": "packages/eslint-plugin-codegen",
+      "name": "eslint-plugin-codegen"
+    },
+    {
+      "path": "packages/expect-type",
+      "name": "expect-type"
+    },
+    {
+      "path": "packages/fs-syncer",
+      "name": "fs-syncer"
+    },
+    {
+      "path": "packages/io-ts-extra",
+      "name": "io-ts-extra"
+    },
+    {
+      "path": ".",
+      "name": "root"
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "rush.json": "jsonc",
+      "command-line.json": "jsonc",
+      "common-versions.json": "jsonc",
+      "experiments.json": "jsonc",
+      "repo-state.json": "jsonc",
+      "version-policies.json": "jsonc",
+      "*.template": "yaml"
+    },
+    "editor.tabSize": 2,
+    "eslint.codeActionsOnSave.mode": "all",
+    "eslint.nodePath": "/c/Users/mkale/src/ts/tools/rig/node_modules",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    }
+  },
+  "extensions": {
+    "recommendations": ["dbaeumer.vscode-eslint", "mhutchie.git-graph", "eamodio.gitlens"]
+  }
+}
