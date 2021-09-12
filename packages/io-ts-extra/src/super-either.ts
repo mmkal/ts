@@ -21,11 +21,10 @@ export type Resolved<T> = T extends Awaitable<infer X> ? X : never;
 /** Union of fp-ts types that can be coerced safely into a "super-either" */
 export type Eitherable<L, R> = O.Option<R> | E.Either<L, R> | IOE.IOEither<L, R> | TE.TaskEither<L, R>;
 
-export interface TaggedError<T, Context = never> extends Error {
+export interface TaggedError<T> extends Error {
   message: string;
   stack: string;
   tag: T;
-  context: Context
 }
 
 type ErrorTag<T> = T extends TaggedError<infer X> ? X : unknown
@@ -62,7 +61,7 @@ export const splat = (input: unknown) => {
 /**
  * Returns an error-tagging function, in exchange for a tag and an operation being performed.
  */
-export const tagError = <T, Op>(tag: T, op: Op) => (input: unknown): TaggedError<T, {operation: Op}> => {
+export const tagError = <T, Op>(tag: T, op: Op) => (input: unknown): TaggedError<T> => {
   const mutableError = input instanceof Error ? input : Error(`non-error left object found: ${input}`);
   return Object.assign(mutableError, {
     message: [mutableError.message, `[tag: ${tag}]`, op && `[op: ${splat(op)}]`].filter(Boolean).join(' '),
@@ -121,12 +120,12 @@ export interface SuperTE<L, R, LNext = unknown, RNext = unknown> {
     tag: Tag,
     fn: (val: R) => Awaitable<Next>,
     onError?: (e: unknown) => Error
-  ) => SuperTE<L | TaggedError<Tag, {previous: R}>, Next>;
+  ) => SuperTE<L | TaggedError<Tag>, Next>;
 
   tryBind: <Tag extends string, Next>(
     tag: Tag,
     fn: (val: R) => Awaitable<Next>
-  ) => SuperTE<L | TaggedError<Tag, {previous: R}>, R & {[K in Tag]: Next}>
+  ) => SuperTE<L | TaggedError<Tag>, R & {[K in Tag]: Next}>
 
   /**
    * Similar to `Promise.all`. If `fn` returns an array of promises, they'll be `try-catch`ed, any error piping to `Left` and awaited
