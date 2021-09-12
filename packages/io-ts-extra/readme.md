@@ -194,7 +194,7 @@ Gets an io-ts codec from a shorthand input:
 ### Codecs/Combinators
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: sparseType} -->
-#### [sparseType](./src/combinators.ts#L40)
+#### [sparseType](./src/combinators.ts#L41)
 
 Can be used much like `t.type` from io-ts, but any property types wrapped with `optional` from this package need not be supplied. Roughly equivalent to using `t.intersection` with `t.type` and `t.partial`.
 
@@ -223,7 +223,7 @@ a type with `props` field, so the result can be introspected similarly to a type
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: optional} -->
-#### [optional](./src/combinators.ts#L14)
+#### [optional](./src/combinators.ts#L15)
 
 unions the passed-in type with `null` and `undefined`.
 <!-- codegen:end -->
@@ -281,7 +281,7 @@ IntFromString.decode(123)            // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: strict} -->
-#### [strict](./src/combinators.ts#L159)
+#### [strict](./src/combinators.ts#L160)
 
 Like `t.type`, but fails when any properties not specified in `props` are defined.
 
@@ -357,7 +357,7 @@ Similar to io-ts's PathReporter, but gives slightly less verbose output.
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: regexp} -->
-#### [regexp](./src/combinators.ts#L103)
+#### [regexp](./src/combinators.ts#L104)
 
 A type which validates its input as a string, then decodes with `String.prototype.match`, succeeding with the RegExpMatchArray result if a match is found, and failing if no match is found.
 
@@ -372,7 +372,7 @@ AllCaps.decode(123)      // left(...)
 <!-- codegen:end -->
 
 <!-- codegen:start {preset: markdownFromJsdoc, source: src/combinators.ts, export: instanceOf} -->
-#### [instanceOf](./src/combinators.ts#L85)
+#### [instanceOf](./src/combinators.ts#L86)
 
 Validates that a value is an instance of a class using the `instanceof` operator
 
