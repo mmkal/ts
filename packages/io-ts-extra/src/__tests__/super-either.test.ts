@@ -312,19 +312,20 @@ test('recoverTagged', async () => {
       .tryBind('googleSearch', () => search(query))
       .tryBind('bingSearch', () => search(query))
       .strict.recoverTagged('bingSearch', left => {
-        expectTypeOf(left).toEqualTypeOf<fp.TaggedError<'bingSearch'>>()
-        return {}
+        expectTypeOf(left).toMatchTypeOf<fp.TaggedError<'bingSearch', any>>()
+
+        return {
+          googleSearch: left.context.previous.googleSearch,
+          bingSearch: {results: []} as SearchResponse,
+        }
       })
-      .recoverTagged('googleSearch', left => {
-        expectTypeOf(left).toEqualTypeOf<fp.TaggedError<'googleSearch'>>()
-        return ['default result']
-      })
+      .map(x => x.bingSearch.results.concat(x.googleSearch.results))
       .value();
 
   const goodSearch = getSearchResults((q) => Promise.resolve({results: [`result for ${q}`]}));
   const badSearch = getSearchResults(() => Promise.reject(Error('Google is down')));
 
-  expectTypeOf(goodSearch).returns.resolves.toEqualTypeOf([''])
+  expectTypeOf(goodSearch).returns.resolves.toHaveProperty('right').toEqualTypeOf<undefined | string[]>()
 
   expect(await goodSearch('hello')).toMatchInlineSnapshot(`
     Object {
