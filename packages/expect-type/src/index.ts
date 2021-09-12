@@ -22,16 +22,16 @@ export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
  */
 type DeepBrand<T> = Or<[IsNever<T>, IsAny<T>, IsUnknown<T>]> extends true // avoid `any`/`unknown`/`never` matching
   ? {
-    type: 'special'
-    never: IsNever<T>
-    any: IsAny<T>
-    unknown: IsUnknown<T>
-  }
+      type: 'special'
+      never: IsNever<T>
+      any: IsAny<T>
+      unknown: IsUnknown<T>
+    }
   : T extends string | number | boolean | symbol | bigint | null | undefined
   ? {
-    type: 'primitive'
-    value: T
-  }
+      type: 'primitive'
+      value: T
+    }
   : T extends (...args: infer P) => infer R // avoid functions with different params/return values matching
   ? {
       type: 'function'
