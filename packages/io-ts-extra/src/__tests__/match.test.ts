@@ -84,6 +84,55 @@ describe('case matching', () => {
       .case({type: 'Customer'} as const, e => expectTypeOf(e.orders).toEqualTypeOf<string[]>())
   })
 
+  it('exhaustive matching types', () => {
+    type PersonAttributes = {name: string; age: number}
+    type Employee = PersonAttributes & {type: 'Employee'; employeeId: string}
+    type Customer = PersonAttributes & {type: 'Customer'; customerId: string; orders: string[]}
+    type Person = Employee | Customer
+
+    const partialIdentifierMatcher = matcher<Person>()
+      // break    
+      .case({type: 'Employee'} as const, e => e.employeeId)
+
+    expectTypeOf(partialIdentifierMatcher.get).not.toBeFunction()
+    expectTypeOf(partialIdentifierMatcher.get).toMatchTypeOf<{
+      _message: 'type union of inputs for cases does not match expected input type. try adding more case statements or use .default(...)'
+      _actual: {
+        type: 'Employee'
+      }
+      _expected: Person
+      _unhandled: Customer
+    }>()
+
+    expectTypeOf(partialIdentifierMatcher.tryGet).toBeFunction()
+    expectTypeOf(partialIdentifierMatcher.tryGet).parameters.toEqualTypeOf<[obj: Person]>()
+    expectTypeOf(partialIdentifierMatcher.tryGet).returns.toMatchTypeOf<{_tag: 'Left' | 'Right'}>()
+    expectTypeOf(partialIdentifierMatcher.tryGet)
+      .returns.extract<{_tag: 'Right'}>()
+      .toHaveProperty('right')
+      .toEqualTypeOf<string>()
+
+    const fullIdentifierMatcher = partialIdentifierMatcher
+      // break    
+      .case({type: 'Customer'} as const, c => c.customerId)
+
+    expectTypeOf(fullIdentifierMatcher.get).toBeFunction()
+    expectTypeOf(fullIdentifierMatcher.get).returns.toBeString()
+
+    const MessageTypes = {
+      email: 'email',
+      sms: 'sms',
+    } as const
+    const message = Math.random() < 0.5
+      ? {type: MessageTypes.email, subject: 'Hi', body: 'how are you'}
+      : {type: MessageTypes.sms, text: 'how r u'}
+
+    const body = match(message)
+      .case({type: 'email'} as const, m => m.subject + '\n\n' + m.body)
+      .case({type: 'sms'}, m => m.text)
+      .get()
+  })
+
   it('can use default', () => {
     const sound = match<MessageType>({from: '123', content: 'hello'})
       .case(Email, e => e.body)
