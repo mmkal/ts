@@ -91,7 +91,7 @@ describe('case matching', () => {
     type Person = Employee | Customer
 
     const partialIdentifierMatcher = matcher<Person>()
-      // break    
+      // break
       .case({type: 'Employee'} as const, e => e.employeeId)
 
     expectTypeOf(partialIdentifierMatcher.get).not.toBeFunction()
@@ -113,7 +113,7 @@ describe('case matching', () => {
       .toEqualTypeOf<string>()
 
     const fullIdentifierMatcher = partialIdentifierMatcher
-      // break    
+      // break
       .case({type: 'Customer'} as const, c => c.customerId)
 
     expectTypeOf(fullIdentifierMatcher.get).toBeFunction()
@@ -123,9 +123,10 @@ describe('case matching', () => {
       email: 'email',
       sms: 'sms',
     } as const
-    const message = Math.random() < 0.5
-      ? {type: MessageTypes.email, subject: 'Hi', body: 'how are you'}
-      : {type: MessageTypes.sms, text: 'how r u'}
+    const message =
+      Math.random() < 0.5
+        ? {type: MessageTypes.email, subject: 'Hi', body: 'how are you'}
+        : {type: MessageTypes.sms, text: 'how r u'}
 
     const body = match(message)
       .case({type: 'email'} as const, m => m.subject + '\n\n' + m.body)
