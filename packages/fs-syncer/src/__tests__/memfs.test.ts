@@ -3,9 +3,9 @@ import {createFSSyncer} from '..'
 import * as fs from 'fs'
 
 test('can use memfs', () => {
-  const vol = Volume.fromJSON({'root.txt': 'root'})
+  const vol = Volume.fromJSON({'/tmp/root.txt': 'root'})
   const syncer = createFSSyncer({
-    baseDir: 'this/should/not/be/created/on/the/real/filesystem',
+    baseDir: '/tmp/this/should/not/be/created/on/the/real/filesystem',
     targetState: {'one.txt': '1'},
     fs: vol,
   })
@@ -15,8 +15,8 @@ test('can use memfs', () => {
   expect(fs.existsSync(syncer.baseDir)).toBeFalsy()
   expect(vol.toJSON()).toMatchInlineSnapshot(`
     Object {
-      "/Users/mkale/src/ts/packages/fs-syncer/root.txt": "root",
-      "/Users/mkale/src/ts/packages/fs-syncer/this/should/not/be/created/on/the/real/filesystem/one.txt": "1
+      "/tmp/root.txt": "root",
+      "/tmp/this/should/not/be/created/on/the/real/filesystem/one.txt": "1
     ",
     }
   `)
