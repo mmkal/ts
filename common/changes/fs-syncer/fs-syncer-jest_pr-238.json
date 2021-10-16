@@ -1,7 +1,7 @@
 {
   "changes": [
     {
-      "comment": "feat(fs-syncer): jest helper (#238)",
+      "comment": "feat: jest helper, custom merger, jsonc parser, yaml stringifier (#238)",
       "type": "minor",
       "packageName": "fs-syncer"
     }
