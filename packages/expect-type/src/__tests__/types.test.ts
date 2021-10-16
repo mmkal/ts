@@ -82,6 +82,8 @@ test('constructor params', () => {
 
   // workaround:
   expectTypeOf<a.ConstructorParams<typeof Date>>().toEqualTypeOf<[] | [string | number | Date]>()
+
+  // todo: test that `class A { constructo(a: 1){} }` != `class B { constructor(b: 2){} }`
 })
 
 test('guarded & asserted types', () => {
