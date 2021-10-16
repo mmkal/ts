@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Fix constructor parameter comparison (#245)",
+      "type": "minor",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "mmkal@users.noreply.github.com"
+}
