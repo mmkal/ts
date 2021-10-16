@@ -4,12 +4,11 @@
 
 export const fsSyncerFileTreeMarker = Symbol('fs-syncer-marker')
 
-
 /**
  * Interface that's compatible with both `require('fs')` and a `memfs` volume.
  * Annoyingly, memfs doesn't strictly conform to the `fs` interface, it deals with
  * nullish values differently, etc.
- * 
+ *
  * Note: this only includes methods that this library actually uses.
  */
 export interface FSLike {
@@ -17,7 +16,9 @@ export interface FSLike {
   writeFileSync(path: string, content: string): void
   existsSync(filepath: string): boolean
   mkdirSync(path: string, opts?: {recursive?: boolean}): void
-  readdirSync: Function // memfs uses crazy generics here, just make sure some kinda function exists
+  // memfs uses crazy generics here, just make sure some kinda function exists
+  readdirSync(path: string, opts?: {encoding: any; withFileTypes?: false}): any[]
+  readdirSync(path: string, opts: {withFileTypes?: true}): any[]
   statSync(path: string): {isFile(): boolean}
   unlinkSync(path: string): void
 }
