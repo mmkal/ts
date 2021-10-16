@@ -274,6 +274,20 @@ const twoArgFunc = (a: number, b: string) => ({a, b})
 expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
 ```
 
+You can also check type guards & type assertions:
+
+```typescript
+const assertNumber = (v: any): asserts v is number => {
+  if (typeof v !== 'number') {
+    throw new TypeError('Nope !')
+  }
+}
+expectTypeOf(assertNumber).asserts.toBeNumber()
+
+const isString = (v: any): v is string => typeof v === 'string'
+expectTypeOf(isString).guards.toBeString()
+```
+
 Assert on constructor parameters:
 
 ```typescript
@@ -346,6 +360,34 @@ type E2 = {a: string; b: {c: string}}
 
 expectTypeOf<A2>().toMatchTypeOf<E2>()
 expectTypeOf<A2>().not.toEqualTypeOf<E2>()
+```
+
+Distinguish between classes with different constructors:
+
+```typescript
+class A {
+  value: number
+  constructor(a: 1) {
+    this.value = a
+  }
+}
+class B {
+  value: number
+  constructor(b: 2) {
+    this.value = b
+  }
+}
+
+expectTypeOf<typeof A>().not.toEqualTypeOf<typeof B>()
+
+class C {
+  value: number
+  constructor(c: 1) {
+    this.value = c
+  }
+}
+
+expectTypeOf<typeof A>().toEqualTypeOf<typeof C>()
 ```
 <!-- codegen:end -->
 

@@ -1,6 +1,6 @@
 {
   "name": "io-ts-extra",
-  "version": "0.11.3",
+  "version": "0.11.6",
   "keywords": [
     "typescript",
     "validation",
@@ -25,8 +25,8 @@
     "build": "rig tsc -p .",
     "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
-    "prepack": "npm run lint && rig permalink",
-    "postpack": "rig unpermalink && git status",
+    "prepack": "rig permalink",
+    "postpack": "rig unpermalink",
     "test": "rig jest"
   },
   "dependencies": {
@@ -38,7 +38,7 @@
     "@types/js-yaml": "3.12.5",
     "@types/lodash": "4.14.165",
     "expect-type": "workspace:*",
-    "js-yaml": "3.14.1",
-    "lodash": "4.17.21"
+    "js-yaml": "^3.14.0",
+    "lodash": "^4.17.15"
   }
 }

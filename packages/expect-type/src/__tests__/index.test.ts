@@ -183,6 +183,18 @@ test('More examples of ways to work with functions - parameters using `.paramete
   expectTypeOf(twoArgFunc).parameters.toEqualTypeOf<[number, string]>()
 })
 
+test('You can also check type guards & type assertions', () => {
+  const assertNumber = (v: any): asserts v is number => {
+    if (typeof v !== 'number') {
+      throw new TypeError('Nope !')
+    }
+  }
+  expectTypeOf(assertNumber).asserts.toBeNumber()
+
+  const isString = (v: any): v is string => typeof v === 'string'
+  expectTypeOf(isString).guards.toBeString()
+})
+
 test('Assert on constructor parameters', () => {
   expectTypeOf(Date).toBeConstructibleWith('1970')
   expectTypeOf(Date).toBeConstructibleWith(0)
@@ -239,4 +251,30 @@ test('Detect the difference between regular and readonly properties', () => {
 
   expectTypeOf<A2>().toMatchTypeOf<E2>()
   expectTypeOf<A2>().not.toEqualTypeOf<E2>()
+})
+
+test('Distinguish between classes with different constructors', () => {
+  class A {
+    value: number
+    constructor(a: 1) {
+      this.value = a
+    }
+  }
+  class B {
+    value: number
+    constructor(b: 2) {
+      this.value = b
+    }
+  }
+
+  expectTypeOf<typeof A>().not.toEqualTypeOf<typeof B>()
+
+  class C {
+    value: number
+    constructor(c: 1) {
+      this.value = c
+    }
+  }
+
+  expectTypeOf<typeof A>().toEqualTypeOf<typeof C>()
 })

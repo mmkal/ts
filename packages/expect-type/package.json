@@ -1,6 +1,6 @@
 {
   "name": "expect-type",
-  "version": "0.10.0",
+  "version": "0.13.0",
   "keywords": [
     "typescript",
     "type-check",
@@ -24,8 +24,8 @@
     "build": "rig tsc -p .",
     "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
-    "prepack": "npm run lint && rig permalink",
-    "postpack": "rig unpermalink && git status",
+    "prepack": "rig permalink",
+    "postpack": "rig unpermalink",
     "test": "rig jest"
   },
   "devDependencies": {

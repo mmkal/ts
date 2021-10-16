@@ -1,6 +1,23 @@
 # Change Log - memorable-moniker
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Sat, 16 Oct 2021 13:17:24 GMT and should not be manually modified.
+
+## 0.5.1
+Sat, 16 Oct 2021 13:17:24 GMT
+
+_Version update only_
+
+## 0.4.0
+Tue, 29 Jun 2021 08:48:24 GMT
+
+### Minor changes
+
+- Remove ass/donkey from animal dictionary (#230)
+
+### Patches
+
+- chore(deps): update devdependencies (#203) - @renovate[bot]
+- fix(deps): update dependency lodash to v4.17.21 [security] (#236) - @renovate[bot]
 
 ## 0.3.3
 Thu, 03 Dec 2020 19:10:22 GMT

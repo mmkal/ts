@@ -1,6 +1,6 @@
 {
   "name": "fs-syncer",
-  "version": "0.3.4-next.2",
+  "version": "0.3.7-next.2",
   "keywords": [
     "fs",
     "file",
@@ -25,8 +25,8 @@
     "build": "rig tsc -p .",
     "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
-    "prepack": "npm run lint && rig permalink",
-    "postpack": "rig unpermalink && git status",
+    "prepack": "rig permalink",
+    "postpack": "rig unpermalink",
     "pretest": "rig rimraf src/__tests__/generated && rig rimraf src/__tests__/fixtures",
     "test": "rig jest"
   },

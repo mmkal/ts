@@ -2,6 +2,43 @@
   "name": "memorable-moniker",
   "entries": [
     {
+      "version": "0.5.1",
+      "tag": "memorable-moniker_v0.5.1",
+      "date": "Sat, 16 Oct 2021 13:17:24 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.13.0`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.4.0",
+      "tag": "memorable-moniker_v0.4.0",
+      "date": "Tue, 29 Jun 2021 08:48:24 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Remove ass/donkey from animal dictionary (#230)"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "chore(deps): update devdependencies (#203) - @renovate[bot]"
+          },
+          {
+            "comment": "fix(deps): update dependency lodash to v4.17.21 [security] (#236) - @renovate[bot]"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.11.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.3",
       "tag": "memorable-moniker_v0.3.3",
       "date": "Thu, 03 Dec 2020 19:10:22 GMT",

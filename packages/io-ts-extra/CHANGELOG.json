@@ -2,6 +2,43 @@
   "name": "io-ts-extra",
   "entries": [
     {
+      "version": "0.11.6",
+      "tag": "io-ts-extra_v0.11.6",
+      "date": "Sat, 16 Oct 2021 13:17:24 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: make strict combinator check for missing values (#240) - @jpdenford"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.13.0`"
+          }
+        ]
+      }
+    },
+    {
+      "version": "0.11.4",
+      "tag": "io-ts-extra_v0.11.4",
+      "date": "Tue, 29 Jun 2021 08:48:24 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore(deps): update devdependencies (#203) - @renovate[bot]"
+          },
+          {
+            "comment": "fix(deps): update dependency lodash to v4.17.21 [security] (#236) - @renovate[bot]"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"expect-type\" to `0.11.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.11.3",
       "tag": "io-ts-extra_v0.11.3",
       "date": "Thu, 03 Dec 2020 19:10:22 GMT",

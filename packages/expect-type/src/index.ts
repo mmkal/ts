@@ -20,15 +20,24 @@ export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
  * - `{ readonly a: string }` vs `{ a: string }`
  * - `{ a?: string }` vs `{ a: string | undefined }`
  */
-type DeepBrand<T> = IsAny<T> extends true // avoid `any` matching `unknown`
-  ? Secret
+export type DeepBrand<T> = Or<[IsNever<T>, IsAny<T>, IsUnknown<T>]> extends true // avoid `any`/`unknown`/`never` matching
+  ? {
+      type: 'special'
+      never: IsNever<T>
+      any: IsAny<T>
+      unknown: IsUnknown<T>
+    }
   : T extends string | number | boolean | symbol | bigint | null | undefined
-  ? T
+  ? {
+      type: 'primitive'
+      value: T
+    }
   : T extends (...args: infer P) => infer R // avoid functions with different params/return values matching
   ? {
       type: 'function'
       params: DeepBrand<P>
       return: DeepBrand<R>
+      constructorParams: DeepBrand<ConstructorParams<T>>
     }
   : {
       type: 'object'
@@ -36,6 +45,7 @@ type DeepBrand<T> = IsAny<T> extends true // avoid `any` matching `unknown`
       readonly: ReadonlyKeys<T>
       required: RequiredKeys<T>
       optional: OptionalKeys<T>
+      constructorParams: DeepBrand<ConstructorParams<T>>
     }
 
 export type RequiredKeys<T> = Extract<
@@ -113,6 +123,15 @@ export interface ExpectTypeOf<Actual, B extends boolean> {
   returns: Actual extends (...args: any[]) => infer R ? ExpectTypeOf<R, B> : never
   resolves: Actual extends PromiseLike<infer R> ? ExpectTypeOf<R, B> : never
   items: Actual extends ArrayLike<infer R> ? ExpectTypeOf<R, B> : never
+  guards: Actual extends (v: any, ...args: any[]) => v is infer T ? ExpectTypeOf<T, B> : never
+  asserts: Actual extends (v: any, ...args: any[]) => asserts v is infer T
+    ? // Guard methods `(v: any) => asserts v is T` does not actually defines a return type. Thus, any function taking 1 argument matches the signature before.
+      // In case the inferred assertion type `R` could not be determined (so, `unknown`), consider the function as a non-guard, and return a `never` type.
+      // See https://github.com/microsoft/TypeScript/issues/34636
+      unknown extends T
+      ? never
+      : ExpectTypeOf<T, B>
+    : never
   not: ExpectTypeOf<Actual, Not<B>>
 }
 const fn: any = () => true
@@ -153,6 +172,8 @@ export const expectTypeOf: _ExpectTypeOf = <Actual>(actual?: Actual): ExpectType
     'items',
     'constructorParameters',
     'instance',
+    'guards',
+    'asserts',
   ] as const
   type Keys = keyof ExpectTypeOf<any, any>
 

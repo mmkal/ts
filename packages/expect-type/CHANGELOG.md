@@ -1,6 +1,25 @@
 # Change Log - expect-type
 
-This log was last generated on Thu, 03 Dec 2020 19:10:22 GMT and should not be manually modified.
+This log was last generated on Sat, 16 Oct 2021 13:17:24 GMT and should not be manually modified.
+
+## 0.13.0
+Sat, 16 Oct 2021 13:17:24 GMT
+
+### Minor changes
+
+- Fix constructor parameter comparison (#245)
+
+## 0.11.0
+Tue, 29 Jun 2021 08:48:24 GMT
+
+### Minor changes
+
+- Add `.exclude` and `.extract` helpers (#220)
+- feat(expect-type): add `guards` & `asserts` getters (#231) - @GerkinDev
+
+### Patches
+
+- chore(deps): update devdependencies (#203) - @renovate[bot]
 
 ## 0.10.0
 Thu, 03 Dec 2020 19:10:22 GMT

@@ -59,7 +59,7 @@ node ../../tools/rig/init # sets up package.json, .eslintrc.js, tsconfig.json, j
 Then open `rush.json`, find the `projects` array, and adda new entry: `{ "packageName": "new-pkg", "projectFolder": "packages/new-pkg" }`
 
 ### Publishing 
-[![publish](https://github.com/mmkal/ts/workflows/publish/badge.svg)](https://github.com/mmkal/ts/actions?query=workflow%3Apublish)
+[![publish](https://github.com/mmkal/ts/workflows/publish/badge.svg)](https://github.com/mmkal/ts/actions/workflows/publish.yml)
 
 Publishing is automated, but kicked off manually. The process is:
 
@@ -75,7 +75,7 @@ Publishing is automated, but kicked off manually. The process is:
   - if necessary, `rush change` can also be run locally to add additional messages - but ideally the PR title would be descriptive enough
   - the changefile should be merged in along with the rest of the changes
 
-When a PR is merged, publishing is initiated by kicking off the [publish worfklow](https://github.com/mmkal/ts/actions?query=workflow%3Apublish):
+When a PR is merged, publishing is initiated by kicking off the [publish worfklow](https://github.com/mmkal/ts/actions/workflows/publish.yml):
 
 - Clicking "Run workflow" will start another [GitHub action](./.github/workflows/publish.yml):
   - The workflow runs `rush publish`, which uses the changefiles merged with feature PRs, bumps versions and create git tags
