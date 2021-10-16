@@ -1,6 +1,13 @@
 # Change Log - fs-syncer
 
-This log was last generated on Sat, 16 Oct 2021 13:17:24 GMT and should not be manually modified.
+This log was last generated on Sat, 16 Oct 2021 15:24:30 GMT and should not be manually modified.
+
+## 0.4.0
+Sat, 16 Oct 2021 15:24:30 GMT
+
+### Minor changes
+
+- feat: jest helper, custom merger, jsonc parser, yaml stringifier (#238)
 
 ## 0.3.6
 Sat, 16 Oct 2021 13:17:24 GMT

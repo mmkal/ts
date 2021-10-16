@@ -2,6 +2,18 @@
   "name": "fs-syncer",
   "entries": [
     {
+      "version": "0.4.0",
+      "tag": "fs-syncer_v0.4.0",
+      "date": "Sat, 16 Oct 2021 15:24:30 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: jest helper, custom merger, jsonc parser, yaml stringifier (#238)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.6",
       "tag": "fs-syncer_v0.3.6",
       "date": "Sat, 16 Oct 2021 13:17:24 GMT",
