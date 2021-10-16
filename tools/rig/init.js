@@ -34,8 +34,8 @@ exports.init = () => {
   pkgJson.scripts.build = pkgJson.scripts.build || 'rig tsc -p .'
   pkgJson.scripts.lint = pkgJson.scripts.lint || 'rig eslint --cache .'
   pkgJson.scripts.test = pkgJson.scripts.test || 'rig jest'
-  pkgJson.scripts.prepack = 'npm run lint && rig permalink'
-  pkgJson.scripts.postpack = 'rig unpermalink && git status'
+  pkgJson.scripts.prepack = 'rig permalink'
+  pkgJson.scripts.postpack = 'rig unpermalink'
   pkgJson.devDependencies = pkgJson.devDependencies || {}
   if (pkgJson.name !== helperPkgJson.name) {
     pkgJson.devDependencies[helperPkgJson.name] = pkgJson.devDependencies[helperPkgJson.name] || helperPkgJson.version

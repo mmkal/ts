@@ -17,8 +17,8 @@
     "build": "rig tsc -p .",
     "clean": "rig rimraf dist",
     "lint": "rig eslint --cache .",
-    "prepack": "rushx lint && rig permalink",
-    "postpack": "rig unpermalink && git status",
+    "prepack": "rig permalink",
+    "postpack": "rig unpermalink",
     "test": "rig jest"
   },
   "devDependencies": {
