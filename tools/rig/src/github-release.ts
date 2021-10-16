@@ -82,6 +82,7 @@ export const getReleaseContent = (changelog: IChangelog, tag: string) => {
     major: 0,
     minor: 1,
   }
+  const uninteresting = lodash.max(Object.values(ordering))! + 1
 
   const body = lodash
     .chain(relevantEntries)
@@ -96,8 +97,10 @@ export const getReleaseContent = (changelog: IChangelog, tag: string) => {
     }))
     .groupBy(e => e.type)
     .entries()
-    .sortBy(([type]) => ordering[type] ?? 2)
-    .map(([type, group]) => [`## ${type} changes\n`, ...group.map(c => c.bullet)].join('\n'))
+    .map(([type, group]) => ({type, group, order: ordering[type] ?? uninteresting}))
+    .sortBy(e => e.order)
+    .dropWhile(e => e.order >= uninteresting) // if we only have uninteresting changes, don't bother
+    .map(({type, group}) => [`## ${type} changes\n`, ...group.map(c => c.bullet)].join('\n'))
     .join('\n\n')
     .value()
     .trim()
