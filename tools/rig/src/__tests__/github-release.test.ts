@@ -240,18 +240,18 @@ function changelogSamples() {
     name: 'sample-pkg',
     entries: [
       {
-        "version": "1.0.0",
-        "tag": "sample-pkg_v1.0.0",
-        "date": "Sat, 16 Oct 2021 13:17:24 GMT",
-        "comments": {
-          "dependency": [
+        version: '1.0.0',
+        tag: 'sample-pkg_v1.0.0',
+        date: 'Sat, 16 Oct 2021 13:17:24 GMT',
+        comments: {
+          dependency: [
             {
-              "comment": "Updating dependency \"foo\" to `0.13.0`"
-            }
-          ]
-        }
-      }
-    ]
+              comment: 'Updating dependency "foo" to `0.13.0`',
+            },
+          ],
+        },
+      },
+    ],
   }
 
   return {multipleChanges, dependencyOnly}
