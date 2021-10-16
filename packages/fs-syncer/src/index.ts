@@ -96,7 +96,7 @@ export const createFSSyncer = <T extends object>({
         // above, but that's weird and involves calling mergeStrategy twice.
         // fs.writeFileSync(filepath, resolved)
       } else {
-        fs.unlinkSync(filepath)
+        tryCatch(() => fs.unlinkSync(filepath))
       }
     })
 
