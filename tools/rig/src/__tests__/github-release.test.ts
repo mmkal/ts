@@ -172,6 +172,13 @@ test('nothing returned when tag does not match', () => {
   `)
 })
 
+test('no release for dependency only changes', () => {
+  expect(getReleaseContent(changelogSamples().dependencyOnly, 'sample-pkg_v1.0.0')).toEqual({
+    name: 'sample-pkg v1.0.0',
+    body: '',
+  })
+})
+
 function changelogSamples() {
   type Changelog = Parameters<typeof getReleaseContent>[0]
   const multipleChanges: Changelog = {
@@ -229,5 +236,23 @@ function changelogSamples() {
     ],
   }
 
-  return {multipleChanges}
+  const dependencyOnly: Changelog = {
+    name: 'sample-pkg',
+    entries: [
+      {
+        "version": "1.0.0",
+        "tag": "sample-pkg_v1.0.0",
+        "date": "Sat, 16 Oct 2021 13:17:24 GMT",
+        "comments": {
+          "dependency": [
+            {
+              "comment": "Updating dependency \"foo\" to `0.13.0`"
+            }
+          ]
+        }
+      }
+    ]
+  }
+
+  return {multipleChanges, dependencyOnly}
 }
