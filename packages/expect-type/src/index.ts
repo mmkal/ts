@@ -20,7 +20,7 @@ export type IsNeverOrAny<T> = Or<[IsNever<T>, IsAny<T>]>
  * - `{ readonly a: string }` vs `{ a: string }`
  * - `{ a?: string }` vs `{ a: string | undefined }`
  */
-type DeepBrand<T> = Or<[IsNever<T>, IsAny<T>, IsUnknown<T>]> extends true // avoid `any`/`unknown`/`never` matching
+export type DeepBrand<T> = Or<[IsNever<T>, IsAny<T>, IsUnknown<T>]> extends true // avoid `any`/`unknown`/`never` matching
   ? {
       type: 'special'
       never: IsNever<T>
@@ -37,6 +37,7 @@ type DeepBrand<T> = Or<[IsNever<T>, IsAny<T>, IsUnknown<T>]> extends true // avo
       type: 'function'
       params: DeepBrand<P>
       return: DeepBrand<R>
+      constructorParams: DeepBrand<ConstructorParams<T>>
     }
   : {
       type: 'object'
@@ -44,6 +45,7 @@ type DeepBrand<T> = Or<[IsNever<T>, IsAny<T>, IsUnknown<T>]> extends true // avo
       readonly: ReadonlyKeys<T>
       required: RequiredKeys<T>
       optional: OptionalKeys<T>
+      constructorParams: DeepBrand<ConstructorParams<T>>
     }
 
 export type RequiredKeys<T> = Extract<

@@ -252,3 +252,29 @@ test('Detect the difference between regular and readonly properties', () => {
   expectTypeOf<A2>().toMatchTypeOf<E2>()
   expectTypeOf<A2>().not.toEqualTypeOf<E2>()
 })
+
+test('Distinguish between classes with different constructors', () => {
+  class A {
+    value: number
+    constructor(a: 1) {
+      this.value = a
+    }
+  }
+  class B {
+    value: number
+    constructor(b: 2) {
+      this.value = b
+    }
+  }
+
+  expectTypeOf<typeof A>().not.toEqualTypeOf<typeof B>()
+
+  class C {
+    value: number
+    constructor(c: 1) {
+      this.value = c
+    }
+  }
+
+  expectTypeOf<typeof A>().toEqualTypeOf<typeof C>()
+})
