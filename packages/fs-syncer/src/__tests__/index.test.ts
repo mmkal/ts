@@ -72,6 +72,6 @@ test('types', () => {
   })
 
   expectTypeOf(syncer.sync).returns.toEqualTypeOf(syncer)
-  expectTypeOf(syncer.read).returns.toEqualTypeOf({})
+  expectTypeOf(syncer.read).returns.toBeAny()
   expectTypeOf(syncer.write).returns.toEqualTypeOf<void>()
 })
