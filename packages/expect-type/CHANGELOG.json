@@ -2,6 +2,18 @@
   "name": "expect-type",
   "entries": [
     {
+      "version": "0.13.0",
+      "tag": "expect-type_v0.13.0",
+      "date": "Sat, 16 Oct 2021 13:17:24 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Fix constructor parameter comparison (#245)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.11.0",
       "tag": "expect-type_v0.11.0",
       "date": "Tue, 29 Jun 2021 08:48:24 GMT",

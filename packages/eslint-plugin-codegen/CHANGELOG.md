@@ -1,6 +1,13 @@
 # Change Log - eslint-plugin-codegen
 
-This log was last generated on Tue, 29 Jun 2021 08:48:24 GMT and should not be manually modified.
+This log was last generated on Sat, 16 Oct 2021 13:17:24 GMT and should not be manually modified.
+
+## 0.16.1
+Sat, 16 Oct 2021 13:17:24 GMT
+
+### Patches
+
+- fix: make read-pkg-up a prod dependency (#243)
 
 ## 0.15.0
 Tue, 29 Jun 2021 08:48:24 GMT
