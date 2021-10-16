@@ -17,6 +17,7 @@ test('parse jsonc', () => {
        * multiline block comment
        */
       "c": 3,
+      //1 comment starting with a number
       "d": {
         // nested comment
         "e": 5
@@ -51,6 +52,7 @@ test('parse jsonc', () => {
        * multiline block comment
        */
       \\"c\\": 3,
+      //1 comment starting with a number
       \\"d\\": {
         // nested comment
         \\"e\\": 5
@@ -167,5 +169,12 @@ test('edit jsonc double-space indents by default', () => {
       \\"a1\\": \\"b1\\",
       \\"a2\\": \\"b2\\"
     }"
+  `)
+})
+
+test('helpful errors for invalid syntax', () => {
+  expect(() => JSONC.parse(`{"foo': "bar"}` as JSONC.JSONC)).toThrowErrorMatchingInlineSnapshot(`
+    "Unexpected token b in JSON at position 9
+    {\\"foo': \\" --> b <-- ar\\"}"
   `)
 })

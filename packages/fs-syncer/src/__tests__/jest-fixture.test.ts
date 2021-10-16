@@ -1,6 +1,7 @@
 import * as fsSyncer from '..'
 import * as fs from 'fs'
 import * as path from 'path'
+import {wipe} from '../jest'
 
 test('fixture dir is created', () => {
   const fixture = fsSyncer.jestFixture({
@@ -16,6 +17,24 @@ test('fixture dir is created', () => {
       .toString()
       .trim()
   ).toBe('uno')
+})
+
+test('wipe() deletes existing files', () => {
+  const before = fsSyncer.jestFixture({
+    targetState: {'one.txt': '1'},
+  })
+
+  before.sync()
+
+  expect(
+    fs.readdirSync(path.join(__dirname, 'fixtures', 'jest-fixture.test.ts', 'wipe-deletes-existing-files'))
+  ).toEqual(['one.txt'])
+
+  wipe()
+
+  expect(
+    fs.readdirSync(path.join(__dirname, 'fixtures', 'jest-fixture.test.ts', 'wipe-deletes-existing-files'))
+  ).toEqual([])
 })
 
 describe('A suite', () => {

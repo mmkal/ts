@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import * as realFs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 import {getPaths, get, dedent, tryCatch} from './util'
@@ -26,7 +26,9 @@ export const createFSSyncer = <T extends object>({
   targetState,
   exclude = ['node_modules'],
   mergeStrategy = defaultMergeStrategy,
+  fs: _fs = realFs,
 }: CreateSyncerParams<T>) => {
+  const fs = _fs as typeof realFs
   const write = () => {
     fs.mkdirSync(baseDir, {recursive: true})
     const paths = getPaths(targetState)
@@ -41,8 +43,6 @@ export const createFSSyncer = <T extends object>({
 
       if (typeof targetContent === 'string') {
         fs.writeFileSync(filepath, targetContent)
-      } else {
-        fs.unlinkSync(filepath)
       }
     })
   }
@@ -107,6 +107,8 @@ export const createFSSyncer = <T extends object>({
 
   return syncer
 }
+
+// Backwards-compatible export, may be deprecated if the above one proves nice to work with:
 
 /**
  * A helper to read and write text files to a specified directory.

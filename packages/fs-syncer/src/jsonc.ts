@@ -90,8 +90,6 @@ export const parse = (jsonc: JSONC) => {
     if (e instanceof SyntaxError && e.message.match(/position \d+$/)) {
       const position = Number.parseInt(e.message.split(' ').slice(-1)[0], 10)
       e.message += `\n${json.slice(0, position)} --> ${json[position]} <-- ${json.slice(position + 1)}`
-    } else if (e instanceof SyntaxError) {
-      e.message += `\n${json}`
     }
     throw e
   }

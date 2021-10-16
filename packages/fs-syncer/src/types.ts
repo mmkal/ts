@@ -4,6 +4,24 @@
 
 export const fsSyncerFileTreeMarker = Symbol('fs-syncer-marker')
 
+
+/**
+ * Interface that's compatible with both `require('fs')` and a `memfs` volume.
+ * Annoyingly, memfs doesn't strictly conform to the `fs` interface, it deals with
+ * nullish values differently, etc.
+ * 
+ * Note: this only includes methods that this library actually uses.
+ */
+export interface FSLike {
+  readFileSync(path: string): {toString(): string}
+  writeFileSync(path: string, content: string): void
+  existsSync(filepath: string): boolean
+  mkdirSync(path: string, opts?: {recursive?: boolean}): void
+  readdirSync: Function // memfs uses crazy generics here, just make sure some kinda function exists
+  statSync(path: string): {isFile(): boolean}
+  unlinkSync(path: string): void
+}
+
 export type MergeStrategy = (params: {
   filepath: string
   existingContent: string | undefined
@@ -78,5 +96,9 @@ export interface CreateSyncerParams<T extends object> {
    * @default params => params.targetContent
    */
   mergeStrategy?: MergeStrategy
+  /**
+   * Replacement file-system. Defaults to `require('fs')`. You can use `memfs` to perform in-memory operations.
+   */
+  fs?: FSLike
   // beforeWrites?: BeforeWrite[]
 }

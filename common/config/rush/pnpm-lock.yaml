@@ -19,6 +19,7 @@ importers:
       io-ts-extra: 'link:../io-ts-extra'
       js-yaml: 3.14.0
       lodash: 4.17.20
+      read-pkg-up: 7.0.1
       string.prototype.matchall: 4.0.3
     devDependencies:
       '@babel/types': 7.12.11
@@ -35,7 +36,6 @@ importers:
       eslint: 7.15.0
       expect-type: 'link:../expect-type'
       minimatch: 3.0.4
-      read-pkg-up: 7.0.1
       ts-node: 9.1.1
     specifiers:
       '@babel/core': ^7.11.6
@@ -63,7 +63,7 @@ importers:
       js-yaml: ^3.14.0
       lodash: ^4.17.15
       minimatch: 3.0.4
-      read-pkg-up: 7.0.1
+      read-pkg-up: ^7.0.1
       string.prototype.matchall: ^4.0.2
       ts-node: 9.1.1
   ../../packages/expect-type:
@@ -77,11 +77,13 @@ importers:
       '@types/lodash': 4.14.165
       expect-type: 'link:../expect-type'
       lodash: 4.17.21
+      memfs: 3.3.0
     specifiers:
       '@mmkal/rig': 'workspace:*'
       '@types/lodash': ~4.14.165
       expect-type: 'workspace:*'
       lodash: ~4.17.20
+      memfs: ~3.3.0
   ../../packages/io-ts-extra:
     dependencies:
       fp-ts: 2.9.0
@@ -100,8 +102,8 @@ importers:
       expect-type: 'workspace:*'
       fp-ts: ^2.1.0
       io-ts: ^2.2.4
-      js-yaml: 3.14.1
-      lodash: 4.17.21
+      js-yaml: ^3.14.0
+      lodash: ^4.17.15
   ../../packages/memorable-moniker:
     dependencies:
       seedrandom: 3.0.5
@@ -116,7 +118,7 @@ importers:
       '@types/lodash': 4.14.165
       '@types/seedrandom': 2.4.28
       expect-type: 'workspace:*'
-      lodash: 4.17.21
+      lodash: ^4.17.15
       seedrandom: ^3.0.5
   ../../tools/rig:
     dependencies:
@@ -176,8 +178,8 @@ importers:
       eson-parser: 0.0.5
       find-up: 5.0.0
       jest: 26.6.3
-      js-yaml: 3.14.1
-      lodash: 4.17.21
+      js-yaml: ^3.14.0
+      lodash: ^4.17.15
       prettier: 2.2.1
       rimraf: 3.0.2
       sort-package-json: 1.48.0
@@ -326,7 +328,7 @@ packages:
       integrity: sha512-lgKGMQlKqA8meJqKsW6rUnc4MdUk35Ln0ATDqdM1a/UpARODdI4j5Y5lVfUScnSNkJcdCRAaWkspykNoFg9sJA==
   /@babel/highlight/7.10.4:
     dependencies:
-      '@babel/helper-validator-identifier': 7.10.4
+      '@babel/helper-validator-identifier': 7.12.11
       chalk: 2.4.2
       js-tokens: 4.0.0
     resolution:
@@ -1116,6 +1118,7 @@ packages:
     resolution:
       integrity: sha512-H5Wn24s/ZOukBmDn03nnGTp18A60ny9AmCwnEcgJiTgSGsCO7k+NWP7zjCCbhlcnVCoI+co52dUAt9GMhOSULw==
   /@types/normalize-package-data/2.4.0:
+    dev: false
     resolution:
       integrity: sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
   /@types/prettier/2.1.5:
@@ -3307,6 +3310,7 @@ packages:
     dependencies:
       locate-path: 5.0.0
       path-exists: 4.0.0
+    dev: false
     engines:
       node: '>=8'
     resolution:
@@ -3406,6 +3410,10 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==
+  /fs-monkey/1.0.3:
+    dev: true
+    resolution:
+      integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==
   /fs-write-stream-atomic/1.0.10:
     dependencies:
       graceful-fs: 4.2.4
@@ -4985,6 +4993,7 @@ packages:
   /locate-path/5.0.0:
     dependencies:
       p-locate: 4.1.0
+    dev: false
     engines:
       node: '>=8'
     resolution:
@@ -5084,6 +5093,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-xitP+WxNPcTTOgnTJcrhM0xvdPepipPSf3I8EIpGKeFLjt3PlJLIDG3u8EX53ZIubkb+5U2+3rELYpEhHhzdkg==
+  /memfs/3.3.0:
+    dependencies:
+      fs-monkey: 1.0.3
+    dev: true
+    engines:
+      node: '>= 4.0.0'
+    resolution:
+      integrity: sha512-BEE62uMfKOavX3iG7GYX43QJ+hAeeWnwIAuJ/R6q96jaMtiLzhsxHJC8B1L7fK7Pt/vXDRwb3SG/yBpNGDPqzg==
   /memory-fs/0.4.1:
     dependencies:
       errno: 0.1.7
@@ -5649,6 +5666,7 @@ packages:
   /p-locate/4.1.0:
     dependencies:
       p-limit: 2.3.0
+    dev: false
     engines:
       node: '>=8'
     resolution:
@@ -5780,6 +5798,7 @@ packages:
     resolution:
       integrity: sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=
   /path-exists/4.0.0:
+    dev: false
     engines:
       node: '>=8'
     resolution:
@@ -6108,6 +6127,7 @@ packages:
       find-up: 4.1.0
       read-pkg: 5.2.0
       type-fest: 0.8.1
+    dev: false
     engines:
       node: '>=8'
     resolution:
@@ -6138,6 +6158,7 @@ packages:
       normalize-package-data: 2.5.0
       parse-json: 5.1.0
       type-fest: 0.6.0
+    dev: false
     engines:
       node: '>=8'
     resolution:
@@ -7346,6 +7367,7 @@ packages:
     resolution:
       integrity: sha512-OdjXJxnCN1AvyLSzeKIgXTXxV+99ZuXl3Hpo9XpJAv9MBcHrrJOQ5kV7ypXOuQie+AmWG25hLbiKdwYTifzcfQ==
   /type-fest/0.6.0:
+    dev: false
     engines:
       node: '>=8'
     resolution:
