@@ -195,6 +195,60 @@ test('You can also check type guards & type assertions', () => {
   expectTypeOf(isString).guards.toBeString()
 })
 
+test('You can also check the `this` argument of functions using `.thisParam', () => {
+  type NoThisParam = (a: number) => void
+  type DateThisParam = (this: Date, a: number) => void
+  type UndefinedThisParam = (this: undefined, a: number) => void
+  type UnknownThisParam = (this: unknown, a: number) => void
+  type AnyThisParam = (this: any, a: number) => void
+
+  expectTypeOf<NoThisParam>().thisParam.toBeUnknown();
+  expectTypeOf<DateThisParam>().thisParam.toEqualTypeOf<Date>();
+  expectTypeOf<UndefinedThisParam>().thisParam.toBeUndefined();
+  expectTypeOf<UnknownThisParam>().thisParam.toBeUnknown();
+  expectTypeOf<AnyThisParam>().thisParam.toBeAny();
+})
+
+test('Of course, `.toEqualTypeOf` also distinguishes the `this` argument between functions', () => {
+  type NoThisParam = (a: number) => void
+  type DateThisParam = (this: Date, a: number) => void
+  type UndefinedThisParam = (this: undefined, a: number) => void
+  type UnknownThisParam = (this: unknown, a: number) => void
+  type AnyThisParam = (this: any, a: number) => void
+
+	// `NoThisParam` and `UnknownThisParam` are the only ones that should be considered equivalent.
+
+  expectTypeOf<NoThisParam>().toEqualTypeOf<NoThisParam>();
+  expectTypeOf<NoThisParam>().not.toEqualTypeOf<DateThisParam>();
+  expectTypeOf<NoThisParam>().not.toEqualTypeOf<UndefinedThisParam>();
+  expectTypeOf<NoThisParam>().toEqualTypeOf<UnknownThisParam>();
+  expectTypeOf<NoThisParam>().not.toEqualTypeOf<AnyThisParam>();
+
+  expectTypeOf<DateThisParam>().not.toEqualTypeOf<NoThisParam>();
+  expectTypeOf<DateThisParam>().toEqualTypeOf<DateThisParam>();
+  expectTypeOf<DateThisParam>().not.toEqualTypeOf<UndefinedThisParam>();
+  expectTypeOf<DateThisParam>().not.toEqualTypeOf<UnknownThisParam>();
+  expectTypeOf<DateThisParam>().not.toEqualTypeOf<AnyThisParam>();
+
+  expectTypeOf<UndefinedThisParam>().not.toEqualTypeOf<NoThisParam>();
+  expectTypeOf<UndefinedThisParam>().not.toEqualTypeOf<DateThisParam>();
+  expectTypeOf<UndefinedThisParam>().toEqualTypeOf<UndefinedThisParam>();
+  expectTypeOf<UndefinedThisParam>().not.toEqualTypeOf<UnknownThisParam>();
+  expectTypeOf<UndefinedThisParam>().not.toEqualTypeOf<AnyThisParam>();
+
+  expectTypeOf<UnknownThisParam>().toEqualTypeOf<NoThisParam>();
+  expectTypeOf<UnknownThisParam>().not.toEqualTypeOf<DateThisParam>();
+  expectTypeOf<UnknownThisParam>().not.toEqualTypeOf<UndefinedThisParam>();
+  expectTypeOf<UnknownThisParam>().toEqualTypeOf<UnknownThisParam>();
+  expectTypeOf<UnknownThisParam>().not.toEqualTypeOf<AnyThisParam>();
+
+  expectTypeOf<AnyThisParam>().not.toEqualTypeOf<NoThisParam>();
+  expectTypeOf<AnyThisParam>().not.toEqualTypeOf<DateThisParam>();
+  expectTypeOf<AnyThisParam>().not.toEqualTypeOf<UndefinedThisParam>();
+  expectTypeOf<AnyThisParam>().not.toEqualTypeOf<UnknownThisParam>();
+  expectTypeOf<AnyThisParam>().toEqualTypeOf<AnyThisParam>();
+})
+
 test('Assert on constructor parameters', () => {
   expectTypeOf(Date).toBeConstructibleWith('1970')
   expectTypeOf(Date).toBeConstructibleWith(0)
