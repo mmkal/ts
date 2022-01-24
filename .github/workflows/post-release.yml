@@ -11,5 +11,5 @@ jobs:
       - uses: apexskier/github-release-commenter@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          comment-template: This is address by {release_link}.
+          comment-template: This is addressed by {release_link}.
           label-template: released
