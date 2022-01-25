@@ -51,6 +51,35 @@ describe('mapper', () => {
     expect(BoolToStringArray.encode(['f', 'a', 'l', 's', 'e'])).toEqual(false)
   })
 
+  it('map decodes nested mapped types', () => {
+    const Bool_Number = mapper(
+      t.boolean,
+      t.number,
+      b => (b ? 1 : 0),
+      n => n === 1
+    )
+
+    const Bool_Number_String = mapper(t.string, Bool_Number, JSON.parse, JSON.stringify)
+
+    expect(Bool_Number_String.decode('true')).toMatchInlineSnapshot(`
+      _tag: Right
+      right: 1
+    `)
+  })
+
+  it('unmap encodes nested mapped types', () => {
+    const Bool_Number = mapper(
+      t.boolean,
+      t.number,
+      b => (b ? 1 : 0),
+      n => n === 1
+    )
+
+    const Bool_Number_String = mapper(t.string, Bool_Number, JSON.parse, JSON.stringify)
+
+    expect(Bool_Number_String.encode(1)).toEqual('true')
+  })
+
   it('throws helpfully when unmap not implemented', () => {
     const BoolToStringArray = mapper(t.boolean, t.array(t.string), b => b.toString().split(''))
     expect(() => (BoolToStringArray as any).encode(['f', 'a', 'l', 's', 'e'])).toThrowErrorMatchingInlineSnapshot(`
