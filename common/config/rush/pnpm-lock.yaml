@@ -9,7 +9,7 @@ importers:
   ../../packages/eslint-plugin-codegen:
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/generator': 7.12.5
+      '@babel/generator': 7.13.0
       '@babel/parser': 7.12.7
       '@babel/traverse': 7.12.9
       expect: 26.6.2
@@ -39,7 +39,7 @@ importers:
       ts-node: 9.1.1
     specifiers:
       '@babel/core': ^7.11.6
-      '@babel/generator': ~7.12.0
+      '@babel/generator': ~7.13.0
       '@babel/parser': ^7.11.5
       '@babel/traverse': ^7.11.5
       '@babel/types': 7.12.11
@@ -241,6 +241,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-m16TQQJ8hPt7E+OS/XVQg/7U184MLXtvuGbCdA7na61vha+ImkyyNM/9DDA0unYCVZn3ZOhng+qz48/KBOT96A==
+  /@babel/generator/7.13.0:
+    dependencies:
+      '@babel/types': 7.13.0
+      jsesc: 2.5.2
+      source-map: 0.5.7
+    dev: false
+    resolution:
+      integrity: sha512-zBZfgvBB/ywjx0Rgc2+BwoH/3H+lDtlgD4hBOpEv5LxRnYsm/753iRuLepqnYlynpjC3AdQxtxsoeHJoEEwOAw==
   /@babel/helper-function-name/7.10.4:
     dependencies:
       '@babel/helper-get-function-arity': 7.10.4
@@ -492,6 +500,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-MNyI92qZq6jrQkXvtIiykvl4WtoRrVV9MPn+ZfsoEENjiWcBQ3ZSHrkxnJWgWtLX3XXqX5hrSQ+X69wkmesXuQ==
+  /@babel/types/7.13.0:
+    dependencies:
+      '@babel/helper-validator-identifier': 7.12.11
+      lodash: 4.17.20
+      to-fast-properties: 2.0.0
+    dev: false
+    resolution:
+      integrity: sha512-hE+HE8rnG1Z6Wzo+MhaKE5lM5eMx71T4EHJgku2E3xIfaULhDcxiiRxUYgwX8qwP1BBSlag+TdGOt6JAidIZTA==
   /@bcoe/v8-coverage/0.2.3:
     dev: false
     resolution:
