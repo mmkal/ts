@@ -216,7 +216,7 @@ test('Of course, `.toEqualTypeOf` also distinguishes the `this` argument between
   type UnknownThisParam = (this: unknown, a: number) => void
   type AnyThisParam = (this: any, a: number) => void
 
-	// `NoThisParam` and `UnknownThisParam` are the only ones that should be considered equivalent.
+  // `NoThisParam` and `UnknownThisParam` are the only ones that should be considered equivalent.
 
   expectTypeOf<NoThisParam>().toEqualTypeOf<NoThisParam>();
   expectTypeOf<NoThisParam>().not.toEqualTypeOf<DateThisParam>();
