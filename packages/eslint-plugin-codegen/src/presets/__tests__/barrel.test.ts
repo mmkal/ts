@@ -309,12 +309,12 @@ test(`supports asset imports`, () => {
       options: {include: '*.{jpg,png}', import: 'default'},
     })
   ).toMatchInlineSnapshot(`
-      "import a from './a.jpg'
-      import b from './b.png'
+      "import aJpg from './a.jpg'
+      import bPng from './b.png'
 
       export {
-       a,
-       b
+       aJpg,
+       bPng
       }
       "
     `)
