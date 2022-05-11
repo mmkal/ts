@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Add support for asset imports (#258) - @yenbekbay",
+      "type": "minor",
+      "packageName": "eslint-plugin-codegen"
+    }
+  ],
+  "packageName": "eslint-plugin-codegen",
+  "email": "yenbekbay@users.noreply.github.com"
+}
