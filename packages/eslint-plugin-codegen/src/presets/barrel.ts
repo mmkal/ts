@@ -46,8 +46,7 @@ export const barrel: Preset<{
     .sync(pattern, {cwd, ignore: opts.exclude})
     .filter(f => path.resolve(cwd, f) !== path.resolve(meta.filename))
     .map(f => `./${f}`.replace(/(\.\/)+\./g, '.'))
-    .filter(file => ['.js', '.mjs', '.ts', '.tsx'].includes(path.extname(file)))
-    .map(f => f.replace(/\.\w+$/, ''))
+    .map(f => ['.js', '.mjs', '.ts', '.tsx'].includes(path.extname(file)) ? f.replace(/\.\w+$/, '') : f)
 
   const expectedContent = match(opts.import)
     .case(undefined, () => {
