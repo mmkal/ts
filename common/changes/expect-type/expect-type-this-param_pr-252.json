@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "fix(expect-type): check  `this` param in functions (#252) - @papb",
+      "type": "patch",
+      "packageName": "expect-type"
+    }
+  ],
+  "packageName": "expect-type",
+  "email": "papb@users.noreply.github.com"
+}
