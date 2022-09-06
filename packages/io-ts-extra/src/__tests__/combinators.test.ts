@@ -1,7 +1,7 @@
 import {sparseType, optional} from '..'
 import * as t from 'io-ts'
 import {expectRight, expectLeft} from './either-serializer'
-import {expectTypeOf} from 'expect-type'
+import {expectTypeOf} from 'expect-type2'
 import {inspect} from 'util'
 import {instanceOf, regexp, strict} from '../combinators'
 import {validationErrors} from '../reporters'

@@ -37,7 +37,7 @@
     "@mmkal/rig": "workspace:*",
     "@types/js-yaml": "3.12.5",
     "@types/lodash": "4.14.165",
-    "expect-type": "workspace:*",
+    "expect-type2": "npm:expect-type@0.14.0",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15"
   }

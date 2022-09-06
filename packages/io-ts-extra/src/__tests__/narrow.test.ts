@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 import {narrow} from '../narrow'
 import {expectRight, expectLeft} from './either-serializer'
-import {expectTypeOf} from 'expect-type'
+import {expectTypeOf} from 'expect-type2'
 import {validationErrors} from '../reporters'
 
 it('refines', () => {
