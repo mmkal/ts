@@ -1,6 +1,6 @@
 import * as t from 'io-ts'
 import {codecFromShorthand as shorthand} from '../shorthand'
-import {expectTypeOf as e} from 'expect-type'
+import {expectTypeOf as e} from 'expect-type2'
 
 const expectTypeRuntimeBehaviour = (inverted = false): typeof e => (actual?: any): any => {
   if (typeof actual === 'undefined') {

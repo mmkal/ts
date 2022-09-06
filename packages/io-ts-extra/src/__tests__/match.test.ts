@@ -1,6 +1,6 @@
 import * as t from 'io-ts'
 import {collect, match, matcher} from '../match'
-import {expectTypeOf} from 'expect-type'
+import {expectTypeOf} from 'expect-type2'
 import * as fp from 'lodash/fp'
 
 import './either-serializer'

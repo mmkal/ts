@@ -69,3 +69,4 @@ common/autoinstallers/*/.npmrc
 **/lib/**
 
 .cache
+*ignoreme*

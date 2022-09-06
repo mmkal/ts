@@ -60,7 +60,7 @@
     "@types/lodash": "4.14.165",
     "@types/minimatch": "3.0.3",
     "dedent": "0.7.0",
-    "expect-type": "workspace:*",
+    "expect-type2": "npm:expect-type@0.14.0",
     "minimatch": "3.0.4",
     "eslint": "7.15.0",
     "ts-node": "9.1.1"

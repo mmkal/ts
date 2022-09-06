@@ -2,7 +2,7 @@ import {fsSyncer} from '..'
 
 import * as fs from 'fs'
 import * as path from 'path'
-import {expectTypeOf} from 'expect-type'
+import {expectTypeOf} from 'expect-type2'
 
 test('sync', () => {
   const syncer = fsSyncer(path.join(__dirname, 'generated/sync'), {
