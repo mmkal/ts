@@ -14,7 +14,7 @@ jobs:
           token: ${{ secrets.GH_CI_TOKEN}}
       - uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 14
       - name: run rush update and push changes
         run: |
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
