@@ -296,3 +296,26 @@ test(`index files are sensibly-named`, () => {
     "
   `)
 })
+
+test(`supports asset imports`, () => {
+  Object.assign(mockFs, {
+    'a.jpg': '',
+    'b.png': '',
+  })
+
+  expect(
+    preset.barrel({
+      meta: {filename: 'index.ts', existingContent: ''},
+      options: {include: '*.{jpg,png}', import: 'default'},
+    })
+  ).toMatchInlineSnapshot(`
+      "import aJpg from './a.jpg'
+      import bPng from './b.png'
+
+      export {
+       aJpg,
+       bPng
+      }
+      "
+    `)
+})
