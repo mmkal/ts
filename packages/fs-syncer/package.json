@@ -32,9 +32,9 @@
   },
   "devDependencies": {
     "@mmkal/rig": "workspace:*",
-    "expect-type2": "npm:expect-type@0.14.0",
-    "@types/lodash": "4.14.165",
+    "expect-type2": "npm:expect-type@0.15.0",
+    "@types/lodash": "4.14.186",
     "lodash": "^4.17.15",
-    "memfs": "~3.3.0"
+    "memfs": "~3.4.0"
   }
 }
