@@ -18,6 +18,6 @@
   "eslint.nodePath": "tools/rig/node_modules",
   "eslint.debug": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
 }
