@@ -13,10 +13,10 @@ Monorepo of typescript projects.
 
 - [expect-type](https://github.com/mmkal/expect-type#readme) - Compile-time tests for types. Useful to make sure types don't regress into being overly-permissive as changes go in over time.
 - [eslint-plugin-codegen](https://github.com/mmkal/eslint-plugin-codegen#readme) - An eslint plugin for inline codegen, with presets for barrels, jsdoc to markdown and a monorepo workspace table of contents generator. Auto-fixes out of sync code.
+- [fs-syncer](https://github.com/mmkal/fs-syncer) - A helper to recursively read and write text files to a specified directory.
 
 ### Still here
 <!-- codegen:start {preset: monorepoTOC, sort: package.name} -->
-- [fs-syncer](./packages/fs-syncer) - A helper to recursively read and write text files to a specified directory.
 - [io-ts-extra](https://github.com/mmkal/ts/tree/main/packages/io-ts-extra#readme) - Adds pattern matching, optional properties, and several other helpers and types, to io-ts.
 - [memorable-moniker](https://github.com/mmkal/ts/tree/main/packages/memorable-moniker#readme) - Name generator with some in-built dictionaries and presets.
 <!-- codegen:end -->
