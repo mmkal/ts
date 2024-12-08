@@ -19,7 +19,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - id: restore_node_modules
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: common/temp
         key: ${{ runner.os }}-rush-node-modules-v0.4-${{ hashFiles('common/config/**') }}
@@ -27,7 +27,7 @@ jobs:
           ${{ runner.os }}-rush-node-modules-v0.4-
 
     - id: restore_rush_cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: |
           tools/*/.rush/**
